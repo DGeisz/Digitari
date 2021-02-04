@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { basicLayouts } from "../../global_styles/BasicLayouts";
 import { palette } from "../../global_styles/Palette";
+import { globalTextStyles } from "../../global_styles/GlobalTextStyles";
 
 export const styles = StyleSheet.create({
     coverContainer: {
@@ -28,16 +29,15 @@ export const styles = StyleSheet.create({
         ...basicLayouts.flexGrid3,
     },
     coverUserText: {
-        color: palette.beneathTheWaves,
+        ...globalTextStyles.userText,
         fontWeight: "500",
         marginLeft: 2,
     },
     mainHeaderDotText: {
-        color: palette.mediumGray,
-        marginHorizontal: 2,
+        ...globalTextStyles.dotText
     },
     coverTimeText: {
-        color: palette.mediumOceanSurf,
+        ...globalTextStyles.timeText
     },
     mainHeaderRight: {
         ...basicLayouts.grid6,

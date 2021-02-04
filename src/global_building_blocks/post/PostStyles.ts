@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { basicLayouts } from "../../global_styles/BasicLayouts";
 import { palette } from "../../global_styles/Palette";
+import { globalTextStyles } from "../../global_styles/GlobalTextStyles";
 
 export const styles = StyleSheet.create({
     postContainer: {
@@ -36,15 +37,14 @@ export const styles = StyleSheet.create({
         ...basicLayouts.grid3,
     },
     postUserText: {
+        ...globalTextStyles.userText,
         fontWeight: "700",
-        color: palette.beneathTheWaves,
     },
     postDotText: {
-        color: palette.mediumGray,
-        marginHorizontal: 2,
+        ...globalTextStyles.dotText
     },
     postTimeText: {
-        color: palette.mediumOceanSurf,
+        ...globalTextStyles.timeText
     },
     postMainBody: {
         paddingTop: 5,
