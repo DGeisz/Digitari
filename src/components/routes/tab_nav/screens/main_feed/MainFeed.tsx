@@ -14,7 +14,7 @@ const MainFeed: React.FC<Props> = () => {
     return (
         <View style={basicLayouts.flexGrid1}>
             <View style={basicLayouts.flexGrid4}>
-                <ConvoCover convoCover={convoCoverExample}/>
+                <Post post={postExampleNoLink} />
             </View>
         </View>
     );

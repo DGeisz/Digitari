@@ -1,64 +1,87 @@
 import { StyleSheet } from "react-native";
-import { palette } from "../../global_styles/Palette";
 import { basicLayouts } from "../../global_styles/BasicLayouts";
+import { palette } from "../../global_styles/Palette";
 
 export const styles = StyleSheet.create({
     postContainer: {
-        backgroundColor: palette.white, //palette.white
-        padding: 10,
+        paddingTop: 5,
+        backgroundColor: palette.white,
+    },
+    postContentContainer: {
+        flexDirection: "row",
+    },
+    postSideBuffer: {
+        paddingHorizontal: 2,
+    },
+    sideBufferTop: {
+        ...basicLayouts.grid8,
+    },
+    sideBufferDivider: {
+        width: 30,
+        borderBottomWidth: 1,
+        borderBottomColor: palette.softGray,
+        marginVertical: 2,
+    },
+    sideBufferBottom: {
+        ...basicLayouts.flexGrid2,
+    },
+    postMain: {
+        ...basicLayouts.flexGrid1,
+        marginLeft: 3,
+        paddingRight: 10,
+        paddingBottom: 5,
     },
     postHeader: {
-        padding: 10,
-        ...basicLayouts.flexRow,
-    },
-    tierContainer: {
-        backgroundColor: palette.oceanSurf,
-        borderRadius: 5,
+        flexDirection: "row",
+        ...basicLayouts.grid3,
     },
     postUserText: {
-        fontWeight: "500",
+        fontWeight: "700",
+        color: palette.beneathTheWaves,
+    },
+    postDotText: {
+        color: palette.mediumGray,
+        marginHorizontal: 2,
     },
     postTimeText: {
-        color: palette.lightGray,
-        fontWeight: "500",
-    },
-    postBodyContainer: {
-        padding: 20,
-    },
-    postBodyText: {
-        fontWeight: "600",
-        fontSize: 21,
-        color: palette.hardGray,
-        marginTop: 8,
-        marginBottom: 10,
-    },
-    postCoinText: {
-        fontWeight: "500",
         color: palette.mediumOceanSurf,
     },
-    postResponseButton: {
-        backgroundColor: palette.softGray,
+    postMainBody: {
+        paddingTop: 5,
+        paddingBottom: 15,
+    },
+    postMainText: {
+        color: palette.hardGray,
+        fontSize: 18,
+    },
+    postMainFooter: {
+        flexDirection: "row",
+    },
+    mainFooterRight: {
+        ...basicLayouts.flexGrid6,
+    },
+    mainFooterLeft: {
+        ...basicLayouts.flexGrid4,
+    },
+    responseButton: {
+        flexDirection: "row",
+        backgroundColor: palette.oceanFroth,
+        paddingVertical: 4,
+        paddingHorizontal: 5,
         borderRadius: 5,
-        paddingHorizontal: 2,
-        paddingVertical: 1,
     },
-    postRewardContainer: {
-        backgroundColor: palette.lightForestGreen,
-        borderRadius: 5,
-        padding: 10,
-        ...basicLayouts.flexRow,
-        ...basicLayouts.grid2,
+    costContainer: {
+        flexDirection: "row",
+        borderRightWidth: 1,
+        borderRightColor: palette.oceanSurf,
+        marginRight: 2,
+        paddingRight: 5,
     },
-    postRewardText: {
-        fontWeight: "500",
-        color: palette.darkForestGreen,
+    pencil: {
+        marginRight: 5,
     },
-    postCostContainer: {
-        backgroundColor: palette.lightGray,
-        borderRadius: 5,
-    },
-    postCostText: {
-        fontWeight: "500",
-        color: palette.white,
+    postConvosContainer: {
+        borderTopWidth: 1,
+        borderTopColor: palette.softGray,
     },
 });

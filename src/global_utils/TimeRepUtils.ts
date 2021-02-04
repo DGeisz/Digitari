@@ -9,20 +9,20 @@ const millisInYear = millisInDay * 365;
 
 export function millisToRep(millis: number): string {
     if (millis > millisInYear) {
-        return Math.floor(millis / millisInYear) + 'y';
+        return Math.floor(millis / millisInYear) + "y";
     } else if (millis > millisInMonth) {
-        return Math.floor(millis / millisInMonth) + 'mth';
+        return Math.floor(millis / millisInMonth) + "mth";
     } else if (millis > millisInDay) {
-        return Math.floor(millis / millisInDay) + 'd';
+        return Math.floor(millis / millisInDay) + "d";
     } else if (millis > millisInHour) {
-        return Math.floor(millis / millisInHour) + 'h';
+        return Math.floor(millis / millisInHour) + "h";
     } else if (millis > millisIn10Minutes) {
-        return (Math.floor(millis / millisIn10Minutes) * 10) + 'm';
+        return Math.floor(millis / millisIn10Minutes) * 10 + "m";
     } else if (millis > millisInMinute) {
-        return Math.floor(millis / millisInMinute) + 'm';
+        return Math.floor(millis / millisInMinute) + "m";
     } else if (millis > millisIn10Seconds) {
-        return (Math.floor(millisIn10Seconds) * 10) + 's';
+        return Math.floor(millisIn10Seconds) * 10 + "s";
     } else {
-        return Math.floor(millis / millisInSecond) + 's';
+        return Math.floor(millis / millisInSecond) + "s";
     }
 }

@@ -9,8 +9,10 @@ export const palette = {
     darkForestGreen: "#256b0a",
 
     // Ocean suite
+    oceanFroth: "#ebfaf8",
     oceanSurf: "#bbede6",
     mediumOceanSurf: "#31b09e",
+    beneathTheWaves: "#283f52",
 
     // Grays
     softGray: "#e6e6e6",

@@ -1,13 +1,13 @@
 import * as React from "react";
+import { View, Text, TouchableOpacity } from "react-native";
 import { styles } from "./PostStyles";
-import { FontAwesome5, Ionicons } from "@expo/vector-icons";
+import Tier from "../tier/Tier";
+import CoinBox from "../coin_box/CoinBox";
 import { Entypo } from "@expo/vector-icons";
-import { Text, TouchableOpacity, View } from "react-native";
-import { basicLayouts } from "../../global_styles/BasicLayouts";
-import { palette } from "../../global_styles/Palette";
+import ConvoCover from "../convo_cover/ConvoCover";
 import { PostType } from "../../global_types/PostTypes";
-
-const digicoinSize = 12;
+import { millisToRep } from "../../global_utils/TimeRepUtils";
+import { palette } from "../../global_styles/Palette";
 
 interface Props {
     post: PostType;
@@ -16,66 +16,81 @@ interface Props {
 const Post: React.FC<Props> = ({ post }) => {
     return (
         <View style={styles.postContainer}>
-            <View style={styles.postHeader}>
-                <View style={[basicLayouts.flexGrid2, basicLayouts.flexRow]}>
-                    <View style={styles.tierContainer}>
-                        <Text>
-                            😊
-                        </Text>
+            <View style={styles.postContentContainer}>
+                <View style={styles.postSideBuffer}>
+                    <View style={styles.sideBufferTop}>
+                        <Tier size={30} ranking={post.ranking} />
+                        <View style={styles.sideBufferDivider} />
                     </View>
-                    <View>
-                        <Text style={styles.postUserText}>
-                            {post.user}
-                            <Text style={styles.postTimeText}>{" · 1h"}</Text>
-                        </Text>
-                    </View>
-                </View>
-                <View style={[basicLayouts.grid8, basicLayouts.flexRow]}>
-                    <Ionicons
-                        name={"ios-chatbubbles"}
-                        size={24}
-                        color="black"
-                    />
-                    <Text>{post.convoCount}</Text>
-                </View>
-            </View>
-            <View style={styles.postBodyContainer}>
-                <Text style={styles.postBodyText}>{post.content}</Text>
-            </View>
-            <View>
-                <View style={[basicLayouts.flexRow, basicLayouts.grid3]}>
-                    <FontAwesome5 name="money-bill-wave" size={digicoinSize} />
-                    <Text style={styles.postCoinText}>{post.coin}</Text>
-                </View>
-                <View style={basicLayouts.grid9}>
-                    <TouchableOpacity style={styles.postResponseButton}>
-                        <Entypo
-                            name="pencil"
-                            size={digicoinSize}
-                            color="black"
+                    <View style={styles.sideBufferBottom}>
+                        <CoinBox
+                            amount={post.coin}
+                            coinSize={22}
+                            fontSize={14}
                         />
-                        <View style={styles.postRewardContainer}>
-                            <FontAwesome5
-                                name="money-bill-wave"
-                                size={digicoinSize}
-                                color={palette.darkForestGreen}
-                            />
-                            <Text style={styles.postRewardText}>
-                                {post.convoReward}
-                            </Text>
-                        </View>
-                        <View style={styles.postCostContainer}>
-                            <FontAwesome5
-                                name="money-bill-wave"
-                                size={digicoinSize}
-                                color={palette.white}
-                            />
-                            <Text style={styles.postCostText}>
-                                {post.responseCost}
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
+                    </View>
                 </View>
+                <View style={styles.postMain}>
+                    <View style={styles.postHeader}>
+                        <Text style={styles.postUserText}>{post.user}</Text>
+                        <Text style={styles.postDotText}>·</Text>
+                        <Text style={styles.postTimeText}>
+                            {millisToRep(Date.now() - post.time)}
+                        </Text>
+                    </View>
+                    <View style={styles.postMainBody}>
+                        <Text style={styles.postMainText}>{post.content}</Text>
+                    </View>
+                    <View style={styles.postMainFooter}>
+                        <View style={styles.mainFooterLeft}>
+                            <TouchableOpacity>
+                                <CoinBox
+                                    amount={0}
+                                    showAmount={false}
+                                    coinSize={25}
+                                    active={post.coinDonated}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.mainFooterRight}>
+                            <TouchableOpacity
+                                style={styles.responseButton}
+                                activeOpacity={0.5}
+                            >
+                                <View style={styles.costContainer}>
+                                    <Entypo
+                                        name="pencil"
+                                        size={24}
+                                        style={styles.pencil}
+                                        color={palette.beneathTheWaves}
+                                    />
+                                    <CoinBox
+                                        amount={post.convoReward}
+                                        coinSize={17}
+                                        showCoinPlus
+                                        boxColor={palette.lightForestGreen}
+                                    />
+                                </View>
+                                <CoinBox
+                                    amount={post.responseCost}
+                                    coinSize={17}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </View>
+            <View style={styles.postConvosContainer}>
+                {post.convos.map((convo, index) => {
+                    const showBottom = index != post.convos.length - 1;
+                    return (
+                        <ConvoCover
+                            key={post.id + post.time + index}
+                            convoCover={convo}
+                            showBottomBorder={showBottom}
+                        />
+                    );
+                })}
             </View>
         </View>
     );
