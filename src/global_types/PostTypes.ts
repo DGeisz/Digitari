@@ -28,6 +28,7 @@ export const postExampleNoLink: PostType = {
     time: 1612394591366,
     user: "Danny",
     coinDonated: false,
+    // convos: []
     convos: [convoCoverExample, convoCoverExample],
 };
 

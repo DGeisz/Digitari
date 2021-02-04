@@ -11,9 +11,14 @@ import { palette } from "../../global_styles/Palette";
 
 interface Props {
     post: PostType;
+    showConvos?: boolean;
 }
 
-const Post: React.FC<Props> = ({ post }) => {
+const defaultProps = {
+    showConvos: true,
+};
+
+const Post: React.FC<Props> = ({ post, showConvos }) => {
     return (
         <View style={styles.postContainer}>
             <View style={styles.postContentContainer}>
@@ -80,20 +85,24 @@ const Post: React.FC<Props> = ({ post }) => {
                     </View>
                 </View>
             </View>
-            <View style={styles.postConvosContainer}>
-                {post.convos.map((convo, index) => {
-                    const showBottom = index != post.convos.length - 1;
-                    return (
-                        <ConvoCover
-                            key={post.id + post.time + index}
-                            convoCover={convo}
-                            showBottomBorder={showBottom}
-                        />
-                    );
-                })}
-            </View>
+            {showConvos && !!post.convos.length && (
+                <View style={styles.postConvosContainer}>
+                    {post.convos.map((convo, index) => {
+                        const showBottom = index != post.convos.length - 1;
+                        return (
+                            <ConvoCover
+                                key={post.id + post.time + index}
+                                convoCover={convo}
+                                showBottomBorder={showBottom}
+                            />
+                        );
+                    })}
+                </View>
+            )}
         </View>
     );
 };
+
+Post.defaultProps = defaultProps;
 
 export default Post;
