@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     },
     postHeader: {
         padding: 10,
-        ...basicLayouts.flexRow
+        ...basicLayouts.flexRow,
     },
     tierContainer: {
         backgroundColor: palette.oceanSurf,
@@ -26,15 +26,15 @@ export const styles = StyleSheet.create({
         padding: 20,
     },
     postBodyText: {
-            fontWeight: '600',
-            fontSize: 21,
-            color: palette.hardGray,
-            marginTop: 8,
-        marginBottom: 10
+        fontWeight: "600",
+        fontSize: 21,
+        color: palette.hardGray,
+        marginTop: 8,
+        marginBottom: 10,
     },
     postCoinText: {
         fontWeight: "500",
-        color: palette.mediumOceanSurf
+        color: palette.mediumOceanSurf,
     },
     postResponseButton: {
         backgroundColor: palette.softGray,
@@ -47,11 +47,11 @@ export const styles = StyleSheet.create({
         borderRadius: 5,
         padding: 10,
         ...basicLayouts.flexRow,
-        ...basicLayouts.grid2
+        ...basicLayouts.grid2,
     },
     postRewardText: {
         fontWeight: "500",
-        color: palette.darkForestGreen
+        color: palette.darkForestGreen,
     },
     postCostContainer: {
         backgroundColor: palette.lightGray,
@@ -59,6 +59,6 @@ export const styles = StyleSheet.create({
     },
     postCostText: {
         fontWeight: "500",
-        color: palette.white
+        color: palette.white,
     },
 });

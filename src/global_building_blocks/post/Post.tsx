@@ -3,9 +3,9 @@ import { styles } from "./PostStyles";
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { Text, TouchableOpacity, View } from "react-native";
-import { PostType } from "./PostTypes";
 import { basicLayouts } from "../../global_styles/BasicLayouts";
 import { palette } from "../../global_styles/Palette";
+import { PostType } from "../../global_types/PostTypes";
 
 const digicoinSize = 12;
 
@@ -19,7 +19,9 @@ const Post: React.FC<Props> = ({ post }) => {
             <View style={styles.postHeader}>
                 <View style={[basicLayouts.flexGrid2, basicLayouts.flexRow]}>
                     <View style={styles.tierContainer}>
-                        <Text>😊</Text>
+                        <Text>
+                            😊
+                        </Text>
                     </View>
                     <View>
                         <Text style={styles.postUserText}>
@@ -29,14 +31,12 @@ const Post: React.FC<Props> = ({ post }) => {
                     </View>
                 </View>
                 <View style={[basicLayouts.grid8, basicLayouts.flexRow]}>
-                        <Ionicons
-                            name={"ios-chatbubbles"}
-                            size={24}
-                            color="black"
-                        />
-                    <Text>
-                        {post.convoCount}
-                    </Text>
+                    <Ionicons
+                        name={"ios-chatbubbles"}
+                        size={24}
+                        color="black"
+                    />
+                    <Text>{post.convoCount}</Text>
                 </View>
             </View>
             <View style={styles.postBodyContainer}>
@@ -49,15 +49,27 @@ const Post: React.FC<Props> = ({ post }) => {
                 </View>
                 <View style={basicLayouts.grid9}>
                     <TouchableOpacity style={styles.postResponseButton}>
-                        <Entypo name="pencil" size={digicoinSize} color="black" />
+                        <Entypo
+                            name="pencil"
+                            size={digicoinSize}
+                            color="black"
+                        />
                         <View style={styles.postRewardContainer}>
-                            <FontAwesome5 name="money-bill-wave" size={digicoinSize} color={palette.darkForestGreen}/>
+                            <FontAwesome5
+                                name="money-bill-wave"
+                                size={digicoinSize}
+                                color={palette.darkForestGreen}
+                            />
                             <Text style={styles.postRewardText}>
                                 {post.convoReward}
                             </Text>
                         </View>
                         <View style={styles.postCostContainer}>
-                            <FontAwesome5 name="money-bill-wave" size={digicoinSize} color={palette.white}/>
+                            <FontAwesome5
+                                name="money-bill-wave"
+                                size={digicoinSize}
+                                color={palette.white}
+                            />
                             <Text style={styles.postCostText}>
                                 {post.responseCost}
                             </Text>

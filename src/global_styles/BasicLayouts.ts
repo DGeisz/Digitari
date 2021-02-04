@@ -16,7 +16,7 @@ import { StyleSheet } from "react-native";
 
 export const basicLayouts = StyleSheet.create({
     flexRow: {
-        flexDirection: 'row'
+        flexDirection: "row",
     },
 
     flexGrid1: {
@@ -25,83 +25,83 @@ export const basicLayouts = StyleSheet.create({
 
     flexGrid2: {
         flex: 1,
-        alignItems: 'center'
+        alignItems: "center",
     },
 
     flexGrid3: {
         flex: 1,
-        alignItems: 'flex-end'
+        alignItems: "flex-end",
     },
 
     flexGrid4: {
         flex: 1,
-        justifyContent: 'center'
+        justifyContent: "center",
     },
 
     flexGrid5: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
+        justifyContent: "center",
+        alignItems: "center",
     },
 
     flexGrid6: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'flex-end'
+        justifyContent: "center",
+        alignItems: "flex-end",
     },
 
     flexGrid7: {
         flex: 1,
-        justifyContent: 'flex-end',
+        justifyContent: "flex-end",
     },
 
     flexGrid8: {
         flex: 1,
-        justifyContent: 'flex-end',
-        alignItems: 'center'
+        justifyContent: "flex-end",
+        alignItems: "center",
     },
 
     flexGrid9: {
         flex: 1,
-        justifyContent: 'flex-end',
-        alignItems: 'flex-end'
+        justifyContent: "flex-end",
+        alignItems: "flex-end",
     },
 
     grid2: {
-        alignItems: 'center'
+        alignItems: "center",
     },
 
     grid3: {
-        alignItems: 'flex-end'
+        alignItems: "flex-end",
     },
 
     grid4: {
-        alignItems: 'flex-start',
-        justifyContent: 'center'
+        alignItems: "flex-start",
+        justifyContent: "center",
     },
 
     grid5: {
-        justifyContent: 'center',
-        alignItems: 'center'
+        justifyContent: "center",
+        alignItems: "center",
     },
 
     grid6: {
-        justifyContent: 'center',
-        alignItems: 'flex-end'
+        justifyContent: "center",
+        alignItems: "flex-end",
     },
 
     grid7: {
-        justifyContent: 'flex-end',
-        alignItems: 'flex-start',
+        justifyContent: "flex-end",
+        alignItems: "flex-start",
     },
 
     grid8: {
-        justifyContent: 'flex-end',
-        alignItems: 'center'
+        justifyContent: "flex-end",
+        alignItems: "center",
     },
 
     grid9: {
-        justifyContent: 'flex-end',
-        alignItems: 'flex-end'
+        justifyContent: "flex-end",
+        alignItems: "flex-end",
     },
 });
