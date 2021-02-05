@@ -23,7 +23,7 @@ const MainEntry: React.FC = () => {
                         };
                     }}
                 />
-                <RootStack.Screen name="Convo" component={Convo} />
+                <RootStack.Screen name="Convos" component={Convo} />
                 <RootStack.Screen name="NewPost" component={NewPost} />
                 <RootStack.Screen name="NewResponse" component={NewResponse} />
                 <RootStack.Screen name="PostScreen" component={PostScreen} />
