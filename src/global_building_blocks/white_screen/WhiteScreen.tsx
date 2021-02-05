@@ -3,13 +3,11 @@ import { View } from "react-native";
 import { styles } from "./WhiteScreenStyles";
 
 interface Props {
-    height: number
+    height: number;
 }
 
-const WhiteScreen: React.FC<Props> = ({height}) => {
-    return (
-        <View style={[styles.whiteScreen, {height}]}/>
-    );
+const WhiteScreen: React.FC<Props> = ({ height }) => {
+    return <View style={[styles.whiteScreen, { height }]} />;
 };
 
 export default WhiteScreen;

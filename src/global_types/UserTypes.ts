@@ -13,15 +13,16 @@ export interface UserType {
 }
 
 export const exampleUser: UserType = {
-    id: 'asdf',
+    id: "asdf",
     user: "Dern the Cern",
     level: 12,
-    bio: "Hi my name is Danny. I bool, I vape, I joust, and I cape.  Here's to another day ba-rangling",
+    bio:
+        "Hi my name is Danny. I bool, I vape, I joust, and I cape.  Here's to another day ba-rangling",
     ranking: 124,
     blocked: 12,
     beenBlocked: 435,
     successfulConvos: 678,
     coin: 102333,
     followers: 141,
-    following: 234
-}
+    following: 234,
+};

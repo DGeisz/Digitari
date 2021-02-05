@@ -25,4 +25,7 @@ export const palette = {
     // Bootstrap
     warning: "#e35b00",
     warningLight: "#ffd7a8",
+
+    // Other
+    linkBlue: "#149cdb",
 };

@@ -3,6 +3,6 @@ import { palette } from "./Palette";
 
 export const globalScreenStyles = StyleSheet.create({
     whiteScreen: {
-        backgroundColor: palette.white
-    }
+        backgroundColor: palette.white,
+    },
 });

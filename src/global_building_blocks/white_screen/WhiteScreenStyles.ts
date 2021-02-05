@@ -1,7 +1,7 @@
 import { StyleSheet, Dimensions } from "react-native";
 import { palette } from "../../global_styles/Palette";
 
-const {height, width} = Dimensions.get("window");
+const { height, width } = Dimensions.get("window");
 
 export const styles = StyleSheet.create({
     whiteScreen: {
@@ -9,5 +9,5 @@ export const styles = StyleSheet.create({
         position: "absolute",
         height,
         width,
-    }
+    },
 });

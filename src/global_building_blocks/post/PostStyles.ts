@@ -7,6 +7,7 @@ export const styles = StyleSheet.create({
     postContainer: {
         paddingTop: 5,
         backgroundColor: palette.white,
+        marginBottom: 20
     },
     postContentContainer: {
         flexDirection: "row",
@@ -47,8 +48,8 @@ export const styles = StyleSheet.create({
         ...globalTextStyles.timeText,
     },
     postMainBody: {
-        paddingTop: 5,
-        paddingBottom: 15,
+        paddingTop: 10,
+        paddingBottom: 25,
     },
     postMainText: {
         color: palette.hardGray,

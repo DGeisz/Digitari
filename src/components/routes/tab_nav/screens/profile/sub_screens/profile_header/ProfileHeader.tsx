@@ -10,7 +10,7 @@ import { palette } from "../../../../../../../global_styles/Palette";
 import WhiteScreen from "../../../../../../../global_building_blocks/white_screen/WhiteScreen";
 
 interface Props {
-    user: UserType
+    user: UserType;
 }
 
 const ProfileHeader: React.FC<Props> = ({ user }) => {
@@ -30,17 +30,22 @@ const ProfileHeader: React.FC<Props> = ({ user }) => {
                         </View>
                     </View>
                     <TouchableOpacity style={styles.split1Right}>
-                        <Ionicons name="settings" size={24} color={palette.mediumGray} />
+                        <Ionicons
+                            name="settings"
+                            size={24}
+                            color={palette.mediumGray}
+                        />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.profileSplit3}>
-                    <Text style={styles.profileBioText}>
-                        {user.bio}
-                    </Text>
+                    <Text style={styles.profileBioText}>{user.bio}</Text>
                 </View>
                 <View style={styles.profileSplit4}>
                     <View style={styles.split4Left}>
-                        <TouchableOpacity style={styles.followsButton} activeOpacity={0.5}>
+                        <TouchableOpacity
+                            style={styles.followsButton}
+                            activeOpacity={0.5}
+                        >
                             <Text style={styles.followNumeralText}>
                                 {[toRep(user.followers)]}
                                 <Text style={styles.followsText}>
@@ -56,7 +61,11 @@ const ProfileHeader: React.FC<Props> = ({ user }) => {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.split4Right}>
-                        <CoinBox amount={user.coin} coinSize={25} fontSize={15}/>
+                        <CoinBox
+                            amount={user.coin}
+                            coinSize={25}
+                            fontSize={15}
+                        />
                     </View>
                 </View>
             </View>
