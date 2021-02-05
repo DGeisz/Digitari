@@ -2,17 +2,18 @@ import React from "react";
 import MainEntry from "./src/components/MainEntry";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { View } from "react-native";
-import Post from "./src/global_building_blocks/post/Post";
-import { postExampleNoLink } from "./src/global_building_blocks/post/PostTypes";
+import {MockedProvider} from "@apollo/client/testing";
+import { allMocks } from "./src/global_gql/Mocks";
 
 export default function App() {
-    // Used for creating new components
     return (
         <NavigationContainer>
-            <SafeAreaProvider>
-                <MainEntry />
-            </SafeAreaProvider>
+            <MockedProvider mocks={allMocks}
+                            addTypename={false}>
+                <SafeAreaProvider>
+                    <MainEntry />
+                </SafeAreaProvider>
+            </MockedProvider>
         </NavigationContainer>
     );
 }

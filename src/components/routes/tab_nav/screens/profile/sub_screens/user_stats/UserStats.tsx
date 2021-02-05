@@ -5,10 +5,10 @@ interface Props {
 
 }
 
-const UserRankings: React.FC<Props> = () => {
+const UserStats: React.FC<Props> = () => {
     return (
         <View/>
     );
 };
 
-export default UserRankings;
+export default UserStats;
