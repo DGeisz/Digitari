@@ -1,7 +1,7 @@
 const millisInSecond = 1000;
 const millisIn10Seconds = 10 * millisInSecond;
 const millisInMinute = millisInSecond * 60;
-const millisIn10Minutes = 10 * millisInMinute;
+export const millisIn10Minutes = 10 * millisInMinute;
 const millisInHour = millisInMinute * 60;
 const millisInDay = millisInHour * 24;
 const millisInMonth = millisInDay * 30;
@@ -25,4 +25,20 @@ export function millisToRep(millis: number): string {
     } else {
         return Math.floor(millis / millisInSecond) + "s";
     }
+}
+
+export function millisToCountdown(millis: number): string {
+    const hours = Math.floor(millis / millisInHour);
+    millis -= hours * millisInHour;
+    const min = Math.floor(millis / millisInMinute);
+    millis -= min * millisInMinute;
+    const sec = Math.floor(millis / millisInSecond);
+
+    if (!!hours) {
+        return `${hours}:${min}:${sec}`;
+    } else if (!!min) {
+        return `${min}:${sec}`;
+    }
+
+    return `${sec}`;
 }

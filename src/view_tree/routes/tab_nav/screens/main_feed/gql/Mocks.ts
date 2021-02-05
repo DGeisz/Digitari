@@ -1,4 +1,4 @@
-import { GET_FEED, GET_FEED_TYPE } from "./Queries";
+import { GET_FEED } from "./Queries";
 import {
     postExampleNoLink,
     postExampleNoLinkMock,

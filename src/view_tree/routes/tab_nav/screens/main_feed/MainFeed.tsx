@@ -46,36 +46,33 @@ const MainFeed: React.FC<Props> = () => {
 
     return (
         <View style={basicLayouts.flexGrid1}>
-            <View style={basicLayouts.flexGrid4}>
-                <FlatList
-                    data={data?.getFeed}
-                    renderItem={({ item }) => <Post post={item} />}
-                    keyExtractor={(item, index) =>
-                        [item.id, "feed", index].join(":")
-                    }
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={
-                                networkStatus === NetworkStatus.refetch ||
-                                stillSpin
-                            }
-                            onRefresh={() => {
-                                setStillSpin(true);
-                                refetch && refetch();
-                                setTimeout(() => {
-                                    setStillSpin(false);
-                                }, 1000);
-                            }}
-                            colors={[
-                                palette.deepBlue,
-                                palette.darkForestGreen,
-                                palette.oceanSurf,
-                            ]}
-                            tintColor={palette.deepBlue}
-                        />
-                    }
-                />
-            </View>
+            <FlatList
+                data={data?.getFeed}
+                renderItem={({ item }) => <Post post={item} />}
+                keyExtractor={(item, index) =>
+                    [item.id, "feed", index].join(":")
+                }
+                refreshControl={
+                    <RefreshControl
+                        refreshing={
+                            networkStatus === NetworkStatus.refetch || stillSpin
+                        }
+                        onRefresh={() => {
+                            setStillSpin(true);
+                            refetch && refetch();
+                            setTimeout(() => {
+                                setStillSpin(false);
+                            }, 1000);
+                        }}
+                        colors={[
+                            palette.deepBlue,
+                            palette.darkForestGreen,
+                            palette.oceanSurf,
+                        ]}
+                        tintColor={palette.deepBlue}
+                    />
+                }
+            />
         </View>
     );
 };

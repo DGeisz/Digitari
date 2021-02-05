@@ -44,6 +44,13 @@ export const schema = gql`
         convos: [ConvoCover]
     }
 
+    type Wallet {
+        id: ID
+        sum: Int
+        expirationTime: Int
+        entries: [WalletEntry]
+    }
+
     type WalletEntry {
         time: Int
         content: String
@@ -54,5 +61,6 @@ export const schema = gql`
 
     type Query {
         getFeed(uid: ID!, lastTime: Int): [Post]
+        getWallet(id: ID!): Wallet
     }
 `;

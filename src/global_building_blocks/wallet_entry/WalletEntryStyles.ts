@@ -10,6 +10,7 @@ export const styles = StyleSheet.create({
         borderBottomColor: palette.softGray,
         borderBottomWidth: 1,
         paddingVertical: 10,
+        marginBottom: 10,
     },
     walletEntryLeft: {
         paddingHorizontal: 10,
