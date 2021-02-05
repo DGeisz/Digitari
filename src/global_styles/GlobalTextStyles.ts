@@ -11,5 +11,5 @@ export const globalTextStyles = StyleSheet.create({
     },
     timeText: {
         color: palette.mediumOceanSurf,
-    }
+    },
 });

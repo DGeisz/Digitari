@@ -12,11 +12,17 @@ export const palette = {
     oceanFroth: "#ebfaf8",
     oceanSurf: "#bbede6",
     mediumOceanSurf: "#31b09e",
+    deepBlue: "#1a8fc9",
     beneathTheWaves: "#283f52",
 
     // Grays
     softGray: "#e6e6e6",
+    semiSoftGray: "#c2c2c2",
     lightGray: "#949494",
     mediumGray: "#6e6e6e",
     hardGray: "#404040",
+
+    // Bootstrap
+    warning: "#e35b00",
+    warningLight: "#ffd7a8",
 };

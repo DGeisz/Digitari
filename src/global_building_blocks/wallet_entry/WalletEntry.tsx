@@ -7,10 +7,10 @@ import CoinBox from "../coin_box/CoinBox";
 import { palette } from "../../global_styles/Palette";
 
 interface Props {
-    walletEntry: WalletEntryType
+    walletEntry: WalletEntryType;
 }
 
-const WalletEntry: React.FC<Props> = ({walletEntry}) => {
+const WalletEntry: React.FC<Props> = ({ walletEntry }) => {
     return (
         <View style={styles.walletEntryContainer}>
             <View style={styles.walletEntryLeft}>
@@ -24,7 +24,12 @@ const WalletEntry: React.FC<Props> = ({walletEntry}) => {
                 </Text>
             </View>
             <View style={styles.walletEntryRight}>
-                <CoinBox coinSize={20} amount={walletEntry.coin} showCoinPlus boxColor={palette.oceanSurf}/>
+                <CoinBox
+                    coinSize={20}
+                    amount={walletEntry.coin}
+                    showCoinPlus
+                    boxColor={palette.oceanSurf}
+                />
             </View>
         </View>
     );

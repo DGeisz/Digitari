@@ -13,24 +13,24 @@ export const styles = StyleSheet.create({
     },
     walletEntryLeft: {
         paddingHorizontal: 10,
-        ...basicLayouts.grid5
+        ...basicLayouts.grid5,
     },
     entryTimeText: {
-        ...globalTextStyles.timeText
+        ...globalTextStyles.timeText,
     },
     walletEntryMiddle: {
         ...basicLayouts.flexGrid1,
-        paddingRight: 10
+        paddingRight: 10,
     },
     walletEntryText: {
         color: palette.hardGray,
         fontSize: 16,
-        fontWeight: "500"
+        fontWeight: "500",
     },
     walletEntryRight: {
         ...basicLayouts.grid5,
         paddingHorizontal: 10,
         borderLeftColor: palette.oceanSurf,
-        borderLeftWidth: 1
-    }
+        borderLeftWidth: 1,
+    },
 });

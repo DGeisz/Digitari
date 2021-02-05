@@ -41,10 +41,10 @@ export const styles = StyleSheet.create({
         fontWeight: "700",
     },
     postDotText: {
-        ...globalTextStyles.dotText
+        ...globalTextStyles.dotText,
     },
     postTimeText: {
-        ...globalTextStyles.timeText
+        ...globalTextStyles.timeText,
     },
     postMainBody: {
         paddingTop: 5,

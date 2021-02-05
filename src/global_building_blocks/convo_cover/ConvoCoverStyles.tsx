@@ -34,10 +34,10 @@ export const styles = StyleSheet.create({
         marginLeft: 2,
     },
     mainHeaderDotText: {
-        ...globalTextStyles.dotText
+        ...globalTextStyles.dotText,
     },
     coverTimeText: {
-        ...globalTextStyles.timeText
+        ...globalTextStyles.timeText,
     },
     mainHeaderRight: {
         ...basicLayouts.grid6,
