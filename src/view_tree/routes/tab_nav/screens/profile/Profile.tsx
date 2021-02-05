@@ -39,13 +39,14 @@ const Profile: React.FC<Props> = () => {
                     />
                     <Tab.Screen
                         name="UserStats"
-                        component={UserStats}
                         options={{
                             tabBarLabel: ({ color }) => (
                                 <TabLabel title={"Stats"} color={color} />
                             ),
                         }}
-                    />
+                    >
+                        {() => <UserStats user={exampleUser} />}
+                    </Tab.Screen>
                 </Tab.Navigator>
             </ScrollView>
         </View>

@@ -2,7 +2,7 @@ import { GET_FEED, GET_FEED_TYPE } from "./Queries";
 import {
     postExampleNoLink,
     postExampleNoLinkMock,
-    postExampleWithLink
+    postExampleWithLink,
 } from "../../../../../../global_types/PostTypes";
 
 let posts = [];
@@ -11,20 +11,19 @@ for (let i = 0; i < 10; i++) {
     posts.push(postExampleWithLink);
 }
 
-const mock: any =
-    {
-        request: {
-            query: GET_FEED,
-            variables: {
-                id: "snoot",
-            },
+const mock: any = {
+    request: {
+        query: GET_FEED,
+        variables: {
+            id: "snoot",
         },
-        result: {
-            data: {
-                getFeed: posts,
-            },
+    },
+    result: {
+        data: {
+            getFeed: posts,
         },
-    };
+    },
+};
 
 let mocks = [];
 

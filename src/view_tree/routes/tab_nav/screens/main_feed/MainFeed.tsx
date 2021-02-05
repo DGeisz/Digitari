@@ -27,7 +27,7 @@ const MainFeed: React.FC<Props> = () => {
         QueryData,
         QueryVariables
     >(GET_FEED, {
-    variables: {id: "snoot"},
+        variables: { id: "snoot" },
         notifyOnNetworkStatusChange: true,
     });
 
@@ -50,19 +50,30 @@ const MainFeed: React.FC<Props> = () => {
                 <FlatList
                     data={data?.getFeed}
                     renderItem={({ item }) => <Post post={item} />}
-                    keyExtractor={(item, index) => [item.id, 'feed', index].join(':')}
-                    refreshControl={<RefreshControl
-                        refreshing={networkStatus === NetworkStatus.refetch || stillSpin}
-                        onRefresh={() => {
-                            setStillSpin(true);
-                            refetch && refetch();
-                            setTimeout(() => {
-                                setStillSpin(false);
-                            }, 1000);
-                        }}
-                        colors={[palette.deepBlue, palette.darkForestGreen, palette.oceanSurf]}
-                        tintColor={palette.deepBlue}
-                    />}
+                    keyExtractor={(item, index) =>
+                        [item.id, "feed", index].join(":")
+                    }
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={
+                                networkStatus === NetworkStatus.refetch ||
+                                stillSpin
+                            }
+                            onRefresh={() => {
+                                setStillSpin(true);
+                                refetch && refetch();
+                                setTimeout(() => {
+                                    setStillSpin(false);
+                                }, 1000);
+                            }}
+                            colors={[
+                                palette.deepBlue,
+                                palette.darkForestGreen,
+                                palette.oceanSurf,
+                            ]}
+                            tintColor={palette.deepBlue}
+                        />
+                    }
                 />
             </View>
         </View>

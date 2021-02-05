@@ -1,5 +1,5 @@
 import React from "react";
-import MainEntry from "./src/components/MainEntry";
+import MainEntry from "./src/view_tree/MainEntry";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { MockedProvider } from "@apollo/client/testing";

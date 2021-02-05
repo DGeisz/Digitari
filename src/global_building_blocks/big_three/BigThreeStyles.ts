@@ -1,0 +1,95 @@
+import { StyleSheet } from "react-native";
+import { palette } from "../../global_styles/Palette";
+
+const marginLeft: number = 3;
+
+export const styles = StyleSheet.create({
+    blocked: {
+        marginLeft: marginLeft,
+        paddingHorizontal: 8,
+        paddingVertical: 5,
+        borderRadius: 10,
+        backgroundColor: palette.warningLight,
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "row",
+    },
+    blockedVertical: {
+        marginLeft: marginLeft,
+        paddingHorizontal: 4,
+        paddingVertical: 5,
+        borderRadius: 10,
+        backgroundColor: palette.warningLight,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    blockedCount: {
+        fontWeight: "bold",
+        marginLeft: 2,
+        color: palette.warning,
+        fontSize: 15,
+    },
+    blockButton: {
+        padding: 10,
+        borderRadius: 10,
+        backgroundColor: palette.warningLight,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    blockButtonText: {
+        fontSize: 16,
+        color: palette.warning,
+        textAlign: "center",
+        fontWeight: "bold",
+    },
+    beenBlocked: {
+        marginLeft: marginLeft,
+        paddingHorizontal: 8,
+        paddingVertical: 5,
+        borderRadius: 10,
+        backgroundColor: palette.dangerLight,
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "row",
+    },
+    beenBlockedVertical: {
+        marginLeft: marginLeft,
+        paddingHorizontal: 4,
+        paddingVertical: 5,
+        borderRadius: 10,
+        backgroundColor: palette.dangerLight,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    beenBlockedCount: {
+        fontWeight: "bold",
+        marginLeft: 2,
+        color: palette.danger,
+        fontSize: 15,
+    },
+    successfulConversations: {
+        marginLeft: marginLeft,
+        paddingHorizontal: 8,
+        paddingVertical: 5,
+        borderRadius: 10,
+        backgroundColor: palette.primaryLight,
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "row",
+    },
+    successfulConversationsVertical: {
+        marginLeft: marginLeft,
+        paddingHorizontal: 4,
+        paddingVertical: 5,
+        borderRadius: 10,
+        backgroundColor: palette.primaryLight,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    successCount: {
+        fontWeight: "bold",
+        marginLeft: 3,
+        color: palette.primary,
+        fontSize: 15,
+    },
+});

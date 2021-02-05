@@ -1,4 +1,4 @@
-import { feedMocks } from "../components/routes/tab_nav/screens/main_feed/gql/Mocks";
+import { feedMocks } from "../view_tree/routes/tab_nav/screens/main_feed/gql/Mocks";
 
 export const allMocks: any[] = [...feedMocks];
 

@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     postContainer: {
         paddingTop: 5,
         backgroundColor: palette.white,
-        marginBottom: 20
+        marginBottom: 20,
     },
     postContentContainer: {
         flexDirection: "row",

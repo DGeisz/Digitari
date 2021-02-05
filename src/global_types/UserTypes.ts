@@ -8,6 +8,7 @@ export interface UserType {
     beenBlocked: number;
     successfulConvos: number;
     coin: number;
+    coinSpent: number;
     followers: number;
     following: number;
 }
@@ -23,6 +24,7 @@ export const exampleUser: UserType = {
     beenBlocked: 435,
     successfulConvos: 678,
     coin: 102333,
+    coinSpent: 99000,
     followers: 141,
     following: 234,
 };
