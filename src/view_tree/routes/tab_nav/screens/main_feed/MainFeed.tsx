@@ -18,7 +18,7 @@ interface QueryData {
 }
 
 interface QueryVariables {
-    id: string;
+    uid: string;
     lastTime?: number;
 }
 
@@ -27,7 +27,7 @@ const MainFeed: React.FC<Props> = () => {
         QueryData,
         QueryVariables
     >(GET_FEED, {
-        variables: { id: "snoot" },
+        variables: { uid: "snoot" },
         notifyOnNetworkStatusChange: true,
     });
 

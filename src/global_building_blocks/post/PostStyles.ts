@@ -5,7 +5,7 @@ import { globalTextStyles } from "../../global_styles/GlobalTextStyles";
 
 export const styles = StyleSheet.create({
     postContainer: {
-        paddingTop: 5,
+        paddingTop: 10,
         backgroundColor: palette.white,
         marginBottom: 20,
     },

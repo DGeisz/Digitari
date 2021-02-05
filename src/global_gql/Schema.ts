@@ -62,5 +62,6 @@ export const schema = gql`
     type Query {
         getFeed(uid: ID!, lastTime: Int): [Post]
         getWallet(id: ID!): Wallet
+        getUserPosts(uid: ID!, lastTime: Int): [Post]
     }
 `;

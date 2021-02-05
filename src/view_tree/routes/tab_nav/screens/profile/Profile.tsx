@@ -16,7 +16,8 @@ const Tab = createMaterialTopTabNavigator();
 const Profile: React.FC<Props> = () => {
     return (
         <View style={basicLayouts.flexGrid1}>
-            <ScrollView>
+            <ScrollView onScroll={({nativeEvent: {contentOffset: {x, y}}}) => {console.log("Offset:", x, y)}}
+            scrollEventThrottle={16}>
                 <ProfileHeader user={exampleUser} />
                 <Tab.Navigator tabBarOptions={{}}>
                     <Tab.Screen

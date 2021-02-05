@@ -1,9 +1,9 @@
-import { schema } from "../../../../../../global_gql/Schema";
+import {schema} from "../../../../../../../../global_gql/Schema";
 import { gql } from "@apollo/client";
 
-export const GET_FEED = gql`
-    query GetFeed($uid: ID!, $lastTime: Int) {
-        getFeed(uid: $uid, lastTime: $lastTime) {
+export const GET_USER_POSTS = gql`
+    query GetUserPosts($uid: ID!, $lastTime: Int) {
+        getUserPosts(uid: $uid, lastTime: $lastTime) {
             id
             user
             ranking

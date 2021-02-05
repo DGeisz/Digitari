@@ -1,7 +1,6 @@
-import { GET_FEED } from "./Queries";
-import {
-    postExampleWithLink,
-} from "../../../../../../global_types/PostTypes";
+import { GET_USER_POSTS } from "./Queries";
+import { postExampleWithLink } from "../../../../../../../../global_types/PostTypes";
+
 
 let posts = [];
 
@@ -11,14 +10,14 @@ for (let i = 0; i < 10; i++) {
 
 const mock: any = {
     request: {
-        query: GET_FEED,
+        query: GET_USER_POSTS,
         variables: {
             uid: "snoot",
         },
     },
     result: {
         data: {
-            getFeed: posts,
+            getUserPosts: posts,
         },
     },
 };
@@ -26,7 +25,7 @@ const mock: any = {
 let mocks = [];
 
 for (let i = 0; i < 10; i++) {
-    mocks.push(mock);
+    mocks.push(Object.assign({}, mock));
 }
 
-export const feedMocks: any[] = mocks;
+export const userPostMocks: any[] = mocks;
