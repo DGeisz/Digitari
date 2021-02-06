@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FlatList, RefreshControl, View } from "react-native";
+import { Animated, FlatList, RefreshControl, View } from "react-native";
 import { PostType } from "../../../../../../../global_types/PostTypes";
 import { ConvoCoverType } from "../../../../../../../global_types/ConvoCoverTypes";
 import { NetworkStatus, useQuery } from "@apollo/client";
@@ -11,8 +11,11 @@ import Post from "../../../../../../../global_building_blocks/post/Post";
 import { palette } from "../../../../../../../global_styles/Palette";
 import { GET_USER_CONVOS } from "./gql/Queries";
 import ConvoCover from "../../../../../../../global_building_blocks/convo_cover/ConvoCover";
+import { useCollapsibleScene } from "react-native-collapsible-tab-view";
 
-interface Props {}
+interface Props {
+    routeKey: string
+}
 
 interface QueryData {
     getUserConvos: ConvoCoverType[];
@@ -23,7 +26,7 @@ interface QueryVariables {
     lastTime?: number;
 }
 
-const UserConvos: React.FC<Props> = () => {
+const UserConvos: React.FC<Props> = ({routeKey}) => {
     const { data, error, networkStatus, refetch } = useQuery<
         QueryData,
         QueryVariables
@@ -34,6 +37,7 @@ const UserConvos: React.FC<Props> = () => {
 
     console.log(data?.getUserConvos.length, error, networkStatus, refetch);
 
+    const scrollPropsAndRef = useCollapsibleScene(routeKey);
     const [stillSpin, setStillSpin] = React.useState<boolean>(false);
 
     if (!data?.getUserConvos && networkStatus === NetworkStatus.loading) {
@@ -46,8 +50,9 @@ const UserConvos: React.FC<Props> = () => {
     }
 
     return (
-        <View style={basicLayouts.flexGrid1}>
-            <FlatList
+            <Animated.FlatList
+                bounces={false}
+                {...scrollPropsAndRef}
                 data={data?.getUserConvos}
                 renderItem={({ item }) => <ConvoCover convoCover={item} />}
                 keyExtractor={(item, index) =>
@@ -74,7 +79,6 @@ const UserConvos: React.FC<Props> = () => {
                     />
                 }
             />
-        </View>
     );
 };
 

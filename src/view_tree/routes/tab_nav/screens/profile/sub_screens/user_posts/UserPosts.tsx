@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FlatList, RefreshControl, View } from "react-native";
+import { FlatList, Animated, RefreshControl, View } from "react-native";
 import { NetworkStatus, useQuery } from "@apollo/client";
 import LoadingWheel from "../../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import ErrorMessage from "../../../../../../../global_building_blocks/error_message/ErrorMessage";
@@ -8,8 +8,11 @@ import Post from "../../../../../../../global_building_blocks/post/Post";
 import { palette } from "../../../../../../../global_styles/Palette";
 import { PostType } from "../../../../../../../global_types/PostTypes";
 import { GET_USER_POSTS } from "./gql/Queries";
+import { useCollapsibleScene } from "react-native-collapsible-tab-view";
 
-interface Props {}
+interface Props {
+    routeKey: string;
+}
 
 interface QueryData {
     getUserPosts: PostType[];
@@ -20,7 +23,7 @@ interface QueryVariables {
     lastTime?: number;
 }
 
-const UserPosts: React.FC<Props> = () => {
+const UserPosts: React.FC<Props> = ({routeKey}) => {
     const { data, error, networkStatus, refetch } = useQuery<
         QueryData,
         QueryVariables
@@ -31,6 +34,7 @@ const UserPosts: React.FC<Props> = () => {
 
     console.log(data?.getUserPosts.length, error, networkStatus, refetch);
 
+    const scrollPropsAndRef = useCollapsibleScene(routeKey);
     const [stillSpin, setStillSpin] = React.useState<boolean>(false);
 
     if (!data?.getUserPosts && networkStatus === NetworkStatus.loading) {
@@ -43,25 +47,9 @@ const UserPosts: React.FC<Props> = () => {
     }
 
     return (
-        <FlatList
-            ListHeaderComponent={
-                <View
-                    onLayout={({
-                        nativeEvent: {
-                            layout: { height },
-                        },
-                    }) => {
-                        console.log("height: ", height);
-                    }}
-                />
-            }
-            onScroll={({
-                nativeEvent: {
-                    contentOffset: { x, y },
-                },
-            }) => {
-                console.log("this is x, y", x, y);
-            }}
+        <Animated.FlatList
+            bounces={false}
+            {...scrollPropsAndRef}
             data={data?.getUserPosts}
             renderItem={({ item }) => <Post post={item} />}
             keyExtractor={(item, index) => [item.id, "userPosts", index].join(":")}
