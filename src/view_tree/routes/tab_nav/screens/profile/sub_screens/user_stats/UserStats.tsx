@@ -6,7 +6,7 @@ import { useCollapsibleScene } from "react-native-collapsible-tab-view";
 
 interface Props {
     user: UserType;
-    routeKey: string
+    routeKey: string;
 }
 
 const UserStats: React.FC<Props> = ({ user, routeKey }) => {
@@ -16,7 +16,7 @@ const UserStats: React.FC<Props> = ({ user, routeKey }) => {
             bounces={false}
             ListHeaderComponent={<StatsHeader user={user} />}
             data={[]}
-            renderItem={() => <View/>}
+            renderItem={() => <View />}
             {...scrollPropsAndRef}
         />
     );

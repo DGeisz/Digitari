@@ -14,7 +14,7 @@ import ConvoCover from "../../../../../../../global_building_blocks/convo_cover/
 import { useCollapsibleScene } from "react-native-collapsible-tab-view";
 
 interface Props {
-    routeKey: string
+    routeKey: string;
 }
 
 interface QueryData {
@@ -26,7 +26,7 @@ interface QueryVariables {
     lastTime?: number;
 }
 
-const UserConvos: React.FC<Props> = ({routeKey}) => {
+const UserConvos: React.FC<Props> = ({ routeKey }) => {
     const { data, error, networkStatus, refetch } = useQuery<
         QueryData,
         QueryVariables
@@ -50,35 +50,35 @@ const UserConvos: React.FC<Props> = ({routeKey}) => {
     }
 
     return (
-            <Animated.FlatList
-                bounces={false}
-                {...scrollPropsAndRef}
-                data={data?.getUserConvos}
-                renderItem={({ item }) => <ConvoCover convoCover={item} />}
-                keyExtractor={(item, index) =>
-                    [item.id, "userConv", index].join(":")
-                }
-                refreshControl={
-                    <RefreshControl
-                        refreshing={
-                            networkStatus === NetworkStatus.refetch || stillSpin
-                        }
-                        onRefresh={() => {
-                            setStillSpin(true);
-                            refetch && refetch();
-                            setTimeout(() => {
-                                setStillSpin(false);
-                            }, 1000);
-                        }}
-                        colors={[
-                            palette.deepBlue,
-                            palette.darkForestGreen,
-                            palette.oceanSurf,
-                        ]}
-                        tintColor={palette.deepBlue}
-                    />
-                }
-            />
+        <Animated.FlatList
+            bounces={false}
+            {...scrollPropsAndRef}
+            data={data?.getUserConvos}
+            renderItem={({ item }) => <ConvoCover convoCover={item} />}
+            keyExtractor={(item, index) =>
+                [item.id, "userConv", index].join(":")
+            }
+            refreshControl={
+                <RefreshControl
+                    refreshing={
+                        networkStatus === NetworkStatus.refetch || stillSpin
+                    }
+                    onRefresh={() => {
+                        setStillSpin(true);
+                        refetch && refetch();
+                        setTimeout(() => {
+                            setStillSpin(false);
+                        }, 1000);
+                    }}
+                    colors={[
+                        palette.deepBlue,
+                        palette.darkForestGreen,
+                        palette.oceanSurf,
+                    ]}
+                    tintColor={palette.deepBlue}
+                />
+            }
+        />
     );
 };
 

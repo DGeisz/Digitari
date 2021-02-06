@@ -23,7 +23,7 @@ interface QueryVariables {
     lastTime?: number;
 }
 
-const UserPosts: React.FC<Props> = ({routeKey}) => {
+const UserPosts: React.FC<Props> = ({ routeKey }) => {
     const { data, error, networkStatus, refetch } = useQuery<
         QueryData,
         QueryVariables
@@ -52,7 +52,9 @@ const UserPosts: React.FC<Props> = ({routeKey}) => {
             {...scrollPropsAndRef}
             data={data?.getUserPosts}
             renderItem={({ item }) => <Post post={item} />}
-            keyExtractor={(item, index) => [item.id, "userPosts", index].join(":")}
+            keyExtractor={(item, index) =>
+                [item.id, "userPosts", index].join(":")
+            }
             refreshControl={
                 <RefreshControl
                     refreshing={

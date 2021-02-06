@@ -25,7 +25,7 @@ const NewConvos: React.FC<Props> = () => {
     const { data, error, networkStatus, refetch } = useQuery<
         QueryData,
         QueryVariables
-        >(GET_NEW_CONVOS, {
+    >(GET_NEW_CONVOS, {
         variables: { uid: "snoot" },
         notifyOnNetworkStatusChange: true,
     });

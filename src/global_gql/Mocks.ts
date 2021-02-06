@@ -9,7 +9,7 @@ export const allMocks: any[] = [
     ...walletMocks,
     ...userPostMocks,
     ...userConvosMocks,
-    ...newConvosMocks
+    ...newConvosMocks,
 ];
 
 console.log(allMocks.length);

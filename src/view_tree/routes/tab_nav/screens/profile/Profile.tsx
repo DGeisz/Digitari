@@ -7,7 +7,10 @@ import TabLabel from "../../../../../global_building_blocks/tab_label/TabLabel";
 import UserConvos from "./sub_screens/user_convos/UserConvos";
 import { exampleUser } from "../../../../../global_types/UserTypes";
 import UserStats from "./sub_screens/user_stats/UserStats";
-import { createMaterialCollapsibleTopTabNavigator, useCollapsibleScene } from "react-native-collapsible-tab-view";
+import {
+    createMaterialCollapsibleTopTabNavigator,
+    useCollapsibleScene,
+} from "react-native-collapsible-tab-view";
 
 interface Props {}
 
@@ -17,10 +20,11 @@ export default class Profile extends React.PureComponent<Props> {
     render() {
         return (
             <View style={basicLayouts.flexGrid1}>
-
                 <Tab.Navigator
                     collapsibleOptions={{
-                        renderHeader: () => <ProfileHeader user={exampleUser}/>,
+                        renderHeader: () => (
+                            <ProfileHeader user={exampleUser} />
+                        ),
                         headerHeight: 250,
                     }}
                 >
@@ -29,52 +33,84 @@ export default class Profile extends React.PureComponent<Props> {
                         options={{
                             tabBarLabel: ({ color }) => (
                                 <TabLabel title={"Posts"} color={color} />
-                            )
+                            ),
                         }}
                     >
-                        {() => <UserPosts routeKey={"UserPosts"}/>}
+                        {() => <UserPosts routeKey={"UserPosts"} />}
                     </Tab.Screen>
                     <Tab.Screen
                         name="UserConvos"
                         options={{
                             tabBarLabel: ({ color }) => (
                                 <TabLabel title={"Convos"} color={color} />
-                            )
+                            ),
                         }}
                     >
-                        {() => <UserConvos routeKey={"UserConvos"}/>}
+                        {() => <UserConvos routeKey={"UserConvos"} />}
                     </Tab.Screen>
                     <Tab.Screen
                         name="UserStats"
                         options={{
                             tabBarLabel: ({ color }) => (
                                 <TabLabel title={"Stats"} color={color} />
-                            )
+                            ),
                         }}
                     >
-                        {() => <UserStats routeKey="UserStats" user={exampleUser} />}
+                        {() => (
+                            <UserStats
+                                routeKey="UserStats"
+                                user={exampleUser}
+                            />
+                        )}
                     </Tab.Screen>
                 </Tab.Navigator>
             </View>
         );
     }
-};
+}
 
-{/*<PanGestureHandler onGestureEvent={this.onGestureEvent} onHandlerStateChange={this.handleStateChange}>*/}
-{/*    <Animated.View style={[basicLayouts.flexGrid1, {*/}
-{/*        // top: this.translateY*/}
-{/*        transform: [*/}
-{/*            {*/}
-{/*                translateY: this.translateY*/}
-{/*            }*/}
-{/*        ]*/}
-{/*    }]} onLayout={({nativeEvent: {layout: {y}}}) => {*/}
-{/*        console.log("yoder", y);*/}
-{/*        this.translateY.setOffset(y);*/}
-{/*    }}>*/}
-{/*</Animated.View>*/}
-{/*</PanGestureHandler>*/}
-
+{
+    /*<PanGestureHandler onGestureEvent={this.onGestureEvent} onHandlerStateChange={this.handleStateChange}>*/
+}
+{
+    /*    <Animated.View style={[basicLayouts.flexGrid1, {*/
+}
+{
+    /*        // top: this.translateY*/
+}
+{
+    /*        transform: [*/
+}
+{
+    /*            {*/
+}
+{
+    /*                translateY: this.translateY*/
+}
+{
+    /*            }*/
+}
+{
+    /*        ]*/
+}
+{
+    /*    }]} onLayout={({nativeEvent: {layout: {y}}}) => {*/
+}
+{
+    /*        console.log("yoder", y);*/
+}
+{
+    /*        this.translateY.setOffset(y);*/
+}
+{
+    /*    }}>*/
+}
+{
+    /*</Animated.View>*/
+}
+{
+    /*</PanGestureHandler>*/
+}
 
 // state = {
 //     ty: 0
