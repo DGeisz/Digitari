@@ -24,7 +24,7 @@ const UserPosts: React.FC<Props> = () => {
     const { data, error, networkStatus, refetch } = useQuery<
         QueryData,
         QueryVariables
-        >(GET_USER_POSTS, {
+    >(GET_USER_POSTS, {
         variables: { uid: "snoot" },
         notifyOnNetworkStatusChange: true,
     });
@@ -43,37 +43,49 @@ const UserPosts: React.FC<Props> = () => {
     }
 
     return (
-            <FlatList
-                ListHeaderComponent={<View onLayout={({nativeEvent: {layout: {height}}}) => {console.log("height: ", height)}}/>}
-                onScroll={({nativeEvent: {contentOffset: {x, y}}}) => {
-                    console.log("this is x, y", x, y);
-                }}
-                data={data?.getUserPosts}
-                renderItem={({ item }) => <Post post={item} />}
-                keyExtractor={(item, index) =>
-                    [item.id, "feed", index].join(":")
-                }
-                refreshControl={
-                    <RefreshControl
-                        refreshing={
-                            networkStatus === NetworkStatus.refetch || stillSpin
-                        }
-                        onRefresh={() => {
-                            setStillSpin(true);
-                            refetch && refetch();
-                            setTimeout(() => {
-                                setStillSpin(false);
-                            }, 1000);
-                        }}
-                        colors={[
-                            palette.deepBlue,
-                            palette.darkForestGreen,
-                            palette.oceanSurf,
-                        ]}
-                        tintColor={palette.deepBlue}
-                    />
-                }
-            />
+        <FlatList
+            ListHeaderComponent={
+                <View
+                    onLayout={({
+                        nativeEvent: {
+                            layout: { height },
+                        },
+                    }) => {
+                        console.log("height: ", height);
+                    }}
+                />
+            }
+            onScroll={({
+                nativeEvent: {
+                    contentOffset: { x, y },
+                },
+            }) => {
+                console.log("this is x, y", x, y);
+            }}
+            data={data?.getUserPosts}
+            renderItem={({ item }) => <Post post={item} />}
+            keyExtractor={(item, index) => [item.id, "userPosts", index].join(":")}
+            refreshControl={
+                <RefreshControl
+                    refreshing={
+                        networkStatus === NetworkStatus.refetch || stillSpin
+                    }
+                    onRefresh={() => {
+                        setStillSpin(true);
+                        refetch && refetch();
+                        setTimeout(() => {
+                            setStillSpin(false);
+                        }, 1000);
+                    }}
+                    colors={[
+                        palette.deepBlue,
+                        palette.darkForestGreen,
+                        palette.oceanSurf,
+                    ]}
+                    tintColor={palette.deepBlue}
+                />
+            }
+        />
     );
 };
 

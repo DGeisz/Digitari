@@ -1,7 +1,5 @@
 import { GET_FEED } from "./Queries";
-import {
-    postExampleWithLink,
-} from "../../../../../../global_types/PostTypes";
+import { postExampleWithLink } from "../../../../../../global_types/PostTypes";
 
 let posts = [];
 

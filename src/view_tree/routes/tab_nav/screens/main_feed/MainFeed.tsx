@@ -1,8 +1,6 @@
 import * as React from "react";
 import { FlatList, RefreshControl, View } from "react-native";
 import { basicLayouts } from "../../../../../global_styles/BasicLayouts";
-import ConvoMsg from "../../../../../global_building_blocks/convo_msg/ConvoMsg";
-import { convoMsgExample } from "../../../../../global_types/ConvoMsgTypes";
 import { PostType } from "../../../../../global_types/PostTypes";
 import { NetworkStatus, useQuery } from "@apollo/client";
 import { GET_FEED } from "./gql/Queries";

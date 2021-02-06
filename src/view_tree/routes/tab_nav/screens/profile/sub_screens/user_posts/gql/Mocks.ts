@@ -1,7 +1,6 @@
 import { GET_USER_POSTS } from "./Queries";
 import { postExampleWithLink } from "../../../../../../../../global_types/PostTypes";
 
-
 let posts = [];
 
 for (let i = 0; i < 10; i++) {

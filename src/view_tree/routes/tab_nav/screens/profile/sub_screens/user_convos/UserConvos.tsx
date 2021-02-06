@@ -1,10 +1,81 @@
 import * as React from "react";
-import { View } from "react-native";
+import { FlatList, RefreshControl, View } from "react-native";
+import { PostType } from "../../../../../../../global_types/PostTypes";
+import { ConvoCoverType } from "../../../../../../../global_types/ConvoCoverTypes";
+import { NetworkStatus, useQuery } from "@apollo/client";
+import { GET_FEED } from "../../../main_feed/gql/Queries";
+import LoadingWheel from "../../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
+import ErrorMessage from "../../../../../../../global_building_blocks/error_message/ErrorMessage";
+import { basicLayouts } from "../../../../../../../global_styles/BasicLayouts";
+import Post from "../../../../../../../global_building_blocks/post/Post";
+import { palette } from "../../../../../../../global_styles/Palette";
+import { GET_USER_CONVOS } from "./gql/Queries";
+import ConvoCover from "../../../../../../../global_building_blocks/convo_cover/ConvoCover";
 
 interface Props {}
 
+interface QueryData {
+    getUserConvos: ConvoCoverType[];
+}
+
+interface QueryVariables {
+    uid: string;
+    lastTime?: number;
+}
+
 const UserConvos: React.FC<Props> = () => {
-    return <View />;
+    const { data, error, networkStatus, refetch } = useQuery<
+        QueryData,
+        QueryVariables
+    >(GET_USER_CONVOS, {
+        variables: { uid: "snoot" },
+        notifyOnNetworkStatusChange: true,
+    });
+
+    console.log(data?.getUserConvos.length, error, networkStatus, refetch);
+
+    const [stillSpin, setStillSpin] = React.useState<boolean>(false);
+
+    if (!data?.getUserConvos && networkStatus === NetworkStatus.loading) {
+        return <LoadingWheel />;
+    }
+
+    if (error) {
+        console.log(error);
+        return <ErrorMessage refresh={refetch} />;
+    }
+
+    return (
+        <View style={basicLayouts.flexGrid1}>
+            <FlatList
+                data={data?.getUserConvos}
+                renderItem={({ item }) => <ConvoCover convoCover={item} />}
+                keyExtractor={(item, index) =>
+                    [item.id, "userConv", index].join(":")
+                }
+                refreshControl={
+                    <RefreshControl
+                        refreshing={
+                            networkStatus === NetworkStatus.refetch || stillSpin
+                        }
+                        onRefresh={() => {
+                            setStillSpin(true);
+                            refetch && refetch();
+                            setTimeout(() => {
+                                setStillSpin(false);
+                            }, 1000);
+                        }}
+                        colors={[
+                            palette.deepBlue,
+                            palette.darkForestGreen,
+                            palette.oceanSurf,
+                        ]}
+                        tintColor={palette.deepBlue}
+                    />
+                }
+            />
+        </View>
+    );
 };
 
 export default UserConvos;

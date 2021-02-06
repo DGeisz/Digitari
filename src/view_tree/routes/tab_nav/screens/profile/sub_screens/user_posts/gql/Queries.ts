@@ -1,4 +1,4 @@
-import {schema} from "../../../../../../../../global_gql/Schema";
+import { schema } from "../../../../../../../../global_gql/Schema";
 import { gql } from "@apollo/client";
 
 export const GET_USER_POSTS = gql`

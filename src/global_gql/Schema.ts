@@ -63,5 +63,7 @@ export const schema = gql`
         getFeed(uid: ID!, lastTime: Int): [Post]
         getWallet(id: ID!): Wallet
         getUserPosts(uid: ID!, lastTime: Int): [Post]
+        getUserConvos(uid: ID!, lastTime: Int): [ConvoCover]
+        getNewConvos(uid: ID!, lastTime: Int): [ConvoCover]
     }
 `;

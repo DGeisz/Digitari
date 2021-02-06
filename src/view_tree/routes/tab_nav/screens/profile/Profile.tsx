@@ -1,5 +1,6 @@
 import * as React from "react";
-import { ScrollView, View, Dimensions } from "react-native";
+import { ScrollView, View, Dimensions, Animated } from "react-native";
+import { PanGestureHandler } from "react-native-gesture-handler";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { basicLayouts } from "../../../../../global_styles/BasicLayouts";
 import ProfileHeader from "./sub_screens/profile_header/ProfileHeader";
@@ -13,45 +14,67 @@ interface Props {}
 
 const Tab = createMaterialTopTabNavigator();
 
-const Profile: React.FC<Props> = () => {
-    return (
-        <View style={basicLayouts.flexGrid1}>
-            <ScrollView onScroll={({nativeEvent: {contentOffset: {x, y}}}) => {console.log("Offset:", x, y)}}
-            scrollEventThrottle={16}>
-                <ProfileHeader user={exampleUser} />
-                <Tab.Navigator tabBarOptions={{}}>
-                    <Tab.Screen
-                        name="UserPosts"
-                        component={UserPosts}
-                        options={{
-                            tabBarLabel: ({ color }) => (
-                                <TabLabel title={"Posts"} color={color} />
-                            ),
-                        }}
-                    />
-                    <Tab.Screen
-                        name="UserConvos"
-                        component={UserConvos}
-                        options={{
-                            tabBarLabel: ({ color }) => (
-                                <TabLabel title={"Convos"} color={color} />
-                            ),
-                        }}
-                    />
-                    <Tab.Screen
-                        name="UserStats"
-                        options={{
-                            tabBarLabel: ({ color }) => (
-                                <TabLabel title={"Stats"} color={color} />
-                            ),
-                        }}
-                    >
-                        {() => <UserStats user={exampleUser} />}
-                    </Tab.Screen>
-                </Tab.Navigator>
-            </ScrollView>
-        </View>
-    );
+export default class Profile extends React.PureComponent<Props> {
+
+    translateY = new Animated.Value(0);
+    onGestureEvent = Animated.event([
+        {
+            nativeEvent: {
+                absoluteY: this.translateY
+            }
+        }
+    ], {useNativeDriver: true});
+
+    render() {
+        return (
+            <View style={basicLayouts.flexGrid1}>
+                <PanGestureHandler onGestureEvent={this.onGestureEvent}>
+                    <Animated.View style={[basicLayouts.flexGrid1, {
+                        // top: this.translateY
+                        transform: [
+                            {
+                                translateY: this.translateY
+                            }
+                        ]
+                    }]} onLayout={({nativeEvent: {layout: {y}}}) => {
+                        console.log("yoder", y);
+                        this.translateY.setOffset(y);
+                    }}>
+                        <ProfileHeader user={exampleUser} />
+                        <Tab.Navigator tabBarOptions={{}}>
+                            <Tab.Screen
+                                name="UserPosts"
+                                component={UserPosts}
+                                options={{
+                                    tabBarLabel: ({ color }) => (
+                                        <TabLabel title={"Posts"} color={color} />
+                                    )
+                                }}
+                            />
+                            <Tab.Screen
+                                name="UserConvos"
+                                component={UserConvos}
+                                options={{
+                                    tabBarLabel: ({ color }) => (
+                                        <TabLabel title={"Convos"} color={color} />
+                                    )
+                                }}
+                            />
+                            <Tab.Screen
+                                name="UserStats"
+                                options={{
+                                    tabBarLabel: ({ color }) => (
+                                        <TabLabel title={"Stats"} color={color} />
+                                    )
+                                }}
+                            >
+                                {() => <UserStats user={exampleUser} />}
+                            </Tab.Screen>
+                        </Tab.Navigator>
+                    </Animated.View>
+                </PanGestureHandler>
+            </View>
+        );
+    }
 };
 
-export default Profile;
