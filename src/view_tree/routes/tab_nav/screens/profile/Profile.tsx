@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View } from "react-native";
+import { View, Dimensions } from "react-native";
 import { basicLayouts } from "../../../../../global_styles/BasicLayouts";
 import ProfileHeader from "./sub_screens/profile_header/ProfileHeader";
 import UserPosts from "./sub_screens/user_posts/UserPosts";
@@ -8,6 +8,8 @@ import UserConvos from "./sub_screens/user_convos/UserConvos";
 import { exampleUser } from "../../../../../global_types/UserTypes";
 import UserStats from "./sub_screens/user_stats/UserStats";
 import { createMaterialCollapsibleTopTabNavigator } from "react-native-collapsible-tab-view";
+
+const {width} = Dimensions.get("window");
 
 interface Props {}
 
@@ -23,6 +25,14 @@ export default class Profile extends React.PureComponent<Props> {
                             <ProfileHeader user={exampleUser} />
                         ),
                         headerHeight: 250,
+                    }}
+                    tabBarOptions={{
+                        scrollEnabled: true,
+                        tabStyle: {
+                            flex: 0,
+                            width: 100,
+                            padding: 0
+                        }
                     }}
                 >
                     <Tab.Screen
@@ -44,6 +54,18 @@ export default class Profile extends React.PureComponent<Props> {
                         }}
                     >
                         {() => <UserConvos routeKey={"UserConvos"} />}
+                    </Tab.Screen>
+                    <Tab.Screen
+                        name="UserChallenges"
+                        options={{
+                            tabBarLabel: ({ color }) => (
+                                <TabLabel title={"Challenges"} color={color} />
+                            ),
+                        }}
+                    >
+                        {() => (
+                            <View/>
+                        )}
                     </Tab.Screen>
                     <Tab.Screen
                         name="UserStats"
