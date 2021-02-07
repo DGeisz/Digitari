@@ -1,28 +1,81 @@
 import * as React from "react";
-import { View } from "react-native";
+import { FlatList, RefreshControl, View } from "react-native";
 import { basicLayouts } from "../../../../../../../global_styles/BasicLayouts";
 import ConvoMsg from "../../../../../../../global_building_blocks/convo_msg/ConvoMsg";
 import { convoMsgExample } from "../../../../../../../global_types/ConvoMsgTypes";
+import { localUid } from "../../../../../../../global_state/UserState";
+import { NetworkStatus, useQuery } from "@apollo/client";
+import LoadingWheel from "../../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
+import ErrorMessage from "../../../../../../../global_building_blocks/error_message/ErrorMessage";
+import { ConvoCoverType } from "../../../../../../../global_types/ConvoCoverTypes";
+import { GET_ACTIVE_CONVOS } from "./gql/Queries";
+import ConvoCover from "../../../../../../../global_building_blocks/convo_cover/ConvoCover";
+import { palette } from "../../../../../../../global_styles/Palette";
 
 interface Props {}
 
+interface QueryData {
+    getActiveConvos: ConvoCoverType[];
+}
+
+interface QueryVariables {
+    uid: string;
+    lastTime?: number;
+}
+
 const ActiveConvos: React.FC<Props> = () => {
+    const uid = localUid();
+
+    const { data, error, networkStatus, refetch } = useQuery<
+        QueryData,
+        QueryVariables
+    >(GET_ACTIVE_CONVOS, {
+        variables: { uid: uid },
+        notifyOnNetworkStatusChange: true,
+    });
+
+    console.log(data?.getActiveConvos.length, error, networkStatus, refetch);
+
+    const [stillSpin, setStillSpin] = React.useState<boolean>(false);
+
+    if (!data?.getActiveConvos && networkStatus === NetworkStatus.loading) {
+        return <LoadingWheel />;
+    }
+
+    if (error) {
+        console.log(error);
+        return <ErrorMessage refresh={refetch} />;
+    }
+
     return (
         <View style={basicLayouts.flexGrid1}>
-            <View style={basicLayouts.flexGrid4}>
-                <ConvoMsg
-                    msg={convoMsgExample}
-                    showBlockMsg={true}
-                    left={true}
-                    showUser={true}
-                />
-                <ConvoMsg
-                    msg={convoMsgExample}
-                    showBlockMsg={true}
-                    left={false}
-                    showUser={true}
-                />
-            </View>
+            <FlatList
+                data={data?.getActiveConvos}
+                renderItem={({ item }) => <ConvoCover convoCover={item} />}
+                keyExtractor={(item, index) =>
+                    [item.id, "aConv", index].join(":")
+                }
+                refreshControl={
+                    <RefreshControl
+                        refreshing={
+                            networkStatus === NetworkStatus.refetch || stillSpin
+                        }
+                        onRefresh={() => {
+                            setStillSpin(true);
+                            refetch && refetch();
+                            setTimeout(() => {
+                                setStillSpin(false);
+                            }, 1000);
+                        }}
+                        colors={[
+                            palette.deepBlue,
+                            palette.darkForestGreen,
+                            palette.oceanSurf,
+                        ]}
+                        tintColor={palette.deepBlue}
+                    />
+                }
+            />
         </View>
     );
 };

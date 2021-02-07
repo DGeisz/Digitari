@@ -9,6 +9,7 @@ import ConvoCover from "../../../../../../../global_building_blocks/convo_cover/
 import { palette } from "../../../../../../../global_styles/Palette";
 import { ConvoCoverType } from "../../../../../../../global_types/ConvoCoverTypes";
 import { GET_NEW_CONVOS } from "./gql/Queries";
+import { localUid } from "../../../../../../../global_state/UserState";
 
 interface Props {}
 
@@ -22,11 +23,13 @@ interface QueryVariables {
 }
 
 const NewConvos: React.FC<Props> = () => {
+    const uid = localUid();
+
     const { data, error, networkStatus, refetch } = useQuery<
         QueryData,
         QueryVariables
     >(GET_NEW_CONVOS, {
-        variables: { uid: "snoot" },
+        variables: { uid: uid },
         notifyOnNetworkStatusChange: true,
     });
 
@@ -47,9 +50,7 @@ const NewConvos: React.FC<Props> = () => {
         <View style={basicLayouts.flexGrid1}>
             <FlatList
                 data={data?.getNewConvos}
-                renderItem={({ item }) => (
-                    <ConvoCover convoCover={item} showUserMap />
-                )}
+                renderItem={({ item }) => <ConvoCover convoCover={item} />}
                 keyExtractor={(item, index) =>
                     [item.id, "newConv", index].join(":")
                 }

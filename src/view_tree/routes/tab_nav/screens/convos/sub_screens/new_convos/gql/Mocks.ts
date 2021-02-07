@@ -11,7 +11,7 @@ const mock: any = {
     request: {
         query: GET_NEW_CONVOS,
         variables: {
-            uid: "snoot",
+            uid: "danny",
         },
     },
     result: {

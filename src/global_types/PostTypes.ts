@@ -45,6 +45,6 @@ export const postExampleWithLink: PostType = {
     time: 1612394591366,
     user: "Danny",
     coinDonated: false,
-    // convo: []
+    // convos: [],
     convos: [exampleConvoCover, exampleConvoCover],
 };

@@ -3,6 +3,7 @@ import { walletMocks } from "../view_tree/routes/tab_nav/screens/wallet/gql/Mock
 import { userPostMocks } from "../view_tree/routes/tab_nav/screens/profile/sub_screens/user_posts/gql/Mocks";
 import { userConvosMocks } from "../view_tree/routes/tab_nav/screens/profile/sub_screens/user_convos/gql/Mocks";
 import { newConvosMocks } from "../view_tree/routes/tab_nav/screens/convos/sub_screens/new_convos/gql/Mocks";
+import { activeConvosMocks } from "../view_tree/routes/tab_nav/screens/convos/sub_screens/active_convos/gql/Mocks";
 
 export const allMocks: any[] = [
     ...feedMocks,
@@ -10,6 +11,5 @@ export const allMocks: any[] = [
     ...userPostMocks,
     ...userConvosMocks,
     ...newConvosMocks,
+    ...activeConvosMocks,
 ];
-
-console.log(allMocks.length);

@@ -116,6 +116,7 @@ export default class Post extends React.PureComponent<Props> {
                                             this.props.post.time +
                                             index
                                         }
+                                        showUnViewedDot={false}
                                         convoCover={convo}
                                         showBottomBorder={showBottom}
                                     />

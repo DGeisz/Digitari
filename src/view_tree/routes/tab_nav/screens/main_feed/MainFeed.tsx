@@ -8,6 +8,7 @@ import LoadingWheel from "../../../../../global_building_blocks/loading_wheel/Lo
 import ErrorMessage from "../../../../../global_building_blocks/error_message/ErrorMessage";
 import Post from "../../../../../global_building_blocks/post/Post";
 import { palette } from "../../../../../global_styles/Palette";
+import { localUid } from "../../../../../global_state/UserState";
 
 interface Props {}
 
@@ -21,11 +22,13 @@ interface QueryVariables {
 }
 
 const MainFeed: React.FC<Props> = () => {
+    const uid = localUid();
+
     const { data, error, networkStatus, refetch } = useQuery<
         QueryData,
         QueryVariables
     >(GET_FEED, {
-        variables: { uid: "snoot" },
+        variables: { uid: uid },
         notifyOnNetworkStatusChange: true,
     });
 

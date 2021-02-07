@@ -11,7 +11,7 @@ const mock: any = {
     request: {
         query: GET_USER_POSTS,
         variables: {
-            uid: "snoot",
+            uid: "danny",
         },
     },
     result: {

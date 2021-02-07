@@ -12,6 +12,7 @@ import { palette } from "../../../../../../../global_styles/Palette";
 import { GET_USER_CONVOS } from "./gql/Queries";
 import ConvoCover from "../../../../../../../global_building_blocks/convo_cover/ConvoCover";
 import { useCollapsibleScene } from "react-native-collapsible-tab-view";
+import { localUid } from "../../../../../../../global_state/UserState";
 
 interface Props {
     routeKey: string;
@@ -27,11 +28,13 @@ interface QueryVariables {
 }
 
 const UserConvos: React.FC<Props> = ({ routeKey }) => {
+    const uid = localUid();
+
     const { data, error, networkStatus, refetch } = useQuery<
         QueryData,
         QueryVariables
     >(GET_USER_CONVOS, {
-        variables: { uid: "snoot" },
+        variables: { uid: uid },
         notifyOnNetworkStatusChange: true,
     });
 

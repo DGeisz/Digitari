@@ -81,5 +81,6 @@ export const schema = gql`
         getUserPosts(uid: ID!, lastTime: Int): [Post]
         getUserConvos(uid: ID!, lastTime: Int): [ConvoCover]
         getNewConvos(uid: ID!, lastTime: Int): [ConvoCover]
+        getActiveConvos(uid: ID!, lastTime: Int): [ConvoCover]
     }
 `;

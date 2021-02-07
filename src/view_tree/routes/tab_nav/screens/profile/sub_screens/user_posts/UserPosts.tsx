@@ -9,6 +9,7 @@ import { palette } from "../../../../../../../global_styles/Palette";
 import { PostType } from "../../../../../../../global_types/PostTypes";
 import { GET_USER_POSTS } from "./gql/Queries";
 import { useCollapsibleScene } from "react-native-collapsible-tab-view";
+import { localUid } from "../../../../../../../global_state/UserState";
 
 interface Props {
     routeKey: string;
@@ -24,11 +25,13 @@ interface QueryVariables {
 }
 
 const UserPosts: React.FC<Props> = ({ routeKey }) => {
+    const uid = localUid();
+
     const { data, error, networkStatus, refetch } = useQuery<
         QueryData,
         QueryVariables
     >(GET_USER_POSTS, {
-        variables: { uid: "snoot" },
+        variables: { uid: uid },
         notifyOnNetworkStatusChange: true,
     });
 
