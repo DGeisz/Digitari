@@ -1,117 +1,45 @@
-export interface FullConvoCoverType
-    extends NewConvoType,
-        PublicConvoCoverType,
-        ActiveConvoCoverType {
-    // Convo ids
-    id: string;
-    pid: string;
-
-    // Static fields
-    time: number;
-    msg: string;
-
-    // Convo status
-    new: boolean;
-    active: boolean;
-
-    // Source user fields
-    sid: string;
-    sname: string;
-    sviewed: boolean;
-    sanony: boolean;
-
-    // Target user fields
-    tid: string;
-    tname: string;
-    tanony: boolean;
-    tviewed: boolean;
-}
-
-export interface NewConvoType {
-    // Convo ids
-    id: string;
-    pid: string;
-
-    // Static fields
-    time: number;
-    msg: string;
-
-    // Source user fields
-    sid: string;
-    sname: string;
-    sanony: boolean;
-
-    tviewed: boolean;
-}
-
-export interface ActiveConvoCoverType {
-    // Convo ids
-    id: string;
-    pid: string;
-
-    // Static fields
-    time: number;
-    msg: string;
-
-    // Source user fields
-    sid: string;
-    sname: string;
-    sviewed: boolean;
-    sanony: boolean;
-
-    // Target user fields
-    tid: string;
-    tname: string;
-    tanony: boolean;
-    tviewed: boolean;
-}
-
-export interface PublicConvoCoverType {
-    // Convo ids
-    id: string;
-    pid: string;
-
-    // Static fields
-    time: number;
-    msg: string;
-
-    // Source user fields
-    sid: string;
-    sname: string;
-    sanony: boolean;
-
-    // Target user fields
-    tid: string;
-    tname: string;
-    tanony: boolean;
-}
+import { millisInHour } from "../global_utils/TimeRepUtils";
 
 export interface ConvoCoverType {
-    user: string;
+    // Convo ids
     id: string;
+    pid: string;
+
+    // Static fields
     time: number;
     msg: string;
+
+    // Source user fields
+    sid: string;
+    sranking: number;
+    sname: string;
+    sviewed: boolean;
+    sanony: boolean;
+
+    // Target user fields
+    tid: string;
+    tranking: number;
+    tname: string;
+    tanony: boolean;
+    tviewed: boolean;
 }
 
-export const convoCoverExample: ConvoCoverType = {
-    user: "Danny Boi",
-    id: "22342234",
-    time: 1612463297363,
-    msg: "It's a truly wonderful life, ain't it?",
-};
+export const exampleConvoCover: ConvoCoverType = {
+    id: "blue",
+    pid: "greey",
 
-export interface ConvoCoverMock {
-    user: string;
-    id: string;
-    time: number;
-    msg: string;
-    __typename: string;
-}
+    time: Date.now() - millisInHour,
+    msg: "How about all of them lovely apples on them trees all around?",
 
-export const convoCoverMock: ConvoCoverMock = {
-    user: "Danny Boi",
-    id: "22342234",
-    time: 1612463297363,
-    msg: "It's a truly wonderful life, ain't it?",
-    __typename: "ConvoCover",
+    sid: "danny",
+    sranking: 1230,
+    sname: "Danny",
+    sviewed: false,
+    sanony: true,
+
+    tid: "jeff",
+    tranking: 234,
+    tname: "Jeff",
+    tviewed: true,
+    tanony: false,
 };

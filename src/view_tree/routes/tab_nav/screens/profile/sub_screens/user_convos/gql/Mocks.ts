@@ -1,10 +1,10 @@
 import { GET_USER_CONVOS } from "./Queries";
-import { convoCoverExample } from "../../../../../../../../global_types/ConvoCoverTypes";
+import { exampleConvoCover } from "../../../../../../../../global_types/ConvoCoverTypes";
 
 let convos = [];
 
 for (let i = 0; i < 10; i++) {
-    convos.push(Object.assign({}, convoCoverExample));
+    convos.push(Object.assign({}, exampleConvoCover));
 }
 
 const mock: any = {

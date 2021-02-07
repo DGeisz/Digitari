@@ -3,18 +3,30 @@ import { basicLayouts } from "../../global_styles/BasicLayouts";
 import { palette } from "../../global_styles/Palette";
 import { globalTextStyles } from "../../global_styles/GlobalTextStyles";
 
+const buttonSize = 10;
+
 export const styles = StyleSheet.create({
     coverContainer: {
-        flexDirection: "row",
         backgroundColor: palette.white,
+    },
+    coverBodyContainer: {
+        flexDirection: "row",
+    },
+    dotBuffer: {
+        width: 40,
+        ...basicLayouts.grid5,
+    },
+    dot: {
+        height: buttonSize,
+        width: buttonSize,
+        borderRadius: buttonSize,
+        backgroundColor: palette.deepBlue,
     },
     sideBuffer: {
         width: 20,
     },
     main: {
         ...basicLayouts.flexGrid1,
-        borderBottomColor: palette.softGray,
-        borderBottomWidth: 1,
     },
     mainHeader: {
         flexDirection: "row",
@@ -28,10 +40,8 @@ export const styles = StyleSheet.create({
         flexDirection: "row",
         ...basicLayouts.flexGrid3,
     },
-    coverUserText: {
-        ...globalTextStyles.userText,
-        fontWeight: "500",
-        marginLeft: 2,
+    arrowText: {
+        color: palette.mediumOceanSurf,
     },
     mainHeaderDotText: {
         ...globalTextStyles.dotText,
@@ -46,8 +56,15 @@ export const styles = StyleSheet.create({
     mainBody: {
         paddingTop: 8,
         paddingBottom: 15,
+        marginRight: 20,
     },
     mainBodyText: {
         color: palette.lightGray,
+    },
+    bottomBorder: {
+        height: 0,
+        borderBottomWidth: 1,
+        borderColor: palette.softGray,
+        marginLeft: 20,
     },
 });

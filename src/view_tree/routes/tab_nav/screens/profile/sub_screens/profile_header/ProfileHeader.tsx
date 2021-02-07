@@ -14,10 +14,13 @@ interface Props {
 
 const ProfileHeader: React.FC<Props> = ({ user }) => {
     return (
-        <>
-            <View style={styles.profileHeaderContainer}>
-                <View style={styles.profileSplit1}>
-                    <View style={styles.split1Left}>
+        <View pointerEvents="box-none">
+            <View
+                style={styles.profileHeaderContainer}
+                pointerEvents="box-none"
+            >
+                <View style={styles.profileSplit1} pointerEvents="box-none">
+                    <View style={styles.split1Left} pointerEvents="none">
                         <Tier size={40} ranking={123} />
                         <View style={styles.userLevelContainer}>
                             <Text style={styles.profileUserText}>
@@ -36,10 +39,10 @@ const ProfileHeader: React.FC<Props> = ({ user }) => {
                         />
                     </TouchableOpacity>
                 </View>
-                <View style={styles.profileSplit3}>
+                <View style={styles.profileSplit3} pointerEvents="none">
                     <Text style={styles.profileBioText}>{user.bio}</Text>
                 </View>
-                <View style={styles.profileSplit4}>
+                <View style={styles.profileSplit4} pointerEvents="none">
                     <View style={styles.split4Left}>
                         <TouchableOpacity
                             style={styles.followsButton}
@@ -68,7 +71,7 @@ const ProfileHeader: React.FC<Props> = ({ user }) => {
                     </View>
                 </View>
             </View>
-        </>
+        </View>
     );
 };
 

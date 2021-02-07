@@ -47,7 +47,9 @@ const NewConvos: React.FC<Props> = () => {
         <View style={basicLayouts.flexGrid1}>
             <FlatList
                 data={data?.getNewConvos}
-                renderItem={({ item }) => <ConvoCover convoCover={item} />}
+                renderItem={({ item }) => (
+                    <ConvoCover convoCover={item} showUserMap />
+                )}
                 keyExtractor={(item, index) =>
                     [item.id, "newConv", index].join(":")
                 }

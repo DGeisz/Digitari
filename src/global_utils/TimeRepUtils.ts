@@ -2,8 +2,8 @@ const millisInSecond = 1000;
 const millisIn10Seconds = 10 * millisInSecond;
 const millisInMinute = millisInSecond * 60;
 export const millisIn10Minutes = 10 * millisInMinute;
-const millisInHour = millisInMinute * 60;
-const millisInDay = millisInHour * 24;
+export const millisInHour = millisInMinute * 60;
+export const millisInDay = millisInHour * 24;
 const millisInMonth = millisInDay * 30;
 const millisInYear = millisInDay * 365;
 

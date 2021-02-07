@@ -3,13 +3,13 @@ import { palette } from "./Palette";
 
 export const globalTextStyles = StyleSheet.create({
     userText: {
-        color: palette.beneathTheWaves,
+        color: palette.hardGray,
     },
     dotText: {
         color: palette.mediumGray,
         marginHorizontal: 2,
     },
     timeText: {
-        color: palette.mediumOceanSurf,
+        color: palette.lightGray,
     },
 });

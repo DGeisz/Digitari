@@ -17,9 +17,25 @@ export const schema = gql`
 
     type ConvoCover {
         id: ID
-        user: String
+        pid: ID
+
+        new: Boolean
+        active: Boolean
+
         time: Int
         msg: String
+
+        sid: ID
+        sranking: Int
+        sname: String
+        sanony: Boolean
+        sviewed: Boolean
+
+        tid: ID
+        tranking: Int
+        tname: String
+        tanony: Boolean
+        tviewed: Boolean
     }
 
     type ConvoMsg {

@@ -29,7 +29,8 @@ const MainFeed: React.FC<Props> = () => {
         notifyOnNetworkStatusChange: true,
     });
 
-    console.log(data?.getFeed.length, error, networkStatus, refetch);
+    // console.log(data?.getFeed.length, error, networkStatus, refetch);
+    console.log(data?.getFeed);
 
     const [stillSpin, setStillSpin] = React.useState<boolean>(false);
 

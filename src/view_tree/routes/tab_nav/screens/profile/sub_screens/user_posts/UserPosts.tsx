@@ -48,7 +48,6 @@ const UserPosts: React.FC<Props> = ({ routeKey }) => {
 
     return (
         <Animated.FlatList
-            bounces={false}
             {...scrollPropsAndRef}
             data={data?.getUserPosts}
             renderItem={({ item }) => <Post post={item} />}

@@ -51,10 +51,11 @@ const UserConvos: React.FC<Props> = ({ routeKey }) => {
 
     return (
         <Animated.FlatList
-            bounces={false}
             {...scrollPropsAndRef}
             data={data?.getUserConvos}
-            renderItem={({ item }) => <ConvoCover convoCover={item} />}
+            renderItem={({ item }) => (
+                <ConvoCover convoCover={item} showUnViewedDot={false} />
+            )}
             keyExtractor={(item, index) =>
                 [item.id, "userConv", index].join(":")
             }

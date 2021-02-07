@@ -1,4 +1,3 @@
-import { schema } from "../../../../../../global_gql/Schema";
 import { gql } from "@apollo/client";
 
 export const GET_WALLET = gql`

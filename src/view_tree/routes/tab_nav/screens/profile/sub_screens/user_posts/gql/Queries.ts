@@ -1,4 +1,3 @@
-import { schema } from "../../../../../../../../global_gql/Schema";
 import { gql } from "@apollo/client";
 
 export const GET_USER_POSTS = gql`
@@ -18,9 +17,22 @@ export const GET_USER_POSTS = gql`
             coinDonated
             convos {
                 id
-                user
+                pid
+
                 time
                 msg
+
+                sid
+                sranking
+                sname
+                sanony
+                sviewed
+
+                tid
+                tranking
+                tname
+                tanony
+                tviewed
             }
         }
     }
