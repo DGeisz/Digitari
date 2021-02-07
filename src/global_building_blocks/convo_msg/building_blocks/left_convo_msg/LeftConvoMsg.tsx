@@ -12,53 +12,57 @@ interface Props {
     showBlockMsg: boolean;
 }
 
-const LeftConvoMsg: React.FC<Props> = ({ msg, showBlockMsg, showUser }) => {
-    return (
-        <View style={styles.leftMsgContainer}>
-            <View style={styles.leftMsgMain}>
-                <View style={styles.msgBodyContainer}>
-                    <View style={styles.leftMainBody}>
-                        <Text style={styles.leftMainText}>{msg.content}</Text>
-                    </View>
-                </View>
-                <View style={styles.leftMainFooter}>
-                    <View style={styles.mainFooterContainer}>
-                        {/*<View>*/}
-                        {showUser && (
-                            <View style={styles.leftFooterLeft}>
-                                <Text
-                                    style={styles.msgUserText}
-                                    numberOfLines={1}
-                                >
-                                    {msg.user}
-                                </Text>
-                            </View>
-                        )}
-                        <View style={styles.leftFooterRight}>
-                            {showUser && (
-                                <Text style={styles.msgDotText}>·</Text>
-                            )}
-                            <Text style={styles.leftTimeText}>
-                                {millisToRep(Date.now() - msg.time)}
+export default class LeftConvoMsg extends React.PureComponent<Props> {
+    render() {
+        return (
+            <View style={styles.leftMsgContainer}>
+                <View style={styles.leftMsgMain}>
+                    <View style={styles.msgBodyContainer}>
+                        <View style={styles.leftMainBody}>
+                            <Text style={styles.leftMainText}>
+                                {this.props.msg.content}
                             </Text>
                         </View>
-                        {/*</View>*/}
+                    </View>
+                    <View style={styles.leftMainFooter}>
+                        <View style={styles.mainFooterContainer}>
+                            {/*<View>*/}
+                            {this.props.showUser && (
+                                <View style={styles.leftFooterLeft}>
+                                    <Text
+                                        style={styles.msgUserText}
+                                        numberOfLines={1}
+                                    >
+                                        {this.props.msg.user}
+                                    </Text>
+                                </View>
+                            )}
+                            <View style={styles.leftFooterRight}>
+                                {this.props.showUser && (
+                                    <Text style={styles.msgDotText}>·</Text>
+                                )}
+                                <Text style={styles.leftTimeText}>
+                                    {millisToRep(
+                                        Date.now() - this.props.msg.time
+                                    )}
+                                </Text>
+                            </View>
+                            {/*</View>*/}
+                        </View>
                     </View>
                 </View>
+                {this.props.showBlockMsg && (
+                    <View style={styles.msgBlockContainer}>
+                        <TouchableOpacity style={styles.msgBlockButton}>
+                            <MaterialCommunityIcons
+                                name="hand-left"
+                                color={palette.warning}
+                                size={15}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                )}
             </View>
-            {showBlockMsg && (
-                <View style={styles.msgBlockContainer}>
-                    <TouchableOpacity style={styles.msgBlockButton}>
-                        <MaterialCommunityIcons
-                            name="hand-left"
-                            color={palette.warning}
-                            size={15}
-                        />
-                    </TouchableOpacity>
-                </View>
-            )}
-        </View>
-    );
-};
-
-export default LeftConvoMsg;
+        );
+    }
+}

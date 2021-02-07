@@ -9,8 +9,8 @@ export const styles = StyleSheet.create({
         backgroundColor: palette.white,
         borderBottomColor: palette.softGray,
         borderBottomWidth: 1,
-        paddingVertical: 10,
-        marginBottom: 10,
+        paddingVertical: 20,
+        // marginBottom: 10,
     },
     walletEntryLeft: {
         paddingHorizontal: 10,

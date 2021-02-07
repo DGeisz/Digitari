@@ -7,7 +7,6 @@ import CoinBox from "../../../../../../../global_building_blocks/coin_box/CoinBo
 import { UserType } from "../../../../../../../global_types/UserTypes";
 import { toRep } from "../../../../../../../global_utils/ValueRepUtils";
 import { palette } from "../../../../../../../global_styles/Palette";
-import WhiteScreen from "../../../../../../../global_building_blocks/white_screen/WhiteScreen";
 
 interface Props {
     user: UserType;

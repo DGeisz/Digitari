@@ -10,18 +10,23 @@ interface Props {
     showBlockMsg: boolean;
 }
 
-const ConvoMsg: React.FC<Props> = ({ left, msg, showBlockMsg, showUser }) => {
-    if (left) {
-        return (
-            <LeftConvoMsg
-                msg={msg}
-                showBlockMsg={showBlockMsg}
-                showUser={showUser}
-            />
-        );
-    } else {
-        return <RightConvoMsg msg={msg} showUser={showUser} />;
+export default class ConvoMsg extends React.PureComponent<Props> {
+    render() {
+        if (this.props.left) {
+            return (
+                <LeftConvoMsg
+                    msg={this.props.msg}
+                    showBlockMsg={this.props.showBlockMsg}
+                    showUser={this.props.showUser}
+                />
+            );
+        } else {
+            return (
+                <RightConvoMsg
+                    msg={this.props.msg}
+                    showUser={this.props.showUser}
+                />
+            );
+        }
     }
-};
-
-export default ConvoMsg;
+}

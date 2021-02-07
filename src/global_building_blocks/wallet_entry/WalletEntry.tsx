@@ -10,29 +10,29 @@ interface Props {
     walletEntry: WalletEntryType;
 }
 
-const WalletEntry: React.FC<Props> = ({ walletEntry }) => {
-    return (
-        <View style={styles.walletEntryContainer}>
-            <View style={styles.walletEntryLeft}>
-                <Text style={styles.entryTimeText} numberOfLines={2}>
-                    {millisToRep(Date.now() - walletEntry.time)}
-                </Text>
+export default class WalletEntry extends React.PureComponent<Props> {
+    render() {
+        return (
+            <View style={styles.walletEntryContainer}>
+                <View style={styles.walletEntryLeft}>
+                    <Text style={styles.entryTimeText} numberOfLines={2}>
+                        {millisToRep(Date.now() - this.props.walletEntry.time)}
+                    </Text>
+                </View>
+                <View style={styles.walletEntryMiddle}>
+                    <Text style={styles.walletEntryText}>
+                        {this.props.walletEntry.content}
+                    </Text>
+                </View>
+                <View style={styles.walletEntryRight}>
+                    <CoinBox
+                        coinSize={20}
+                        amount={this.props.walletEntry.coin}
+                        showCoinPlus
+                        boxColor={palette.oceanSurf}
+                    />
+                </View>
             </View>
-            <View style={styles.walletEntryMiddle}>
-                <Text style={styles.walletEntryText}>
-                    {walletEntry.content}
-                </Text>
-            </View>
-            <View style={styles.walletEntryRight}>
-                <CoinBox
-                    coinSize={20}
-                    amount={walletEntry.coin}
-                    showCoinPlus
-                    boxColor={palette.oceanSurf}
-                />
-            </View>
-        </View>
-    );
-};
-
-export default WalletEntry;
+        );
+    }
+}

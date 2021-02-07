@@ -6,8 +6,8 @@ interface Props {
     ranking: number;
 }
 
-const Tier: React.FC<Props> = ({ size }) => {
-    return <Text style={{ fontSize: size }}>😊</Text>;
-};
-
-export default Tier;
+export default class Tier extends React.PureComponent<Props> {
+    render() {
+        return <Text style={{ fontSize: this.props.size }}>😊</Text>;
+    }
+}
