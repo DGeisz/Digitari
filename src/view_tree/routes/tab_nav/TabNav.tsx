@@ -19,10 +19,15 @@ const TabNav: React.FC<Props> = (props) => {
         props.navigation.navigate("PostScreen", { pid });
     };
 
+    const openConvo = (cid: string) => {
+        props.navigation.navigate("Convo", { cid });
+    };
+
     return (
         <TabNavContext.Provider
             value={{
                 openPost,
+                openConvo,
             }}
         >
             <Tab.Navigator

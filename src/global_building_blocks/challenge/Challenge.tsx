@@ -97,7 +97,7 @@ export default class Challenge extends React.PureComponent<Props, State> {
                                 <FontAwesome
                                     name="info"
                                     size={20}
-                                    color={palette.darkForestGreen}
+                                    color={palette.deepBlue}
                                 />
                             </TouchableOpacity>
                         </View>

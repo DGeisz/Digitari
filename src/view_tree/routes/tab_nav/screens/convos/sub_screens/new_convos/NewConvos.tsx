@@ -10,6 +10,7 @@ import { palette } from "../../../../../../../global_styles/Palette";
 import { ConvoCoverType } from "../../../../../../../global_types/ConvoCoverTypes";
 import { GET_NEW_CONVOS } from "./gql/Queries";
 import { localUid } from "../../../../../../../global_state/UserState";
+import { TabNavContext } from "../../../../TabNavContext";
 
 interface Props {}
 
@@ -47,35 +48,45 @@ const NewConvos: React.FC<Props> = () => {
     }
 
     return (
-        <View style={basicLayouts.flexGrid1}>
-            <FlatList
-                data={data?.newConvos}
-                renderItem={({ item }) => <ConvoCover convoCover={item} />}
-                keyExtractor={(item, index) =>
-                    [item.id, "newConv", index].join(":")
-                }
-                refreshControl={
-                    <RefreshControl
-                        refreshing={
-                            networkStatus === NetworkStatus.refetch || stillSpin
+        <TabNavContext.Consumer>
+            {({ openConvo }) => (
+                <View style={basicLayouts.flexGrid1}>
+                    <FlatList
+                        data={data?.newConvos}
+                        renderItem={({ item }) => (
+                            <ConvoCover
+                                convoCover={item}
+                                openConvo={openConvo}
+                            />
+                        )}
+                        keyExtractor={(item, index) =>
+                            [item.id, "newConv", index].join(":")
                         }
-                        onRefresh={() => {
-                            setStillSpin(true);
-                            refetch && refetch();
-                            setTimeout(() => {
-                                setStillSpin(false);
-                            }, 1000);
-                        }}
-                        colors={[
-                            palette.deepBlue,
-                            palette.darkForestGreen,
-                            palette.oceanSurf,
-                        ]}
-                        tintColor={palette.deepBlue}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={
+                                    networkStatus === NetworkStatus.refetch ||
+                                    stillSpin
+                                }
+                                onRefresh={() => {
+                                    setStillSpin(true);
+                                    refetch && refetch();
+                                    setTimeout(() => {
+                                        setStillSpin(false);
+                                    }, 1000);
+                                }}
+                                colors={[
+                                    palette.deepBlue,
+                                    palette.darkForestGreen,
+                                    palette.oceanSurf,
+                                ]}
+                                tintColor={palette.deepBlue}
+                            />
+                        }
                     />
-                }
-            />
-        </View>
+                </View>
+            )}
+        </TabNavContext.Consumer>
     );
 };
 

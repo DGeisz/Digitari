@@ -14,7 +14,7 @@ const MainEntry: React.FC = () => {
     return (
         <>
             <RootStack.Navigator
-                initialRouteName="Convo"
+                initialRouteName="TabNav"
                 screenOptions={{
                     headerTruncatedBackTitle: "",
                     headerBackTitle: "",

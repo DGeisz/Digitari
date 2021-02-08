@@ -10,6 +10,7 @@ import { PostType } from "../../../../../../../global_types/PostTypes";
 import { GET_USER_POSTS } from "./gql/Queries";
 import { useCollapsibleScene } from "react-native-collapsible-tab-view";
 import { localUid } from "../../../../../../../global_state/UserState";
+import { TabNavContext } from "../../../../TabNavContext";
 
 interface Props {
     routeKey: string;
@@ -50,34 +51,41 @@ const UserPosts: React.FC<Props> = ({ routeKey }) => {
     }
 
     return (
-        <Animated.FlatList
-            {...scrollPropsAndRef}
-            data={data?.userPosts}
-            renderItem={({ item }) => <Post post={item} />}
-            keyExtractor={(item, index) =>
-                [item.id, "userPosts", index].join(":")
-            }
-            refreshControl={
-                <RefreshControl
-                    refreshing={
-                        networkStatus === NetworkStatus.refetch || stillSpin
+        <TabNavContext.Consumer>
+            {({ openConvo }) => (
+                <Animated.FlatList
+                    {...scrollPropsAndRef}
+                    data={data?.userPosts}
+                    renderItem={({ item }) => (
+                        <Post post={item} openConvo={openConvo} />
+                    )}
+                    keyExtractor={(item, index) =>
+                        [item.id, "userPosts", index].join(":")
                     }
-                    onRefresh={() => {
-                        setStillSpin(true);
-                        refetch && refetch();
-                        setTimeout(() => {
-                            setStillSpin(false);
-                        }, 1000);
-                    }}
-                    colors={[
-                        palette.deepBlue,
-                        palette.darkForestGreen,
-                        palette.oceanSurf,
-                    ]}
-                    tintColor={palette.deepBlue}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={
+                                networkStatus === NetworkStatus.refetch ||
+                                stillSpin
+                            }
+                            onRefresh={() => {
+                                setStillSpin(true);
+                                refetch && refetch();
+                                setTimeout(() => {
+                                    setStillSpin(false);
+                                }, 1000);
+                            }}
+                            colors={[
+                                palette.deepBlue,
+                                palette.darkForestGreen,
+                                palette.oceanSurf,
+                            ]}
+                            tintColor={palette.deepBlue}
+                        />
+                    }
                 />
-            }
-        />
+            )}
+        </TabNavContext.Consumer>
     );
 };
 

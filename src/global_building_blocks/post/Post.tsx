@@ -12,6 +12,7 @@ import { palette } from "../../global_styles/Palette";
 interface Props {
     post: PostType;
     showConvos?: boolean;
+    openConvo?: (cid: string) => void;
     showFullRespond?: boolean;
     standAlone?: boolean;
     postIsLink?: boolean;
@@ -191,6 +192,7 @@ export default class Post extends React.PureComponent<Props> {
                                         this.props.post.time +
                                         index
                                     }
+                                    openConvo={this.props.openConvo}
                                     showUnViewedDot={false}
                                     convoCover={convo}
                                     showBottomBorder={showBottom}

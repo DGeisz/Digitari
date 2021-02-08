@@ -13,7 +13,7 @@ import { layoutAnimationConfig } from "../../global_animations/LayoutAnimationCo
 interface Props {
     convoCover: ConvoCoverType;
 
-    onPress?: () => void;
+    openConvo?: (cid: string) => void;
     showUserMap?: boolean;
     showUnViewedDot?: boolean;
     showBottomBorder?: boolean;
@@ -59,7 +59,8 @@ export default class ConvoCover extends React.PureComponent<Props> {
                 <TouchableOpacity
                     style={styles.coverBodyContainer}
                     onPress={() => {
-                        this.props.onPress && this.props.onPress();
+                        this.props.openConvo &&
+                            this.props.openConvo(this.props.convoCover.id);
                         LayoutAnimation.configureNext(layoutAnimationConfig);
                         this.setState({ pressed: false });
                     }}

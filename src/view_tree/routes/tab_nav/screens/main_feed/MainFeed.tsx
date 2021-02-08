@@ -49,12 +49,16 @@ const MainFeed: React.FC<Props> = () => {
 
     return (
         <TabNavContext.Consumer>
-            {({ openPost }) => (
+            {({ openPost, openConvo }) => (
                 <View style={basicLayouts.flexGrid1}>
                     <FlatList
                         data={data?.feed}
                         renderItem={({ item }) => (
-                            <Post post={item} onPress={openPost} />
+                            <Post
+                                post={item}
+                                onPress={openPost}
+                                openConvo={openConvo}
+                            />
                         )}
                         keyExtractor={(item, index) =>
                             [item.id, "feed", index].join(":")

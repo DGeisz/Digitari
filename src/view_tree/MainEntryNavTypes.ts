@@ -2,7 +2,9 @@ import { StackNavigationProp } from "@react-navigation/stack";
 
 export type MainEntryStack = {
     TabNav: undefined;
-    Convos: undefined;
+    Convo: {
+        cid: string;
+    };
     NewPost: undefined;
     PostScreen: {
         pid: string;
