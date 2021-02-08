@@ -12,7 +12,7 @@ const mock: any = {
     },
     result: {
         data: {
-            challenges: challenges
+            challenges: challenges,
         },
     },
 };

@@ -10,7 +10,7 @@ import UserStats from "./sub_screens/user_stats/UserStats";
 import { createMaterialCollapsibleTopTabNavigator } from "react-native-collapsible-tab-view";
 import UserChallenges from "./sub_screens/user_challenges/UserChallenges";
 
-const {width} = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 interface Props {}
 
@@ -32,8 +32,8 @@ export default class Profile extends React.PureComponent<Props> {
                         tabStyle: {
                             flex: 0,
                             width: 100,
-                            padding: 0
-                        }
+                            padding: 0,
+                        },
                     }}
                 >
                     <Tab.Screen
@@ -65,7 +65,10 @@ export default class Profile extends React.PureComponent<Props> {
                         }}
                     >
                         {() => (
-                            <UserChallenges user={exampleUser} routeKey={"UserChallenges"}/>
+                            <UserChallenges
+                                user={exampleUser}
+                                routeKey={"UserChallenges"}
+                            />
                         )}
                     </Tab.Screen>
                     <Tab.Screen

@@ -15,18 +15,17 @@ interface Props {
     routeKey: string;
 }
 
-
 interface QueryData {
     challenges: ChallengeType[];
 }
 
-const UserChallenges: React.FC<Props> = ({user, routeKey}) => {
-
-    const { data, error, networkStatus, refetch } = useQuery<
-        QueryData
-        >(GET_CHALLENGES, {
-        notifyOnNetworkStatusChange: true,
-    });
+const UserChallenges: React.FC<Props> = ({ user, routeKey }) => {
+    const { data, error, networkStatus, refetch } = useQuery<QueryData>(
+        GET_CHALLENGES,
+        {
+            notifyOnNetworkStatusChange: true,
+        }
+    );
 
     console.log(data?.challenges.length, error, networkStatus, refetch);
 
@@ -47,11 +46,9 @@ const UserChallenges: React.FC<Props> = ({user, routeKey}) => {
             {...scrollPropsAndRef}
             data={data?.challenges}
             renderItem={({ item }) => (
-                <Challenge challenge={item} user={user}/>
+                <Challenge challenge={item} user={user} />
             )}
-            keyExtractor={(_, index) =>
-                [user.id, "chlng", index].join(":")
-            }
+            keyExtractor={(_, index) => [user.id, "chlng", index].join(":")}
             refreshControl={
                 <RefreshControl
                     refreshing={

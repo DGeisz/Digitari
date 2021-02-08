@@ -20,8 +20,8 @@ export const challengeClasses = {
     followersViaLink: 9,
     comsCreated: 10,
     welcomeCount: 11,
-    invite2ComViaLink: 12
-}
+    invite2ComViaLink: 12,
+};
 
 export const exampleChallenge: ChallengeType = {
     description: "Get 1,000 followers",
@@ -29,5 +29,5 @@ export const exampleChallenge: ChallengeType = {
     tier: 3,
     class: challengeClasses.followers,
     coinReward: 200,
-    goal: 1000
+    goal: 1000,
 };

@@ -74,7 +74,7 @@ export const schema = gql`
         entryType: Int
         meta: String
     }
-    
+
     type Challenge {
         index: Int
         class: Int

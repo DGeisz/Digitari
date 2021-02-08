@@ -123,5 +123,5 @@ export const exampleUser: UserType = {
 
     invite2ComViaLink: 28,
     i2cGoal: 50,
-    nextI2CIndex: 40
+    nextI2CIndex: 40,
 };

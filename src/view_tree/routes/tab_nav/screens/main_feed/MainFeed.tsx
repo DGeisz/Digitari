@@ -22,9 +22,6 @@ interface QueryVariables {
 }
 
 const MainFeed: React.FC<Props> = () => {
-
-
-
     const uid = localUid();
 
     const { data, error, networkStatus, refetch } = useQuery<
@@ -54,7 +51,9 @@ const MainFeed: React.FC<Props> = () => {
             <FlatList
                 data={data?.feed}
                 renderItem={({ item }) => <Post post={item} />}
-                keyExtractor={(item, index) => [item.id, "feed", index].join(":")}
+                keyExtractor={(item, index) =>
+                    [item.id, "feed", index].join(":")
+                }
                 refreshControl={
                     <RefreshControl
                         refreshing={
@@ -78,7 +77,6 @@ const MainFeed: React.FC<Props> = () => {
             />
         </View>
     );
-
 
     // return <View/>;
 };

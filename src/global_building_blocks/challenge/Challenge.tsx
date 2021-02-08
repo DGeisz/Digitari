@@ -3,7 +3,10 @@ import { View, Text, Dimensions } from "react-native";
 import { styles } from "./ChallengeStyles";
 import CoinBox from "../coin_box/CoinBox";
 import { palette } from "../../global_styles/Palette";
-import { challengeClasses, ChallengeType } from "../../global_types/ChallengeTypes";
+import {
+    challengeClasses,
+    ChallengeType,
+} from "../../global_types/ChallengeTypes";
 import { toRep } from "../../global_utils/ValueRepUtils";
 import { UserType } from "../../global_types/UserTypes";
 
@@ -11,7 +14,7 @@ const { width } = Dimensions.get("window");
 
 interface Props {
     challenge: ChallengeType;
-    user: UserType
+    user: UserType;
 }
 
 interface State {
@@ -99,8 +102,7 @@ export default class Challenge extends React.PureComponent<Props, State> {
                                 this.setState({
                                     fillWidth:
                                         pbWidth *
-                                        (progress /
-                                            this.props.challenge.goal),
+                                        (progress / this.props.challenge.goal),
                                 });
                             }}
                         >

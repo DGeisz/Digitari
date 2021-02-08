@@ -28,7 +28,6 @@ export default class CoinBox extends React.Component<Props> {
     };
 
     render() {
-
         return (
             <View
                 style={[
@@ -36,37 +35,40 @@ export default class CoinBox extends React.Component<Props> {
                     { backgroundColor: this.props.boxColor },
                 ]}
             >
-                 {this.props.active ? (
-                      <Image
-                          source={require("../../../assets/coin.png")}
-                          style={{
-                              height: this.props.coinSize,
-                              width: this.props.coinSize,
-                          }}
-                      />
-                 ) : (
-                      <Image
-                          source={require("../../../assets/coin_semi_soft_gray.png")}
-                          style={{
-                              height: this.props.coinSize,
-                              width: this.props.coinSize,
-                          }}
-                      />
-                 )}
-                 {!!this.props.showAmount ? (
-                     <Text
-                         style={[
-                             styles.coinBoxText,
-                             {
-                                 fontSize: this.props.fontSize,
-                                 color: this.props.fontColor,
-                             },
-                         ]}
-                     >
-                         {(this.props.showCoinPlus ? "+" : "") + toRep(this.props.amount)}
-                     </Text>
-                 ) : <></>}
-             </View>
+                {this.props.active ? (
+                    <Image
+                        source={require("../../../assets/coin.png")}
+                        style={{
+                            height: this.props.coinSize,
+                            width: this.props.coinSize,
+                        }}
+                    />
+                ) : (
+                    <Image
+                        source={require("../../../assets/coin_semi_soft_gray.png")}
+                        style={{
+                            height: this.props.coinSize,
+                            width: this.props.coinSize,
+                        }}
+                    />
+                )}
+                {!!this.props.showAmount ? (
+                    <Text
+                        style={[
+                            styles.coinBoxText,
+                            {
+                                fontSize: this.props.fontSize,
+                                color: this.props.fontColor,
+                            },
+                        ]}
+                    >
+                        {(this.props.showCoinPlus ? "+" : "") +
+                            toRep(this.props.amount)}
+                    </Text>
+                ) : (
+                    <></>
+                )}
+            </View>
         );
     }
 }
