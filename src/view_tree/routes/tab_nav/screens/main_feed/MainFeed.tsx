@@ -2,13 +2,13 @@ import * as React from "react";
 import { FlatList, RefreshControl, View } from "react-native";
 import { basicLayouts } from "../../../../../global_styles/BasicLayouts";
 import { PostType } from "../../../../../global_types/PostTypes";
-import { NetworkStatus, useQuery } from "@apollo/client";
 import { GET_FEED } from "./gql/Queries";
 import LoadingWheel from "../../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import ErrorMessage from "../../../../../global_building_blocks/error_message/ErrorMessage";
 import Post from "../../../../../global_building_blocks/post/Post";
 import { palette } from "../../../../../global_styles/Palette";
 import { localUid } from "../../../../../global_state/UserState";
+import { NetworkStatus, useQuery } from "@apollo/client";
 
 interface Props {}
 
@@ -22,6 +22,9 @@ interface QueryVariables {
 }
 
 const MainFeed: React.FC<Props> = () => {
+
+
+
     const uid = localUid();
 
     const { data, error, networkStatus, refetch } = useQuery<
@@ -33,7 +36,7 @@ const MainFeed: React.FC<Props> = () => {
     });
 
     // console.log(data?.getFeed.length, error, networkStatus, refetch);
-    console.log(data?.getFeed);
+    // console.log(data?.getFeed);
 
     const [stillSpin, setStillSpin] = React.useState<boolean>(false);
 
@@ -51,9 +54,7 @@ const MainFeed: React.FC<Props> = () => {
             <FlatList
                 data={data?.getFeed}
                 renderItem={({ item }) => <Post post={item} />}
-                keyExtractor={(item, index) =>
-                    [item.id, "feed", index].join(":")
-                }
+                keyExtractor={(item, index) => [item.id, "feed", index].join(":")}
                 refreshControl={
                     <RefreshControl
                         refreshing={
@@ -77,6 +78,9 @@ const MainFeed: React.FC<Props> = () => {
             />
         </View>
     );
+
+
+    // return <View/>;
 };
 
 export default MainFeed;

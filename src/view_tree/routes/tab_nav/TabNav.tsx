@@ -1,10 +1,10 @@
 import * as React from "react";
 import { Entypo, FontAwesome, Ionicons } from "@expo/vector-icons";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MainFeed from "./screens/main_feed/MainFeed";
 import Wallet from "./screens/wallet/Wallet";
 import Convos from "./screens/convos/Convos";
 import Profile from "./screens/profile/Profile";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const Tab = createBottomTabNavigator();
 

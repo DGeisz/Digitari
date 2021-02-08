@@ -20,6 +20,8 @@ export default class Post extends React.PureComponent<Props> {
     };
 
     render() {
+        // return <CoinBox/>;
+
         if (!this.props.post || !this.props.post.convos) {
             return <Text>Here i am</Text>;
         } else {
