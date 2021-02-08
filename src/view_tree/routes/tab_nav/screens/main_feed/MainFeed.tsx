@@ -9,6 +9,7 @@ import Post from "../../../../../global_building_blocks/post/Post";
 import { palette } from "../../../../../global_styles/Palette";
 import { localUid } from "../../../../../global_state/UserState";
 import { NetworkStatus, useQuery } from "@apollo/client";
+import { TabNavContext } from "../../TabNavContext";
 
 interface Props {}
 
@@ -47,35 +48,42 @@ const MainFeed: React.FC<Props> = () => {
     }
 
     return (
-        <View style={basicLayouts.flexGrid1}>
-            <FlatList
-                data={data?.feed}
-                renderItem={({ item }) => <Post post={item} />}
-                keyExtractor={(item, index) =>
-                    [item.id, "feed", index].join(":")
-                }
-                refreshControl={
-                    <RefreshControl
-                        refreshing={
-                            networkStatus === NetworkStatus.refetch || stillSpin
+        <TabNavContext.Consumer>
+            {({ openPost }) => (
+                <View style={basicLayouts.flexGrid1}>
+                    <FlatList
+                        data={data?.feed}
+                        renderItem={({ item }) => (
+                            <Post post={item} onPress={openPost} />
+                        )}
+                        keyExtractor={(item, index) =>
+                            [item.id, "feed", index].join(":")
                         }
-                        onRefresh={() => {
-                            setStillSpin(true);
-                            refetch && refetch();
-                            setTimeout(() => {
-                                setStillSpin(false);
-                            }, 1000);
-                        }}
-                        colors={[
-                            palette.deepBlue,
-                            palette.darkForestGreen,
-                            palette.oceanSurf,
-                        ]}
-                        tintColor={palette.deepBlue}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={
+                                    networkStatus === NetworkStatus.refetch ||
+                                    stillSpin
+                                }
+                                onRefresh={() => {
+                                    setStillSpin(true);
+                                    refetch && refetch();
+                                    setTimeout(() => {
+                                        setStillSpin(false);
+                                    }, 1000);
+                                }}
+                                colors={[
+                                    palette.deepBlue,
+                                    palette.darkForestGreen,
+                                    palette.oceanSurf,
+                                ]}
+                                tintColor={palette.deepBlue}
+                            />
+                        }
                     />
-                }
-            />
-        </View>
+                </View>
+            )}
+        </TabNavContext.Consumer>
     );
 
     // return <View/>;

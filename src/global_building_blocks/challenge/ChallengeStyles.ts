@@ -6,13 +6,26 @@ export const styles = StyleSheet.create({
     challengeContainer: {
         backgroundColor: palette.white,
         padding: 15,
+        paddingLeft: 0,
         borderBottomWidth: 1,
         borderColor: palette.softGray,
+        flexDirection: "row",
     },
-    challengeTop: {
+    challengeSideCoin: {
+        ...basicLayouts.grid5,
+        paddingHorizontal: 10,
+    },
+    challengeMain: {
+        ...basicLayouts.flexGrid1,
+    },
+    challengeMainTop: {
         flexDirection: "row",
     },
     challengeTopLeft: {
+        ...basicLayouts.flexGrid1,
+        flexDirection: "row",
+    },
+    challengeTextContainer: {
         ...basicLayouts.flexGrid1,
     },
     challengeText: {
@@ -20,8 +33,15 @@ export const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: "500",
     },
-    challengeTopRight: {},
-    challengeBottom: {
+    infoButton: {
+        marginRight: 10,
+    },
+    challengeTopRight: {
+        borderLeftWidth: 1,
+        borderColor: palette.softGray,
+        paddingLeft: 10,
+    },
+    challengeMainBottom: {
         flexDirection: "row",
         marginTop: 20,
     },

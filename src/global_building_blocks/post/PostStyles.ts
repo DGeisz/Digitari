@@ -7,10 +7,14 @@ export const styles = StyleSheet.create({
     postContainer: {
         paddingTop: 10,
         backgroundColor: palette.white,
-        marginBottom: 20,
     },
     postContentContainer: {
         flexDirection: "row",
+    },
+    pCCBottomBorder: {
+        borderBottomWidth: 1,
+        borderBottomColor: palette.softGray,
+        paddingBottom: 5,
     },
     postSideBuffer: {
         paddingHorizontal: 2,
@@ -62,7 +66,7 @@ export const styles = StyleSheet.create({
         ...basicLayouts.flexGrid6,
     },
     mainFooterLeft: {
-        ...basicLayouts.flexGrid4,
+        ...basicLayouts.flexGrid7,
     },
     responseButton: {
         flexDirection: "row",
@@ -73,6 +77,7 @@ export const styles = StyleSheet.create({
     },
     costContainer: {
         flexDirection: "row",
+        ...basicLayouts.grid2,
         borderRightWidth: 1,
         borderRightColor: palette.oceanSurf,
         marginRight: 2,
@@ -84,5 +89,32 @@ export const styles = StyleSheet.create({
     postConvosContainer: {
         borderTopWidth: 1,
         borderTopColor: palette.softGray,
+    },
+    postExpandedFooter: {},
+    exRightTop: {
+        flexDirection: "row",
+        ...basicLayouts.flexGrid4,
+        marginBottom: 5,
+    },
+    rewardContainer: {
+        backgroundColor: palette.lightForestGreen,
+        ...basicLayouts.flexGrid5,
+        paddingVertical: 4,
+        borderRadius: 5,
+    },
+    convoRewardText: {
+        color: palette.darkForestGreen,
+        fontWeight: "600",
+        marginRight: 5,
+        fontSize: 15,
+    },
+    exRightBottom: {
+        flexDirection: "row",
+    },
+    exResponseText: {
+        fontSize: 17,
+        fontWeight: "600",
+        color: palette.beneathTheWaves,
+        marginRight: 2,
     },
 });

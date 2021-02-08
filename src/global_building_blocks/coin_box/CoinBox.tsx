@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Image, View, Text } from "react-native";
 import { styles } from "./CoinBoxStyles";
-import { toRep } from "../../global_utils/ValueRepUtils";
+import { toCommaRep, toRep } from "../../global_utils/ValueRepUtils";
 import { palette } from "../../global_styles/Palette";
 
 interface Props {
@@ -13,6 +13,7 @@ interface Props {
     coinSize?: number;
     boxColor?: string;
     showCoinPlus?: boolean;
+    showAbbreviated?: boolean;
 }
 
 export default class CoinBox extends React.Component<Props> {
@@ -25,6 +26,7 @@ export default class CoinBox extends React.Component<Props> {
         coinSize: 12,
         boxColor: palette.transparent,
         showCoinPlus: false,
+        showAbbreviated: true,
     };
 
     render() {
@@ -63,7 +65,9 @@ export default class CoinBox extends React.Component<Props> {
                         ]}
                     >
                         {(this.props.showCoinPlus ? "+" : "") +
-                            toRep(this.props.amount)}
+                            (this.props.showAbbreviated
+                                ? toRep(this.props.amount)
+                                : toCommaRep(this.props.amount))}
                     </Text>
                 ) : (
                     <></>

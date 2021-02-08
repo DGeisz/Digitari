@@ -5,6 +5,7 @@ export const palette = {
     black: "black",
 
     // Forest suite
+    softestForestGreen: "#effaeb",
     lightForestGreen: "#c1f0af",
     darkForestGreen: "#256b0a",
 
@@ -16,6 +17,7 @@ export const palette = {
     beneathTheWaves: "#283f52",
 
     // Grays
+    soapStone: "#fafafa",
     softGray: "#e6e6e6",
     semiSoftGray: "#c2c2c2",
     lightGray: "#949494",

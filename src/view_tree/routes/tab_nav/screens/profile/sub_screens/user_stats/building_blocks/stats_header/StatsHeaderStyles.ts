@@ -4,7 +4,6 @@ import { palette } from "../../../../../../../../../global_styles/Palette";
 
 export const styles = StyleSheet.create({
     statsContainer: {
-        ...basicLayouts.flexGrid1,
         flexDirection: "row",
         backgroundColor: palette.white,
         padding: 10,

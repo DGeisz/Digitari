@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, Text, Dimensions } from "react-native";
+import { View, Text, Dimensions, TouchableOpacity } from "react-native";
 import { styles } from "./ChallengeStyles";
 import CoinBox from "../coin_box/CoinBox";
 import { palette } from "../../global_styles/Palette";
@@ -9,6 +9,8 @@ import {
 } from "../../global_types/ChallengeTypes";
 import { toRep } from "../../global_utils/ValueRepUtils";
 import { UserType } from "../../global_types/UserTypes";
+import { FontAwesome } from "@expo/vector-icons";
+import ChallengeTier from "./tier/ChallengeTier";
 
 const { width } = Dimensions.get("window");
 
@@ -73,53 +75,73 @@ export default class Challenge extends React.PureComponent<Props, State> {
                 progress = 0;
         }
 
+        console.log(this.props.challenge);
+
         return (
             <View style={styles.challengeContainer}>
-                <View style={styles.challengeTop}>
-                    <View style={styles.challengeTopLeft}>
-                        <Text style={styles.challengeText}>
-                            {this.props.challenge.description}
-                        </Text>
-                    </View>
-                    <View style={styles.challengeTopRight}>
-                        <CoinBox
-                            coinSize={20}
-                            amount={this.props.challenge.coinReward}
-                            boxColor={palette.lightForestGreen}
-                            showCoinPlus
-                        />
-                    </View>
+                <View style={styles.challengeSideCoin}>
+                    <ChallengeTier
+                        tier={this.props.challenge.tier}
+                        coinSize={30}
+                    />
                 </View>
-                <View style={styles.challengeBottom}>
-                    <View style={styles.challengeBottomLeft}>
-                        <View
-                            style={styles.challengeProgressBar}
-                            onLayout={({
-                                nativeEvent: {
-                                    layout: { width: pbWidth },
-                                },
-                            }) => {
-                                this.setState({
-                                    fillWidth:
-                                        pbWidth *
-                                        (progress / this.props.challenge.goal),
-                                });
-                            }}
-                        >
-                            <View
-                                style={[
-                                    styles.challengeProgressFill,
-                                    { width: this.state.fillWidth },
-                                ]}
+                <View style={styles.challengeMain}>
+                    <View style={styles.challengeMainTop}>
+                        <View style={styles.challengeTopLeft}>
+                            <View style={styles.challengeTextContainer}>
+                                <Text style={styles.challengeText}>
+                                    {this.props.challenge.description}
+                                </Text>
+                            </View>
+                            <TouchableOpacity style={styles.infoButton}>
+                                <FontAwesome
+                                    name="info"
+                                    size={20}
+                                    color={palette.darkForestGreen}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.challengeTopRight}>
+                            <CoinBox
+                                coinSize={20}
+                                amount={this.props.challenge.coinReward}
+                                boxColor={palette.lightForestGreen}
+                                showCoinPlus
                             />
                         </View>
                     </View>
-                    <View style={styles.challengeBottomRight}>
-                        <Text style={styles.challengeCompletionText}>
-                            {`${toRep(progress)} / ${toRep(
-                                this.props.challenge.goal
-                            )}`}
-                        </Text>
+                    <View style={styles.challengeMainBottom}>
+                        <View style={styles.challengeBottomLeft}>
+                            <View
+                                style={styles.challengeProgressBar}
+                                onLayout={({
+                                    nativeEvent: {
+                                        layout: { width: pbWidth },
+                                    },
+                                }) => {
+                                    this.setState({
+                                        fillWidth:
+                                            pbWidth *
+                                            (progress /
+                                                this.props.challenge.goal),
+                                    });
+                                }}
+                            >
+                                <View
+                                    style={[
+                                        styles.challengeProgressFill,
+                                        { width: this.state.fillWidth },
+                                    ]}
+                                />
+                            </View>
+                        </View>
+                        <View style={styles.challengeBottomRight}>
+                            <Text style={styles.challengeCompletionText}>
+                                {`${toRep(progress)} / ${toRep(
+                                    this.props.challenge.goal
+                                )}`}
+                            </Text>
+                        </View>
                     </View>
                 </View>
             </View>

@@ -13,7 +13,13 @@ const RootStack = createStackNavigator();
 const MainEntry: React.FC = () => {
     return (
         <>
-            <RootStack.Navigator initialRouteName="TabNav">
+            <RootStack.Navigator
+                initialRouteName="Convo"
+                screenOptions={{
+                    headerTruncatedBackTitle: "",
+                    headerBackTitle: "",
+                }}
+            >
                 <RootStack.Screen
                     name="TabNav"
                     component={TabNav}
@@ -23,10 +29,14 @@ const MainEntry: React.FC = () => {
                         };
                     }}
                 />
-                <RootStack.Screen name="Convos" component={Convo} />
+                <RootStack.Screen name="Convo" component={Convo} />
                 <RootStack.Screen name="NewPost" component={NewPost} />
                 <RootStack.Screen name="NewResponse" component={NewResponse} />
-                <RootStack.Screen name="PostScreen" component={PostScreen} />
+                <RootStack.Screen
+                    name="PostScreen"
+                    component={PostScreen}
+                    options={{ title: "Post" }}
+                />
                 <RootStack.Screen
                     name="AccountSettings"
                     component={AccountSettings}

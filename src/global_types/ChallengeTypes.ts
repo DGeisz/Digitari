@@ -25,6 +25,7 @@ export const challengeClasses = {
 
 export const exampleChallenge: ChallengeType = {
     description: "Get 1,000 followers",
+    // description: "This is really really really really really really really long description",
     index: 1,
     tier: 3,
     class: challengeClasses.followers,

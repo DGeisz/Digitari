@@ -78,6 +78,7 @@ export const schema = gql`
     type Challenge {
         index: Int
         class: Int
+        tier: Int
         description: String
         coinReward: Int
         goal: Int
