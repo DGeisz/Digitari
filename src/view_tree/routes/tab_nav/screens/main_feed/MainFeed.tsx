@@ -13,7 +13,7 @@ import { NetworkStatus, useQuery } from "@apollo/client";
 interface Props {}
 
 interface QueryData {
-    getFeed: PostType[];
+    feed: PostType[];
 }
 
 interface QueryVariables {
@@ -35,12 +35,12 @@ const MainFeed: React.FC<Props> = () => {
         notifyOnNetworkStatusChange: true,
     });
 
-    // console.log(data?.getFeed.length, error, networkStatus, refetch);
-    // console.log(data?.getFeed);
+    // console.log(data?.feed.length, error, networkStatus, refetch);
+    // console.log(data?.feed);
 
     const [stillSpin, setStillSpin] = React.useState<boolean>(false);
 
-    if (!data?.getFeed && networkStatus === NetworkStatus.loading) {
+    if (!data?.feed && networkStatus === NetworkStatus.loading) {
         return <LoadingWheel />;
     }
 
@@ -52,7 +52,7 @@ const MainFeed: React.FC<Props> = () => {
     return (
         <View style={basicLayouts.flexGrid1}>
             <FlatList
-                data={data?.getFeed}
+                data={data?.feed}
                 renderItem={({ item }) => <Post post={item} />}
                 keyExtractor={(item, index) => [item.id, "feed", index].join(":")}
                 refreshControl={

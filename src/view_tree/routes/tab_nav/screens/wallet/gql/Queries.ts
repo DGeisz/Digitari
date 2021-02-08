@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const GET_WALLET = gql`
     query GetWallet($id: ID!) {
-        getWallet(id: $id) {
+        wallet(id: $id) {
             id
             sum
             expirationTime

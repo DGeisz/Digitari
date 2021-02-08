@@ -14,7 +14,7 @@ import { localUid } from "../../../../../../../global_state/UserState";
 interface Props {}
 
 interface QueryData {
-    getNewConvos: ConvoCoverType[];
+    newConvos: ConvoCoverType[];
 }
 
 interface QueryVariables {
@@ -33,11 +33,11 @@ const NewConvos: React.FC<Props> = () => {
         notifyOnNetworkStatusChange: true,
     });
 
-    console.log(data?.getNewConvos.length, error, networkStatus, refetch);
+    console.log(data?.newConvos.length, error, networkStatus, refetch);
 
     const [stillSpin, setStillSpin] = React.useState<boolean>(false);
 
-    if (!data?.getNewConvos && networkStatus === NetworkStatus.loading) {
+    if (!data?.newConvos && networkStatus === NetworkStatus.loading) {
         return <LoadingWheel />;
     }
 
@@ -49,7 +49,7 @@ const NewConvos: React.FC<Props> = () => {
     return (
         <View style={basicLayouts.flexGrid1}>
             <FlatList
-                data={data?.getNewConvos}
+                data={data?.newConvos}
                 renderItem={({ item }) => <ConvoCover convoCover={item} />}
                 keyExtractor={(item, index) =>
                     [item.id, "newConv", index].join(":")

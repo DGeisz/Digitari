@@ -3,13 +3,15 @@ import { View, Text, Dimensions } from "react-native";
 import { styles } from "./ChallengeStyles";
 import CoinBox from "../coin_box/CoinBox";
 import { palette } from "../../global_styles/Palette";
-import { ChallengeType } from "../../global_types/ChallengeTypes";
+import { challengeClasses, ChallengeType } from "../../global_types/ChallengeTypes";
 import { toRep } from "../../global_utils/ValueRepUtils";
+import { UserType } from "../../global_types/UserTypes";
 
 const { width } = Dimensions.get("window");
 
 interface Props {
     challenge: ChallengeType;
+    user: UserType
 }
 
 interface State {
@@ -22,6 +24,52 @@ export default class Challenge extends React.PureComponent<Props, State> {
     };
 
     render() {
+        let progress: number;
+
+        switch (this.props.challenge.class) {
+            case challengeClasses.coinSpent:
+                progress = this.props.user.coinSpent;
+                break;
+            case challengeClasses.postCount:
+                progress = this.props.user.postCount;
+                break;
+            case challengeClasses.donated2Other:
+                progress = this.props.user.donated2Other;
+                break;
+            case challengeClasses.donated2User:
+                progress = this.props.user.donated2User;
+                break;
+            case challengeClasses.responses2Other:
+                progress = this.props.user.responses2Other;
+                break;
+            case challengeClasses.responses2User:
+                progress = this.props.user.responses2User;
+                break;
+            case challengeClasses.successfulConvos:
+                progress = this.props.user.successfulConvos;
+                break;
+            case challengeClasses.following:
+                progress = this.props.user.following;
+                break;
+            case challengeClasses.followers:
+                progress = this.props.user.followers;
+                break;
+            case challengeClasses.followersViaLink:
+                progress = this.props.user.followersViaLink;
+                break;
+            case challengeClasses.comsCreated:
+                progress = this.props.user.comsCreated;
+                break;
+            case challengeClasses.welcomeCount:
+                progress = this.props.user.welcomeCount;
+                break;
+            case challengeClasses.invite2ComViaLink:
+                progress = this.props.user.invite2ComViaLink;
+                break;
+            default:
+                progress = 0;
+        }
+
         return (
             <View style={styles.challengeContainer}>
                 <View style={styles.challengeTop}>
@@ -33,7 +81,7 @@ export default class Challenge extends React.PureComponent<Props, State> {
                     <View style={styles.challengeTopRight}>
                         <CoinBox
                             coinSize={20}
-                            amount={this.props.challenge.coin}
+                            amount={this.props.challenge.coinReward}
                             boxColor={palette.lightForestGreen}
                             showCoinPlus
                         />
@@ -51,8 +99,8 @@ export default class Challenge extends React.PureComponent<Props, State> {
                                 this.setState({
                                     fillWidth:
                                         pbWidth *
-                                        (this.props.challenge.progress /
-                                            this.props.challenge.total),
+                                        (progress /
+                                            this.props.challenge.goal),
                                 });
                             }}
                         >
@@ -66,8 +114,8 @@ export default class Challenge extends React.PureComponent<Props, State> {
                     </View>
                     <View style={styles.challengeBottomRight}>
                         <Text style={styles.challengeCompletionText}>
-                            {`${toRep(this.props.challenge.progress)} / ${toRep(
-                                this.props.challenge.total
+                            {`${toRep(progress)} / ${toRep(
+                                this.props.challenge.goal
                             )}`}
                         </Text>
                     </View>

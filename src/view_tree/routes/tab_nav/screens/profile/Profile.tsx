@@ -8,6 +8,7 @@ import UserConvos from "./sub_screens/user_convos/UserConvos";
 import { exampleUser } from "../../../../../global_types/UserTypes";
 import UserStats from "./sub_screens/user_stats/UserStats";
 import { createMaterialCollapsibleTopTabNavigator } from "react-native-collapsible-tab-view";
+import UserChallenges from "./sub_screens/user_challenges/UserChallenges";
 
 const {width} = Dimensions.get("window");
 
@@ -64,7 +65,7 @@ export default class Profile extends React.PureComponent<Props> {
                         }}
                     >
                         {() => (
-                            <View/>
+                            <UserChallenges user={exampleUser} routeKey={"UserChallenges"}/>
                         )}
                     </Tab.Screen>
                     <Tab.Screen

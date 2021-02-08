@@ -18,7 +18,7 @@ import WalletEntry from "../../../../../global_building_blocks/wallet_entry/Wall
 interface Props {}
 
 interface QueryData {
-    getWallet: WalletType;
+    wallet: WalletType;
 }
 
 interface QueryVariables {
@@ -34,11 +34,11 @@ const Wallet: React.FC<Props> = () => {
         notifyOnNetworkStatusChange: true,
     });
 
-    console.log(data?.getWallet.entries.length, error, networkStatus, refetch);
+    console.log(data?.wallet.entries.length, error, networkStatus, refetch);
 
     const [stillSpin, setStillSpin] = React.useState<boolean>(false);
 
-    if (!data?.getWallet && networkStatus === NetworkStatus.loading) {
+    if (!data?.wallet && networkStatus === NetworkStatus.loading) {
         return <LoadingWheel />;
     }
 
@@ -51,9 +51,9 @@ const Wallet: React.FC<Props> = () => {
         <View style={basicLayouts.flexGrid1}>
             <FlatList
                 ListHeaderComponent={
-                    data?.getWallet && <WalletHeader wallet={data.getWallet} />
+                    data?.wallet && <WalletHeader wallet={data.wallet} />
                 }
-                data={data?.getWallet.entries}
+                data={data?.wallet.entries}
                 renderItem={({ item }) => <WalletEntry walletEntry={item} />}
                 keyExtractor={(item, index) =>
                     [item.time, "wallet", index].join(":")

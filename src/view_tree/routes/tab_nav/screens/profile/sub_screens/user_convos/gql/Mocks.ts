@@ -16,7 +16,7 @@ const mock: any = {
     },
     result: {
         data: {
-            getUserConvos: convos,
+            userConvos: convos,
         },
     },
 };

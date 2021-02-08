@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const GET_FEED = gql`
     query GetFeed($uid: ID!, $lastTime: Int) {
-        getFeed(uid: $uid, lastTime: $lastTime) {
+        feed(uid: $uid, lastTime: $lastTime) {
             id
             user
             ranking

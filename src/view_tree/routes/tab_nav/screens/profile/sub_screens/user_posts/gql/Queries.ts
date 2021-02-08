@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const GET_USER_POSTS = gql`
     query GetUserPosts($uid: ID!, $lastTime: Int) {
-        getUserPosts(uid: $uid, lastTime: $lastTime) {
+        userPosts(uid: $uid, lastTime: $lastTime) {
             id
             user
             ranking

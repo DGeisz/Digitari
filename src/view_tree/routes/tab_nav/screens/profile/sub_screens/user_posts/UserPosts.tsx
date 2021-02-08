@@ -16,7 +16,7 @@ interface Props {
 }
 
 interface QueryData {
-    getUserPosts: PostType[];
+    userPosts: PostType[];
 }
 
 interface QueryVariables {
@@ -35,12 +35,12 @@ const UserPosts: React.FC<Props> = ({ routeKey }) => {
         notifyOnNetworkStatusChange: true,
     });
 
-    console.log(data?.getUserPosts.length, error, networkStatus, refetch);
+    console.log(data?.userPosts.length, error, networkStatus, refetch);
 
     const scrollPropsAndRef = useCollapsibleScene(routeKey);
     const [stillSpin, setStillSpin] = React.useState<boolean>(false);
 
-    if (!data?.getUserPosts && networkStatus === NetworkStatus.loading) {
+    if (!data?.userPosts && networkStatus === NetworkStatus.loading) {
         return <LoadingWheel />;
     }
 
@@ -52,7 +52,7 @@ const UserPosts: React.FC<Props> = ({ routeKey }) => {
     return (
         <Animated.FlatList
             {...scrollPropsAndRef}
-            data={data?.getUserPosts}
+            data={data?.userPosts}
             renderItem={({ item }) => <Post post={item} />}
             keyExtractor={(item, index) =>
                 [item.id, "userPosts", index].join(":")

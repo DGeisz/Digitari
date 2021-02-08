@@ -16,7 +16,7 @@ const mock: any = {
     },
     result: {
         data: {
-            getWallet: Object.assign({}, exampleWallet, { entries: entries }),
+            wallet: Object.assign({}, exampleWallet, { entries: entries }),
         },
     },
 };

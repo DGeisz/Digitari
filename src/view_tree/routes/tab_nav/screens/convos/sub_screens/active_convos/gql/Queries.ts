@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const GET_ACTIVE_CONVOS = gql`
     query GetActiveConvos($uid: ID!, $lastTime: Int) {
-        getActiveConvos(uid: $uid, lastTime: $lastTime) {
+        activeConvos(uid: $uid, lastTime: $lastTime) {
             id
             pid
 

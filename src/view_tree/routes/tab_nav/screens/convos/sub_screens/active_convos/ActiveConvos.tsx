@@ -15,7 +15,7 @@ import { palette } from "../../../../../../../global_styles/Palette";
 interface Props {}
 
 interface QueryData {
-    getActiveConvos: ConvoCoverType[];
+    activeConvos: ConvoCoverType[];
 }
 
 interface QueryVariables {
@@ -34,11 +34,11 @@ const ActiveConvos: React.FC<Props> = () => {
         notifyOnNetworkStatusChange: true,
     });
 
-    console.log(data?.getActiveConvos.length, error, networkStatus, refetch);
+    console.log(data?.activeConvos.length, error, networkStatus, refetch);
 
     const [stillSpin, setStillSpin] = React.useState<boolean>(false);
 
-    if (!data?.getActiveConvos && networkStatus === NetworkStatus.loading) {
+    if (!data?.activeConvos && networkStatus === NetworkStatus.loading) {
         return <LoadingWheel />;
     }
 
@@ -50,7 +50,7 @@ const ActiveConvos: React.FC<Props> = () => {
     return (
         <View style={basicLayouts.flexGrid1}>
             <FlatList
-                data={data?.getActiveConvos}
+                data={data?.activeConvos}
                 renderItem={({ item }) => <ConvoCover convoCover={item} />}
                 keyExtractor={(item, index) =>
                     [item.id, "aConv", index].join(":")

@@ -19,7 +19,7 @@ interface Props {
 }
 
 interface QueryData {
-    getUserConvos: ConvoCoverType[];
+    userConvos: ConvoCoverType[];
 }
 
 interface QueryVariables {
@@ -38,12 +38,12 @@ const UserConvos: React.FC<Props> = ({ routeKey }) => {
         notifyOnNetworkStatusChange: true,
     });
 
-    console.log(data?.getUserConvos.length, error, networkStatus, refetch);
+    console.log(data?.userConvos.length, error, networkStatus, refetch);
 
     const scrollPropsAndRef = useCollapsibleScene(routeKey);
     const [stillSpin, setStillSpin] = React.useState<boolean>(false);
 
-    if (!data?.getUserConvos && networkStatus === NetworkStatus.loading) {
+    if (!data?.userConvos && networkStatus === NetworkStatus.loading) {
         return <LoadingWheel />;
     }
 
@@ -55,7 +55,7 @@ const UserConvos: React.FC<Props> = ({ routeKey }) => {
     return (
         <Animated.FlatList
             {...scrollPropsAndRef}
-            data={data?.getUserConvos}
+            data={data?.userConvos}
             renderItem={({ item }) => (
                 <ConvoCover convoCover={item} showUnViewedDot={false} />
             )}

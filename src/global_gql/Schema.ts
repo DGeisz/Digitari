@@ -74,13 +74,22 @@ export const schema = gql`
         entryType: Int
         meta: String
     }
+    
+    type Challenge {
+        index: Int
+        class: Int
+        description: String
+        coinReward: Int
+        goal: Int
+    }
 
     type Query {
-        getFeed(uid: ID!, lastTime: Int): [Post]
-        getWallet(id: ID!): Wallet
-        getUserPosts(uid: ID!, lastTime: Int): [Post]
-        getUserConvos(uid: ID!, lastTime: Int): [ConvoCover]
-        getNewConvos(uid: ID!, lastTime: Int): [ConvoCover]
-        getActiveConvos(uid: ID!, lastTime: Int): [ConvoCover]
+        feed(uid: ID!, lastTime: Int): [Post]
+        wallet(id: ID!): Wallet
+        userPosts(uid: ID!, lastTime: Int): [Post]
+        userConvos(uid: ID!, lastTime: Int): [ConvoCover]
+        newConvos(uid: ID!, lastTime: Int): [ConvoCover]
+        activeConvos(uid: ID!, lastTime: Int): [ConvoCover]
+        challenges: [Challenge]
     }
 `;

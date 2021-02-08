@@ -4,6 +4,7 @@ import { userPostMocks } from "../view_tree/routes/tab_nav/screens/profile/sub_s
 import { userConvosMocks } from "../view_tree/routes/tab_nav/screens/profile/sub_screens/user_convos/gql/Mocks";
 import { newConvosMocks } from "../view_tree/routes/tab_nav/screens/convos/sub_screens/new_convos/gql/Mocks";
 import { activeConvosMocks } from "../view_tree/routes/tab_nav/screens/convos/sub_screens/active_convos/gql/Mocks";
+import { challengeMocks } from "../view_tree/routes/tab_nav/screens/profile/sub_screens/user_challenges/gql/Mocks";
 
 export const allMocks: any[] = [
     ...feedMocks,
@@ -12,4 +13,5 @@ export const allMocks: any[] = [
     ...userConvosMocks,
     ...newConvosMocks,
     ...activeConvosMocks,
+    ...challengeMocks,
 ];
