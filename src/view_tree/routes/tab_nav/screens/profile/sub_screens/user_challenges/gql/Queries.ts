@@ -12,3 +12,17 @@ export const GET_CHALLENGES = gql`
         }
     }
 `;
+
+export const GET_CHALLENGES_TYPE = gql`
+    query GetChallenges {
+        challenges {
+            index
+            tier
+            class
+            description
+            coinReward
+            goal
+            __typename
+        }
+    }
+`;

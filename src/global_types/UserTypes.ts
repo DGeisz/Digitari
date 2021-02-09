@@ -63,6 +63,10 @@ export interface UserType {
     nextI2CIndex: number;
 }
 
+export interface GUserType extends UserType {
+    __typename: string;
+}
+
 export const exampleUser: UserType = {
     id: "asdf",
     firstName: "Danny",
@@ -127,3 +131,5 @@ export const exampleUser: UserType = {
     i2cGoal: 50,
     nextI2CIndex: 40,
 };
+
+export const gExampleUser: GUserType = Object.assign({}, exampleUser, {__typename: "User"});

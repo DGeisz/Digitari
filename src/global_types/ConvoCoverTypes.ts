@@ -24,6 +24,10 @@ export interface ConvoCoverType {
     tviewed: boolean;
 }
 
+export interface GConvoCoverType extends ConvoCoverType {
+    __typename: string;
+}
+
 export const exampleConvoCover: ConvoCoverType = {
     id: "blue",
     pid: "asd",
@@ -43,3 +47,5 @@ export const exampleConvoCover: ConvoCoverType = {
     tviewed: true,
     tanony: false,
 };
+
+export const gExampleConvoCover: GConvoCoverType = Object.assign({}, exampleConvoCover, {__typename: "ConvoCover"})

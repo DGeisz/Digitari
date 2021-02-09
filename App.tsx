@@ -5,6 +5,7 @@ import { Platform, UIManager, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { MockedProvider } from "@apollo/client/testing";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { cache } from "./src/global_state/Cache";
 
 if (Platform.OS === "android") {
     if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -15,7 +16,7 @@ if (Platform.OS === "android") {
 export default function App() {
     return (
         <NavigationContainer>
-            <MockedProvider mocks={allMocks} addTypename={false}>
+            <MockedProvider mocks={allMocks} cache={cache}>
                 <SafeAreaProvider>
                     {/*<View/>*/}
                     <MainEntry />

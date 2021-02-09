@@ -7,6 +7,10 @@ export interface ConvoMsgType {
     user: string;
 }
 
+export interface GConvoMsgType extends ConvoMsgType {
+    __typename: string;
+}
+
 export const convoMsgExample: ConvoMsgType = {
     id: "blue",
     anonymous: false,
@@ -17,3 +21,5 @@ export const convoMsgExample: ConvoMsgType = {
     // user: "hello my name is Danny 101 and I like applie pie",
     user: "danny",
 };
+
+export const gConvoMsgExample: GConvoMsgType = Object.assign({}, convoMsgExample, { __typename: "ConvoMsg" });

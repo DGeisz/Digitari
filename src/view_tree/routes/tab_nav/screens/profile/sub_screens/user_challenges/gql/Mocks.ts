@@ -1,14 +1,14 @@
-import { GET_CHALLENGES } from "./Queries";
-import { exampleChallenge } from "../../../../../../../../global_types/ChallengeTypes";
+import { GET_CHALLENGES_TYPE } from "./Queries";
+import { gExampleChallenge } from "../../../../../../../../global_types/ChallengeTypes";
 
 let challenges = [];
 for (let i = 0; i < 20; i++) {
-    challenges.push(exampleChallenge);
+    challenges.push(gExampleChallenge);
 }
 
 const mock: any = {
     request: {
-        query: GET_CHALLENGES,
+        query: GET_CHALLENGES_TYPE,
     },
     result: {
         data: {

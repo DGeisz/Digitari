@@ -1,16 +1,16 @@
-import { GET_CONVO } from "./Queries";
-import { exampleConvo } from "../../../../global_types/ConvoTypes";
+import { GET_CONVO_TYPE } from "./Queries";
+import { gExampleConvo } from "../../../../global_types/ConvoTypes";
 
 const mock: any = {
     request: {
-        query: GET_CONVO,
+        query: GET_CONVO_TYPE,
         variables: {
             cid: "blue",
         },
     },
     result: {
         data: {
-            convo: exampleConvo,
+            convo: gExampleConvo,
         },
     },
 };

@@ -23,3 +23,28 @@ export const GET_NEW_CONVOS = gql`
         }
     }
 `;
+
+export const GET_NEW_CONVOS_TYPE = gql`
+    query GetNewConvos($uid: ID!, $lastTime: Int) {
+        newConvos(uid: $uid, lastTime: $lastTime) {
+            id
+            pid
+
+            time
+            msg
+
+            sid
+            sranking
+            sname
+            sanony
+            sviewed
+
+            tid
+            tranking
+            tname
+            tanony
+            tviewed
+            __typename
+        }
+    }
+`;

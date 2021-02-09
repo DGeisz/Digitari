@@ -15,6 +15,10 @@ export interface PostType {
     convos: ConvoCoverType[];
 }
 
+export interface GPostType extends PostType {
+    __typename: string;
+}
+
 export interface StrippedPostType {
     id: string;
     uid: string;
@@ -24,6 +28,10 @@ export interface StrippedPostType {
     content: string;
     link?: string;
     convoReward: number;
+}
+
+export interface GStrippedPostType extends StrippedPostType {
+    __typename: string;
 }
 
 export const postExampleNoLink: PostType = {
@@ -52,6 +60,8 @@ export const exampleStrippedPost: StrippedPostType = {
     convoReward: 200,
 };
 
+export const gExampleStrippedPost = Object.assign({}, exampleStrippedPost, {__typename: "Post"});
+
 export const postExampleWithLink: PostType = {
     link: "https://expo.io/",
     id: "asd",
@@ -67,3 +77,6 @@ export const postExampleWithLink: PostType = {
     // convos: [],
     convos: [exampleConvoCover, exampleConvoCover],
 };
+
+export const gPostExampleWithLink: GPostType = Object.assign({}, postExampleWithLink, {__typename: "Post"});
+

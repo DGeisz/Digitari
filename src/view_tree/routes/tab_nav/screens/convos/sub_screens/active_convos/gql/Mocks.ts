@@ -1,15 +1,15 @@
-import { GET_ACTIVE_CONVOS } from "./Queries";
-import { exampleConvoCover } from "../../../../../../../../global_types/ConvoCoverTypes";
+import { GET_ACTIVE_CONVOS_TYPE } from "./Queries";
+import { gExampleConvoCover } from "../../../../../../../../global_types/ConvoCoverTypes";
 
 let convos = [];
 
 for (let i = 0; i < 10; i++) {
-    convos.push(Object.assign({}, exampleConvoCover));
+    convos.push(Object.assign({}, gExampleConvoCover));
 }
 
 const mock: any = {
     request: {
-        query: GET_ACTIVE_CONVOS,
+        query: GET_ACTIVE_CONVOS_TYPE,
         variables: {
             uid: "danny",
         },

@@ -1,16 +1,16 @@
 import { postExampleWithLink } from "../../../../global_types/PostTypes";
-import { exampleConvoCover } from "../../../../global_types/ConvoCoverTypes";
-import { GET_POST } from "./Queries";
+import { gExampleConvoCover } from "../../../../global_types/ConvoCoverTypes";
+import { GET_POST_TYPE } from "./Queries";
 
 let convos = [];
 
 for (let i = 0; i < 10; i++) {
-    convos.push(exampleConvoCover);
+    convos.push(gExampleConvoCover);
 }
 
 const mock: any = {
     request: {
-        query: GET_POST,
+        query: GET_POST_TYPE,
         variables: {
             pid: "asd",
         },

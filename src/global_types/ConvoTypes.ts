@@ -1,12 +1,27 @@
-import { ConvoCoverType, exampleConvoCover } from "./ConvoCoverTypes";
-import { exampleStrippedPost, PostType, StrippedPostType } from "./PostTypes";
-import { convoMsgExample, ConvoMsgType } from "./ConvoMsgTypes";
+import { ConvoCoverType, exampleConvoCover, GConvoCoverType, gExampleConvoCover } from "./ConvoCoverTypes";
+import {
+    exampleStrippedPost,
+    gExampleStrippedPost,
+    gPostExampleWithLink,
+    GStrippedPostType,
+    PostType,
+    StrippedPostType
+} from "./PostTypes";
+import { convoMsgExample, ConvoMsgType, gConvoMsgExample, GConvoMsgType } from "./ConvoMsgTypes";
 
 export interface ConvoType {
     cover: ConvoCoverType;
     post: StrippedPostType;
     messages: ConvoMsgType[];
     status: number;
+}
+
+export interface GConvoType {
+    cover: GConvoCoverType;
+    post: GStrippedPostType;
+    messages: GConvoMsgType[];
+    status: number;
+    __typename: string;
 }
 
 export const convoStatus = {
@@ -33,3 +48,18 @@ export const exampleConvo: ConvoType = {
     ],
     status: 0,
 };
+
+export const gExampleConvo: GConvoType = {
+    cover: gExampleConvoCover,
+    post: gExampleStrippedPost,
+    messages: [
+        gConvoMsgExample,
+        gConvoMsgExample,
+        gConvoMsgExample,
+        gConvoMsgExample,
+        gConvoMsgExample,
+        gConvoMsgExample,
+    ],
+    status: 0,
+    __typename: "Convo"
+}

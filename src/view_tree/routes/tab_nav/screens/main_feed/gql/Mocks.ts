@@ -1,15 +1,15 @@
-import { GET_FEED } from "./Queries";
-import { postExampleWithLink } from "../../../../../../global_types/PostTypes";
+import { GET_FEED_TYPE } from "./Queries";
+import { gPostExampleWithLink } from "../../../../../../global_types/PostTypes";
 
 let posts = [];
 
 for (let i = 0; i < 10; i++) {
-    posts.push(postExampleWithLink);
+    posts.push(gPostExampleWithLink);
 }
 
 const mock: any = {
     request: {
-        query: GET_FEED,
+        query: GET_FEED_TYPE,
         variables: {
             uid: "danny",
         },

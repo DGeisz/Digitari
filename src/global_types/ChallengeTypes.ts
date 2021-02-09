@@ -7,6 +7,10 @@ export interface ChallengeType {
     goal: number; // Number necessary to achieve goal
 }
 
+export interface GChallengeType extends ChallengeType {
+    __typename: string
+}
+
 export const challengeClasses = {
     coinSpent: 0,
     postCount: 1,
@@ -32,3 +36,5 @@ export const exampleChallenge: ChallengeType = {
     coinReward: 200,
     goal: 1000,
 };
+
+export const gExampleChallenge: GChallengeType = Object.assign({}, exampleChallenge, { __typename: "Challenge"})
