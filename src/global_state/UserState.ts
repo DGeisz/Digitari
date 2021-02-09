@@ -9,3 +9,7 @@ export const localUid = makeVar<string>(initialUid);
 const initialSuid = MOCK ? "sanny" : "";
 
 export const localSuid = makeVar<string>(initialSuid);
+
+const initialFirstName = MOCK ? "Danny" : "";
+
+export const localFirstName = makeVar<string>(initialFirstName);

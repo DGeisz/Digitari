@@ -3,7 +3,8 @@ import { gql } from "@apollo/client";
 export const schema = gql`
     type User {
         id: ID
-        user: String
+        firstName: String
+        lastName: String
         level: Int
         bio: String
         ranking: Int

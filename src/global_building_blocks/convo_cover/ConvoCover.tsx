@@ -38,9 +38,7 @@ export default class ConvoCover extends React.PureComponent<Props> {
 
         const uid = localUid();
 
-        if (
-            this.props.convoCover.tid === uid
-        ) {
+        if (this.props.convoCover.tid === uid) {
             name = this.props.convoCover.tname;
             anonymous = this.props.convoCover.tanony;
             ranking = this.props.convoCover.tranking;

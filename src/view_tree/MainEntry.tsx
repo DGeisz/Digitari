@@ -7,14 +7,15 @@ import PostScreen from "./screens/post_screen/PostScreen";
 import AccountSettings from "./screens/account_settings/AccountSettings";
 import { getTabNavHeaderTitle } from "./routes/tab_nav/TabNavUtils";
 import { createStackNavigator } from "@react-navigation/stack";
+import { MainEntryStack } from "./MainEntryNavTypes";
 
-const RootStack = createStackNavigator();
+const RootStack = createStackNavigator<MainEntryStack>();
 
 const MainEntry: React.FC = () => {
     return (
         <>
             <RootStack.Navigator
-                initialRouteName="TabNav"
+                initialRouteName="NewResponse"
                 screenOptions={{
                     headerTruncatedBackTitle: "",
                     headerBackTitle: "",
@@ -31,7 +32,12 @@ const MainEntry: React.FC = () => {
                 />
                 <RootStack.Screen name="Convo" component={Convo} />
                 <RootStack.Screen name="NewPost" component={NewPost} />
-                <RootStack.Screen name="NewResponse" component={NewResponse} />
+                <RootStack.Screen
+                    name="NewResponse"
+                    component={NewResponse}
+                    options={{ title: "New Message" }}
+                    initialParams={{ tid: "yang", tname: "yote" }}
+                />
                 <RootStack.Screen
                     name="PostScreen"
                     component={PostScreen}

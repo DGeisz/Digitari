@@ -8,6 +8,10 @@ export type MainEntryStack = {
         popToTop?: boolean;
     };
     NewPost: undefined;
+    NewResponse: {
+        tid: string;
+        tname: string;
+    };
     PostScreen: {
         pid: string;
     };
@@ -22,9 +26,12 @@ export type PostScreenNavProp = StackNavigationProp<
     MainEntryStack,
     "PostScreen"
 >;
+export type NewResponseNavProp = StackNavigationProp<MainEntryStack, "NewResponse">;
+export type ConvoNavProp = StackNavigationProp<MainEntryStack, "Convo">;
 
 /**
  * Route props
  */
 export type PostScreenRouteProp = RouteProp<MainEntryStack, "PostScreen">;
 export type ConvoRouteProp = RouteProp<MainEntryStack, "Convo">;
+export type NewResponseRouteProp = RouteProp<MainEntryStack, "NewResponse">;

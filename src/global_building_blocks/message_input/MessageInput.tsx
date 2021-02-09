@@ -24,6 +24,7 @@ interface Props {
     onSend: (text: string) => void;
     onKeyboardShow?: () => void;
     inputPlaceholder?: string;
+    autoFocus?: boolean;
 }
 
 const MessageInput: React.FC<Props> = ({
@@ -31,6 +32,7 @@ const MessageInput: React.FC<Props> = ({
     onKeyboardShow,
     onSend,
     inputPlaceholder,
+    autoFocus,
 }) => {
     const insets = useSafeAreaInsets();
 
@@ -105,7 +107,7 @@ const MessageInput: React.FC<Props> = ({
     }, []);
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, }}>
             <View style={{ flex: 1 }}>
                 <View
                     style={{ flex: 1 }}
@@ -125,6 +127,7 @@ const MessageInput: React.FC<Props> = ({
                             // top: 20,
                             height: childHeight,
                         }}
+                        pointerEvents="box-none"
                     >
                         {children}
                     </View>
@@ -139,6 +142,7 @@ const MessageInput: React.FC<Props> = ({
                             scrollEnabled={true}
                             value={text}
                             onChangeText={setText}
+                            autoFocus={autoFocus}
                         />
                         <TouchableOpacity
                             activeOpacity={canSend ? 0.3 : 1}
@@ -160,6 +164,7 @@ const MessageInput: React.FC<Props> = ({
 
 MessageInput.defaultProps = {
     inputPlaceholder: "Message...",
+    autoFocus: false,
 };
 
 export default MessageInput;

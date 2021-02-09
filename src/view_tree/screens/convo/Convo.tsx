@@ -10,7 +10,7 @@ import ResponseResponse from "./building_blocks/response_response/ResponseRespon
 import { convoStatus, ConvoType } from "../../../global_types/ConvoTypes";
 import { NetworkStatus, useQuery } from "@apollo/client";
 import { GET_CONVO } from "./gql/Queries";
-import { ConvoRouteProp } from "../../MainEntryNavTypes";
+import { ConvoNavProp, ConvoRouteProp } from "../../MainEntryNavTypes";
 import LoadingWheel from "../../../global_building_blocks/loading_wheel/LoadingWheel";
 import ErrorMessage from "../../../global_building_blocks/error_message/ErrorMessage";
 import {
@@ -30,6 +30,7 @@ function getCheckLeft(uid: string, tid: string): (id: string) => boolean {
 
 interface Props {
     route: ConvoRouteProp;
+    navigation: ConvoNavProp;
 }
 
 interface QueryData {
@@ -44,6 +45,16 @@ const Convo: React.FC<Props> = (props) => {
     const uid = localUid();
     const suid = localSuid();
     const listRef: React.RefObject<FlatList> = React.useRef<FlatList>(null);
+
+    React.useEffect(() => {
+        props.navigation.addListener("beforeRemove", (e) => {
+            if (!!props.route.params.popToTop) {
+                props.navigation.removeListener("beforeRemove", () => {
+                    props.navigation.popToTop();
+                });
+            }
+        });
+    }, [])
 
     const { data, error, networkStatus, refetch } = useQuery<
         QueryData,

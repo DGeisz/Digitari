@@ -24,7 +24,7 @@ const ProfileHeader: React.FC<Props> = ({ user }) => {
                         <Tier size={40} ranking={123} />
                         <View style={styles.userLevelContainer}>
                             <Text style={styles.profileUserText}>
-                                {user.user}
+                                {`${user.firstName} ${user.lastName}`}
                             </Text>
                             <Text style={styles.profileLevelText}>
                                 {["Level:", user.level].join(" ")}
