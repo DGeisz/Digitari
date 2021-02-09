@@ -1,10 +1,10 @@
 import { GET_NEW_CONVOS_TYPE } from "./Queries";
-import { gExampleConvoCover } from "../../../../../../../../global_types/ConvoCoverTypes";
+import { genRandomConvoCover, gExampleConvoCover } from "../../../../../../../../global_types/ConvoCoverTypes";
 
 let convos = [];
 
 for (let i = 0; i < 10; i++) {
-    convos.push(Object.assign({}, gExampleConvoCover));
+    convos.push(Object.assign({}, genRandomConvoCover(), {id: "new" + i}));
 }
 
 const mock: any = {

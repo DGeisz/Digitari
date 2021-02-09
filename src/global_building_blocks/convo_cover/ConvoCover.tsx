@@ -26,10 +26,6 @@ export default class ConvoCover extends React.PureComponent<Props> {
         showUserMap: false,
     };
 
-    state = {
-        pressed: true,
-    };
-
     render() {
         let name;
         let anonymous;
@@ -57,13 +53,10 @@ export default class ConvoCover extends React.PureComponent<Props> {
                     onPress={() => {
                         this.props.openConvo &&
                             this.props.openConvo(this.props.convoCover.id);
-                        LayoutAnimation.configureNext(layoutAnimationConfig);
-                        this.setState({ pressed: false });
                     }}
                     activeOpacity={0.5}
                 >
-                    {this.state.pressed &&
-                    this.props.showUnViewedDot &&
+                    {this.props.showUnViewedDot &&
                     !viewed ? (
                         <View style={styles.dotBuffer}>
                             <View style={styles.dot} />

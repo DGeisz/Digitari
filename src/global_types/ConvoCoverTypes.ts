@@ -1,4 +1,5 @@
 import { millisInHour } from "../global_utils/TimeRepUtils";
+import rw from "random-words";
 
 export interface ConvoCoverType {
     // Convo ids
@@ -49,3 +50,28 @@ export const exampleConvoCover: ConvoCoverType = {
 };
 
 export const gExampleConvoCover: GConvoCoverType = Object.assign({}, exampleConvoCover, {__typename: "ConvoCover"})
+
+export function genRandomConvoCover(): GConvoCoverType {
+    const nameG = Math.random() > 0.5;
+
+    return {
+        id: rw({exactly: 1, join: ' '}),
+        pid: "asd",
+
+        time: Date.now() - millisInHour,
+        msg: rw({exactly: 10, join: " "}),
+
+        sid: nameG ? "danny" : "jeff",
+        sranking: 1230,
+        sname: rw({exactly: 1, join: ""}),
+        sviewed: Math.random() > 0.5,
+        sanony: Math.random() > 0.5,
+
+        tid: nameG ? "jeff" : "danny",
+        tranking: 234,
+        tname: rw({exactly: 1, join: ""}),
+        tviewed: Math.random() > 0.5,
+        tanony: Math.random() > 0.5,
+        __typename: "ConvoCover"
+    };
+}

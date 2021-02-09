@@ -1,4 +1,10 @@
-import { ConvoCoverType, exampleConvoCover, GConvoCoverType, gExampleConvoCover } from "./ConvoCoverTypes";
+import {
+    ConvoCoverType,
+    exampleConvoCover,
+    GConvoCoverType,
+    genRandomConvoCover,
+    gExampleConvoCover
+} from "./ConvoCoverTypes";
 import {
     exampleStrippedPost,
     gExampleStrippedPost,
@@ -7,7 +13,7 @@ import {
     PostType,
     StrippedPostType
 } from "./PostTypes";
-import { convoMsgExample, ConvoMsgType, gConvoMsgExample, GConvoMsgType } from "./ConvoMsgTypes";
+import { convoMsgExample, ConvoMsgType, gConvoMsgExample, GConvoMsgType, genConvoMsg } from "./ConvoMsgTypes";
 
 export interface ConvoType {
     cover: ConvoCoverType;
@@ -62,4 +68,21 @@ export const gExampleConvo: GConvoType = {
     ],
     status: 0,
     __typename: "Convo"
+}
+
+export function genExampleConvo(): GConvoType {
+    let msgs = [];
+    let num = Math.floor(Math.random() * 10);
+
+    for (let i = 0; i < num; i++) {
+        msgs.push(genConvoMsg());
+    }
+
+    return {
+        cover: genRandomConvoCover(),
+        post: gExampleStrippedPost,
+        messages: msgs,
+        status: Math.floor(Math.random() * 6) - 3,
+        __typename: "Convo"
+    }
 }

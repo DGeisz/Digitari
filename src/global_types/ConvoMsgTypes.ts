@@ -1,3 +1,6 @@
+import { millisInHour } from "../global_utils/TimeRepUtils";
+import rw from "random-words";
+
 export interface ConvoMsgType {
     id: string;
     anonymous: boolean;
@@ -23,3 +26,15 @@ export const convoMsgExample: ConvoMsgType = {
 };
 
 export const gConvoMsgExample: GConvoMsgType = Object.assign({}, convoMsgExample, { __typename: "ConvoMsg" });
+
+export function genConvoMsg(): GConvoMsgType {
+    return {
+        id: "blue",
+        anonymous: Math.random() > 0.5,
+        content: rw({exactly: 10, join: " "}),
+        time: Date.now() - Math.floor(Math.random() * millisInHour * 127),
+        uid: Math.random() > 0.5 ? "danny": "anyone",
+        user: rw({exactly: 1, join: ""}),
+        __typename: "ConvoMsg"
+    }
+}
