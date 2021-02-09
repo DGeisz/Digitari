@@ -2,16 +2,11 @@ import * as React from "react";
 import { FlatList, RefreshControl, View } from "react-native";
 import { basicLayouts } from "../../../../../global_styles/BasicLayouts";
 import WalletHeader from "./building_blocks/wallet_header/WalletHeader";
-import {
-    exampleWallet,
-    WalletType,
-} from "../../../../../global_types/WalletTypes";
+import { WalletType } from "../../../../../global_types/WalletTypes";
 import { NetworkStatus, useQuery } from "@apollo/client";
-import { GET_FEED } from "../main_feed/gql/Queries";
 import LoadingWheel from "../../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import ErrorMessage from "../../../../../global_building_blocks/error_message/ErrorMessage";
 import { GET_WALLET } from "./gql/Queries";
-import Post from "../../../../../global_building_blocks/post/Post";
 import { palette } from "../../../../../global_styles/Palette";
 import WalletEntry from "../../../../../global_building_blocks/wallet_entry/WalletEntry";
 

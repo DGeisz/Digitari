@@ -40,12 +40,23 @@ export const schema = gql`
 
     type ConvoMsg {
         id: ID
+        uid: String
+        user: String
+        time: Int
         anonymous: Boolean
         content: String
     }
 
+    type Convo {
+        cover: ConvoCover
+        post: Post
+        status: Int
+        messages: [ConvoMsg]
+    }
+
     type Post {
         id: ID
+        uid: ID
         user: String
         ranking: Int
         time: Int
@@ -54,8 +65,6 @@ export const schema = gql`
         convoReward: Int
         responseCost: Int
         coin: Int
-        convoCount: Int
-        responseCount: Int
         coinDonated: Boolean
         convos: [ConvoCover]
     }
@@ -92,5 +101,7 @@ export const schema = gql`
         newConvos(uid: ID!, lastTime: Int): [ConvoCover]
         activeConvos(uid: ID!, lastTime: Int): [ConvoCover]
         challenges: [Challenge]
+        post(pid: ID!): Post
+        convo(cid: ID!): Convo
     }
 `;

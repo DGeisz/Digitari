@@ -12,8 +12,6 @@ export const GET_FEED = gql`
             convoReward
             responseCost
             coin
-            convoCount
-            responseCount
             coinDonated
             convos {
                 id

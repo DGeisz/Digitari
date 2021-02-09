@@ -52,12 +52,17 @@ const UserPosts: React.FC<Props> = ({ routeKey }) => {
 
     return (
         <TabNavContext.Consumer>
-            {({ openConvo }) => (
+            {({ openConvo, openPost }) => (
                 <Animated.FlatList
                     {...scrollPropsAndRef}
                     data={data?.userPosts}
                     renderItem={({ item }) => (
-                        <Post post={item} openConvo={openConvo} />
+                        <Post
+                            post={item}
+                            onPress={openPost}
+                            openConvo={openConvo}
+                            showFooter={false}
+                        />
                     )}
                     keyExtractor={(item, index) =>
                         [item.id, "userPosts", index].join(":")

@@ -37,21 +37,19 @@ export default class ConvoCover extends React.PureComponent<Props> {
         let viewed;
 
         const uid = localUid();
-        const suid = localSuid();
 
         if (
-            this.props.convoCover.sid === uid ||
-            this.props.convoCover.sid === suid
+            this.props.convoCover.tid === uid
         ) {
-            name = this.props.convoCover.sname;
-            anonymous = this.props.convoCover.sanony;
-            ranking = this.props.convoCover.sranking;
-            viewed = this.props.convoCover.sviewed;
-        } else {
             name = this.props.convoCover.tname;
             anonymous = this.props.convoCover.tanony;
             ranking = this.props.convoCover.tranking;
             viewed = this.props.convoCover.tviewed;
+        } else {
+            name = this.props.convoCover.sname;
+            anonymous = this.props.convoCover.sanony;
+            ranking = this.props.convoCover.sranking;
+            viewed = this.props.convoCover.sviewed;
         }
 
         return (

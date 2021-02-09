@@ -12,6 +12,7 @@ import { palette } from "../../global_styles/Palette";
 interface Props {
     post: PostType;
     showConvos?: boolean;
+    showFooter?: boolean;
     openConvo?: (cid: string) => void;
     showFullRespond?: boolean;
     standAlone?: boolean;
@@ -25,6 +26,7 @@ export default class Post extends React.PureComponent<Props> {
         showFullRespond: false,
         standAlone: false,
         postIsLink: true,
+        showFooter: true,
     };
 
     render() {
@@ -75,109 +77,122 @@ export default class Post extends React.PureComponent<Props> {
                                 {this.props.post.content}
                             </Text>
                         </View>
-                        <View style={styles.postMainFooter}>
-                            <View style={styles.mainFooterLeft}>
-                                <TouchableOpacity>
-                                    <CoinBox
-                                        amount={0}
-                                        showAmount={false}
-                                        coinSize={25}
-                                        active={this.props.post.coinDonated}
-                                    />
-                                </TouchableOpacity>
-                            </View>
-                            <View style={styles.mainFooterRight}>
-                                {this.props.showFullRespond ? (
-                                    <>
-                                        <View style={styles.exRightTop}>
-                                            <View
-                                                style={styles.rewardContainer}
-                                            >
-                                                <Text
+                        {this.props.showFooter && (
+                            <View style={styles.postMainFooter}>
+                                <View style={styles.mainFooterLeft}>
+                                    <TouchableOpacity>
+                                        <CoinBox
+                                            amount={0}
+                                            showAmount={false}
+                                            coinSize={25}
+                                            active={this.props.post.coinDonated}
+                                        />
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={styles.mainFooterRight}>
+                                    {this.props.showFullRespond ? (
+                                        <>
+                                            <View style={styles.exRightTop}>
+                                                <View
                                                     style={
-                                                        styles.convoRewardText
+                                                        styles.rewardContainer
                                                     }
                                                 >
-                                                    Convo Reward
-                                                </Text>
+                                                    <Text
+                                                        style={
+                                                            styles.convoRewardText
+                                                        }
+                                                    >
+                                                        Convo Reward
+                                                    </Text>
+                                                    <CoinBox
+                                                        amount={
+                                                            this.props.post
+                                                                .convoReward
+                                                        }
+                                                        coinSize={24}
+                                                        fontSize={16}
+                                                        showCoinPlus
+                                                    />
+                                                </View>
+                                            </View>
+                                            <View style={styles.exRightBottom}>
+                                                <TouchableOpacity
+                                                    style={
+                                                        styles.responseButton
+                                                    }
+                                                    activeOpacity={0.5}
+                                                >
+                                                    <View
+                                                        style={
+                                                            styles.costContainer
+                                                        }
+                                                    >
+                                                        <Entypo
+                                                            name="pencil"
+                                                            size={24}
+                                                            style={
+                                                                styles.pencil
+                                                            }
+                                                            color={
+                                                                palette.beneathTheWaves
+                                                            }
+                                                        />
+                                                        <Text
+                                                            style={
+                                                                styles.exResponseText
+                                                            }
+                                                        >
+                                                            Message
+                                                        </Text>
+                                                    </View>
+                                                    <CoinBox
+                                                        amount={
+                                                            this.props.post
+                                                                .responseCost
+                                                        }
+                                                        coinSize={17}
+                                                    />
+                                                </TouchableOpacity>
+                                            </View>
+                                        </>
+                                    ) : (
+                                        <TouchableOpacity
+                                            style={styles.responseButton}
+                                            activeOpacity={0.5}
+                                        >
+                                            <View style={styles.costContainer}>
+                                                <Entypo
+                                                    name="pencil"
+                                                    size={24}
+                                                    style={styles.pencil}
+                                                    color={
+                                                        palette.beneathTheWaves
+                                                    }
+                                                />
                                                 <CoinBox
                                                     amount={
                                                         this.props.post
                                                             .convoReward
                                                     }
-                                                    coinSize={24}
-                                                    fontSize={16}
+                                                    coinSize={17}
                                                     showCoinPlus
+                                                    boxColor={
+                                                        palette.lightForestGreen
+                                                    }
                                                 />
                                             </View>
-                                        </View>
-                                        <View style={styles.exRightBottom}>
-                                            <TouchableOpacity
-                                                style={styles.responseButton}
-                                                activeOpacity={0.5}
-                                            >
-                                                <View
-                                                    style={styles.costContainer}
-                                                >
-                                                    <Entypo
-                                                        name="pencil"
-                                                        size={24}
-                                                        style={styles.pencil}
-                                                        color={
-                                                            palette.beneathTheWaves
-                                                        }
-                                                    />
-                                                    <Text
-                                                        style={
-                                                            styles.exResponseText
-                                                        }
-                                                    >
-                                                        Respond
-                                                    </Text>
-                                                </View>
-                                                <CoinBox
-                                                    amount={
-                                                        this.props.post
-                                                            .responseCost
-                                                    }
-                                                    coinSize={17}
-                                                />
-                                            </TouchableOpacity>
-                                        </View>
-                                    </>
-                                ) : (
-                                    <TouchableOpacity
-                                        style={styles.responseButton}
-                                        activeOpacity={0.5}
-                                    >
-                                        <View style={styles.costContainer}>
-                                            <Entypo
-                                                name="pencil"
-                                                size={24}
-                                                style={styles.pencil}
-                                                color={palette.beneathTheWaves}
-                                            />
                                             <CoinBox
                                                 amount={
-                                                    this.props.post.convoReward
+                                                    this.props.post.responseCost
                                                 }
                                                 coinSize={17}
-                                                showCoinPlus
-                                                boxColor={
-                                                    palette.lightForestGreen
-                                                }
                                             />
-                                        </View>
-                                        <CoinBox
-                                            amount={
-                                                this.props.post.responseCost
-                                            }
-                                            coinSize={17}
-                                        />
-                                    </TouchableOpacity>
-                                )}
+                                        </TouchableOpacity>
+                                    )}
+                                </View>
                             </View>
-                        </View>
+                        )}
                     </View>
                 </TouchableOpacity>
                 {this.props.showConvos && !!this.props.post.convos.length && (

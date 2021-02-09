@@ -26,7 +26,7 @@ export interface ConvoCoverType {
 
 export const exampleConvoCover: ConvoCoverType = {
     id: "blue",
-    pid: "greey",
+    pid: "asd",
 
     time: Date.now() - millisInHour,
     msg: "How about all of them lovely apples on them trees all around?",
