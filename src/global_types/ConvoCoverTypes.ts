@@ -31,13 +31,13 @@ export const exampleConvoCover: ConvoCoverType = {
     time: Date.now() - millisInHour,
     msg: "How about all of them lovely apples on them trees all around?",
 
-    sid: "danny",
+    sid: "jeff",
     sranking: 1230,
     sname: "Danny",
     sviewed: false,
     sanony: true,
 
-    tid: "jeff",
+    tid: "danny",
     tranking: 234,
     tname: "Jeff",
     tviewed: true,

@@ -55,6 +55,20 @@ const Convo: React.FC<Props> = (props) => {
         notifyOnNetworkStatusChange: true,
     });
 
+    React.useEffect(() => {
+        if (!!data?.convo) {
+            const { sid, tid, sanony, tanony, sname, tname } = data.convo.cover;
+
+            if (uid === tid || uid === sid || suid === suid) {
+                if (uid === tid && !sanony) {
+                    props.navigation.setOptions({ title: sname });
+                } else if (uid !== tid && !tanony) {
+                    props.navigation.setOptions({ title: tname });
+                }
+            }
+        }
+    }, [data]);
+
     console.log(data, error, networkStatus);
 
     const [stillSpin, setStillSpin] = React.useState<boolean>(false);
@@ -99,7 +113,12 @@ const Convo: React.FC<Props> = (props) => {
                                     }
                                 />
                             </View>
-                            <ResponseResponse />
+                            <ResponseResponse
+                                respondModalMessage={`Respond to message and place ${data.convo.post.convoReward} digicoin in escrow?`}
+                                onBlock={() => {}}
+                                onDismiss={() => {}}
+                                onMessage={() => {}}
+                            />
                         </>
                     );
                 } else {

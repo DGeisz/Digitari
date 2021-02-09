@@ -73,7 +73,7 @@ const MessageInput: React.FC<Props> = ({
         if (autoFocus) {
             setTimeout(() => {
                 textInputRef.current && textInputRef.current.focus();
-            }, 1000);
+            }, 500);
         }
 
         let subscriptions: EmitterSubscription[] = [];

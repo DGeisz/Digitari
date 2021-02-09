@@ -46,6 +46,10 @@ const PostScreen: React.FC<Props> = (props) => {
         props.navigation.navigate("Convo", { cid });
     };
 
+    const onMessage = (tid: string, tname: string, pid: string) => {
+        props.navigation.navigate("NewResponse", { tid, tname, pid });
+    };
+
     if (!data?.post && networkStatus === NetworkStatus.loading) {
         return <LoadingWheel />;
     }
@@ -65,6 +69,7 @@ const PostScreen: React.FC<Props> = (props) => {
                         standAlone
                         showFooter={showFooter}
                         showConvos={false}
+                        onMessage={onMessage}
                     />
                 ) : null
             }

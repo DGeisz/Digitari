@@ -23,7 +23,7 @@ const NewResponse: React.FC<Props> = (props) => {
 
     const onSend = (text: string) => {
         props.navigation.pop();
-        props.navigation.navigate("Convo", { cid: "blue", popToTop: true });
+        props.navigation.navigate("Convo", { cid: "blue" });
     };
 
     return (

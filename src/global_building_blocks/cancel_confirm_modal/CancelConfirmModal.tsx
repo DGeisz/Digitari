@@ -24,7 +24,7 @@ export default class CancelConfirmModal extends React.PureComponent<Props> {
 
     render() {
         return (
-            <Modal isVisible={this.props.visible}>
+            <Modal isVisible={this.props.visible} animationOutTiming={100}>
                 <View style={styles.outerContainer}>
                     <View style={styles.modalContainer}>
                         <View style={styles.modalHeader}>
