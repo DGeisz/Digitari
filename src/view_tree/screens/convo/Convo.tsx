@@ -72,8 +72,6 @@ const Convo: React.FC<Props> = (props) => {
         notifyOnNetworkStatusChange: true,
     });
 
-    console.log(data);
-
     // Mutations
     const [dismissConvo] = useMutation<
         DismissMutationData,
@@ -190,8 +188,6 @@ const Convo: React.FC<Props> = (props) => {
                             },
                             fragment: UPDATE_CONVO_STATUS,
                         });
-
-                        console.log(updatedConvoRef);
 
                         return [updatedConvoRef, ...existing];
                     },
@@ -378,12 +374,15 @@ const Convo: React.FC<Props> = (props) => {
                                         />
                                     }
                                     data={data.convo.messages}
-                                    renderItem={({ item }) => (
+                                    renderItem={({ item, index }) => (
                                         <ConvoMsg
                                             msg={item}
                                             left={checkLeft(item.uid)}
                                             showUser={true}
-                                            showBlockMsg={true}
+                                            showBlockMsg={
+                                                index ===
+                                                data.convo.messages.length - 1
+                                            }
                                         />
                                     )}
                                     keyExtractor={(item, index) =>
