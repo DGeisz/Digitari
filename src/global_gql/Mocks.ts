@@ -7,6 +7,7 @@ import { activeConvosMocks } from "../view_tree/routes/tab_nav/screens/convos/su
 import { challengeMocks } from "../view_tree/routes/tab_nav/screens/profile/sub_screens/user_challenges/gql/Mocks";
 import { postMocks } from "../view_tree/screens/post_screen/gql/Mocks";
 import {
+    activateConvosMocks,
     blockInitialConvosMocks,
     convoMocks,
     dismissConvosMocks,
@@ -25,5 +26,6 @@ export const allMocks: any[] = [
     ...convoMocks,
     ...dismissConvosMocks,
     ...blockInitialConvosMocks,
+    ...activateConvosMocks,
     ...userMocks,
 ];

@@ -63,7 +63,9 @@ export default class ResponseResponse extends React.PureComponent<
                     confirmTextColor={palette.deepBlue}
                     onConfirm={() => {
                         this.setState({ messageVisible: false });
-                        this.props.onMessage();
+                        setTimeout(() => {
+                            this.props.onMessage();
+                        }, 200);
                     }}
                     confirmMessage="Respond"
                     onCancel={() => this.setState({ messageVisible: false })}

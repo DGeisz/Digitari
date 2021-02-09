@@ -160,6 +160,7 @@ export const schema = gql`
     type Mutation {
         dismissConvo(cid: ID!): Convo
         blockInitialConvo(cid: ID!): Convo
+        activateConvo(cid: ID!): Convo
     }
 `;
 

@@ -24,6 +24,9 @@ import {
     SuccessFooter,
 } from "./building_blocks/status_footers/StatusFooters";
 import {
+    ACTIVATE_CONVO,
+    ActivateConvoMutationData,
+    ActivateConvoMutationVariables,
     BLOCK_INITIAL_CONVO,
     BlockInitialMutationData,
     BlockInitialMutationVariables,
@@ -33,6 +36,7 @@ import {
 } from "./gql/Mutations";
 import { QUERY_TYPENAME } from "../../../global_gql/Schema";
 import { USER_TYPENAME } from "../../../global_types/UserTypes";
+import { UPDATE_CONVO_STATUS } from "./gql/Fragments";
 
 function getCheckLeft(uid: string, tid: string): (id: string) => boolean {
     if (uid === tid) {
@@ -58,7 +62,6 @@ interface QueryVariables {
 const Convo: React.FC<Props> = (props) => {
     const uid = localUid();
     const suid = localSuid();
-    const listRef: React.RefObject<FlatList> = React.useRef<FlatList>(null);
 
     // Query
     const { data, error, networkStatus, refetch } = useQuery<
@@ -68,6 +71,8 @@ const Convo: React.FC<Props> = (props) => {
         variables: { cid: props.route.params.cid },
         notifyOnNetworkStatusChange: true,
     });
+
+    console.log(data);
 
     // Mutations
     const [dismissConvo] = useMutation<
@@ -136,12 +141,59 @@ const Convo: React.FC<Props> = (props) => {
                 }),
                 fields: {
                     blocked(existing) {
-                        console.log("BLocked: ", existing);
+                        console.log("Blocked: ", existing);
                         return existing + 1;
                     },
                     ranking(existing) {
                         console.log("Ranking: ", existing);
                         return existing - 1;
+                    },
+                },
+            });
+        },
+    });
+
+    const [activateConvo] = useMutation<
+        ActivateConvoMutationData,
+        ActivateConvoMutationVariables
+    >(ACTIVATE_CONVO, {
+        variables: { cid: props.route.params.cid },
+        optimisticResponse: {
+            activateConvo: {
+                id: props.route.params.cid,
+                __typename: CONVO_TYPENAME,
+            },
+        },
+        update(cache) {
+            // Remove convo from new convos and add to active convos
+            cache.modify({
+                id: cache.identify({
+                    __typename: QUERY_TYPENAME,
+                }),
+                fields: {
+                    newConvos(existing, { readField }) {
+                        return existing.filter(
+                            (reqRef: any) =>
+                                readField("id", reqRef) !==
+                                props.route.params.cid
+                        );
+                    },
+                    activeConvos(existing) {
+                        // Update the convo status as well
+                        const updatedConvoRef = cache.writeFragment({
+                            id: cache.identify({
+                                __typename: CONVO_TYPENAME,
+                                id: props.route.params.cid,
+                            }),
+                            data: {
+                                status: convoStatus.active,
+                            },
+                            fragment: UPDATE_CONVO_STATUS,
+                        });
+
+                        console.log(updatedConvoRef);
+
+                        return [updatedConvoRef, ...existing];
                     },
                 },
             });
@@ -162,6 +214,9 @@ const Convo: React.FC<Props> = (props) => {
             }
         }
     }, [data]);
+
+    const [autoFocus, setAutoFocus] = React.useState<boolean>(false);
+    const listRef: React.RefObject<FlatList> = React.useRef<FlatList>(null);
 
     if (!data?.convo && networkStatus === NetworkStatus.loading) {
         return <LoadingWheel />;
@@ -186,6 +241,7 @@ const Convo: React.FC<Props> = (props) => {
                         <>
                             <View style={basicLayouts.flexGrid1}>
                                 <FlatList
+                                    ref={listRef}
                                     ListHeaderComponent={
                                         <StrippedPost post={data.convo.post} />
                                     }
@@ -223,7 +279,14 @@ const Convo: React.FC<Props> = (props) => {
                                         props.navigation.pop();
                                     }
                                 }}
-                                onMessage={() => {}}
+                                onMessage={async () => {
+                                    try {
+                                        setAutoFocus(true);
+                                        await activateConvo();
+                                    } catch (e) {
+                                        console.log(e);
+                                    }
+                                }}
                             />
                         </>
                     );
@@ -231,6 +294,7 @@ const Convo: React.FC<Props> = (props) => {
                     return (
                         <View style={basicLayouts.flexGrid1}>
                             <FlatList
+                                ref={listRef}
                                 ListHeaderComponent={
                                     <StrippedPost post={data.convo.post} />
                                 }
@@ -268,6 +332,7 @@ const Convo: React.FC<Props> = (props) => {
                 return (
                     <View style={basicLayouts.flexGrid1}>
                         <FlatList
+                            ref={listRef}
                             ListHeaderComponent={
                                 <StrippedPost post={data.convo.post} />
                             }
@@ -299,6 +364,7 @@ const Convo: React.FC<Props> = (props) => {
                         onKeyboardShow={() => {
                             listRef.current?.scrollToEnd();
                         }}
+                        autoFocus={autoFocus}
                     >
                         <>
                             <View style={basicLayouts.flexGrid1}>
@@ -333,6 +399,7 @@ const Convo: React.FC<Props> = (props) => {
             return (
                 <View style={basicLayouts.flexGrid1}>
                     <FlatList
+                        ref={listRef}
                         ListHeaderComponent={
                             <StrippedPost
                                 showEscrow

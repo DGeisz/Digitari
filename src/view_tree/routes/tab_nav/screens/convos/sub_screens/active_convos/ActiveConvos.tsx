@@ -35,6 +35,8 @@ const ActiveConvos: React.FC<Props> = () => {
         notifyOnNetworkStatusChange: true,
     });
 
+    // console.log(data);
+
     const [stillSpin, setStillSpin] = React.useState<boolean>(false);
 
     if (!data?.activeConvos && networkStatus === NetworkStatus.loading) {

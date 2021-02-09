@@ -57,3 +57,32 @@ export interface BlockInitialMutationData {
 export interface BlockInitialMutationVariables {
     cid: string;
 }
+
+// Activate Convo
+export const ACTIVATE_CONVO = gql`
+    mutation ActivateConvo($cid: ID!) {
+        activateConvo(cid: $cid) {
+            id
+        }
+    }
+`;
+
+export const ACTIVATE_CONVO_TYPE = gql`
+    mutation ActivateConvo($cid: ID!) {
+        activateConvo(cid: $cid) {
+            id
+            __typename
+        }
+    }
+`;
+
+export interface ActivateConvoMutationData {
+    activateConvo: {
+        id: string;
+        __typename: string;
+    };
+}
+
+export interface ActivateConvoMutationVariables {
+    cid: string;
+}

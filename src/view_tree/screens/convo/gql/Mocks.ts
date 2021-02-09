@@ -3,7 +3,11 @@ import {
     genExampleConvo,
     gExampleConvo,
 } from "../../../../global_types/ConvoTypes";
-import { BLOCK_INITIAL_CONVO_TYPE, DISMISS_CONVO_TYPE } from "./Mutations";
+import {
+    ACTIVATE_CONVO_TYPE,
+    BLOCK_INITIAL_CONVO_TYPE,
+    DISMISS_CONVO_TYPE,
+} from "./Mutations";
 
 const mock: any = {
     request: {
@@ -113,7 +117,7 @@ for (let i = 0; i < 10; i++) {
         },
         result: {
             data: {
-                dismissConvo: {
+                blockInitialConvo: {
                     id: "active" + i,
                 },
             },
@@ -131,7 +135,7 @@ for (let i = 0; i < 10; i++) {
         },
         result: {
             data: {
-                dismissConvo: {
+                blockInitialConvo: {
                     id: "new" + i,
                 },
             },
@@ -140,3 +144,42 @@ for (let i = 0; i < 10; i++) {
 }
 
 export const blockInitialConvosMocks = block_mocks;
+
+let activate_mocks = [];
+for (let i = 0; i < 10; i++) {
+    activate_mocks.push({
+        request: {
+            query: ACTIVATE_CONVO_TYPE,
+            variables: {
+                cid: "active" + i,
+            },
+        },
+        result: {
+            data: {
+                activateConvo: {
+                    id: "active" + i,
+                },
+            },
+        },
+    });
+}
+
+for (let i = 0; i < 10; i++) {
+    activate_mocks.push({
+        request: {
+            query: ACTIVATE_CONVO_TYPE,
+            variables: {
+                cid: "new" + i,
+            },
+        },
+        result: {
+            data: {
+                activateConvo: {
+                    id: "new" + i,
+                },
+            },
+        },
+    });
+}
+
+export const activateConvosMocks = activate_mocks;
