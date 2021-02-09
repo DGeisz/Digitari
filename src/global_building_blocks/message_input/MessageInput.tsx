@@ -70,6 +70,12 @@ const MessageInput: React.FC<Props> = ({
     };
 
     React.useEffect(() => {
+        if (autoFocus) {
+            setTimeout(() => {
+                textInputRef.current && textInputRef.current.focus();
+            }, 1000);
+        }
+
         let subscriptions: EmitterSubscription[] = [];
         if (Platform.OS == "ios") {
             subscriptions.push(
@@ -107,7 +113,7 @@ const MessageInput: React.FC<Props> = ({
     }, []);
 
     return (
-        <View style={{ flex: 1, }}>
+        <View style={{ flex: 1 }}>
             <View style={{ flex: 1 }}>
                 <View
                     style={{ flex: 1 }}

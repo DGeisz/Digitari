@@ -23,11 +23,16 @@ const TabNav: React.FC<Props> = (props) => {
         props.navigation.navigate("Convo", { cid });
     };
 
+    const openNewMessage = (tid: string, tname: string, pid: string) => {
+        props.navigation.navigate("NewResponse", { tid, tname, pid });
+    };
+
     return (
         <TabNavContext.Provider
             value={{
                 openPost,
                 openConvo,
+                openNewMessage,
             }}
         >
             <Tab.Navigator

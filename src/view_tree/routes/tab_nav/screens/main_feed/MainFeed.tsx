@@ -10,6 +10,7 @@ import { palette } from "../../../../../global_styles/Palette";
 import { localUid } from "../../../../../global_state/UserState";
 import { NetworkStatus, useQuery } from "@apollo/client";
 import { TabNavContext } from "../../TabNavContext";
+import CancelConfirmModal from "../../../../../global_building_blocks/cancel_confirm_modal/CancelConfirmModal";
 
 interface Props {}
 
@@ -49,7 +50,7 @@ const MainFeed: React.FC<Props> = () => {
 
     return (
         <TabNavContext.Consumer>
-            {({ openPost, openConvo }) => (
+            {({ openPost, openConvo, openNewMessage }) => (
                 <View style={basicLayouts.flexGrid1}>
                     <FlatList
                         data={data?.feed}
@@ -58,6 +59,7 @@ const MainFeed: React.FC<Props> = () => {
                                 post={item}
                                 onPress={openPost}
                                 openConvo={openConvo}
+                                onMessage={openNewMessage}
                             />
                         )}
                         keyExtractor={(item, index) =>
@@ -89,8 +91,6 @@ const MainFeed: React.FC<Props> = () => {
             )}
         </TabNavContext.Consumer>
     );
-
-    // return <View/>;
 };
 
 export default MainFeed;

@@ -8,6 +8,8 @@ import ConvoCover from "../convo_cover/ConvoCover";
 import { PostType } from "../../global_types/PostTypes";
 import { millisToRep } from "../../global_utils/TimeRepUtils";
 import { palette } from "../../global_styles/Palette";
+import CancelConfirmModal from "../cancel_confirm_modal/CancelConfirmModal";
+import { toCommaRep } from "../../global_utils/ValueRepUtils";
 
 interface Props {
     post: PostType;
@@ -18,15 +20,24 @@ interface Props {
     standAlone?: boolean;
     postIsLink?: boolean;
     onPress?: (pid: string) => void;
+    onMessage?: (tid: string, tname: string, pid: string) => void;
 }
 
-export default class Post extends React.PureComponent<Props> {
+interface State {
+    postModalVisible: boolean;
+}
+
+export default class Post extends React.PureComponent<Props, State> {
     static defaultProps = {
         showConvos: true,
         showFullRespond: false,
         standAlone: false,
         postIsLink: true,
         showFooter: true,
+    };
+
+    state = {
+        postModalVisible: false,
     };
 
     render() {
@@ -37,6 +48,23 @@ export default class Post extends React.PureComponent<Props> {
                     { marginBottom: this.props.standAlone ? 0 : 20 },
                 ]}
             >
+                <CancelConfirmModal
+                    visible={this.state.postModalVisible}
+                    body={`Use ${toCommaRep(
+                        this.props.post.responseCost
+                    )} digicoin to message ${this.props.post.user}?`}
+                    title={"New Message"}
+                    onConfirm={() => {
+                        this.setState({ postModalVisible: false });
+                        this.props.onMessage &&
+                            this.props.onMessage(
+                                this.props.post.uid,
+                                this.props.post.user,
+                                this.props.post.id
+                            );
+                    }}
+                    onCancel={() => this.setState({ postModalVisible: false })}
+                />
                 <TouchableOpacity
                     style={[
                         styles.postContentContainer,
@@ -122,6 +150,11 @@ export default class Post extends React.PureComponent<Props> {
                                                         styles.responseButton
                                                     }
                                                     activeOpacity={0.5}
+                                                    onPress={() =>
+                                                        this.setState({
+                                                            postModalVisible: true,
+                                                        })
+                                                    }
                                                 >
                                                     <View
                                                         style={
@@ -160,6 +193,11 @@ export default class Post extends React.PureComponent<Props> {
                                         <TouchableOpacity
                                             style={styles.responseButton}
                                             activeOpacity={0.5}
+                                            onPress={() =>
+                                                this.setState({
+                                                    postModalVisible: true,
+                                                })
+                                            }
                                         >
                                             <View style={styles.costContainer}>
                                                 <Entypo

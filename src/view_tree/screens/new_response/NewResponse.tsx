@@ -1,6 +1,9 @@
 import * as React from "react";
 import { Keyboard, Text, TouchableOpacity, View } from "react-native";
-import { NewResponseNavProp, NewResponseRouteProp } from "../../MainEntryNavTypes";
+import {
+    NewResponseNavProp,
+    NewResponseRouteProp,
+} from "../../MainEntryNavTypes";
 import { basicLayouts } from "../../../global_styles/BasicLayouts";
 import { styles } from "./NewResponseStyles";
 import { localFirstName } from "../../../global_state/UserState";
@@ -19,11 +22,16 @@ const NewResponse: React.FC<Props> = (props) => {
     const [anony, setAnony] = React.useState<boolean>(false);
 
     const onSend = (text: string) => {
-        props.navigation.navigate("Convo", {cid: "blue", popToTop: true});
-    }
+        props.navigation.pop();
+        props.navigation.navigate("Convo", { cid: "blue", popToTop: true });
+    };
 
     return (
-        <TouchableOpacity style={basicLayouts.flexGrid1} onPress={Keyboard.dismiss} activeOpacity={1}>
+        <TouchableOpacity
+            style={basicLayouts.flexGrid1}
+            onPress={Keyboard.dismiss}
+            activeOpacity={1}
+        >
             <View style={styles.targetContainer}>
                 <Text style={styles.arrowText}>
                     {"  ➤  "}
@@ -60,7 +68,7 @@ const NewResponse: React.FC<Props> = (props) => {
                     />
                 </TouchableOpacity>
             </View>
-            <MessageInput autoFocus onSend={onSend}/>
+            <MessageInput autoFocus onSend={onSend} />
         </TouchableOpacity>
     );
 };

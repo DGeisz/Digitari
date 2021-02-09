@@ -15,7 +15,7 @@ const MainEntry: React.FC = () => {
     return (
         <>
             <RootStack.Navigator
-                initialRouteName="NewResponse"
+                initialRouteName="TabNav"
                 screenOptions={{
                     headerTruncatedBackTitle: "",
                     headerBackTitle: "",
@@ -36,7 +36,7 @@ const MainEntry: React.FC = () => {
                     name="NewResponse"
                     component={NewResponse}
                     options={{ title: "New Message" }}
-                    initialParams={{ tid: "yang", tname: "yote" }}
+                    initialParams={{ tid: "yang", tname: "yote", pid: "blue" }}
                 />
                 <RootStack.Screen
                     name="PostScreen"

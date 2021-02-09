@@ -5,12 +5,12 @@ export type MainEntryStack = {
     TabNav: undefined;
     Convo: {
         cid: string;
-        popToTop?: boolean;
     };
     NewPost: undefined;
     NewResponse: {
         tid: string;
         tname: string;
+        pid: string;
     };
     PostScreen: {
         pid: string;
@@ -26,7 +26,10 @@ export type PostScreenNavProp = StackNavigationProp<
     MainEntryStack,
     "PostScreen"
 >;
-export type NewResponseNavProp = StackNavigationProp<MainEntryStack, "NewResponse">;
+export type NewResponseNavProp = StackNavigationProp<
+    MainEntryStack,
+    "NewResponse"
+>;
 export type ConvoNavProp = StackNavigationProp<MainEntryStack, "Convo">;
 
 /**

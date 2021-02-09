@@ -19,6 +19,7 @@ import {
     PendingFinishFooter,
     SuccessFooter,
 } from "./building_blocks/status_footers/StatusFooters";
+import { HeaderBackButton } from "@react-navigation/stack";
 
 function getCheckLeft(uid: string, tid: string): (id: string) => boolean {
     if (uid === tid) {
@@ -45,16 +46,6 @@ const Convo: React.FC<Props> = (props) => {
     const uid = localUid();
     const suid = localSuid();
     const listRef: React.RefObject<FlatList> = React.useRef<FlatList>(null);
-
-    React.useEffect(() => {
-        props.navigation.addListener("beforeRemove", (e) => {
-            if (!!props.route.params.popToTop) {
-                props.navigation.removeListener("beforeRemove", () => {
-                    props.navigation.popToTop();
-                });
-            }
-        });
-    }, [])
 
     const { data, error, networkStatus, refetch } = useQuery<
         QueryData,

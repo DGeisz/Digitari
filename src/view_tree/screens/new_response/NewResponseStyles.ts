@@ -7,29 +7,29 @@ export const styles = StyleSheet.create({
         flexDirection: "row",
         padding: 10,
         borderBottomColor: palette.softGray,
-        borderBottomWidth: 1
+        borderBottomWidth: 1,
     },
     arrowText: {
         color: palette.mediumOceanSurf,
-        fontSize: 17
+        fontSize: 17,
     },
     targetText: {
         color: palette.hardGray,
-        fontWeight: "500"
+        fontWeight: "500",
     },
     postAsChoiceContainer: {
         flexDirection: "row",
         padding: 10,
-        ...basicLayouts.grid2
+        ...basicLayouts.grid2,
     },
     postAsText: {
         color: palette.hardGray,
         fontWeight: "500",
-        fontSize: 17
+        fontSize: 17,
     },
     postAsChoice: {
         paddingVertical: 5,
         paddingHorizontal: 10,
-        borderRadius: 20
+        borderRadius: 20,
     },
 });
