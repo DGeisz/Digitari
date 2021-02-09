@@ -27,8 +27,6 @@ const UserChallenges: React.FC<Props> = ({ user, routeKey }) => {
         }
     );
 
-    console.log(data?.challenges.length, error, networkStatus, refetch);
-
     const scrollPropsAndRef = useCollapsibleScene(routeKey);
     const [stillSpin, setStillSpin] = React.useState<boolean>(false);
 
@@ -37,7 +35,6 @@ const UserChallenges: React.FC<Props> = ({ user, routeKey }) => {
     }
 
     if (error) {
-        console.log(error);
         return <ErrorMessage refresh={refetch} />;
     }
 

@@ -3,7 +3,7 @@ import {
     exampleConvoCover,
     GConvoCoverType,
     genRandomConvoCover,
-    gExampleConvoCover
+    gExampleConvoCover,
 } from "./ConvoCoverTypes";
 import {
     exampleStrippedPost,
@@ -11,11 +11,20 @@ import {
     gPostExampleWithLink,
     GStrippedPostType,
     PostType,
-    StrippedPostType
+    StrippedPostType,
 } from "./PostTypes";
-import { convoMsgExample, ConvoMsgType, gConvoMsgExample, GConvoMsgType, genConvoMsg } from "./ConvoMsgTypes";
+import {
+    convoMsgExample,
+    ConvoMsgType,
+    gConvoMsgExample,
+    GConvoMsgType,
+    genConvoMsg,
+} from "./ConvoMsgTypes";
+
+export const CONVO_TYPENAME = "Convo";
 
 export interface ConvoType {
+    id: string;
     cover: ConvoCoverType;
     post: StrippedPostType;
     messages: ConvoMsgType[];
@@ -23,6 +32,7 @@ export interface ConvoType {
 }
 
 export interface GConvoType {
+    id: string;
     cover: GConvoCoverType;
     post: GStrippedPostType;
     messages: GConvoMsgType[];
@@ -40,6 +50,7 @@ export const convoStatus = {
 };
 
 export const exampleConvo: ConvoType = {
+    id: "blue",
     cover: exampleConvoCover,
     post: exampleStrippedPost,
     messages: [
@@ -56,6 +67,7 @@ export const exampleConvo: ConvoType = {
 };
 
 export const gExampleConvo: GConvoType = {
+    id: "blue",
     cover: gExampleConvoCover,
     post: gExampleStrippedPost,
     messages: [
@@ -67,22 +79,25 @@ export const gExampleConvo: GConvoType = {
         gConvoMsgExample,
     ],
     status: 0,
-    __typename: "Convo"
-}
+    __typename: "Convo",
+};
 
-export function genExampleConvo(): GConvoType {
+export function genExampleConvo(newConvo: boolean): GConvoType {
     let msgs = [];
-    let num = Math.floor(Math.random() * 10);
+    let num = Math.floor(Math.random() * 10) + 1;
 
     for (let i = 0; i < num; i++) {
         msgs.push(genConvoMsg());
     }
 
+    const cover = genRandomConvoCover();
+
     return {
-        cover: genRandomConvoCover(),
+        id: cover.id,
+        cover: cover,
         post: gExampleStrippedPost,
         messages: msgs,
-        status: Math.floor(Math.random() * 6) - 3,
-        __typename: "Convo"
-    }
+        status: newConvo ? 0 : Math.floor(Math.random() * 6) - 3,
+        __typename: "Convo",
+    };
 }

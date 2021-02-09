@@ -39,8 +39,6 @@ const UserConvos: React.FC<Props> = ({ routeKey }) => {
         notifyOnNetworkStatusChange: true,
     });
 
-    console.log(data?.userConvos.length, error, networkStatus, refetch);
-
     const scrollPropsAndRef = useCollapsibleScene(routeKey);
     const [stillSpin, setStillSpin] = React.useState<boolean>(false);
 

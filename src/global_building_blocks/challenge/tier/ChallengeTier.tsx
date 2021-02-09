@@ -61,7 +61,6 @@ export default class ChallengeTier extends React.PureComponent<Props> {
                     />
                 );
             default:
-                console.log("yote", this.props.tier);
                 return (
                     <Image
                         source={require("../../../../assets/master_coin.png")}

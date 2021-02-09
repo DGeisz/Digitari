@@ -60,7 +60,9 @@ export const exampleStrippedPost: StrippedPostType = {
     convoReward: 200,
 };
 
-export const gExampleStrippedPost = Object.assign({}, exampleStrippedPost, {__typename: "Post"});
+export const gExampleStrippedPost = Object.assign({}, exampleStrippedPost, {
+    __typename: "Post",
+});
 
 export const postExampleWithLink: PostType = {
     link: "https://expo.io/",
@@ -78,5 +80,8 @@ export const postExampleWithLink: PostType = {
     convos: [exampleConvoCover, exampleConvoCover],
 };
 
-export const gPostExampleWithLink: GPostType = Object.assign({}, postExampleWithLink, {__typename: "Post"});
-
+export const gPostExampleWithLink: GPostType = Object.assign(
+    {},
+    postExampleWithLink,
+    { __typename: "Post" }
+);

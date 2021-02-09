@@ -8,7 +8,7 @@ export interface ChallengeType {
 }
 
 export interface GChallengeType extends ChallengeType {
-    __typename: string
+    __typename: string;
 }
 
 export const challengeClasses = {
@@ -37,4 +37,8 @@ export const exampleChallenge: ChallengeType = {
     goal: 1000,
 };
 
-export const gExampleChallenge: GChallengeType = Object.assign({}, exampleChallenge, { __typename: "Challenge"})
+export const gExampleChallenge: GChallengeType = Object.assign(
+    {},
+    exampleChallenge,
+    { __typename: "Challenge" }
+);

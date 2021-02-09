@@ -34,9 +34,6 @@ const MainFeed: React.FC<Props> = () => {
         notifyOnNetworkStatusChange: true,
     });
 
-    // console.log(data?.feed.length, error, networkStatus, refetch);
-    // console.log(data?.feed);
-
     const [stillSpin, setStillSpin] = React.useState<boolean>(false);
 
     if (!data?.feed && networkStatus === NetworkStatus.loading) {
@@ -44,7 +41,6 @@ const MainFeed: React.FC<Props> = () => {
     }
 
     if (error) {
-        console.log(error);
         return <ErrorMessage refresh={refetch} />;
     }
 

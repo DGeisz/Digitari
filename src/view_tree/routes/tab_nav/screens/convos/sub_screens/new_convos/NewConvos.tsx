@@ -1,7 +1,6 @@
 import * as React from "react";
 import { FlatList, RefreshControl, View } from "react-native";
 import { NetworkStatus, useQuery } from "@apollo/client";
-import { GET_USER_CONVOS } from "../../../profile/sub_screens/user_convos/gql/Queries";
 import LoadingWheel from "../../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import ErrorMessage from "../../../../../../../global_building_blocks/error_message/ErrorMessage";
 import { basicLayouts } from "../../../../../../../global_styles/BasicLayouts";
@@ -34,8 +33,6 @@ const NewConvos: React.FC<Props> = () => {
         notifyOnNetworkStatusChange: true,
     });
 
-    console.log(data?.newConvos.length, error, networkStatus, refetch);
-
     const [stillSpin, setStillSpin] = React.useState<boolean>(false);
 
     if (!data?.newConvos && networkStatus === NetworkStatus.loading) {
@@ -43,7 +40,6 @@ const NewConvos: React.FC<Props> = () => {
     }
 
     if (error) {
-        console.log(error);
         return <ErrorMessage refresh={refetch} />;
     }
 

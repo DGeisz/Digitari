@@ -3,6 +3,7 @@ import { gql } from "@apollo/client";
 export const GET_CONVO = gql`
     query GetConvo($cid: ID!) {
         convo(cid: $cid) {
+            id
             status
             post {
                 id
@@ -46,9 +47,9 @@ export const GET_CONVO = gql`
 `;
 
 export const GET_CONVO_TYPE = gql`
-
     query GetConvo($cid: ID!) {
         convo(cid: $cid) {
+            id
             status
             post {
                 id

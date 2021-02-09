@@ -25,16 +25,20 @@ export const convoMsgExample: ConvoMsgType = {
     user: "danny",
 };
 
-export const gConvoMsgExample: GConvoMsgType = Object.assign({}, convoMsgExample, { __typename: "ConvoMsg" });
+export const gConvoMsgExample: GConvoMsgType = Object.assign(
+    {},
+    convoMsgExample,
+    { __typename: "ConvoMsg" }
+);
 
 export function genConvoMsg(): GConvoMsgType {
     return {
         id: "blue",
         anonymous: Math.random() > 0.5,
-        content: rw({exactly: 10, join: " "}),
+        content: rw({ exactly: 10, join: " " }),
         time: Date.now() - Math.floor(Math.random() * millisInHour * 127),
-        uid: Math.random() > 0.5 ? "danny": "anyone",
-        user: rw({exactly: 1, join: ""}),
-        __typename: "ConvoMsg"
-    }
+        uid: Math.random() > 0.5 ? "danny" : "anyone",
+        user: rw({ exactly: 1, join: "" }),
+        __typename: "ConvoMsg",
+    };
 }

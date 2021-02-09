@@ -29,8 +29,6 @@ const Wallet: React.FC<Props> = () => {
         notifyOnNetworkStatusChange: true,
     });
 
-    console.log(data?.wallet.entries.length, error, networkStatus, refetch);
-
     const [stillSpin, setStillSpin] = React.useState<boolean>(false);
 
     if (!data?.wallet && networkStatus === NetworkStatus.loading) {

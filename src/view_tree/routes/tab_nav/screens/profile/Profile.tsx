@@ -5,26 +5,46 @@ import ProfileHeader from "./sub_screens/profile_header/ProfileHeader";
 import UserPosts from "./sub_screens/user_posts/UserPosts";
 import TabLabel from "../../../../../global_building_blocks/tab_label/TabLabel";
 import UserConvos from "./sub_screens/user_convos/UserConvos";
-import { exampleUser } from "../../../../../global_types/UserTypes";
+import { UserType } from "../../../../../global_types/UserTypes";
 import UserStats from "./sub_screens/user_stats/UserStats";
 import { createMaterialCollapsibleTopTabNavigator } from "react-native-collapsible-tab-view";
 import UserChallenges from "./sub_screens/user_challenges/UserChallenges";
-
-const { width } = Dimensions.get("window");
+import { NetworkStatus, useQuery } from "@apollo/client";
+import { GET_USER } from "./gql/Queries";
+import LoadingWheel from "../../../../../global_building_blocks/loading_wheel/LoadingWheel";
+import ErrorMessage from "../../../../../global_building_blocks/error_message/ErrorMessage";
 
 interface Props {}
 
 const Tab = createMaterialCollapsibleTopTabNavigator();
 
-export default class Profile extends React.PureComponent<Props> {
-    render() {
+interface QueryData {
+    user: UserType;
+}
+
+const Profile: React.FC<Props> = () => {
+    const { data, networkStatus, error, refetch } = useQuery<QueryData>(
+        GET_USER,
+        {
+            notifyOnNetworkStatusChange: true,
+        }
+    );
+
+    if (!data?.user && networkStatus === NetworkStatus.loading) {
+        return <LoadingWheel />;
+    }
+
+    if (error) {
+        console.log(error);
+        return <ErrorMessage refresh={refetch} />;
+    }
+
+    if (!!data?.user) {
         return (
             <View style={basicLayouts.flexGrid1}>
                 <Tab.Navigator
                     collapsibleOptions={{
-                        renderHeader: () => (
-                            <ProfileHeader user={exampleUser} />
-                        ),
+                        renderHeader: () => <ProfileHeader user={data.user} />,
                         headerHeight: 250,
                     }}
                     tabBarOptions={{
@@ -66,7 +86,7 @@ export default class Profile extends React.PureComponent<Props> {
                     >
                         {() => (
                             <UserChallenges
-                                user={exampleUser}
+                                user={data.user}
                                 routeKey={"UserChallenges"}
                             />
                         )}
@@ -80,14 +100,15 @@ export default class Profile extends React.PureComponent<Props> {
                         }}
                     >
                         {() => (
-                            <UserStats
-                                routeKey="UserStats"
-                                user={exampleUser}
-                            />
+                            <UserStats routeKey="UserStats" user={data.user} />
                         )}
                     </Tab.Screen>
                 </Tab.Navigator>
             </View>
         );
+    } else {
+        return <View style={basicLayouts.flexGrid1} />;
     }
-}
+};
+
+export default Profile;

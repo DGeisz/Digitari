@@ -49,29 +49,33 @@ export const exampleConvoCover: ConvoCoverType = {
     tanony: false,
 };
 
-export const gExampleConvoCover: GConvoCoverType = Object.assign({}, exampleConvoCover, {__typename: "ConvoCover"})
+export const gExampleConvoCover: GConvoCoverType = Object.assign(
+    {},
+    exampleConvoCover,
+    { __typename: "ConvoCover" }
+);
 
 export function genRandomConvoCover(): GConvoCoverType {
     const nameG = Math.random() > 0.5;
 
     return {
-        id: rw({exactly: 1, join: ' '}),
+        id: rw({ exactly: 1, join: " " }),
         pid: "asd",
 
         time: Date.now() - millisInHour,
-        msg: rw({exactly: 10, join: " "}),
+        msg: rw({ exactly: 10, join: " " }),
 
         sid: nameG ? "danny" : "jeff",
         sranking: 1230,
-        sname: rw({exactly: 1, join: ""}),
+        sname: rw({ exactly: 1, join: "" }),
         sviewed: Math.random() > 0.5,
         sanony: Math.random() > 0.5,
 
         tid: nameG ? "jeff" : "danny",
         tranking: 234,
-        tname: rw({exactly: 1, join: ""}),
+        tname: rw({ exactly: 1, join: "" }),
         tviewed: Math.random() > 0.5,
         tanony: Math.random() > 0.5,
-        __typename: "ConvoCover"
+        __typename: "ConvoCover",
     };
 }

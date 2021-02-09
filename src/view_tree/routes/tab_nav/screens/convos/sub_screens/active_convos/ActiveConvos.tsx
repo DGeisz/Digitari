@@ -35,8 +35,6 @@ const ActiveConvos: React.FC<Props> = () => {
         notifyOnNetworkStatusChange: true,
     });
 
-    console.log(data?.activeConvos.length, error, networkStatus, refetch);
-
     const [stillSpin, setStillSpin] = React.useState<boolean>(false);
 
     if (!data?.activeConvos && networkStatus === NetworkStatus.loading) {
@@ -44,7 +42,6 @@ const ActiveConvos: React.FC<Props> = () => {
     }
 
     if (error) {
-        console.log(error);
         return <ErrorMessage refresh={refetch} />;
     }
 

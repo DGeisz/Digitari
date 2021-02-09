@@ -18,4 +18,8 @@ export const walletEntryExample: WalletEntryType = {
     meta: "gronk",
 };
 
-export const gWalletEntryExample: GWalletEntryType = Object.assign({}, walletEntryExample, {__typename: "WalletEntry"});
+export const gWalletEntryExample: GWalletEntryType = Object.assign(
+    {},
+    walletEntryExample,
+    { __typename: "WalletEntry" }
+);

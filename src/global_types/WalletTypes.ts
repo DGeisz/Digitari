@@ -19,4 +19,6 @@ export const exampleWallet: WalletType = {
     entries: [walletEntryExample, walletEntryExample, walletEntryExample],
 };
 
-export const gExampleWallet: GWalletType = Object.assign({}, exampleWallet, {__typename: "Wallet"});
+export const gExampleWallet: GWalletType = Object.assign({}, exampleWallet, {
+    __typename: "Wallet",
+});

@@ -58,7 +58,6 @@ const NewResponse: React.FC<Props> = (props) => {
                     ]}
                     onPress={() => {
                         setAnony(true);
-                        console.log("Treeeeee");
                     }}
                 >
                     <MaterialCommunityIcons

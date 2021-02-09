@@ -1,3 +1,5 @@
+export const USER_TYPENAME = "User";
+
 export interface UserType {
     id: string;
     firstName: string;
@@ -68,7 +70,7 @@ export interface GUserType extends UserType {
 }
 
 export const exampleUser: UserType = {
-    id: "asdf",
+    id: "danny",
     firstName: "Danny",
     lastName: "Geisz",
     level: 12,
@@ -132,4 +134,6 @@ export const exampleUser: UserType = {
     nextI2CIndex: 40,
 };
 
-export const gExampleUser: GUserType = Object.assign({}, exampleUser, {__typename: "User"});
+export const gExampleUser: GUserType = Object.assign({}, exampleUser, {
+    __typename: "User",
+});

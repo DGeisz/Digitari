@@ -28,10 +28,6 @@ export default class StatsHeader extends React.PureComponent<Props, State> {
     };
 
     render() {
-        console.log(
-            this.props.user.coinSpent /
-                getNextLevelCoinThreshold(this.props.user.coinSpent)
-        );
         return (
             <View style={styles.statsContainer}>
                 <View style={styles.statsLeft}>
@@ -43,13 +39,13 @@ export default class StatsHeader extends React.PureComponent<Props, State> {
                         </Text>
                     </View>
                     <View style={styles.leftSplit2}>
+                        <SuccessfulConvos
+                            conversations={this.props.user.successfulConvos}
+                        />
                         <BeenBlocked
                             beenBlocked={this.props.user.beenBlocked}
                         />
                         <Blocked blocked={this.props.user.blocked} />
-                        <SuccessfulConvos
-                            conversations={this.props.user.successfulConvos}
-                        />
                     </View>
                     <View style={styles.leftSplit3}>
                         <View style={styles.split3Left}>

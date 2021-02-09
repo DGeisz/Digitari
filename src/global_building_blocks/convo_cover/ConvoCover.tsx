@@ -56,8 +56,7 @@ export default class ConvoCover extends React.PureComponent<Props> {
                     }}
                     activeOpacity={0.5}
                 >
-                    {this.props.showUnViewedDot &&
-                    !viewed ? (
+                    {this.props.showUnViewedDot && !viewed ? (
                         <View style={styles.dotBuffer}>
                             <View style={styles.dot} />
                         </View>

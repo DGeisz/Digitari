@@ -75,8 +75,6 @@ export default class Challenge extends React.PureComponent<Props, State> {
                 progress = 0;
         }
 
-        console.log(this.props.challenge);
-
         return (
             <View style={styles.challengeContainer}>
                 <View style={styles.challengeSideCoin}>
