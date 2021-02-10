@@ -9,8 +9,10 @@ import { postMocks } from "../view_tree/screens/post_screen/gql/Mocks";
 import {
     activateConvosMocks,
     blockInitialConvosMocks,
+    blockMessageMocks,
     convoMocks,
     dismissConvosMocks,
+    finishConvoMocks,
 } from "../view_tree/screens/convo/gql/Mocks";
 import { userMocks } from "../view_tree/routes/tab_nav/screens/profile/gql/Mocks";
 
@@ -23,9 +25,11 @@ export const allMocks: any[] = [
     ...activeConvosMocks,
     ...challengeMocks,
     ...postMocks,
+    ...userMocks,
     ...convoMocks,
     ...dismissConvosMocks,
     ...blockInitialConvosMocks,
     ...activateConvosMocks,
-    ...userMocks,
+    ...blockMessageMocks,
+    ...finishConvoMocks,
 ];

@@ -5,3 +5,9 @@ export const UPDATE_CONVO_STATUS = gql`
         status
     }
 `;
+
+export const BLOCK_CONVO = gql`
+    fragment BlockConvo on Convo {
+        status
+    }
+`;

@@ -161,6 +161,8 @@ export const schema = gql`
         dismissConvo(cid: ID!): Convo
         blockInitialConvo(cid: ID!): Convo
         activateConvo(cid: ID!): Convo
+        blockMessage(cid: ID!): Convo
+        finishConvo(cid: ID!): Convo
     }
 `;
 

@@ -6,7 +6,10 @@ import {
 import {
     ACTIVATE_CONVO_TYPE,
     BLOCK_INITIAL_CONVO_TYPE,
+    BLOCK_MESSAGE,
+    BLOCK_MESSAGE_TYPE,
     DISMISS_CONVO_TYPE,
+    FINISH_CONVO_TYPE,
 } from "./Mutations";
 
 const mock: any = {
@@ -183,3 +186,85 @@ for (let i = 0; i < 10; i++) {
 }
 
 export const activateConvosMocks = activate_mocks;
+
+let block_msg_mocks = [];
+for (let i = 0; i < 10; i++) {
+    block_msg_mocks.push({
+        request: {
+            query: BLOCK_MESSAGE_TYPE,
+            variables: {
+                cid: "active" + i,
+            },
+        },
+        result: {
+            data: {
+                blockMessage: {
+                    id: "active" + i,
+                    __typename: "Convo",
+                },
+            },
+        },
+    });
+}
+
+for (let i = 0; i < 10; i++) {
+    block_msg_mocks.push({
+        request: {
+            query: BLOCK_MESSAGE_TYPE,
+            variables: {
+                cid: "new" + i,
+            },
+        },
+        result: {
+            data: {
+                blockMessage: {
+                    id: "new" + i,
+                    __typename: "Convo",
+                },
+            },
+        },
+    });
+}
+
+export const blockMessageMocks = block_msg_mocks;
+
+let finish_mocks = [];
+for (let i = 0; i < 10; i++) {
+    finish_mocks.push({
+        request: {
+            query: FINISH_CONVO_TYPE,
+            variables: {
+                cid: "active" + i,
+            },
+        },
+        result: {
+            data: {
+                finishConvo: {
+                    id: "active" + i,
+                    __typename: "Convo",
+                },
+            },
+        },
+    });
+}
+
+for (let i = 0; i < 10; i++) {
+    finish_mocks.push({
+        request: {
+            query: FINISH_CONVO_TYPE,
+            variables: {
+                cid: "new" + i,
+            },
+        },
+        result: {
+            data: {
+                finishConvo: {
+                    id: "new" + i,
+                    __typename: "Convo",
+                },
+            },
+        },
+    });
+}
+
+export const finishConvoMocks = finish_mocks;

@@ -79,7 +79,7 @@ export const exampleUser: UserType = {
     ranking: 124,
     blocked: 12,
     beenBlocked: 435,
-    coin: 102333,
+    coin: 1333,
 
     coinSpent: 1300,
     csGoal: 2000,

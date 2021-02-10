@@ -97,7 +97,7 @@ export function genExampleConvo(newConvo: boolean): GConvoType {
         cover: cover,
         post: gExampleStrippedPost,
         messages: msgs,
-        status: newConvo ? 0 : Math.floor(Math.random() * 6) - 3,
+        status: newConvo ? 0 : convoStatus.pendingCompletion, //Math.floor(Math.random() * 6) - 3,
         __typename: "Convo",
     };
 }

@@ -28,15 +28,22 @@ import {
     ActivateConvoMutationData,
     ActivateConvoMutationVariables,
     BLOCK_INITIAL_CONVO,
+    BLOCK_MESSAGE,
     BlockInitialMutationData,
     BlockInitialMutationVariables,
+    BlockMessageMutationData,
+    BlockMessageMutationVariables,
     DISMISS_CONVO,
     DismissMutationData,
     DismissMutationVariables,
+    FINISH_CONVO,
+    FinishConvoMutationData,
+    FinishConvoMutationVariables,
 } from "./gql/Mutations";
 import { QUERY_TYPENAME } from "../../../global_gql/Schema";
 import { USER_TYPENAME } from "../../../global_types/UserTypes";
-import { UPDATE_CONVO_STATUS } from "./gql/Fragments";
+import { BLOCK_CONVO, UPDATE_CONVO_STATUS } from "./gql/Fragments";
+import { cache } from "../../../global_state/Cache";
 
 function getCheckLeft(uid: string, tid: string): (id: string) => boolean {
     if (uid === tid) {
@@ -131,6 +138,17 @@ const Convo: React.FC<Props> = (props) => {
                 },
             });
 
+            cache.writeFragment({
+                id: cache.identify({
+                    __typename: CONVO_TYPENAME,
+                    id: props.route.params.cid,
+                }),
+                data: {
+                    status: convoStatus.blocked,
+                },
+                fragment: BLOCK_CONVO,
+            });
+
             // Increase user blocked count
             cache.modify({
                 id: cache.identify({
@@ -190,6 +208,123 @@ const Convo: React.FC<Props> = (props) => {
                         });
 
                         return [updatedConvoRef, ...existing];
+                    },
+                },
+            });
+
+            cache.modify({
+                id: cache.identify({
+                    __typename: USER_TYPENAME,
+                    id: uid,
+                }),
+                fields: {
+                    coin(existing) {
+                        if (!!data?.convo) {
+                            return existing - data.convo.post.convoReward;
+                        } else {
+                            return existing;
+                        }
+                    },
+                },
+            });
+        },
+    });
+
+    const [blockMessage] = useMutation<
+        BlockMessageMutationData,
+        BlockMessageMutationVariables
+    >(BLOCK_MESSAGE, {
+        variables: { cid: props.route.params.cid },
+        optimisticResponse: {
+            blockMessage: {
+                id: props.route.params.cid,
+                __typename: CONVO_TYPENAME,
+            },
+        },
+        update(cache) {
+            cache.writeFragment({
+                id: cache.identify({
+                    __typename: CONVO_TYPENAME,
+                    id: props.route.params.cid,
+                }),
+                data: {
+                    status: convoStatus.blocked,
+                },
+                fragment: BLOCK_CONVO,
+            });
+
+            // Increase user blocked count
+            cache.modify({
+                id: cache.identify({
+                    __typename: USER_TYPENAME,
+                    id: uid,
+                }),
+                fields: {
+                    blocked(existing) {
+                        console.log("Blocked: ", existing);
+                        return existing + 1;
+                    },
+                    ranking(existing) {
+                        console.log("Ranking: ", existing);
+                        return existing - 1;
+                    },
+                },
+            });
+        },
+    });
+
+    const [finishConvo] = useMutation<
+        FinishConvoMutationData,
+        FinishConvoMutationVariables
+    >(FINISH_CONVO, {
+        variables: { cid: props.route.params.cid },
+        optimisticResponse: {
+            finishConvo: {
+                id: props.route.params.cid,
+                __typename: CONVO_TYPENAME,
+            },
+        },
+        update(cache) {
+            cache.writeFragment({
+                id: cache.identify({
+                    __typename: CONVO_TYPENAME,
+                    id: props.route.params.cid,
+                }),
+                data: {
+                    status: convoStatus.finished,
+                },
+                fragment: BLOCK_CONVO,
+            });
+
+            // Increase user successful Convo count
+            cache.modify({
+                id: cache.identify({
+                    __typename: USER_TYPENAME,
+                    id: uid,
+                }),
+                fields: {
+                    successfulConvos(existing) {
+                        return existing + 1;
+                    },
+                    ranking(existing) {
+                        return existing + 1;
+                    },
+                },
+            });
+
+            // Increase target's coin by the amount of the reward
+            cache.modify({
+                id: cache.identify({
+                    __typename: USER_TYPENAME,
+                    id: uid,
+                }),
+                fields: {
+                    coin(existing) {
+                        if (!!data?.convo && data.convo.cover.tid === uid ) {
+                            return existing + data.convo.post.convoReward;
+                        } else {
+                            return existing;
+                        }
                     },
                 },
             });
@@ -351,7 +486,10 @@ const Convo: React.FC<Props> = (props) => {
             } else {
                 const footer =
                     status === convoStatus.pendingCompletion ? (
-                        <PendingFinishFooter onPress={() => {}} />
+                        <PendingFinishFooter
+                            onFinish={finishConvo}
+                            finishMessage={uid === tid ? "Finish convo and collect reward?" : "Finish convo?"}
+                        />
                     ) : null;
 
                 return (
@@ -382,6 +520,17 @@ const Convo: React.FC<Props> = (props) => {
                                             showBlockMsg={
                                                 index ===
                                                 data.convo.messages.length - 1
+                                            }
+                                            onBlock={async () => {
+                                                try {
+                                                    setAutoFocus(false);
+                                                    await blockMessage();
+                                                } catch (e) {
+                                                    console.log(e);
+                                                }
+                                            }}
+                                            blockMessage={
+                                                "Block message and drop digicoin in escrow?"
                                             }
                                         />
                                     )}

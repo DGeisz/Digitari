@@ -1,6 +1,7 @@
 import * as React from "react";
 import { styles } from "./StatusFooterStyles";
 import { Text, TouchableOpacity, View } from "react-native";
+import CancelConfirmModal from "../../../../../global_building_blocks/cancel_confirm_modal/CancelConfirmModal";
 
 export class DismissedFooter extends React.PureComponent {
     render() {
@@ -39,16 +40,40 @@ export class SuccessFooter extends React.PureComponent {
 }
 
 interface PendingProps {
-    onPress: () => void;
+    onFinish: () => void;
+    finishMessage: string;
 }
 
-export class PendingFinishFooter extends React.PureComponent<PendingProps> {
+interface PendingState {
+    modalVisible: boolean;
+}
+
+export class PendingFinishFooter extends React.PureComponent<
+    PendingProps,
+    PendingState
+> {
+    state = {
+        modalVisible: false,
+    };
+
     render() {
         return (
             <View style={styles.statusContainer}>
+                <CancelConfirmModal
+                    visible={this.state.modalVisible}
+                    body={this.props.finishMessage}
+                    title={"Finish Convo"}
+                    onConfirm={() => {
+                        this.setState({modalVisible: false});
+                        setTimeout(this.props.onFinish, 200);
+                    }}
+                    confirmMessage="Finish"
+                    onCancel={() => this.setState({modalVisible: false})}
+                />
                 <TouchableOpacity
                     activeOpacity={0.5}
                     style={styles.pendingContainer}
+                    onPress={() => this.setState({ modalVisible: true })}
                 >
                     <Text style={styles.pendingText}>Finish Convo</Text>
                 </TouchableOpacity>

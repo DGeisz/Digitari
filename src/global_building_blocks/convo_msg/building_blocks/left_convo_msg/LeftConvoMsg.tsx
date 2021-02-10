@@ -5,14 +5,25 @@ import { styles } from "./LeftConvoMsgStyles";
 import { millisToRep } from "../../../../global_utils/TimeRepUtils";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { palette } from "../../../../global_styles/Palette";
+import CancelConfirmModal from "../../../cancel_confirm_modal/CancelConfirmModal";
 
 interface Props {
     msg: ConvoMsgType;
     showUser: boolean;
     showBlockMsg: boolean;
+    blockMessage: string;
+    onBlock: () => void;
 }
 
-export default class LeftConvoMsg extends React.PureComponent<Props> {
+interface State {
+    blockModalVisible: boolean;
+}
+
+export default class LeftConvoMsg extends React.PureComponent<Props, State> {
+    state = {
+        blockModalVisible: false,
+    };
+
     render() {
         return (
             <View style={styles.leftMsgContainer}>
@@ -26,7 +37,6 @@ export default class LeftConvoMsg extends React.PureComponent<Props> {
                     </View>
                     <View style={styles.leftMainFooter}>
                         <View style={styles.mainFooterContainer}>
-                            {/*<View>*/}
                             {this.props.showUser && (
                                 <View style={styles.leftFooterLeft}>
                                     <Text
@@ -52,15 +62,37 @@ export default class LeftConvoMsg extends React.PureComponent<Props> {
                     </View>
                 </View>
                 {this.props.showBlockMsg && (
-                    <View style={styles.msgBlockContainer}>
-                        <TouchableOpacity style={styles.msgBlockButton}>
-                            <MaterialCommunityIcons
-                                name="hand-left"
-                                color={palette.warning}
-                                size={15}
+                    <>
+                        <View style={styles.msgBlockContainer}>
+                            <CancelConfirmModal
+                                confirmTextColor={palette.warning}
+                                confirmBackgroundColor={palette.warningLight}
+                                confirmMessage={"Block"}
+                                visible={this.state.blockModalVisible}
+                                body={this.props.blockMessage}
+                                title={"Block Message"}
+                                onConfirm={() => {
+                                    this.setState({ blockModalVisible: false });
+                                    setTimeout(this.props.onBlock, 200);
+                                }}
+                                onCancel={() =>
+                                    this.setState({ blockModalVisible: false })
+                                }
                             />
-                        </TouchableOpacity>
-                    </View>
+                            <TouchableOpacity
+                                style={styles.msgBlockButton}
+                                onPress={() =>
+                                    this.setState({ blockModalVisible: true })
+                                }
+                            >
+                                <MaterialCommunityIcons
+                                    name="hand-left"
+                                    color={palette.warning}
+                                    size={15}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    </>
                 )}
             </View>
         );

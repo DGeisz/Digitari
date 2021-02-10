@@ -56,7 +56,7 @@ export const gExampleConvoCover: GConvoCoverType = Object.assign(
 );
 
 export function genRandomConvoCover(): GConvoCoverType {
-    const nameG = Math.random() > 0.5;
+    const nameG = false;//Math.random() > 0.5;
 
     return {
         id: rw({ exactly: 1, join: " " }),

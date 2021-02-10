@@ -86,3 +86,61 @@ export interface ActivateConvoMutationData {
 export interface ActivateConvoMutationVariables {
     cid: string;
 }
+
+// Block message (effectively blocks entire convo)
+export const BLOCK_MESSAGE = gql`
+    mutation BlockMessage($cid: ID!) {
+        blockMessage(cid: $cid) {
+            id
+        }
+    }
+`;
+
+export const BLOCK_MESSAGE_TYPE = gql`
+    mutation BlockMessage($cid: ID!) {
+        blockMessage(cid: $cid) {
+            id
+            __typename
+        }
+    }
+`;
+
+export interface BlockMessageMutationData {
+    blockMessage: {
+        id: string;
+        __typename: string;
+    };
+}
+
+export interface BlockMessageMutationVariables {
+    cid: string;
+}
+
+// Finish Convo
+export const FINISH_CONVO = gql`
+    mutation FinishConvo($cid: ID!) {
+        finishConvo(cid: $cid) {
+            id
+        }
+    }
+`;
+
+export const FINISH_CONVO_TYPE = gql`
+    mutation FinishConvo($cid: ID!) {
+        finishConvo(cid: $cid) {
+            id
+            __typename
+        }
+    }
+`;
+
+export interface FinishConvoMutationData {
+    finishConvo: {
+        id: string;
+        __typename: string;
+    };
+}
+
+export interface FinishConvoMutationVariables {
+    cid: string;
+}
