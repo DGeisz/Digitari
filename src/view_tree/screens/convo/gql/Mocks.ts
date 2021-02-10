@@ -6,11 +6,12 @@ import {
 import {
     ACTIVATE_CONVO_TYPE,
     BLOCK_INITIAL_CONVO_TYPE,
-    BLOCK_MESSAGE,
     BLOCK_MESSAGE_TYPE,
     DISMISS_CONVO_TYPE,
     FINISH_CONVO_TYPE,
+    SEND_MESSAGE_TYPE,
 } from "./Mutations";
+import { CONVO_MSG_TYPENAME } from "../../../../global_types/ConvoMsgTypes";
 
 const mock: any = {
     request: {
@@ -28,22 +29,24 @@ const mock: any = {
 
 let mocks = [];
 
-for (let i = 0; i < 10; i++) {
-    mocks.push({
-        request: {
-            query: GET_CONVO_TYPE,
-            variables: {
-                cid: "new" + i,
+for (let j = 0; j < 10; j++) {
+    for (let i = 0; i < 10; i++) {
+        mocks.push({
+            request: {
+                query: GET_CONVO_TYPE,
+                variables: {
+                    cid: "new" + i,
+                },
             },
-        },
-        result: {
-            data: {
-                convo: Object.assign({}, genExampleConvo(true), {
-                    id: "new" + i,
-                }),
+            result: {
+                data: {
+                    convo: Object.assign({}, genExampleConvo(true), {
+                        id: "new" + i,
+                    }),
+                },
             },
-        },
-    });
+        });
+    }
 }
 
 for (let i = 0; i < 10; i++) {
@@ -268,3 +271,60 @@ for (let i = 0; i < 10; i++) {
 }
 
 export const finishConvoMocks = finish_mocks;
+
+let send_msg_mocks = [];
+for (let i = 0; i < 10; i++) {
+    send_msg_mocks.push({
+        request: {
+            query: SEND_MESSAGE_TYPE,
+            variables: {
+                cid: "active" + i,
+                uid: "danny",
+                user: "Danny",
+                anonymous: false,
+                content: "Hey",
+            },
+        },
+        result: {
+            data: {
+                sendMessage: {
+                    id: "active" + i,
+                    uid: "danny",
+                    user: "Danny",
+                    anonymous: false,
+                    content: "Hey",
+                    __typename: CONVO_MSG_TYPENAME,
+                },
+            },
+        },
+    });
+}
+
+for (let i = 0; i < 10; i++) {
+    send_msg_mocks.push({
+        request: {
+            query: SEND_MESSAGE_TYPE,
+            variables: {
+                cid: "new" + i,
+                uid: "danny",
+                user: "Danny",
+                anonymous: false,
+                content: "Hey",
+            },
+        },
+        result: {
+            data: {
+                sendMessage: {
+                    id: "new" + i,
+                    uid: "danny",
+                    user: "Danny",
+                    anonymous: false,
+                    content: "Hey",
+                    __typename: CONVO_MSG_TYPENAME,
+                },
+            },
+        },
+    });
+}
+
+export const sendMsgMocks = send_msg_mocks;

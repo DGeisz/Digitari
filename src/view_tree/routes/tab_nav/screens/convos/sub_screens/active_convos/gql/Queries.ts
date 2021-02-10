@@ -18,7 +18,6 @@ export const GET_ACTIVE_CONVOS = gql`
             tid
             tranking
             tname
-            tanony
             tviewed
         }
     }
@@ -42,7 +41,6 @@ export const GET_ACTIVE_CONVOS_TYPE = gql`
             tid
             tranking
             tname
-            tanony
             tviewed
             __typename
         }

@@ -13,6 +13,7 @@ import {
     convoMocks,
     dismissConvosMocks,
     finishConvoMocks,
+    sendMsgMocks,
 } from "../view_tree/screens/convo/gql/Mocks";
 import { userMocks } from "../view_tree/routes/tab_nav/screens/profile/gql/Mocks";
 
@@ -32,4 +33,5 @@ export const allMocks: any[] = [
     ...activateConvosMocks,
     ...blockMessageMocks,
     ...finishConvoMocks,
+    ...sendMsgMocks,
 ];

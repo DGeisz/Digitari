@@ -36,7 +36,7 @@ export default class ConvoCover extends React.PureComponent<Props> {
 
         if (this.props.convoCover.tid === uid) {
             name = this.props.convoCover.tname;
-            anonymous = this.props.convoCover.tanony;
+            anonymous = false;
             ranking = this.props.convoCover.tranking;
             viewed = this.props.convoCover.tviewed;
         } else {
@@ -102,9 +102,7 @@ export default class ConvoCover extends React.PureComponent<Props> {
                                                 name={
                                                     this.props.convoCover.tname
                                                 }
-                                                anonymous={
-                                                    this.props.convoCover.tanony
-                                                }
+                                                anonymous={false}
                                             />
                                             <Text
                                                 style={styles.mainHeaderDotText}

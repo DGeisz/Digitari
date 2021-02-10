@@ -5,7 +5,11 @@ import { basicLayouts } from "../../../global_styles/BasicLayouts";
 import StrippedPost from "../../../global_building_blocks/stripped_post/StrippedPost";
 import { exampleStrippedPost } from "../../../global_types/PostTypes";
 import ConvoMsg from "../../../global_building_blocks/convo_msg/ConvoMsg";
-import { localSuid, localUid } from "../../../global_state/UserState";
+import {
+    localFirstName,
+    localSuid,
+    localUid,
+} from "../../../global_state/UserState";
 import ResponseResponse from "./building_blocks/response_response/ResponseResponse";
 import {
     CONVO_TYPENAME,
@@ -39,11 +43,18 @@ import {
     FINISH_CONVO,
     FinishConvoMutationData,
     FinishConvoMutationVariables,
+    SEND_MESSAGE,
+    SendMessageMutationData,
+    SendMessageMutationVariables,
 } from "./gql/Mutations";
 import { QUERY_TYPENAME } from "../../../global_gql/Schema";
 import { USER_TYPENAME } from "../../../global_types/UserTypes";
-import { BLOCK_CONVO, UPDATE_CONVO_STATUS } from "./gql/Fragments";
-import { cache } from "../../../global_state/Cache";
+import {
+    BLOCK_CONVO,
+    MESSAGE_SENT,
+    UPDATE_CONVO_STATUS,
+} from "./gql/Fragments";
+import { CONVO_MSG_TYPENAME } from "../../../global_types/ConvoMsgTypes";
 
 function getCheckLeft(uid: string, tid: string): (id: string) => boolean {
     if (uid === tid) {
@@ -69,13 +80,15 @@ interface QueryVariables {
 const Convo: React.FC<Props> = (props) => {
     const uid = localUid();
     const suid = localSuid();
+    const firstName = localFirstName();
+    const cid = props.route.params.cid;
 
     // Query
     const { data, error, networkStatus, refetch } = useQuery<
         QueryData,
         QueryVariables
     >(GET_CONVO, {
-        variables: { cid: props.route.params.cid },
+        variables: { cid: cid },
         notifyOnNetworkStatusChange: true,
     });
 
@@ -84,10 +97,10 @@ const Convo: React.FC<Props> = (props) => {
         DismissMutationData,
         DismissMutationVariables
     >(DISMISS_CONVO, {
-        variables: { cid: props.route.params.cid },
+        variables: { cid: cid },
         optimisticResponse: {
             dismissConvo: {
-                id: props.route.params.cid,
+                id: cid,
                 __typename: CONVO_TYPENAME,
             },
         },
@@ -100,9 +113,7 @@ const Convo: React.FC<Props> = (props) => {
                 fields: {
                     newConvos(existing, { readField }) {
                         return existing.filter(
-                            (reqRef: any) =>
-                                readField("id", reqRef) !==
-                                props.route.params.cid
+                            (reqRef: any) => readField("id", reqRef) !== cid
                         );
                     },
                 },
@@ -114,10 +125,10 @@ const Convo: React.FC<Props> = (props) => {
         BlockInitialMutationData,
         BlockInitialMutationVariables
     >(BLOCK_INITIAL_CONVO, {
-        variables: { cid: props.route.params.cid },
+        variables: { cid: cid },
         optimisticResponse: {
             blockInitialConvo: {
-                id: props.route.params.cid,
+                id: cid,
                 __typename: CONVO_TYPENAME,
             },
         },
@@ -130,9 +141,7 @@ const Convo: React.FC<Props> = (props) => {
                 fields: {
                     newConvos(existing, { readField }) {
                         return existing.filter(
-                            (reqRef: any) =>
-                                readField("id", reqRef) !==
-                                props.route.params.cid
+                            (reqRef: any) => readField("id", reqRef) !== cid
                         );
                     },
                 },
@@ -141,7 +150,7 @@ const Convo: React.FC<Props> = (props) => {
             cache.writeFragment({
                 id: cache.identify({
                     __typename: CONVO_TYPENAME,
-                    id: props.route.params.cid,
+                    id: cid,
                 }),
                 data: {
                     status: convoStatus.blocked,
@@ -173,10 +182,10 @@ const Convo: React.FC<Props> = (props) => {
         ActivateConvoMutationData,
         ActivateConvoMutationVariables
     >(ACTIVATE_CONVO, {
-        variables: { cid: props.route.params.cid },
+        variables: { cid: cid },
         optimisticResponse: {
             activateConvo: {
-                id: props.route.params.cid,
+                id: cid,
                 __typename: CONVO_TYPENAME,
             },
         },
@@ -189,9 +198,7 @@ const Convo: React.FC<Props> = (props) => {
                 fields: {
                     newConvos(existing, { readField }) {
                         return existing.filter(
-                            (reqRef: any) =>
-                                readField("id", reqRef) !==
-                                props.route.params.cid
+                            (reqRef: any) => readField("id", reqRef) !== cid
                         );
                     },
                     activeConvos(existing) {
@@ -199,7 +206,7 @@ const Convo: React.FC<Props> = (props) => {
                         const updatedConvoRef = cache.writeFragment({
                             id: cache.identify({
                                 __typename: CONVO_TYPENAME,
-                                id: props.route.params.cid,
+                                id: cid,
                             }),
                             data: {
                                 status: convoStatus.active,
@@ -234,10 +241,10 @@ const Convo: React.FC<Props> = (props) => {
         BlockMessageMutationData,
         BlockMessageMutationVariables
     >(BLOCK_MESSAGE, {
-        variables: { cid: props.route.params.cid },
+        variables: { cid: cid },
         optimisticResponse: {
             blockMessage: {
-                id: props.route.params.cid,
+                id: cid,
                 __typename: CONVO_TYPENAME,
             },
         },
@@ -245,7 +252,7 @@ const Convo: React.FC<Props> = (props) => {
             cache.writeFragment({
                 id: cache.identify({
                     __typename: CONVO_TYPENAME,
-                    id: props.route.params.cid,
+                    id: cid,
                 }),
                 data: {
                     status: convoStatus.blocked,
@@ -277,10 +284,10 @@ const Convo: React.FC<Props> = (props) => {
         FinishConvoMutationData,
         FinishConvoMutationVariables
     >(FINISH_CONVO, {
-        variables: { cid: props.route.params.cid },
+        variables: { cid: cid },
         optimisticResponse: {
             finishConvo: {
-                id: props.route.params.cid,
+                id: cid,
                 __typename: CONVO_TYPENAME,
             },
         },
@@ -288,7 +295,7 @@ const Convo: React.FC<Props> = (props) => {
             cache.writeFragment({
                 id: cache.identify({
                     __typename: CONVO_TYPENAME,
-                    id: props.route.params.cid,
+                    id: cid,
                 }),
                 data: {
                     status: convoStatus.finished,
@@ -320,7 +327,7 @@ const Convo: React.FC<Props> = (props) => {
                 }),
                 fields: {
                     coin(existing) {
-                        if (!!data?.convo && data.convo.cover.tid === uid ) {
+                        if (!!data?.convo && data.convo.cover.tid === uid) {
                             return existing + data.convo.post.convoReward;
                         } else {
                             return existing;
@@ -331,15 +338,71 @@ const Convo: React.FC<Props> = (props) => {
         },
     });
 
+    // Send message
+    const [sendMsgBase] = useMutation<
+        SendMessageMutationData,
+        SendMessageMutationVariables
+    >(SEND_MESSAGE, {
+        update(cache, { data }) {
+            cache.modify({
+                id: cache.identify({
+                    __typename: CONVO_TYPENAME,
+                    id: cid,
+                }),
+                fields: {
+                    messages(existing) {
+                        const newMsgRef = cache.writeFragment({
+                            data: data?.sendMessage,
+                            fragment: MESSAGE_SENT,
+                        });
+
+                        console.log(newMsgRef);
+
+                        return [newMsgRef, ...existing];
+                    },
+                },
+            });
+        },
+    });
+
+    async function sendMessage(msg: string) {
+        if (!!data?.convo) {
+            const { tid, sanony } = data.convo.cover;
+            const anony = uid === tid ? false : sanony;
+            const muid = anony ? suid : uid;
+
+            await sendMsgBase({
+                variables: {
+                    cid,
+                    uid: muid,
+                    user: firstName,
+                    anonymous: anony,
+                    content: msg,
+                },
+                optimisticResponse: {
+                    sendMessage: {
+                        id: cid,
+                        uid: muid,
+                        user: firstName,
+                        time: Date.now(),
+                        anonymous: anony,
+                        content: msg,
+                        __typename: CONVO_MSG_TYPENAME,
+                    },
+                },
+            });
+        }
+    }
+
     // Set title of page
     React.useEffect(() => {
         if (!!data?.convo) {
-            const { sid, tid, sanony, tanony, sname, tname } = data.convo.cover;
+            const { sid, tid, sanony, sname, tname } = data.convo.cover;
 
             if (uid === tid || uid === sid || suid === suid) {
                 if (uid === tid && !sanony) {
                     props.navigation.setOptions({ title: sname });
-                } else if (uid !== tid && !tanony) {
+                } else if (uid !== tid) {
                     props.navigation.setOptions({ title: tname });
                 }
             }
@@ -488,13 +551,17 @@ const Convo: React.FC<Props> = (props) => {
                     status === convoStatus.pendingCompletion ? (
                         <PendingFinishFooter
                             onFinish={finishConvo}
-                            finishMessage={uid === tid ? "Finish convo and collect reward?" : "Finish convo?"}
+                            finishMessage={
+                                uid === tid
+                                    ? "Finish convo and collect reward?"
+                                    : "Finish convo?"
+                            }
                         />
                     ) : null;
 
                 return (
                     <MessageInput
-                        onSend={() => {}}
+                        onSend={sendMessage}
                         onKeyboardShow={() => {
                             listRef.current?.scrollToEnd();
                         }}

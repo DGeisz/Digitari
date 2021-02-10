@@ -29,7 +29,6 @@ export const GET_FEED = gql`
                 tid
                 tranking
                 tname
-                tanony
                 tviewed
             }
         }
@@ -65,7 +64,6 @@ export const GET_FEED_TYPE = gql`
                 tid
                 tranking
                 tname
-                tanony
                 tviewed
                 __typename
             }

@@ -84,7 +84,6 @@ export const schema = gql`
         tid: ID
         tranking: Int
         tname: String
-        tanony: Boolean
         tviewed: Boolean
     }
 
@@ -163,6 +162,13 @@ export const schema = gql`
         activateConvo(cid: ID!): Convo
         blockMessage(cid: ID!): Convo
         finishConvo(cid: ID!): Convo
+        sendMessage(
+            cid: ID!
+            uid: String
+            user: String
+            anonymous: Boolean
+            content: String
+        ): ConvoMsg
     }
 `;
 

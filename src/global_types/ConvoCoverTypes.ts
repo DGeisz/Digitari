@@ -21,7 +21,6 @@ export interface ConvoCoverType {
     tid: string;
     tranking: number;
     tname: string;
-    tanony: boolean;
     tviewed: boolean;
 }
 
@@ -46,7 +45,6 @@ export const exampleConvoCover: ConvoCoverType = {
     tranking: 234,
     tname: "Jeff",
     tviewed: true,
-    tanony: false,
 };
 
 export const gExampleConvoCover: GConvoCoverType = Object.assign(
@@ -56,7 +54,7 @@ export const gExampleConvoCover: GConvoCoverType = Object.assign(
 );
 
 export function genRandomConvoCover(): GConvoCoverType {
-    const nameG = false;//Math.random() > 0.5;
+    const nameG = false; //Math.random() > 0.5;
 
     return {
         id: rw({ exactly: 1, join: " " }),
@@ -75,7 +73,6 @@ export function genRandomConvoCover(): GConvoCoverType {
         tranking: 234,
         tname: rw({ exactly: 1, join: "" }),
         tviewed: Math.random() > 0.5,
-        tanony: Math.random() > 0.5,
         __typename: "ConvoCover",
     };
 }

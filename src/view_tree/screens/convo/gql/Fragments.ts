@@ -11,3 +11,14 @@ export const BLOCK_CONVO = gql`
         status
     }
 `;
+
+export const MESSAGE_SENT = gql`
+    fragment MessageSent on ConvoMsg {
+        id
+        uid
+        user
+        time
+        anonymous
+        content
+    }
+`;

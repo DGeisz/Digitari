@@ -1,6 +1,8 @@
 import { millisInHour } from "../global_utils/TimeRepUtils";
 import rw from "random-words";
 
+export const CONVO_MSG_TYPENAME = "ConvoMsg";
+
 export interface ConvoMsgType {
     id: string;
     anonymous: boolean;

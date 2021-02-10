@@ -31,7 +31,6 @@ export const GET_CONVO = gql`
                 tid
                 tranking
                 tname
-                tanony
                 tviewed
             }
             messages {
@@ -78,7 +77,6 @@ export const GET_CONVO_TYPE = gql`
                 tid
                 tranking
                 tname
-                tanony
                 tviewed
                 __typename
             }

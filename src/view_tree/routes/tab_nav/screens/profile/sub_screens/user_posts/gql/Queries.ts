@@ -29,7 +29,6 @@ export const GET_USER_POSTS = gql`
                 tid
                 tranking
                 tname
-                tanony
                 tviewed
             }
         }
@@ -65,7 +64,6 @@ export const GET_USER_POSTS_TYPE = gql`
                 tid
                 tranking
                 tname
-                tanony
                 tviewed
                 __typename
             }

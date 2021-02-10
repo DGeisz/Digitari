@@ -30,7 +30,6 @@ export const GET_POST = gql`
                 tid
                 tranking
                 tname
-                tanony
                 tviewed
             }
         }
@@ -67,7 +66,6 @@ export const GET_POST_TYPE = gql`
                 tid
                 tranking
                 tname
-                tanony
                 tviewed
                 __typename
             }

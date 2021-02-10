@@ -144,3 +144,75 @@ export interface FinishConvoMutationData {
 export interface FinishConvoMutationVariables {
     cid: string;
 }
+
+// Send message
+export const SEND_MESSAGE = gql`
+    mutation SendMessage(
+        $cid: ID!
+        $uid: String
+        $user: String
+        $anonymous: Boolean
+        $content: String
+    ) {
+        sendMessage(
+            cid: $cid
+            uid: $uid
+            user: $user
+            anonymous: $anonymous
+            content: $content
+        ) {
+            id
+            uid
+            user
+            time
+            anonymous
+            content
+        }
+    }
+`;
+
+export const SEND_MESSAGE_TYPE = gql`
+    mutation SendMessage(
+        $cid: ID!
+        $uid: String
+        $user: String
+        $anonymous: Boolean
+        $content: String
+    ) {
+        sendMessage(
+            cid: $cid
+            uid: $uid
+            user: $user
+            anonymous: $anonymous
+            content: $content
+        ) {
+            id
+            uid
+            user
+            time
+            anonymous
+            content
+            __typename
+        }
+    }
+`;
+
+export interface SendMessageMutationData {
+    sendMessage: {
+        id: string;
+        uid: string;
+        user: string;
+        time: number;
+        anonymous: boolean;
+        content: string;
+        __typename: string;
+    };
+}
+
+export interface SendMessageMutationVariables {
+    cid: string;
+    uid: string;
+    user: string;
+    anonymous: boolean;
+    content: string;
+}

@@ -64,11 +64,11 @@ export class PendingFinishFooter extends React.PureComponent<
                     body={this.props.finishMessage}
                     title={"Finish Convo"}
                     onConfirm={() => {
-                        this.setState({modalVisible: false});
+                        this.setState({ modalVisible: false });
                         setTimeout(this.props.onFinish, 200);
                     }}
                     confirmMessage="Finish"
-                    onCancel={() => this.setState({modalVisible: false})}
+                    onCancel={() => this.setState({ modalVisible: false })}
                 />
                 <TouchableOpacity
                     activeOpacity={0.5}
