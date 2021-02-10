@@ -30,19 +30,21 @@ const mock: any = {
 let mocks = [];
 
 for (let j = 0; j < 10; j++) {
+    let convo = Object.assign({}, genExampleConvo(true), {
+        id: "new" + j,
+    });
+
     for (let i = 0; i < 10; i++) {
         mocks.push({
             request: {
                 query: GET_CONVO_TYPE,
                 variables: {
-                    cid: "new" + i,
+                    cid: "new" + j,
                 },
             },
             result: {
                 data: {
-                    convo: Object.assign({}, genExampleConvo(true), {
-                        id: "new" + i,
-                    }),
+                    convo,
                 },
             },
         });
@@ -87,6 +89,7 @@ for (let i = 0; i < 10; i++) {
                 dismissConvo: {
                     id: "active" + i,
                 },
+                __typename: "Mutation",
             },
         },
     });
@@ -105,6 +108,7 @@ for (let i = 0; i < 10; i++) {
                 dismissConvo: {
                     id: "new" + i,
                 },
+                __typename: "Mutation",
             },
         },
     });
@@ -126,6 +130,7 @@ for (let i = 0; i < 10; i++) {
                 blockInitialConvo: {
                     id: "active" + i,
                 },
+                __typename: "Mutation",
             },
         },
     });
@@ -144,6 +149,7 @@ for (let i = 0; i < 10; i++) {
                 blockInitialConvo: {
                     id: "new" + i,
                 },
+                __typename: "Mutation",
             },
         },
     });
@@ -165,6 +171,7 @@ for (let i = 0; i < 10; i++) {
                 activateConvo: {
                     id: "active" + i,
                 },
+                __typename: "Mutation",
             },
         },
     });
@@ -183,6 +190,7 @@ for (let i = 0; i < 10; i++) {
                 activateConvo: {
                     id: "new" + i,
                 },
+                __typename: "Mutation",
             },
         },
     });
@@ -205,6 +213,7 @@ for (let i = 0; i < 10; i++) {
                     id: "active" + i,
                     __typename: "Convo",
                 },
+                __typename: "Mutation",
             },
         },
     });
@@ -224,6 +233,7 @@ for (let i = 0; i < 10; i++) {
                     id: "new" + i,
                     __typename: "Convo",
                 },
+                __typename: "Mutation",
             },
         },
     });

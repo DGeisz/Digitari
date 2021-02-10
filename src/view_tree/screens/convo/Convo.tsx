@@ -190,6 +190,8 @@ const Convo: React.FC<Props> = (props) => {
             },
         },
         update(cache) {
+            // console.log(cache.data);
+
             // Remove convo from new convos and add to active convos
             cache.modify({
                 id: cache.identify({
@@ -344,6 +346,8 @@ const Convo: React.FC<Props> = (props) => {
         SendMessageMutationVariables
     >(SEND_MESSAGE, {
         update(cache, { data }) {
+            console.log("ang", data);
+
             cache.modify({
                 id: cache.identify({
                     __typename: CONVO_TYPENAME,
@@ -351,12 +355,28 @@ const Convo: React.FC<Props> = (props) => {
                 }),
                 fields: {
                     messages(existing) {
+                        console.log("ung", data);
                         const newMsgRef = cache.writeFragment({
                             data: data?.sendMessage,
                             fragment: MESSAGE_SENT,
                         });
+                        // console.log(cache.data.data);
 
+                        console.log(
+                            "bleet: ",
+                            cache.readFragment({
+                                id: cache.identify({
+                                    __typename: CONVO_MSG_TYPENAME,
+                                    id: data?.sendMessage.id,
+                                    time: data?.sendMessage.time,
+                                }),
+                                fragment: MESSAGE_SENT,
+                            })
+                        );
+
+                        // console.log(cache.data.data);
                         console.log(newMsgRef);
+                        console.log([newMsgRef, ...existing]);
 
                         return [newMsgRef, ...existing];
                     },

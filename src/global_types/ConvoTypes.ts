@@ -86,9 +86,10 @@ export function genExampleConvo(newConvo: boolean): GConvoType {
     let msgs = [];
     let num = Math.floor(Math.random() * 10) + 1;
 
-    for (let i = 0; i < num; i++) {
-        msgs.push(genConvoMsg());
-    }
+    // for (let i = 0; i < num; i++) {
+    //     msgs.push(genConvoMsg());
+    // }
+    msgs.push(genConvoMsg());
 
     const cover = genRandomConvoCover();
 
