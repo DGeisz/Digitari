@@ -6,10 +6,21 @@ import {
 } from "../../MainEntryNavTypes";
 import { basicLayouts } from "../../../global_styles/BasicLayouts";
 import { styles } from "./NewResponseStyles";
-import { localFirstName } from "../../../global_state/UserState";
+import { localFirstName, localUid } from "../../../global_state/UserState";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { palette } from "../../../global_styles/Palette";
 import MessageInput from "../../../global_building_blocks/message_input/MessageInput";
+import { useMutation } from "@apollo/client";
+import {
+    NEW_CONVO,
+    NewResponseMutationData,
+    NewResponseMutationVariables,
+} from "./gql/Mutations";
+import { CONVO_TYPENAME, convoStatus } from "../../../global_types/ConvoTypes";
+import { NEW_RESPONSE_CONVO } from "./gql/Fragments";
+import { QUERY_TYPENAME } from "../../../global_gql/Schema";
+import { UPDATE_CONVO_STATUS } from "../convo/gql/Fragments";
+import { USER_TYPENAME } from "../../../global_types/UserTypes";
 
 interface Props {
     route: NewResponseRouteProp;
@@ -18,12 +29,64 @@ interface Props {
 
 const NewResponse: React.FC<Props> = (props) => {
     const firstName = localFirstName();
+    const uid = localUid();
 
     const [anony, setAnony] = React.useState<boolean>(false);
 
-    const onSend = (text: string) => {
-        props.navigation.pop();
-        props.navigation.navigate("Convo", { cid: "blue" });
+    const [newConvoBase] = useMutation<
+        NewResponseMutationData,
+        NewResponseMutationVariables
+    >(NEW_CONVO, {
+        update(cache, { data }) {
+            if (!!data?.newConvo) {
+                cache.modify({
+                    id: cache.identify({
+                        __typename: QUERY_TYPENAME,
+                    }),
+                    fields: {
+                        activeConvos(existing) {
+                            const newConvoRef = cache.writeFragment({
+                                fragment: NEW_RESPONSE_CONVO,
+                                data: data.newConvo,
+                            });
+
+                            return [newConvoRef, ...existing];
+                        },
+                    },
+                });
+
+                cache.modify({
+                    id: cache.identify({
+                        __typename: USER_TYPENAME,
+                        id: uid,
+                    }),
+                    fields: {
+                        coin(existing) {
+                            return existing - props.route.params.responseCost;
+                        },
+                    },
+                });
+
+                props.navigation.pop();
+                props.navigation.navigate("Convo", { cid: data.newConvo.id });
+            } else {
+                console.log("No new data for new response");
+            }
+        },
+    });
+
+    const onSend = async (text: string) => {
+        try {
+            await newConvoBase({
+                variables: {
+                    pid: props.route.params.pid,
+                    sanony: anony,
+                    msg: text,
+                },
+            });
+        } catch (e) {
+            console.log("Send error", e);
+        }
     };
 
     return (

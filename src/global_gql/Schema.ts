@@ -169,6 +169,7 @@ export const schema = gql`
             anonymous: Boolean
             content: String
         ): ConvoMsg
+        newConvo(pid: ID!, sanony: Boolean!, msg: String!): Convo
     }
 `;
 

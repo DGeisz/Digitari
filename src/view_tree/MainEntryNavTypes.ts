@@ -8,9 +8,9 @@ export type MainEntryStack = {
     };
     NewPost: undefined;
     NewResponse: {
-        tid: string;
         tname: string;
         pid: string;
+        responseCost: number;
     };
     PostScreen: {
         pid: string;
