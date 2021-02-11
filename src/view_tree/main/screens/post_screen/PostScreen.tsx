@@ -3,7 +3,10 @@ import { FlatList } from "react-native";
 import { exampleConvoCover } from "../../../../global_types/ConvoCoverTypes";
 import ConvoCover from "../../../../global_building_blocks/convo_cover/ConvoCover";
 import Post from "../../../../global_building_blocks/post/Post";
-import { postExampleWithLink, PostType } from "../../../../global_types/PostTypes";
+import {
+    postExampleWithLink,
+    PostType,
+} from "../../../../global_types/PostTypes";
 import { NetworkStatus, useQuery } from "@apollo/client";
 import { GET_POST } from "./gql/Queries";
 import {

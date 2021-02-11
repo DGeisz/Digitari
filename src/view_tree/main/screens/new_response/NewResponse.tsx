@@ -16,7 +16,10 @@ import {
     NewResponseMutationData,
     NewResponseMutationVariables,
 } from "./gql/Mutations";
-import { CONVO_TYPENAME, convoStatus } from "../../../../global_types/ConvoTypes";
+import {
+    CONVO_TYPENAME,
+    convoStatus,
+} from "../../../../global_types/ConvoTypes";
 import { NEW_RESPONSE_CONVO } from "./gql/Fragments";
 import { QUERY_TYPENAME } from "../../../../global_gql/Schema";
 import { UPDATE_CONVO_STATUS } from "../convo/gql/Fragments";
