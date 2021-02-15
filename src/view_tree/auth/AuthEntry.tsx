@@ -1,5 +1,8 @@
 import * as React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+    createStackNavigator,
+    HeaderBackButton,
+} from "@react-navigation/stack";
 import Launch from "./screens/launch/Launch";
 import SignIn from "./screens/sign_in/SignIn";
 import SignInEmailPwd from "./screens/sign_in_email_pwd/SignInEmailPwd";
@@ -11,8 +14,9 @@ import NewAccountName from "./screens/new_account_name/NewAccountName";
 import NewAccountEmailPwd from "./screens/new_account_email_pwd/NewAccountEmailPwd";
 import VerifyEmail from "./screens/verify_email/VerifyEmail";
 import { palette } from "../../global_styles/Palette";
+import { AuthStackType } from "./AuthEntryNavTypes";
 
-const AuthStack = createStackNavigator();
+const AuthStack = createStackNavigator<AuthStackType>();
 
 const AuthEntry: React.FC = () => {
     return (
@@ -21,8 +25,11 @@ const AuthEntry: React.FC = () => {
             screenOptions={{
                 headerTruncatedBackTitle: "",
                 headerBackTitle: "",
+                headerTitleStyle: { color: palette.hardGray },
                 headerTransparent: true,
+                headerTintColor: palette.deepBlue,
                 cardStyle: { backgroundColor: palette.white },
+                headerLeftContainerStyle: { marginLeft: 10 },
             }}
         >
             <AuthStack.Screen
@@ -45,17 +52,36 @@ const AuthEntry: React.FC = () => {
             <AuthStack.Screen
                 name="ForgotPwd"
                 component={ForgotPwd}
-                options={{ title: "Forgot password" }}
+                options={{
+                    title: "Forgot password",
+                }}
             />
             <AuthStack.Screen
                 name="ResetPwd"
                 component={ResetPwd}
-                options={{ title: "Reset password" }}
+                options={({ navigation }) => ({
+                    headerTransparent: false,
+                    title: "Reset password",
+                    headerLeft: (props) => (
+                        <HeaderBackButton
+                            {...props}
+                            onPress={navigation.popToTop}
+                        />
+                    ),
+                })}
             />
             <AuthStack.Screen
                 name="ResetPwdSuccess"
                 component={ResetPwdSuccess}
-                options={{ title: "" }}
+                options={({ navigation }) => ({
+                    title: "",
+                    headerLeft: (props) => (
+                        <HeaderBackButton
+                            {...props}
+                            onPress={navigation.popToTop}
+                        />
+                    ),
+                })}
             />
 
             {/*Sign up screens*/}
@@ -67,12 +93,12 @@ const AuthEntry: React.FC = () => {
             <AuthStack.Screen
                 name="NewAccountName"
                 component={NewAccountName}
-                options={{ title: "Sign up" }}
+                options={{ title: "Name" }}
             />
             <AuthStack.Screen
                 name="NewAccountEmailPwd"
                 component={NewAccountEmailPwd}
-                options={{ title: "Sign up" }}
+                options={{ title: "Email & Password" }}
             />
             <AuthStack.Screen
                 name="VerifyEmail"

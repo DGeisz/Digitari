@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 import { palette } from "../../../../global_styles/Palette";
 
 export const styles = StyleSheet.create({
@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
         borderRadius: 30,
     },
     authButtonText: {
-        fontWeight: "600",
+        fontWeight: Platform.OS === "ios" ? "600" : "bold",
         color: palette.white,
         fontSize: 22,
     },

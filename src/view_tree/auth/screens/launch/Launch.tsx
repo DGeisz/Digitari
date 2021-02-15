@@ -9,18 +9,21 @@ interface Props {
     navigation: LaunchNavProp;
 }
 
+const logoWidth = 250;
+const logoHeight = (106 / 384) * logoWidth;
+
 const Launch: React.FC<Props> = ({ navigation }) => {
     return (
         <View style={basicLayouts.flexGrid5}>
             <View style={[basicLayouts.flexRow, basicLayouts.grid5]}>
                 <Image
-                    source={require("../../../../../assets/coin.png")}
+                    source={require("../../../../../assets/digi_logo.png")}
                     style={{
-                        height: 80,
-                        width: 80,
+                        height: logoHeight,
+                        width: logoWidth,
                     }}
                 />
-                <Text style={styles.launchTitleText}>digitari</Text>
+                {/*<Text style={styles.launchTitleText}>digitari</Text>*/}
             </View>
             <AuthButton
                 onPress={() => navigation.navigate("SignIn")}
