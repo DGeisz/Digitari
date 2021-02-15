@@ -13,7 +13,8 @@ export const palette = {
     oceanFroth: "#ebfaf8",
     oceanSurf: "#bbede6",
     mediumOceanSurf: "#31b09e",
-    deepBlue: "#1a8fc9",
+    notDeepBlue: "#5ea3c4",
+    deepBlue: "#32afdd",
     beneathTheWaves: "#283f52",
 
     // Grays
@@ -34,4 +35,5 @@ export const palette = {
 
     // Other
     linkBlue: "#149cdb",
+    googleBlue: "#4285f4",
 };

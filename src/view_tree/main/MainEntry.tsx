@@ -13,42 +13,40 @@ const RootStack = createStackNavigator<MainEntryStack>();
 
 const MainEntry: React.FC = () => {
     return (
-        <>
-            <RootStack.Navigator
-                initialRouteName="TabNav"
-                screenOptions={{
-                    headerTruncatedBackTitle: "",
-                    headerBackTitle: "",
+        <RootStack.Navigator
+            initialRouteName="TabNav"
+            screenOptions={{
+                headerTruncatedBackTitle: "",
+                headerBackTitle: "",
+            }}
+        >
+            <RootStack.Screen
+                name="TabNav"
+                component={TabNav}
+                options={({ route }) => {
+                    return {
+                        headerTitle: getTabNavHeaderTitle(route),
+                    };
                 }}
-            >
-                <RootStack.Screen
-                    name="TabNav"
-                    component={TabNav}
-                    options={({ route }) => {
-                        return {
-                            headerTitle: getTabNavHeaderTitle(route),
-                        };
-                    }}
-                />
-                <RootStack.Screen name="Convo" component={Convo} />
-                <RootStack.Screen name="NewPost" component={NewPost} />
-                <RootStack.Screen
-                    name="NewResponse"
-                    component={NewResponse}
-                    options={{ title: "New Message" }}
-                    initialParams={{ tid: "yang", tname: "yote", pid: "blue" }}
-                />
-                <RootStack.Screen
-                    name="PostScreen"
-                    component={PostScreen}
-                    options={{ title: "Post" }}
-                />
-                <RootStack.Screen
-                    name="AccountSettings"
-                    component={AccountSettings}
-                />
-            </RootStack.Navigator>
-        </>
+            />
+            <RootStack.Screen name="Convo" component={Convo} />
+            <RootStack.Screen name="NewPost" component={NewPost} />
+            <RootStack.Screen
+                name="NewResponse"
+                component={NewResponse}
+                options={{ title: "New Message" }}
+                initialParams={{ tname: "", pid: "", responseCost: 0 }}
+            />
+            <RootStack.Screen
+                name="PostScreen"
+                component={PostScreen}
+                options={{ title: "Post" }}
+            />
+            <RootStack.Screen
+                name="AccountSettings"
+                component={AccountSettings}
+            />
+        </RootStack.Navigator>
     );
 };
 
