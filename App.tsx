@@ -1,14 +1,25 @@
 import React from "react";
-import { allMocks } from "./src/global_gql/Mocks";
 import { Platform, UIManager } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Linking from "expo-linking";
 import { NavigationContainer } from "@react-navigation/native";
 import { MockedProvider } from "@apollo/client/testing";
+import { allMocks } from "./src/global_gql/Mocks";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { cache } from "./src/global_state/Cache";
 import AppView from "./src/view_tree/AppView";
-import Amplify from "aws-amplify";
+import Amplify, { Auth } from "aws-amplify";
 import * as SplashScreen from "expo-splash-screen";
+import { createSubscriptionHandshakeLink } from "aws-appsync-subscription-link";
+import { AuthOptions, createAuthLink } from "aws-appsync-auth-link";
+import { AUTH_TYPE } from "aws-appsync";
+import {
+    ApolloClient,
+    ApolloLink,
+    ApolloProvider,
+    NormalizedCacheObject,
+} from "@apollo/client";
+import { persistCache, AsyncStorageWrapper } from "apollo3-cache-persist";
 
 Amplify.configure({
     Auth: {
@@ -27,6 +38,20 @@ Amplify.configure({
     },
 });
 
+const url =
+    "https://yvetqqqrlbgklmrodh6dx5ix6a.appsync-api.us-east-2.amazonaws.com/graphql";
+const region = "us-east-2";
+const auth: AuthOptions = {
+    type: AUTH_TYPE.AMAZON_COGNITO_USER_POOLS,
+    jwtToken: async () =>
+        (await Auth.currentSession()).getIdToken().getJwtToken(),
+};
+
+const link = ApolloLink.from([
+    createAuthLink({ url, region, auth }),
+    // createSubscriptionHandshakeLink({ url, region, auth }),
+]);
+
 if (Platform.OS === "android") {
     if (UIManager.setLayoutAnimationEnabledExperimental) {
         UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -34,19 +59,33 @@ if (Platform.OS === "android") {
 }
 
 export default function App() {
+    // const [client, setClient] = React.useState<ApolloClient<NormalizedCacheObject>>(new ApolloClient({ cache }));
+
     React.useEffect(() => {
         (async () => {
             await SplashScreen.preventAutoHideAsync();
+
+            // await persistCache({
+            //     cache,
+            //     storage: new AsyncStorageWrapper(AsyncStorage)
+            // });
+            //
+            // setClient(new ApolloClient({
+            //     link,
+            //     cache
+            // }));
         })();
-    });
+    }, []);
 
     return (
         <NavigationContainer>
-            <MockedProvider mocks={allMocks} cache={cache}>
+            {/*<ApolloProvider client={client}>*/}
+            <MockedProvider cache={cache} mocks={allMocks} addTypename={false}>
                 <SafeAreaProvider>
                     <AppView />
                 </SafeAreaProvider>
             </MockedProvider>
+            {/*</ApolloProvider>*/}
         </NavigationContainer>
     );
 }

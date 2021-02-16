@@ -29,7 +29,7 @@ const AppView: React.FC = () => {
             }
             await SplashScreen.hideAsync();
         })();
-    });
+    }, []);
 
     if (authenticated) {
         return <MainEntry />;

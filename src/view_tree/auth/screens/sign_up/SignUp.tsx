@@ -12,21 +12,21 @@ const SignUp: React.FC<Props> = (props) => {
     return (
         <SocialAuth
             actionCommand="Sign up"
-            facebookAction={() => {
+            facebookAction={() =>
                 Auth.federatedSignIn({
                     provider: CognitoHostedUIIdentityProvider.Facebook,
-                });
-            }}
-            googleAction={() => {
+                })
+            }
+            googleAction={() =>
                 Auth.federatedSignIn({
                     provider: CognitoHostedUIIdentityProvider.Google,
-                });
-            }}
-            appleAction={() => {
+                })
+            }
+            appleAction={() =>
                 Auth.federatedSignIn({
                     provider: CognitoHostedUIIdentityProvider.Apple,
-                });
-            }}
+                })
+            }
             emailAction={() => props.navigation.navigate("NewAccountName")}
         />
     );
