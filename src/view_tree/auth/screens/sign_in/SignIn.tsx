@@ -22,7 +22,11 @@ const SignIn: React.FC<Props> = (props) => {
                     provider: CognitoHostedUIIdentityProvider.Google,
                 });
             }}
-            appleAction={() => {}}
+            appleAction={() => {
+                Auth.federatedSignIn({
+                    provider: CognitoHostedUIIdentityProvider.Apple,
+                });
+            }}
             emailAction={() => props.navigation.navigate("SignInEmailPwd")}
         />
     );
