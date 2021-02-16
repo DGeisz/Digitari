@@ -1,6 +1,8 @@
 import * as React from "react";
 import SocialAuth from "../../building_blocks/social_auth/SocialAuth";
 import { SignInNavProp } from "../../AuthEntryNavTypes";
+import { Auth } from "aws-amplify";
+import { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth";
 
 interface Props {
     navigation: SignInNavProp;
@@ -10,8 +12,16 @@ const SignIn: React.FC<Props> = (props) => {
     return (
         <SocialAuth
             actionCommand="Sign in"
-            facebookAction={() => {}}
-            googleAction={() => {}}
+            facebookAction={() => {
+                Auth.federatedSignIn({
+                    provider: CognitoHostedUIIdentityProvider.Facebook,
+                });
+            }}
+            googleAction={() => {
+                Auth.federatedSignIn({
+                    provider: CognitoHostedUIIdentityProvider.Google,
+                });
+            }}
             appleAction={() => {}}
             emailAction={() => props.navigation.navigate("SignInEmailPwd")}
         />

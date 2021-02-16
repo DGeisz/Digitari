@@ -7,15 +7,16 @@ import { MockedProvider } from "@apollo/client/testing";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { cache } from "./src/global_state/Cache";
 import AppView from "./src/view_tree/AppView";
-import Amplify, { Auth } from "aws-amplify";
+import Amplify from "aws-amplify";
+import * as SplashScreen from "expo-splash-screen";
 
 Amplify.configure({
     Auth: {
-        identityPoolId: "us-east-2:eb17ae24-27f1-4e1b-87d5-70839cbd3ca1",
+        identityPoolId: "us-east-2:d50a353c-1d9f-4bd3-9494-9b5e6d5aadaa",
         region: "us-east-2",
         identityPoolRegion: "us-east-2",
         userPoolId: "us-east-2_yLvvBYODa",
-        userPoolWebClientId: "297iqrpl2a6a6gbu84p6iivvo7",
+        userPoolWebClientId: "5f052aptiplnl2mu8mmh2t1ahc",
         oauth: {
             domain: "digitari.auth.us-east-2.amazoncognito.com",
             scope: ["email", "openid", "profile"],
@@ -33,6 +34,12 @@ if (Platform.OS === "android") {
 }
 
 export default function App() {
+    React.useEffect(() => {
+        (async () => {
+            await SplashScreen.preventAutoHideAsync();
+        })();
+    });
+
     return (
         <NavigationContainer>
             <MockedProvider mocks={allMocks} cache={cache}>

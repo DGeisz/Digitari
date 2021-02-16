@@ -26,4 +26,8 @@ export const authStyles = StyleSheet.create({
         fontSize: 18,
         fontWeight: "500",
     },
+    authErrorText: {
+        color: palette.danger,
+        fontSize: 15,
+    },
 });

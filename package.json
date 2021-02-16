@@ -23,6 +23,7 @@
         "aws-amplify": "^3.3.18",
         "aws-amplify-react-native": "^4.3.1",
         "expo": "^40.0.1",
+        "expo-splash-screen": "~0.8.1",
         "expo-status-bar": "~1.0.3",
         "graphql": "^15.5.0",
         "random-words": "^1.1.1",

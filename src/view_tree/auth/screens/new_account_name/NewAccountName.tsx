@@ -59,7 +59,10 @@ const NewAccountName: React.FC<Props> = (props) => {
                 <AuthButton
                     marginTop={20}
                     onPress={() => {
-                        props.navigation.navigate("NewAccountEmailPwd");
+                        props.navigation.navigate("NewAccountEmailPwd", {
+                            firstName,
+                            lastName,
+                        });
                     }}
                     text={"Next"}
                     active={active}

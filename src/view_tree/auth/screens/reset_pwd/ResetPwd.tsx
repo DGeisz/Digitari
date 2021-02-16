@@ -6,11 +6,13 @@ import { basicLayouts } from "../../../../global_styles/BasicLayouts";
 import { Input } from "react-native-elements";
 import { palette } from "../../../../global_styles/Palette";
 import AuthButton from "../../building_blocks/auth_button/AuthButton";
-import { ResetPwdNavProp } from "../../AuthEntryNavTypes";
+import { ResetPwdNavProp, ResetPwdRouteProp } from "../../AuthEntryNavTypes";
 import PwdCheck, { checkPwd } from "../../building_blocks/pwd_check/PwdCheck";
+import { Auth } from "aws-amplify";
 
 interface Props {
     navigation: ResetPwdNavProp;
+    route: ResetPwdRouteProp;
 }
 
 const ResetPwd: React.FC<Props> = (props) => {
@@ -19,9 +21,35 @@ const ResetPwd: React.FC<Props> = (props) => {
     const [pwdActive, setActive] = React.useState<boolean>(false);
     const [resent, setResent] = React.useState<boolean>(false);
 
-    const [permittedPwd, setPermitted] = React.useState<boolean>(false);
+    const [error, setError] = React.useState<string>("");
+    const [errorActive, setErrorActive] = React.useState<boolean>(false);
+
+    const [loading, setLoading] = React.useState<boolean>(false);
 
     const bufferHeight = useAuthKeyboardBuffer();
+
+    const submitReset = async () => {
+        if (checkPwd(password) && code) {
+            setLoading(true);
+            try {
+                await Auth.forgotPasswordSubmit(
+                    props.route.params.email,
+                    code,
+                    password
+                );
+                props.navigation.navigate("ResetPwdSuccess");
+                setErrorActive(false);
+            } catch (e) {
+                setErrorActive(true);
+                setError(
+                    e.message
+                        ? e.message
+                        : "An error occurred, please try again"
+                );
+            }
+            setLoading(false);
+        }
+    };
 
     return (
         <TouchableOpacity
@@ -30,6 +58,9 @@ const ResetPwd: React.FC<Props> = (props) => {
             onPress={Keyboard.dismiss}
         >
             <View style={basicLayouts.grid5}>
+                {errorActive && (
+                    <Text style={authStyles.authErrorText}>{error}</Text>
+                )}
                 <Text style={authStyles.authInstructions}>
                     Enter your new password and the code we emailed you
                 </Text>
@@ -42,41 +73,25 @@ const ResetPwd: React.FC<Props> = (props) => {
                     }}
                     secureTextEntry
                     onBlur={() => setActive(false)}
-                    onFocus={() => setActive(true)}
-                    onChangeText={(pwd) => {
-                        setPassword(pwd);
-                        setPermitted(checkPwd(pwd));
+                    onFocus={() => {
+                        setActive(true);
+                        setErrorActive(false);
                     }}
+                    onChangeText={setPassword}
                 />
                 <PwdCheck active={pwdActive} pwd={password} />
                 <Input
                     placeholder={"Verification code..."}
                     keyboardType="number-pad"
                     onChangeText={setCode}
+                    onFocus={() => setErrorActive(false)}
                 />
-                <TouchableOpacity
-                    style={authStyles.authInputFooter}
-                    onPress={() => {
-                        setResent(true);
-                    }}
-                    activeOpacity={resent ? 1 : 0.5}
-                >
-                    <Text
-                        style={[
-                            authStyles.authInputFooterText,
-                            resent ? { color: palette.semiSoftGray } : {},
-                        ]}
-                    >
-                        Resend code
-                    </Text>
-                </TouchableOpacity>
                 <AuthButton
                     marginTop={40}
-                    onPress={() => {
-                        props.navigation.navigate("ResetPwdSuccess");
-                    }}
+                    loading={loading}
+                    onPress={submitReset}
                     text={"Submit"}
-                    active={!!(password && code && permittedPwd)}
+                    active={!!(password && code && checkPwd(password))}
                 />
             </View>
             <View style={{ height: bufferHeight }} />

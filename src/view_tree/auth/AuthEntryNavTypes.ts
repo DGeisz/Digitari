@@ -1,4 +1,6 @@
+import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { NewResponseRouteProp } from "../main/MainEntryNavTypes";
 
 export type AuthStackType = {
     ForgotPwd: undefined;
@@ -8,12 +10,17 @@ export type AuthStackType = {
         lastName: string;
     };
     NewAccountName: undefined;
-    ResetPwd: undefined;
+    ResetPwd: {
+        email: string;
+    };
     ResetPwdSuccess: undefined;
     SignIn: undefined;
     SignInEmailPwd: undefined;
     SignUp: undefined;
-    VerifyEmail: undefined;
+    VerifyEmail: {
+        email: string;
+        pwd: string;
+    };
 };
 
 /**
@@ -44,3 +51,9 @@ export type ResetPwdSuccessNavProp = StackNavigationProp<
 /**
  * Route props
  */
+export type NewAccountEmailPwdRouteProp = RouteProp<
+    AuthStackType,
+    "NewAccountEmailPwd"
+>;
+export type ResetPwdRouteProp = RouteProp<AuthStackType, "ResetPwd">;
+export type VerifyEmailRouteProp = RouteProp<AuthStackType, "VerifyEmail">;

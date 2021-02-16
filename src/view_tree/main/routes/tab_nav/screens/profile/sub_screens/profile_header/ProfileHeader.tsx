@@ -7,6 +7,7 @@ import CoinBox from "../../../../../../../../global_building_blocks/coin_box/Coi
 import { UserType } from "../../../../../../../../global_types/UserTypes";
 import { toRep } from "../../../../../../../../global_utils/ValueRepUtils";
 import { palette } from "../../../../../../../../global_styles/Palette";
+import { Auth } from "aws-amplify";
 
 interface Props {
     user: UserType;
@@ -31,7 +32,10 @@ const ProfileHeader: React.FC<Props> = ({ user }) => {
                             </Text>
                         </View>
                     </View>
-                    <TouchableOpacity style={styles.split1Right}>
+                    <TouchableOpacity
+                        style={styles.split1Right}
+                        onPress={() => Auth.signOut().then()}
+                    >
                         <Ionicons
                             name="settings"
                             size={24}
