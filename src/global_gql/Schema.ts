@@ -5,6 +5,11 @@ export const schema = gql`
         id: ID
         firstName: String
         lastName: String
+        userName: String
+        email: String
+
+        newUser: Boolean
+
         level: Int
         bio: String
         ranking: Int
@@ -157,6 +162,11 @@ export const schema = gql`
     }
 
     type Mutation {
+        createOrFetchUser(
+            firstName: String!
+            lastName: String!
+            email: String!
+        ): User
         dismissConvo(cid: ID!): Convo
         blockInitialConvo(cid: ID!): Convo
         activateConvo(cid: ID!): Convo

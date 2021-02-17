@@ -12,11 +12,12 @@ import Amplify, { Auth } from "aws-amplify";
 import * as SplashScreen from "expo-splash-screen";
 import { createSubscriptionHandshakeLink } from "aws-appsync-subscription-link";
 import { AuthOptions, createAuthLink } from "aws-appsync-auth-link";
-import { AUTH_TYPE } from "aws-appsync";
+import AWSAppSyncClient, { AUTH_TYPE } from "aws-appsync";
 import {
     ApolloClient,
     ApolloLink,
     ApolloProvider,
+    createHttpLink,
     NormalizedCacheObject,
 } from "@apollo/client";
 import { persistCache, AsyncStorageWrapper } from "apollo3-cache-persist";
@@ -47,10 +48,23 @@ const auth: AuthOptions = {
         (await Auth.currentSession()).getIdToken().getJwtToken(),
 };
 
+// const client = new AWSAppSyncClient({
+//     url,
+//     region,
+//     auth,
+// });
+const httpLink = createHttpLink({ uri: url });
+
 const link = ApolloLink.from([
     createAuthLink({ url, region, auth }),
+    httpLink,
     // createSubscriptionHandshakeLink({ url, region, auth }),
 ]);
+
+const client = new ApolloClient({
+    link,
+    cache,
+});
 
 if (Platform.OS === "android") {
     if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -59,33 +73,34 @@ if (Platform.OS === "android") {
 }
 
 export default function App() {
-    // const [client, setClient] = React.useState<ApolloClient<NormalizedCacheObject>>(new ApolloClient({ cache }));
+    // const [client, setClient] = React.useState<ApolloClient<NormalizedCacheObject>>(new ApolloClient({ link, cache }));
 
-    React.useEffect(() => {
-        (async () => {
-            await SplashScreen.preventAutoHideAsync();
-
-            // await persistCache({
-            //     cache,
-            //     storage: new AsyncStorageWrapper(AsyncStorage)
-            // });
-            //
-            // setClient(new ApolloClient({
-            //     link,
-            //     cache
-            // }));
-        })();
-    }, []);
+    // React.useEffect(() => {
+    //     (async () => {
+    //         await SplashScreen.preventAutoHideAsync();
+    //
+    //         await persistCache({
+    //             cache,
+    //             storage: new AsyncStorageWrapper(AsyncStorage)
+    //         });
+    //
+    //         setClient(new ApolloClient({
+    //             link,
+    //             cache
+    //         }));
+    //     })();
+    // }, []);
 
     return (
         <NavigationContainer>
-            {/*<ApolloProvider client={client}>*/}
-            <MockedProvider cache={cache} mocks={allMocks} addTypename={false}>
+            {/*// @ts-ignore*/}
+            <ApolloProvider client={client}>
+                {/*<MockedProvider cache={cache} mocks={allMocks} addTypename={false}>*/}
                 <SafeAreaProvider>
                     <AppView />
                 </SafeAreaProvider>
-            </MockedProvider>
-            {/*</ApolloProvider>*/}
+                {/*</MockedProvider>*/}
+            </ApolloProvider>
         </NavigationContainer>
     );
 }

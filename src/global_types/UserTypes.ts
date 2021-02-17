@@ -4,6 +4,10 @@ export interface UserType {
     id: string;
     firstName: string;
     lastName: string;
+    userName: string;
+
+    newUser?: boolean;
+
     level: number;
     bio: string;
     ranking: number;
@@ -73,6 +77,7 @@ export const exampleUser: UserType = {
     id: "danny",
     firstName: "Danny",
     lastName: "Geisz",
+    userName: "derncern",
     level: 12,
     bio:
         "Hi my name is Danny. I bool, I vape, I joust, and I cape.  Here's to another day ba-rangling",
