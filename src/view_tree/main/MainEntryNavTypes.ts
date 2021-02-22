@@ -16,6 +16,7 @@ export type MainEntryStack = {
         pid: string;
     };
     AccountSettings: undefined;
+    NewCommunity: undefined;
 };
 
 /**
@@ -31,6 +32,7 @@ export type NewResponseNavProp = StackNavigationProp<
     "NewResponse"
 >;
 export type ConvoNavProp = StackNavigationProp<MainEntryStack, "Convo">;
+export type NewNavProp = StackNavigationProp<MainEntryStack, "New">;
 
 /**
  * Route props

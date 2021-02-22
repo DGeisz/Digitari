@@ -8,6 +8,7 @@ import { getTabNavHeaderTitle } from "./routes/tab_nav/TabNavUtils";
 import { createStackNavigator } from "@react-navigation/stack";
 import { MainEntryStack } from "./MainEntryNavTypes";
 import New from "./screens/new/New";
+import NewCommunity from "./screens/new/screens/new_community/NewCommunity";
 
 const RootStack = createStackNavigator<MainEntryStack>();
 
@@ -45,6 +46,11 @@ const MainEntry: React.FC = () => {
             <RootStack.Screen
                 name="AccountSettings"
                 component={AccountSettings}
+            />
+            <RootStack.Screen
+                name="NewCommunity"
+                options={{ title: "New Community" }}
+                component={NewCommunity}
             />
         </RootStack.Navigator>
     );
