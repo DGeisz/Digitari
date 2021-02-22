@@ -64,15 +64,17 @@ export const dateFormatter = (epochTimeString: string) => {
         if (diffHours < hours) {
             return finalHours + ":" + minutes + " " + ampm;
         }
-        return (
-            date.toDateString().split(" ")[0] +
-            ", " +
-            finalHours +
-            ":" +
-            minutes +
-            " " +
-            ampm
-        );
+        return days[date.getDay()];
     }
     return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
 };
+
+const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+];

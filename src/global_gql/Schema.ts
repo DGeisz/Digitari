@@ -174,6 +174,7 @@ export const schema = gql`
         post(pid: ID!): Post
         convo(cid: ID!): Convo
         createCommunityCoinCheck: CoinCheck
+        community(cmid: ID!): Community
     }
 
     type Mutation {

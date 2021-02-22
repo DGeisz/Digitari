@@ -17,7 +17,9 @@ export type MainEntryStack = {
     };
     AccountSettings: undefined;
     NewCommunity: undefined;
-    Community: undefined;
+    Community: {
+        cmid: string;
+    };
 };
 
 /**
@@ -45,3 +47,4 @@ export type NewCommunityNavProp = StackNavigationProp<
 export type PostScreenRouteProp = RouteProp<MainEntryStack, "PostScreen">;
 export type ConvoRouteProp = RouteProp<MainEntryStack, "Convo">;
 export type NewResponseRouteProp = RouteProp<MainEntryStack, "NewResponse">;
+export type CommunityRouteProp = RouteProp<MainEntryStack, "Community">;

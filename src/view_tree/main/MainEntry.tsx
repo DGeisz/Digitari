@@ -53,7 +53,11 @@ const MainEntry: React.FC = () => {
                 options={{ title: "New Community" }}
                 component={NewCommunity}
             />
-            <RootStack.Screen name={"Community"} component={Community} />
+            <RootStack.Screen
+                name={"Community"}
+                component={Community}
+                initialParams={{ cmid: "d02cb1ab-2f62-40b7-8d80-3016f2eaa5ae" }}
+            />
         </RootStack.Navigator>
     );
 };
