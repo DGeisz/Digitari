@@ -31,6 +31,8 @@ interface QueryVariables {
 const UserConvos: React.FC<Props> = ({ routeKey }) => {
     const uid = localUid();
 
+    const { openConvo } = React.useContext(TabNavContext);
+
     const { data, error, networkStatus, refetch } = useQuery<
         QueryData,
         QueryVariables
@@ -52,45 +54,40 @@ const UserConvos: React.FC<Props> = ({ routeKey }) => {
     }
 
     return (
-        <TabNavContext.Consumer>
-            {({ openConvo }) => (
-                <Animated.FlatList
-                    {...scrollPropsAndRef}
-                    data={data?.userConvos}
-                    renderItem={({ item }) => (
-                        <ConvoCover
-                            convoCover={item}
-                            openConvo={openConvo}
-                            showUnViewedDot={false}
-                        />
-                    )}
-                    keyExtractor={(item, index) =>
-                        [item.id, "userConv", index].join(":")
-                    }
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={
-                                networkStatus === NetworkStatus.refetch ||
-                                stillSpin
-                            }
-                            onRefresh={() => {
-                                setStillSpin(true);
-                                refetch && refetch();
-                                setTimeout(() => {
-                                    setStillSpin(false);
-                                }, 1000);
-                            }}
-                            colors={[
-                                palette.deepBlue,
-                                palette.darkForestGreen,
-                                palette.oceanSurf,
-                            ]}
-                            tintColor={palette.deepBlue}
-                        />
-                    }
+        <Animated.FlatList
+            {...scrollPropsAndRef}
+            data={data?.userConvos}
+            renderItem={({ item }) => (
+                <ConvoCover
+                    convoCover={item}
+                    openConvo={openConvo}
+                    showUnViewedDot={false}
                 />
             )}
-        </TabNavContext.Consumer>
+            keyExtractor={(item, index) =>
+                [item.id, "userConv", index].join(":")
+            }
+            refreshControl={
+                <RefreshControl
+                    refreshing={
+                        networkStatus === NetworkStatus.refetch || stillSpin
+                    }
+                    onRefresh={() => {
+                        setStillSpin(true);
+                        refetch && refetch();
+                        setTimeout(() => {
+                            setStillSpin(false);
+                        }, 1000);
+                    }}
+                    colors={[
+                        palette.deepBlue,
+                        palette.darkForestGreen,
+                        palette.oceanSurf,
+                    ]}
+                    tintColor={palette.deepBlue}
+                />
+            }
+        />
     );
 };
 

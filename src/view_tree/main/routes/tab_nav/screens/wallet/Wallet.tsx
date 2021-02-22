@@ -9,6 +9,8 @@ import ErrorMessage from "../../../../../../global_building_blocks/error_message
 import { GET_WALLET } from "./gql/Queries";
 import { palette } from "../../../../../../global_styles/Palette";
 import WalletEntry from "../../../../../../global_building_blocks/wallet_entry/WalletEntry";
+import { TabNavContext } from "../../TabNavContext";
+import NewButton from "../../../../../../global_building_blocks/new_button/NewButton";
 
 interface Props {}
 
@@ -29,6 +31,8 @@ const Wallet: React.FC<Props> = () => {
         notifyOnNetworkStatusChange: true,
     });
 
+    const { openNew } = React.useContext(TabNavContext);
+
     const [stillSpin, setStillSpin] = React.useState<boolean>(false);
 
     if (!data?.wallet && networkStatus === NetworkStatus.loading) {
@@ -41,38 +45,44 @@ const Wallet: React.FC<Props> = () => {
     }
 
     return (
-        <View style={basicLayouts.flexGrid1}>
-            <FlatList
-                ListHeaderComponent={
-                    data?.wallet && <WalletHeader wallet={data.wallet} />
-                }
-                data={data?.wallet.entries}
-                renderItem={({ item }) => <WalletEntry walletEntry={item} />}
-                keyExtractor={(item, index) =>
-                    [item.time, "wallet", index].join(":")
-                }
-                refreshControl={
-                    <RefreshControl
-                        refreshing={
-                            networkStatus === NetworkStatus.refetch || stillSpin
-                        }
-                        onRefresh={() => {
-                            setStillSpin(true);
-                            refetch && refetch();
-                            setTimeout(() => {
-                                setStillSpin(false);
-                            }, 1000);
-                        }}
-                        colors={[
-                            palette.deepBlue,
-                            palette.darkForestGreen,
-                            palette.oceanSurf,
-                        ]}
-                        tintColor={palette.deepBlue}
-                    />
-                }
-            />
-        </View>
+        <>
+            <View style={basicLayouts.flexGrid1}>
+                <FlatList
+                    ListHeaderComponent={
+                        data?.wallet && <WalletHeader wallet={data.wallet} />
+                    }
+                    data={data?.wallet ? data?.wallet.entries : []}
+                    renderItem={({ item }) => (
+                        <WalletEntry walletEntry={item} />
+                    )}
+                    keyExtractor={(item, index) =>
+                        [item.time, "wallet", index].join(":")
+                    }
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={
+                                networkStatus === NetworkStatus.refetch ||
+                                stillSpin
+                            }
+                            onRefresh={() => {
+                                setStillSpin(true);
+                                refetch && refetch();
+                                setTimeout(() => {
+                                    setStillSpin(false);
+                                }, 1000);
+                            }}
+                            colors={[
+                                palette.deepBlue,
+                                palette.darkForestGreen,
+                                palette.oceanSurf,
+                            ]}
+                            tintColor={palette.deepBlue}
+                        />
+                    }
+                />
+            </View>
+            <NewButton openNew={openNew} />
+        </>
     );
 };
 

@@ -28,6 +28,8 @@ interface QueryVariables {
 const UserPosts: React.FC<Props> = ({ routeKey }) => {
     const uid = localUid();
 
+    const { openConvo, openPost } = React.useContext(TabNavContext);
+
     const { data, error, networkStatus, refetch } = useQuery<
         QueryData,
         QueryVariables
@@ -49,46 +51,41 @@ const UserPosts: React.FC<Props> = ({ routeKey }) => {
     }
 
     return (
-        <TabNavContext.Consumer>
-            {({ openConvo, openPost }) => (
-                <Animated.FlatList
-                    {...scrollPropsAndRef}
-                    data={data?.userPosts}
-                    renderItem={({ item }) => (
-                        <Post
-                            post={item}
-                            onPress={openPost}
-                            openConvo={openConvo}
-                            showFooter={false}
-                        />
-                    )}
-                    keyExtractor={(item, index) =>
-                        [item.id, "userPosts", index].join(":")
-                    }
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={
-                                networkStatus === NetworkStatus.refetch ||
-                                stillSpin
-                            }
-                            onRefresh={() => {
-                                setStillSpin(true);
-                                refetch && refetch();
-                                setTimeout(() => {
-                                    setStillSpin(false);
-                                }, 1000);
-                            }}
-                            colors={[
-                                palette.deepBlue,
-                                palette.darkForestGreen,
-                                palette.oceanSurf,
-                            ]}
-                            tintColor={palette.deepBlue}
-                        />
-                    }
+        <Animated.FlatList
+            {...scrollPropsAndRef}
+            data={data?.userPosts}
+            renderItem={({ item }) => (
+                <Post
+                    post={item}
+                    onPress={openPost}
+                    openConvo={openConvo}
+                    showFooter={false}
                 />
             )}
-        </TabNavContext.Consumer>
+            keyExtractor={(item, index) =>
+                [item.id, "userPosts", index].join(":")
+            }
+            refreshControl={
+                <RefreshControl
+                    refreshing={
+                        networkStatus === NetworkStatus.refetch || stillSpin
+                    }
+                    onRefresh={() => {
+                        setStillSpin(true);
+                        refetch && refetch();
+                        setTimeout(() => {
+                            setStillSpin(false);
+                        }, 1000);
+                    }}
+                    colors={[
+                        palette.deepBlue,
+                        palette.darkForestGreen,
+                        palette.oceanSurf,
+                    ]}
+                    tintColor={palette.deepBlue}
+                />
+            }
+        />
     );
 };
 

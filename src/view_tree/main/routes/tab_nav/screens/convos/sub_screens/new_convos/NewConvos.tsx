@@ -25,6 +25,8 @@ interface QueryVariables {
 const NewConvos: React.FC<Props> = () => {
     const uid = localUid();
 
+    const { openConvo } = React.useContext(TabNavContext);
+
     const { data, error, networkStatus, refetch } = useQuery<
         QueryData,
         QueryVariables
@@ -44,45 +46,37 @@ const NewConvos: React.FC<Props> = () => {
     }
 
     return (
-        <TabNavContext.Consumer>
-            {({ openConvo }) => (
-                <View style={basicLayouts.flexGrid1}>
-                    <FlatList
-                        data={data?.newConvos}
-                        renderItem={({ item }) => (
-                            <ConvoCover
-                                convoCover={item}
-                                openConvo={openConvo}
-                            />
-                        )}
-                        keyExtractor={(item, index) =>
-                            [item.id, "newConv", index].join(":")
+        <View style={basicLayouts.flexGrid1}>
+            <FlatList
+                data={data?.newConvos}
+                renderItem={({ item }) => (
+                    <ConvoCover convoCover={item} openConvo={openConvo} />
+                )}
+                keyExtractor={(item, index) =>
+                    [item.id, "newConv", index].join(":")
+                }
+                refreshControl={
+                    <RefreshControl
+                        refreshing={
+                            networkStatus === NetworkStatus.refetch || stillSpin
                         }
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={
-                                    networkStatus === NetworkStatus.refetch ||
-                                    stillSpin
-                                }
-                                onRefresh={() => {
-                                    setStillSpin(true);
-                                    refetch && refetch();
-                                    setTimeout(() => {
-                                        setStillSpin(false);
-                                    }, 1000);
-                                }}
-                                colors={[
-                                    palette.deepBlue,
-                                    palette.darkForestGreen,
-                                    palette.oceanSurf,
-                                ]}
-                                tintColor={palette.deepBlue}
-                            />
-                        }
+                        onRefresh={() => {
+                            setStillSpin(true);
+                            refetch && refetch();
+                            setTimeout(() => {
+                                setStillSpin(false);
+                            }, 1000);
+                        }}
+                        colors={[
+                            palette.deepBlue,
+                            palette.darkForestGreen,
+                            palette.oceanSurf,
+                        ]}
+                        tintColor={palette.deepBlue}
                     />
-                </View>
-            )}
-        </TabNavContext.Consumer>
+                }
+            />
+        </View>
     );
 };
 

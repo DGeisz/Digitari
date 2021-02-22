@@ -27,6 +27,8 @@ interface QueryVariables {
 const ActiveConvos: React.FC<Props> = () => {
     const uid = localUid();
 
+    const { openConvo } = React.useContext(TabNavContext);
+
     const { data, error, networkStatus, refetch } = useQuery<
         QueryData,
         QueryVariables
@@ -35,7 +37,11 @@ const ActiveConvos: React.FC<Props> = () => {
         notifyOnNetworkStatusChange: true,
     });
 
-    console.log(data?.activeConvos.length, error, networkStatus);
+    console.log(
+        data?.activeConvos && data?.activeConvos.length,
+        error,
+        networkStatus
+    );
 
     const [stillSpin, setStillSpin] = React.useState<boolean>(false);
 
@@ -48,45 +54,37 @@ const ActiveConvos: React.FC<Props> = () => {
     }
 
     return (
-        <TabNavContext.Consumer>
-            {({ openConvo }) => (
-                <View style={basicLayouts.flexGrid1}>
-                    <FlatList
-                        data={data?.activeConvos}
-                        renderItem={({ item }) => (
-                            <ConvoCover
-                                convoCover={item}
-                                openConvo={openConvo}
-                            />
-                        )}
-                        keyExtractor={(item, index) =>
-                            [item.id, "aConv", index].join(":")
+        <View style={basicLayouts.flexGrid1}>
+            <FlatList
+                data={data?.activeConvos}
+                renderItem={({ item }) => (
+                    <ConvoCover convoCover={item} openConvo={openConvo} />
+                )}
+                keyExtractor={(item, index) =>
+                    [item.id, "aConv", index].join(":")
+                }
+                refreshControl={
+                    <RefreshControl
+                        refreshing={
+                            networkStatus === NetworkStatus.refetch || stillSpin
                         }
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={
-                                    networkStatus === NetworkStatus.refetch ||
-                                    stillSpin
-                                }
-                                onRefresh={() => {
-                                    setStillSpin(true);
-                                    refetch && refetch();
-                                    setTimeout(() => {
-                                        setStillSpin(false);
-                                    }, 1000);
-                                }}
-                                colors={[
-                                    palette.deepBlue,
-                                    palette.darkForestGreen,
-                                    palette.oceanSurf,
-                                ]}
-                                tintColor={palette.deepBlue}
-                            />
-                        }
+                        onRefresh={() => {
+                            setStillSpin(true);
+                            refetch && refetch();
+                            setTimeout(() => {
+                                setStillSpin(false);
+                            }, 1000);
+                        }}
+                        colors={[
+                            palette.deepBlue,
+                            palette.darkForestGreen,
+                            palette.oceanSurf,
+                        ]}
+                        tintColor={palette.deepBlue}
                     />
-                </View>
-            )}
-        </TabNavContext.Consumer>
+                }
+            />
+        </View>
     );
 };
 

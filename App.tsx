@@ -48,11 +48,6 @@ const auth: AuthOptions = {
         (await Auth.currentSession()).getIdToken().getJwtToken(),
 };
 
-// const client = new AWSAppSyncClient({
-//     url,
-//     region,
-//     auth,
-// });
 const httpLink = createHttpLink({ uri: url });
 
 const link = ApolloLink.from([

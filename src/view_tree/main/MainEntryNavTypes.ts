@@ -6,7 +6,7 @@ export type MainEntryStack = {
     Convo: {
         cid: string;
     };
-    NewPost: undefined;
+    New: undefined;
     NewResponse: {
         tname: string;
         pid: string;

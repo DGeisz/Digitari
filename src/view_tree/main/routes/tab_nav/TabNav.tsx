@@ -7,6 +7,7 @@ import Profile from "./screens/profile/Profile";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { TabNavProp } from "../../MainEntryNavTypes";
 import { TabNavContext } from "./TabNavContext";
+import { StyleSheet, View } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
@@ -23,8 +24,16 @@ const TabNav: React.FC<Props> = (props) => {
         props.navigation.navigate("Convo", { cid });
     };
 
-    const openNewMessage = (tid: string, tname: string, pid: string) => {
-        props.navigation.navigate("NewResponse", { tid, tname, pid });
+    const openNewMessage = (
+        tname: string,
+        pid: string,
+        responseCost: number
+    ) => {
+        props.navigation.navigate("NewResponse", { tname, pid, responseCost });
+    };
+
+    const openNew = () => {
+        props.navigation.navigate("New");
     };
 
     return (
@@ -33,6 +42,7 @@ const TabNav: React.FC<Props> = (props) => {
                 openPost,
                 openConvo,
                 openNewMessage,
+                openNew,
             }}
         >
             <Tab.Navigator

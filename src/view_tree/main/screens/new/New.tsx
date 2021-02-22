@@ -3,8 +3,8 @@ import { View } from "react-native";
 
 interface Props {}
 
-const NewPost: React.FC<Props> = () => {
+const New: React.FC<Props> = () => {
     return <View />;
 };
 
-export default NewPost;
+export default New;

@@ -20,7 +20,7 @@ interface Props {
     standAlone?: boolean;
     postIsLink?: boolean;
     onPress?: (pid: string) => void;
-    onMessage?: (tid: string, tname: string, pid: string) => void;
+    onMessage?: (tname: string, pid: string, responseCost: number) => void;
 }
 
 interface State {
@@ -58,9 +58,9 @@ export default class Post extends React.PureComponent<Props, State> {
                         this.setState({ postModalVisible: false });
                         this.props.onMessage &&
                             this.props.onMessage(
-                                this.props.post.uid,
                                 this.props.post.user,
-                                this.props.post.id
+                                this.props.post.id,
+                                this.props.post.responseCost
                             );
                     }}
                     onCancel={() => this.setState({ postModalVisible: false })}
