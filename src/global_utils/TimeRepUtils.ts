@@ -42,3 +42,37 @@ export function millisToCountdown(millis: number): string {
 
     return `${sec}`;
 }
+
+/**
+ * Takes in a epoch time and returns
+ * a human readable version of it,
+ * relative to the current date
+ */
+export const dateFormatter = (epochTimeString: string) => {
+    const epochTime = parseInt(epochTimeString);
+    const date = new Date(epochTime);
+    const diff = Date.now() - epochTime;
+    const diffDays = diff / (1000 * 3600 * 24);
+    const diffHours = diff / (1000 * 3600);
+    if (diffDays < 6) {
+        let hours = date.getHours();
+        let minutes = date.getMinutes().toString();
+        let ampm = hours >= 12 ? "PM" : "AM";
+        let finalHours = hours % 12;
+        finalHours = finalHours ? finalHours : 12; // the hour '0' should be '12'
+        minutes = parseInt(minutes) < 10 ? "0" + minutes : minutes;
+        if (diffHours < hours) {
+            return finalHours + ":" + minutes + " " + ampm;
+        }
+        return (
+            date.toDateString().split(" ")[0] +
+            ", " +
+            finalHours +
+            ":" +
+            minutes +
+            " " +
+            ampm
+        );
+    }
+    return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+};

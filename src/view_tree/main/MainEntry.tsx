@@ -9,13 +9,14 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { MainEntryStack } from "./MainEntryNavTypes";
 import New from "./screens/new/New";
 import NewCommunity from "./screens/new/screens/new_community/NewCommunity";
+import Community from "./screens/community/Community";
 
 const RootStack = createStackNavigator<MainEntryStack>();
 
 const MainEntry: React.FC = () => {
     return (
         <RootStack.Navigator
-            initialRouteName="TabNav"
+            initialRouteName="Community"
             screenOptions={{
                 headerTruncatedBackTitle: "",
                 headerBackTitle: "",
@@ -52,6 +53,7 @@ const MainEntry: React.FC = () => {
                 options={{ title: "New Community" }}
                 component={NewCommunity}
             />
+            <RootStack.Screen name={"Community"} component={Community} />
         </RootStack.Navigator>
     );
 };

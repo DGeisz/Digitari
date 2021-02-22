@@ -148,6 +148,20 @@ export const schema = gql`
         goal: Int
     }
 
+    type CoinCheck {
+        coin: Int
+        price: Int
+    }
+
+    type Community {
+        id: String
+        uid: String
+        name: String
+        description: String
+        followers: Int
+        timeCreated: String
+    }
+
     type Query {
         feed(uid: ID!, lastTime: Int): [Post]
         wallet(id: ID!): Wallet
@@ -159,6 +173,7 @@ export const schema = gql`
         challenges: [Challenge]
         post(pid: ID!): Post
         convo(cid: ID!): Convo
+        createCommunityCoinCheck: CoinCheck
     }
 
     type Mutation {
@@ -180,6 +195,7 @@ export const schema = gql`
             content: String
         ): ConvoMsg
         newConvo(pid: ID!, sanony: Boolean!, msg: String!): Convo
+        createCommunity(name: String, description: String): Community
     }
 `;
 
