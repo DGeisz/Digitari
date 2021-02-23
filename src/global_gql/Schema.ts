@@ -162,10 +162,17 @@ export const schema = gql`
         timeCreated: String
     }
 
+    type SearchEntity {
+        id: ID
+        name: String
+        followers: Int
+        entityType: Int
+    }
+
     type Query {
         feed(uid: ID!, lastTime: Int): [Post]
         wallet(id: ID!): Wallet
-        user: User
+        user(uid: ID!): User
         userPosts(uid: ID!, lastTime: Int): [Post]
         userConvos(uid: ID!, lastTime: Int): [ConvoCover]
         newConvos(uid: ID!, lastTime: Int): [ConvoCover]
@@ -175,6 +182,7 @@ export const schema = gql`
         convo(cid: ID!): Convo
         createCommunityCoinCheck: CoinCheck
         community(cmid: ID!): Community
+        search(text: String!): [SearchEntity]
     }
 
     type Mutation {
@@ -197,6 +205,7 @@ export const schema = gql`
         ): ConvoMsg
         newConvo(pid: ID!, sanony: Boolean!, msg: String!): Convo
         createCommunity(name: String, description: String): Community
+        indexUser(id: ID, firstName: String, lastName: String): SearchEntity
     }
 `;
 

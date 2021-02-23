@@ -10,6 +10,7 @@ import {
     CreateOrFetchUserMutationData,
     CreateOrFetchUserMutationVariables,
 } from "./gql/Mutations";
+import { localUid } from "../global_state/UserState";
 
 const AppView: React.FC = () => {
     const [checkedAuth, setCheckAuth] = React.useState<boolean>(false);
@@ -24,7 +25,11 @@ const AppView: React.FC = () => {
             console.log("Amplify Hub event:", event);
 
             try {
-                await Auth.currentSession();
+                const { sub } = (
+                    await Auth.currentSession()
+                ).getIdToken().payload;
+
+                !!sub && localUid(sub);
                 setAuthenticated(true);
             } catch (_) {
                 setAuthenticated(false);
@@ -33,7 +38,11 @@ const AppView: React.FC = () => {
 
         (async () => {
             try {
-                await Auth.currentSession();
+                const { sub } = (
+                    await Auth.currentSession()
+                ).getIdToken().payload;
+
+                !!sub && localUid(sub);
                 setAuthenticated(true);
             } catch (_) {
                 setAuthenticated(false);
@@ -62,9 +71,11 @@ const AppView: React.FC = () => {
         console.log("Calling fetch effect");
 
         (async () => {
-            const { email, given_name, family_name } = (
+            const { sub, email, given_name, family_name } = (
                 await Auth.currentSession()
             ).getIdToken().payload;
+
+            !!sub && localUid(sub);
 
             console.log(
                 "Here are user attributes: ",

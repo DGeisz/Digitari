@@ -1,12 +1,12 @@
 import * as React from "react";
 import { Animated, View } from "react-native";
 import StatsHeader from "./building_blocks/stats_header/StatsHeader";
-import { UserType } from "../../../../../../../../global_types/UserTypes";
 import { useCollapsibleScene } from "react-native-collapsible-tab-view";
-import { palette } from "../../../../../../../../global_styles/Palette";
-import Divider from "../../../../../../../../global_building_blocks/divider/Divider";
 import UserStat from "./building_blocks/user_stat/UserStat";
 import { styles } from "./UserStatsStyles";
+import { UserType } from "../../../global_types/UserTypes";
+import { palette } from "../../../global_styles/Palette";
+import Divider from "../../divider/Divider";
 
 interface Props {
     user: UserType;

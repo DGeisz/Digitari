@@ -2,12 +2,12 @@ import * as React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { styles } from "./ProfileHeaderStyles";
 import { Ionicons } from "@expo/vector-icons";
-import Tier from "../../../../../../../../global_building_blocks/tier/Tier";
-import CoinBox from "../../../../../../../../global_building_blocks/coin_box/CoinBox";
-import { UserType } from "../../../../../../../../global_types/UserTypes";
-import { toRep } from "../../../../../../../../global_utils/ValueRepUtils";
-import { palette } from "../../../../../../../../global_styles/Palette";
 import { Auth } from "aws-amplify";
+import { UserType } from "../../../global_types/UserTypes";
+import Tier from "../../tier/Tier";
+import { palette } from "../../../global_styles/Palette";
+import { toRep } from "../../../global_utils/ValueRepUtils";
+import CoinBox from "../../coin_box/CoinBox";
 
 interface Props {
     user: UserType;

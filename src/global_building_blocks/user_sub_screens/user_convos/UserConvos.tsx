@@ -1,22 +1,19 @@
 import * as React from "react";
 import { Animated, FlatList, RefreshControl, View } from "react-native";
-import { PostType } from "../../../../../../../../global_types/PostTypes";
-import { ConvoCoverType } from "../../../../../../../../global_types/ConvoCoverTypes";
 import { NetworkStatus, useQuery } from "@apollo/client";
-import { GET_FEED } from "../../../main_feed/gql/Queries";
-import LoadingWheel from "../../../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
-import ErrorMessage from "../../../../../../../../global_building_blocks/error_message/ErrorMessage";
-import { basicLayouts } from "../../../../../../../../global_styles/BasicLayouts";
-import Post from "../../../../../../../../global_building_blocks/post/Post";
-import { palette } from "../../../../../../../../global_styles/Palette";
 import { GET_USER_CONVOS } from "./gql/Queries";
-import ConvoCover from "../../../../../../../../global_building_blocks/convo_cover/ConvoCover";
+import { ConvoCoverType } from "../../../global_types/ConvoCoverTypes";
+import { localUid } from "../../../global_state/UserState";
+import { TabNavContext } from "../../../view_tree/main/routes/tab_nav/TabNavContext";
 import { useCollapsibleScene } from "react-native-collapsible-tab-view";
-import { localUid } from "../../../../../../../../global_state/UserState";
-import { TabNavContext } from "../../../../TabNavContext";
+import LoadingWheel from "../../loading_wheel/LoadingWheel";
+import ErrorMessage from "../../error_message/ErrorMessage";
+import { palette } from "../../../global_styles/Palette";
+import ConvoCover from "../../convo_cover/ConvoCover";
 
 interface Props {
     routeKey: string;
+    uid: string;
 }
 
 interface QueryData {
@@ -28,20 +25,18 @@ interface QueryVariables {
     lastTime?: number;
 }
 
-const UserConvos: React.FC<Props> = ({ routeKey }) => {
-    const uid = localUid();
-
+const UserConvos: React.FC<Props> = (props) => {
     const { openConvo } = React.useContext(TabNavContext);
 
     const { data, error, networkStatus, refetch } = useQuery<
         QueryData,
         QueryVariables
     >(GET_USER_CONVOS, {
-        variables: { uid: uid },
+        variables: { uid: props.uid },
         notifyOnNetworkStatusChange: true,
     });
 
-    const scrollPropsAndRef = useCollapsibleScene(routeKey);
+    const scrollPropsAndRef = useCollapsibleScene(props.routeKey);
     const [stillSpin, setStillSpin] = React.useState<boolean>(false);
 
     if (!data?.userConvos && networkStatus === NetworkStatus.loading) {
@@ -49,7 +44,6 @@ const UserConvos: React.FC<Props> = ({ routeKey }) => {
     }
 
     if (error) {
-        console.log(error);
         return <ErrorMessage refresh={refetch} />;
     }
 

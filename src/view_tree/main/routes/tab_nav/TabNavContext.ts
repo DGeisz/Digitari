@@ -5,6 +5,8 @@ interface TabNavActions {
     openConvo: (cid: string) => void;
     openNewMessage: (tname: string, pid: string, responseCost: number) => void;
     openNew: () => void;
+    openCommunity: (cmid: string) => void;
+    openUser: (uid: string) => void;
 }
 
 export const TabNavContext = React.createContext<TabNavActions>({
@@ -12,4 +14,6 @@ export const TabNavContext = React.createContext<TabNavActions>({
     openConvo: () => {},
     openNewMessage: () => {},
     openNew: () => {},
+    openCommunity: () => {},
+    openUser: () => {},
 });

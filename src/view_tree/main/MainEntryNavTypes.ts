@@ -20,6 +20,9 @@ export type MainEntryStack = {
     Community: {
         cmid: string;
     };
+    User: {
+        uid: string;
+    };
 };
 
 /**
@@ -48,3 +51,4 @@ export type PostScreenRouteProp = RouteProp<MainEntryStack, "PostScreen">;
 export type ConvoRouteProp = RouteProp<MainEntryStack, "Convo">;
 export type NewResponseRouteProp = RouteProp<MainEntryStack, "NewResponse">;
 export type CommunityRouteProp = RouteProp<MainEntryStack, "Community">;
+export type UserRouteProp = RouteProp<MainEntryStack, "User">;

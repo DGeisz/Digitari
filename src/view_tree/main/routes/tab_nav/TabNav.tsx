@@ -4,10 +4,10 @@ import MainFeed from "./screens/main_feed/MainFeed";
 import Wallet from "./screens/wallet/Wallet";
 import Convos from "./screens/convos/Convos";
 import Profile from "./screens/profile/Profile";
+import Search from "./screens/search/Search";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { TabNavProp } from "../../MainEntryNavTypes";
 import { TabNavContext } from "./TabNavContext";
-import { StyleSheet, View } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
@@ -36,68 +36,97 @@ const TabNav: React.FC<Props> = (props) => {
         props.navigation.navigate("New");
     };
 
+    const openCommunity = (cmid: string) => {
+        props.navigation.navigate("Community", { cmid });
+    };
+
+    const openUser = (uid: string) => {
+        props.navigation.navigate("User", { uid });
+    };
+
     return (
-        <TabNavContext.Provider
-            value={{
-                openPost,
-                openConvo,
-                openNewMessage,
-                openNew,
-            }}
-        >
-            <Tab.Navigator
-                initialRouteName="MainFeed"
-                tabBarOptions={{
-                    showLabel: false,
-                    inactiveTintColor: "gray",
+        <>
+            <TabNavContext.Provider
+                value={{
+                    openPost,
+                    openConvo,
+                    openNewMessage,
+                    openNew,
+                    openCommunity,
+                    openUser,
                 }}
             >
-                <Tab.Screen
-                    name="MainFeed"
-                    component={MainFeed}
-                    options={{
-                        tabBarIcon: ({ color, size }) => (
-                            <Entypo name="home" size={size} color={color} />
-                        ),
+                <Tab.Navigator
+                    initialRouteName="MainFeed"
+                    tabBarOptions={{
+                        showLabel: false,
+                        inactiveTintColor: "gray",
                     }}
-                />
-                <Tab.Screen
-                    name="Convos"
-                    component={Convos}
-                    options={{
-                        tabBarIcon: ({ color, size }) => (
-                            <Ionicons
-                                name={"ios-chatbubbles"}
-                                size={size}
-                                color={color}
-                            />
-                        ),
-                    }}
-                />
-                <Tab.Screen
-                    name="Wallet"
-                    component={Wallet}
-                    options={{
-                        tabBarIcon: ({ color, size }) => (
-                            <Entypo name="wallet" size={size} color={color} />
-                        ),
-                    }}
-                />
-                <Tab.Screen
-                    name="Profile"
-                    component={Profile}
-                    options={{
-                        tabBarIcon: ({ color, size }) => (
-                            <FontAwesome
-                                name={"user"}
-                                size={size}
-                                color={color}
-                            />
-                        ),
-                    }}
-                />
-            </Tab.Navigator>
-        </TabNavContext.Provider>
+                >
+                    <Tab.Screen
+                        name="MainFeed"
+                        component={MainFeed}
+                        options={{
+                            tabBarIcon: ({ color, size }) => (
+                                <Entypo name="home" size={size} color={color} />
+                            ),
+                        }}
+                    />
+                    <Tab.Screen
+                        name="Convos"
+                        component={Convos}
+                        options={{
+                            tabBarIcon: ({ color, size }) => (
+                                <Ionicons
+                                    name={"ios-chatbubbles"}
+                                    size={size}
+                                    color={color}
+                                />
+                            ),
+                        }}
+                    />
+                    <Tab.Screen
+                        name="Search"
+                        component={Search}
+                        options={{
+                            tabBarIcon: ({ color, size }) => (
+                                <FontAwesome
+                                    name={"search"}
+                                    size={size}
+                                    color={color}
+                                />
+                            ),
+                        }}
+                    />
+                    <Tab.Screen
+                        name="Wallet"
+                        component={Wallet}
+                        options={{
+                            tabBarIcon: ({ color, size }) => (
+                                <Entypo
+                                    name="wallet"
+                                    size={size}
+                                    color={color}
+                                />
+                            ),
+                        }}
+                    />
+                    <Tab.Screen
+                        name="Profile"
+                        component={Profile}
+                        options={{
+                            tabBarIcon: ({ color, size }) => (
+                                <FontAwesome
+                                    name={"user"}
+                                    size={size}
+                                    color={color}
+                                />
+                            ),
+                        }}
+                    />
+                </Tab.Navigator>
+            </TabNavContext.Provider>
+        </>
     );
 };
 

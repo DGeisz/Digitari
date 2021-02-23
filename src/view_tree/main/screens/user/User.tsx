@@ -1,39 +1,37 @@
 import * as React from "react";
-import { View, Dimensions } from "react-native";
-import { basicLayouts } from "../../../../../../global_styles/BasicLayouts";
-import TabLabel from "../../../../../../global_building_blocks/tab_label/TabLabel";
-import { UserType } from "../../../../../../global_types/UserTypes";
+import { View } from "react-native";
 import { createMaterialCollapsibleTopTabNavigator } from "react-native-collapsible-tab-view";
+import { basicLayouts } from "../../../../global_styles/BasicLayouts";
+import ProfileHeader from "../../../../global_building_blocks/user_sub_screens/profile_header/ProfileHeader";
+import TabLabel from "../../../../global_building_blocks/tab_label/TabLabel";
+import UserPosts from "../../../../global_building_blocks/user_sub_screens/user_posts/UserPosts";
+import UserConvos from "../../../../global_building_blocks/user_sub_screens/user_convos/UserConvos";
+import UserChallenges from "../../../../global_building_blocks/user_sub_screens/user_challenges/UserChallenges";
+import UserStats from "../../../../global_building_blocks/user_sub_screens/user_stats/UserStats";
 import { NetworkStatus, useQuery } from "@apollo/client";
 import {
     GET_USER,
     GetUserQueryData,
     GetUserQueryVariables,
-} from "./gql/Queries";
-import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
-import ErrorMessage from "../../../../../../global_building_blocks/error_message/ErrorMessage";
-import { TabNavContext } from "../../TabNavContext";
-import NewButton from "../../../../../../global_building_blocks/new_button/NewButton";
-import ProfileHeader from "../../../../../../global_building_blocks/user_sub_screens/profile_header/ProfileHeader";
-import UserPosts from "../../../../../../global_building_blocks/user_sub_screens/user_posts/UserPosts";
-import UserConvos from "../../../../../../global_building_blocks/user_sub_screens/user_convos/UserConvos";
-import UserChallenges from "../../../../../../global_building_blocks/user_sub_screens/user_challenges/UserChallenges";
-import UserStats from "../../../../../../global_building_blocks/user_sub_screens/user_stats/UserStats";
-import { localUid } from "../../../../../../global_state/UserState";
+} from "../../routes/tab_nav/screens/profile/gql/Queries";
+import LoadingWheel from "../../../../global_building_blocks/loading_wheel/LoadingWheel";
+import ErrorMessage from "../../../../global_building_blocks/error_message/ErrorMessage";
+import { UserRouteProp } from "../../MainEntryNavTypes";
 
 const Tab = createMaterialCollapsibleTopTabNavigator();
 
-const Profile: React.FC = () => {
-    const { openNew } = React.useContext(TabNavContext);
-    const uid = localUid();
+interface Props {
+    route: UserRouteProp;
+}
 
+const User: React.FC<Props> = (props) => {
     const { data, networkStatus, error, refetch } = useQuery<
         GetUserQueryData,
         GetUserQueryVariables
     >(GET_USER, {
         notifyOnNetworkStatusChange: true,
         variables: {
-            uid,
+            uid: props.route.params.uid,
         },
     });
 
@@ -42,7 +40,6 @@ const Profile: React.FC = () => {
     }
 
     if (error) {
-        console.log(error);
         return <ErrorMessage refresh={refetch} />;
     }
 
@@ -75,7 +72,10 @@ const Profile: React.FC = () => {
                             }}
                         >
                             {() => (
-                                <UserPosts routeKey={"UserPosts"} uid={uid} />
+                                <UserPosts
+                                    routeKey={"UserPosts"}
+                                    uid={data?.user.id}
+                                />
                             )}
                         </Tab.Screen>
                         <Tab.Screen
@@ -87,7 +87,10 @@ const Profile: React.FC = () => {
                             }}
                         >
                             {() => (
-                                <UserConvos routeKey={"UserConvos"} uid={uid} />
+                                <UserConvos
+                                    routeKey={"UserConvos"}
+                                    uid={data?.user.id}
+                                />
                             )}
                         </Tab.Screen>
                         <Tab.Screen
@@ -125,7 +128,6 @@ const Profile: React.FC = () => {
                         </Tab.Screen>
                     </Tab.Navigator>
                 </View>
-                <NewButton openNew={openNew} />
             </>
         );
     } else {
@@ -133,4 +135,4 @@ const Profile: React.FC = () => {
     }
 };
 
-export default Profile;
+export default User;

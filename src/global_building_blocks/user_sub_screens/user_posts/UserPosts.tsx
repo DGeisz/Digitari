@@ -1,19 +1,19 @@
 import * as React from "react";
-import { FlatList, Animated, RefreshControl, View } from "react-native";
+import { Animated, RefreshControl } from "react-native";
 import { NetworkStatus, useQuery } from "@apollo/client";
-import LoadingWheel from "../../../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
-import ErrorMessage from "../../../../../../../../global_building_blocks/error_message/ErrorMessage";
-import { basicLayouts } from "../../../../../../../../global_styles/BasicLayouts";
-import Post from "../../../../../../../../global_building_blocks/post/Post";
-import { palette } from "../../../../../../../../global_styles/Palette";
-import { PostType } from "../../../../../../../../global_types/PostTypes";
 import { GET_USER_POSTS } from "./gql/Queries";
 import { useCollapsibleScene } from "react-native-collapsible-tab-view";
-import { localUid } from "../../../../../../../../global_state/UserState";
-import { TabNavContext } from "../../../../TabNavContext";
+import { PostType } from "../../../global_types/PostTypes";
+import { localUid } from "../../../global_state/UserState";
+import { TabNavContext } from "../../../view_tree/main/routes/tab_nav/TabNavContext";
+import LoadingWheel from "../../loading_wheel/LoadingWheel";
+import ErrorMessage from "../../error_message/ErrorMessage";
+import Post from "../../post/Post";
+import { palette } from "../../../global_styles/Palette";
 
 interface Props {
     routeKey: string;
+    uid: string;
 }
 
 interface QueryData {
@@ -25,20 +25,18 @@ interface QueryVariables {
     lastTime?: number;
 }
 
-const UserPosts: React.FC<Props> = ({ routeKey }) => {
-    const uid = localUid();
-
+const UserPosts: React.FC<Props> = (props) => {
     const { openConvo, openPost } = React.useContext(TabNavContext);
 
     const { data, error, networkStatus, refetch } = useQuery<
         QueryData,
         QueryVariables
     >(GET_USER_POSTS, {
-        variables: { uid: uid },
+        variables: { uid: props.uid },
         notifyOnNetworkStatusChange: true,
     });
 
-    const scrollPropsAndRef = useCollapsibleScene(routeKey);
+    const scrollPropsAndRef = useCollapsibleScene(props.routeKey);
     const [stillSpin, setStillSpin] = React.useState<boolean>(false);
 
     if (!data?.userPosts && networkStatus === NetworkStatus.loading) {

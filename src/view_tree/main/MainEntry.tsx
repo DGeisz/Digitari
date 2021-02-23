@@ -10,13 +10,14 @@ import { MainEntryStack } from "./MainEntryNavTypes";
 import New from "./screens/new/New";
 import NewCommunity from "./screens/new/screens/new_community/NewCommunity";
 import Community from "./screens/community/Community";
+import User from "./screens/user/User";
 
 const RootStack = createStackNavigator<MainEntryStack>();
 
 const MainEntry: React.FC = () => {
     return (
         <RootStack.Navigator
-            initialRouteName="Community"
+            initialRouteName="TabNav"
             screenOptions={{
                 headerTruncatedBackTitle: "",
                 headerBackTitle: "",
@@ -54,9 +55,14 @@ const MainEntry: React.FC = () => {
                 component={NewCommunity}
             />
             <RootStack.Screen
-                name={"Community"}
+                name="Community"
                 component={Community}
-                initialParams={{ cmid: "d02cb1ab-2f62-40b7-8d80-3016f2eaa5ae" }}
+                initialParams={{ cmid: "" }}
+            />
+            <RootStack.Screen
+                name="User"
+                component={User}
+                initialParams={{ uid: "" }}
             />
         </RootStack.Navigator>
     );

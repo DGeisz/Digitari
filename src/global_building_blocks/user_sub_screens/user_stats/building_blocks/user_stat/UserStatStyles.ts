@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { palette } from "../../../../../../../../../../global_styles/Palette";
+import { palette } from "../../../../../global_styles/Palette";
 
 export const styles = StyleSheet.create({
     statContainer: {

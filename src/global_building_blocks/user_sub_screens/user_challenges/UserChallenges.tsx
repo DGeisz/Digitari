@@ -1,14 +1,14 @@
 import * as React from "react";
 import { Animated, RefreshControl, View } from "react-native";
-import { UserType } from "../../../../../../../../global_types/UserTypes";
 import { NetworkStatus, useQuery } from "@apollo/client";
 import { useCollapsibleScene } from "react-native-collapsible-tab-view";
-import LoadingWheel from "../../../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
-import ErrorMessage from "../../../../../../../../global_building_blocks/error_message/ErrorMessage";
-import { palette } from "../../../../../../../../global_styles/Palette";
 import { GET_CHALLENGES } from "./gql/Queries";
-import { ChallengeType } from "../../../../../../../../global_types/ChallengeTypes";
-import Challenge from "../../../../../../../../global_building_blocks/challenge/Challenge";
+import { UserType } from "../../../global_types/UserTypes";
+import { ChallengeType } from "../../../global_types/ChallengeTypes";
+import LoadingWheel from "../../loading_wheel/LoadingWheel";
+import ErrorMessage from "../../error_message/ErrorMessage";
+import Challenge from "../../challenge/Challenge";
+import { palette } from "../../../global_styles/Palette";
 
 interface Props {
     user: UserType;

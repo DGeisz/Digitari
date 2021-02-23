@@ -1,8 +1,8 @@
 import * as React from "react";
 import { View, Text } from "react-native";
 import { styles } from "./UserStatStyles";
-import CoinBox from "../../../../../../../../../../global_building_blocks/coin_box/CoinBox";
-import { toCommaRep } from "../../../../../../../../../../global_utils/ValueRepUtils";
+import CoinBox from "../../../../coin_box/CoinBox";
+import { toCommaRep } from "../../../../../global_utils/ValueRepUtils";
 
 interface Props {
     showCoin?: boolean;

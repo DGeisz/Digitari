@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from "react-native";
-import { palette } from "../../../../../../../../global_styles/Palette";
+import { palette } from "../../../global_styles/Palette";
 
 const { width } = Dimensions.get("window");
 

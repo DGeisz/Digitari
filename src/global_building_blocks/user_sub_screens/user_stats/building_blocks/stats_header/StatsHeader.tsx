@@ -1,16 +1,16 @@
 import * as React from "react";
 import { styles } from "./StatsHeaderStyles";
 import { Text, View } from "react-native";
-import Tier from "../../../../../../../../../../global_building_blocks/tier/Tier";
+import { UserType } from "../../../../../global_types/UserTypes";
+import Tier from "../../../../tier/Tier";
+import { toRep } from "../../../../../global_utils/ValueRepUtils";
 import {
     BeenBlocked,
     Blocked,
     SuccessfulConvos,
-} from "../../../../../../../../../../global_building_blocks/big_three/BigThree";
-import { UserType } from "../../../../../../../../../../global_types/UserTypes";
-import CoinBox from "../../../../../../../../../../global_building_blocks/coin_box/CoinBox";
-import { getNextLevelCoinThreshold } from "../../../../../../../../../../global_utils/LevelRepUtils";
-import { toRep } from "../../../../../../../../../../global_utils/ValueRepUtils";
+} from "../../../../big_three/BigThree";
+import { getNextLevelCoinThreshold } from "../../../../../global_utils/LevelRepUtils";
+import CoinBox from "../../../../coin_box/CoinBox";
 
 interface Props {
     user: UserType;

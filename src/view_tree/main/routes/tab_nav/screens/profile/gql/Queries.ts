@@ -1,8 +1,9 @@
 import { gql } from "@apollo/client";
+import { UserType } from "../../../../../../../global_types/UserTypes";
 
 export const GET_USER = gql`
-    query GetUser {
-        user {
+    query GetUser($uid: ID!) {
+        user(uid: $uid) {
             id
             firstName
             lastName
@@ -68,9 +69,17 @@ export const GET_USER = gql`
     }
 `;
 
+export interface GetUserQueryData {
+    user: UserType;
+}
+
+export interface GetUserQueryVariables {
+    uid: string;
+}
+
 export const GET_USER_TYPE = gql`
-    query GetUser {
-        user {
+    query GetUser($uid: ID!) {
+        user(uid: $uid) {
             id
             firstName
             lastName
