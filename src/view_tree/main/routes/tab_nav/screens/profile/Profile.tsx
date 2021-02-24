@@ -1,8 +1,7 @@
 import * as React from "react";
-import { View, Dimensions } from "react-native";
+import { View } from "react-native";
 import { basicLayouts } from "../../../../../../global_styles/BasicLayouts";
 import TabLabel from "../../../../../../global_building_blocks/tab_label/TabLabel";
-import { UserType } from "../../../../../../global_types/UserTypes";
 import { createMaterialCollapsibleTopTabNavigator } from "react-native-collapsible-tab-view";
 import { NetworkStatus, useQuery } from "@apollo/client";
 import {
@@ -20,6 +19,7 @@ import UserConvos from "../../../../../../global_building_blocks/user_sub_screen
 import UserChallenges from "../../../../../../global_building_blocks/user_sub_screens/user_challenges/UserChallenges";
 import UserStats from "../../../../../../global_building_blocks/user_sub_screens/user_stats/UserStats";
 import { localUid } from "../../../../../../global_state/UserState";
+import { Auth } from "aws-amplify";
 
 const Tab = createMaterialCollapsibleTopTabNavigator();
 
@@ -53,7 +53,13 @@ const Profile: React.FC = () => {
                     <Tab.Navigator
                         collapsibleOptions={{
                             renderHeader: () => (
-                                <ProfileHeader user={data.user} />
+                                <ProfileHeader
+                                    user={data.user}
+                                    isMe
+                                    handleSettings={() => Auth.signOut()}
+                                    handleUnFollow={() => {}}
+                                    handleFollow={() => {}}
+                                />
                             ),
                             headerHeight: 250,
                         }}

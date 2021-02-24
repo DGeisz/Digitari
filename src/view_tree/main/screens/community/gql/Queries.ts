@@ -1,9 +1,12 @@
 import { gql } from "@apollo/client";
+import { CommunityType } from "../../../../../global_types/CommunityTypes";
 
 export const GET_COMMUNITY = gql`
     query GetCommunity($cmid: ID!) {
         community(cmid: $cmid) {
             id
+            amFollowing
+            followPrice
             uid
             name
             description
@@ -14,14 +17,7 @@ export const GET_COMMUNITY = gql`
 `;
 
 export interface GetCommunityQueryData {
-    community: {
-        id: string;
-        uid: string;
-        name: string;
-        description: string;
-        followers: number;
-        timeCreated: string;
-    };
+    community: CommunityType;
 }
 
 export interface GetCommunityQueryVariables {

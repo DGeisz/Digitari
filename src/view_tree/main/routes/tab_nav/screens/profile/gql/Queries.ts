@@ -14,6 +14,9 @@ export const GET_USER = gql`
             beenBlocked
             coin
 
+            amFollowing
+            followPrice
+
             coinSpent
             csGoal
             nextCsIndex

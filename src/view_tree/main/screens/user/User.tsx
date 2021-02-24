@@ -8,7 +8,7 @@ import UserPosts from "../../../../global_building_blocks/user_sub_screens/user_
 import UserConvos from "../../../../global_building_blocks/user_sub_screens/user_convos/UserConvos";
 import UserChallenges from "../../../../global_building_blocks/user_sub_screens/user_challenges/UserChallenges";
 import UserStats from "../../../../global_building_blocks/user_sub_screens/user_stats/UserStats";
-import { NetworkStatus, useQuery } from "@apollo/client";
+import { NetworkStatus, useMutation, useQuery } from "@apollo/client";
 import {
     GET_USER,
     GetUserQueryData,
@@ -17,6 +17,17 @@ import {
 import LoadingWheel from "../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import ErrorMessage from "../../../../global_building_blocks/error_message/ErrorMessage";
 import { UserRouteProp } from "../../MainEntryNavTypes";
+import { localUid } from "../../../../global_state/UserState";
+import {
+    FOLLOW_USER,
+    FollowUserData,
+    FollowUserVariables,
+    UN_FOLLOW_USER,
+    UnFollowUserData,
+    UnFollowUserVariables,
+} from "./gql/Mutation";
+import { USER_TYPENAME } from "../../../../global_types/UserTypes";
+import { Auth } from "aws-amplify";
 
 const Tab = createMaterialCollapsibleTopTabNavigator();
 
@@ -25,6 +36,8 @@ interface Props {
 }
 
 const User: React.FC<Props> = (props) => {
+    const uid = localUid();
+
     const { data, networkStatus, error, refetch } = useQuery<
         GetUserQueryData,
         GetUserQueryVariables
@@ -34,6 +47,99 @@ const User: React.FC<Props> = (props) => {
             uid: props.route.params.uid,
         },
     });
+
+    const [follow] = useMutation<FollowUserData, FollowUserVariables>(
+        FOLLOW_USER,
+        {
+            variables: {
+                tid: props.route.params.uid,
+            },
+            optimisticResponse: {
+                followUser: {
+                    tid: props.route.params.uid,
+                    sid: uid,
+                    name: "",
+                    time: "",
+                    entityType: 0,
+                },
+            },
+            update(cache, { data: followData }) {
+                if (data?.user && followData?.followUser) {
+                    cache.modify({
+                        id: cache.identify({
+                            __typename: USER_TYPENAME,
+                            id: uid,
+                        }),
+                        fields: {
+                            following(existing) {
+                                return existing + 1;
+                            },
+                            coin(existing) {
+                                return existing - data.user.followPrice;
+                            },
+                        },
+                    });
+
+                    cache.modify({
+                        id: cache.identify({
+                            __typename: USER_TYPENAME,
+                            id: props.route.params.uid,
+                        }),
+                        fields: {
+                            amFollowing() {
+                                return true;
+                            },
+                        },
+                    });
+                }
+            },
+        }
+    );
+
+    const [unFollow] = useMutation<UnFollowUserData, UnFollowUserVariables>(
+        UN_FOLLOW_USER,
+        {
+            variables: {
+                tid: props.route.params.uid,
+            },
+            optimisticResponse: {
+                unFollowUser: {
+                    tid: props.route.params.uid,
+                    sid: uid,
+                    name: "",
+                    time: "",
+                    entityType: 0,
+                },
+            },
+            update(cache, { data: unFollowData }) {
+                if (data?.user && unFollowData?.unFollowUser) {
+                    cache.modify({
+                        id: cache.identify({
+                            __typename: USER_TYPENAME,
+                            id: uid,
+                        }),
+                        fields: {
+                            following(existing) {
+                                return existing - 1;
+                            },
+                        },
+                    });
+
+                    cache.modify({
+                        id: cache.identify({
+                            __typename: USER_TYPENAME,
+                            id: props.route.params.uid,
+                        }),
+                        fields: {
+                            amFollowing() {
+                                return false;
+                            },
+                        },
+                    });
+                }
+            },
+        }
+    );
 
     if (!data?.user && networkStatus === NetworkStatus.loading) {
         return <LoadingWheel />;
@@ -50,7 +156,13 @@ const User: React.FC<Props> = (props) => {
                     <Tab.Navigator
                         collapsibleOptions={{
                             renderHeader: () => (
-                                <ProfileHeader user={data.user} />
+                                <ProfileHeader
+                                    user={data.user}
+                                    isMe={data?.user.id === uid}
+                                    handleFollow={follow}
+                                    handleUnFollow={unFollow}
+                                    handleSettings={Auth.signOut}
+                                />
                             ),
                             headerHeight: 250,
                         }}

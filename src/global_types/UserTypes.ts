@@ -8,6 +8,9 @@ export interface UserType {
 
     newUser?: boolean;
 
+    amFollowing: boolean;
+    followPrice: number;
+
     level: number;
     bio: string;
     ranking: number;
@@ -81,6 +84,10 @@ export const exampleUser: UserType = {
     level: 12,
     bio:
         "Hi my name is Danny. I bool, I vape, I joust, and I cape.  Here's to another day ba-rangling",
+
+    amFollowing: false,
+    followPrice: 50,
+
     ranking: 124,
     blocked: 12,
     beenBlocked: 435,

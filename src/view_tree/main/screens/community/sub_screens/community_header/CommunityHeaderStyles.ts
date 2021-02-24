@@ -13,6 +13,37 @@ export const styles = StyleSheet.create({
         ...basicLayouts.flexGrid2,
         flexDirection: "row",
     },
+    followErrorText: {
+        color: palette.danger,
+        paddingBottom: 10,
+    },
+    headerLeft: {
+        ...basicLayouts.flexGrid2,
+        flexDirection: "row",
+    },
+    headerRight: {
+        ...basicLayouts.grid5,
+    },
+    followButton: {
+        ...basicLayouts.grid5,
+        flexDirection: "row",
+        paddingVertical: 3,
+        paddingHorizontal: 10,
+        borderWidth: 2,
+        borderColor: palette.deepBlue,
+        borderRadius: 20,
+    },
+    followButtonTextContainer: {
+        borderRightWidth: 1,
+        borderRightColor: palette.softGray,
+        paddingRight: 10,
+    },
+    followButtonText: {
+        color: palette.hardGray,
+        fontSize: 15,
+        fontWeight: "bold",
+        paddingVertical: 5,
+    },
     nameText: {
         fontSize: 20,
         fontWeight: "bold",

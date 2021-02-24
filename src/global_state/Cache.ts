@@ -51,5 +51,8 @@ export const cache = new InMemoryCache({
         ConvoMsg: {
             keyFields: ["id", "time"],
         },
+        FollowEntity: {
+            keyFields: ["tid", "sid"],
+        },
     },
 });

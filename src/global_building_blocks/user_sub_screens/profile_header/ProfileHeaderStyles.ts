@@ -9,6 +9,10 @@ export const styles = StyleSheet.create({
         paddingTop: 5,
         paddingBottom: 20,
     },
+    followErrorText: {
+        color: palette.danger,
+        paddingBottom: 10,
+    },
     profileSplit1: {
         flexDirection: "row",
     },
@@ -26,6 +30,26 @@ export const styles = StyleSheet.create({
     },
     split1Right: {
         ...basicLayouts.grid5,
+    },
+    followButton: {
+        ...basicLayouts.grid5,
+        flexDirection: "row",
+        paddingVertical: 3,
+        paddingHorizontal: 10,
+        borderWidth: 2,
+        borderColor: palette.deepBlue,
+        borderRadius: 20,
+    },
+    followButtonTextContainer: {
+        borderRightWidth: 1,
+        borderRightColor: palette.softGray,
+        paddingRight: 10,
+    },
+    followButtonText: {
+        color: palette.hardGray,
+        fontSize: 15,
+        fontWeight: "bold",
+        paddingVertical: 5,
     },
     profileLevelText: {
         fontWeight: "600",

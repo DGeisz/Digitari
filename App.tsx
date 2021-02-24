@@ -88,7 +88,6 @@ export default function App() {
 
     return (
         <NavigationContainer>
-            {/*// @ts-ignore*/}
             <ApolloProvider client={client}>
                 {/*<MockedProvider cache={cache} mocks={allMocks} addTypename={false}>*/}
                 <SafeAreaProvider>

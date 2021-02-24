@@ -71,38 +71,41 @@ const AppView: React.FC = () => {
         console.log("Calling fetch effect");
 
         (async () => {
-            const { sub, email, given_name, family_name } = (
-                await Auth.currentSession()
-            ).getIdToken().payload;
+            try {
+                const { sub, email, given_name, family_name } = (
+                    await Auth.currentSession()
+                ).getIdToken().payload;
 
-            !!sub && localUid(sub);
+                !!sub && localUid(sub);
 
-            console.log(
-                "Here are user attributes: ",
-                email,
-                given_name,
-                family_name
-            );
+                console.log(
+                    "Here are user attributes: ",
+                    email,
+                    given_name,
+                    family_name
+                );
 
-            if (authenticated && email && given_name && family_name) {
-                const { data } = await client.mutate<
-                    CreateOrFetchUserMutationData,
-                    CreateOrFetchUserMutationVariables
-                >({
-                    mutation: CREATE_OR_FETCH_USER,
-                    variables: {
-                        email,
-                        firstName: given_name,
-                        lastName: family_name,
-                    },
-                });
+                if (authenticated && email && given_name && family_name) {
+                    const { data } = await client.mutate<
+                        CreateOrFetchUserMutationData,
+                        CreateOrFetchUserMutationVariables
+                    >({
+                        mutation: CREATE_OR_FETCH_USER,
+                        variables: {
+                            email,
+                            firstName: given_name,
+                            lastName: family_name,
+                        },
+                    });
 
-                console.log("Here is data", data?.createOrFetchUser);
+                    console.log("Here is data", data?.createOrFetchUser);
 
-                if (data?.createOrFetchUser) {
-                    setFetchedUser(true);
-                    setNewUser(!!data.createOrFetchUser.newUser);
+                    if (data?.createOrFetchUser) {
+                        setFetchedUser(true);
+                        setNewUser(!!data.createOrFetchUser.newUser);
+                    }
                 }
+            } finally {
             }
         })();
     }, [authenticated, checkedAuth]);

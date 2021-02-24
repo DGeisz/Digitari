@@ -7,6 +7,11 @@ export const schema = gql`
         lastName: String
         userName: String
         email: String
+        timeCreated: String
+
+        # Indicates whether the person who fetched this user is following this user.
+        amFollowing: Boolean
+        followPrice: Int
 
         newUser: Boolean
 
@@ -154,8 +159,12 @@ export const schema = gql`
     }
 
     type Community {
-        id: String
-        uid: String
+        id: ID
+
+        amFollowing: Boolean
+        followPrice: Int
+
+        uid: ID
         name: String
         description: String
         followers: Int
@@ -166,6 +175,14 @@ export const schema = gql`
         id: ID
         name: String
         followers: Int
+        entityType: Int
+    }
+
+    type FollowEntity {
+        sid: ID
+        tid: ID
+        time: String
+        name: String
         entityType: Int
     }
 
@@ -183,6 +200,7 @@ export const schema = gql`
         createCommunityCoinCheck: CoinCheck
         community(cmid: ID!): Community
         search(text: String!): [SearchEntity]
+        searchEntity(id: ID!): SearchEntity
     }
 
     type Mutation {
@@ -206,6 +224,10 @@ export const schema = gql`
         newConvo(pid: ID!, sanony: Boolean!, msg: String!): Convo
         createCommunity(name: String, description: String): Community
         indexUser(id: ID, firstName: String, lastName: String): SearchEntity
+        followUser(tid: ID!): FollowEntity
+        unFollowUser(tid: ID!): FollowEntity
+        followCommunity(tid: ID!): FollowEntity
+        unFollowCommunity(tid: ID!): FollowEntity
     }
 `;
 
