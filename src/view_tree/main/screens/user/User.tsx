@@ -89,6 +89,9 @@ const User: React.FC<Props> = (props) => {
                             amFollowing() {
                                 return true;
                             },
+                            followers(existing) {
+                                return existing + 1;
+                            },
                         },
                     });
                 }
@@ -133,6 +136,9 @@ const User: React.FC<Props> = (props) => {
                         fields: {
                             amFollowing() {
                                 return false;
+                            },
+                            followers(existing) {
+                                return existing - 1;
                             },
                         },
                     });

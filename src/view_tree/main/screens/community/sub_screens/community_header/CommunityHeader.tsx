@@ -22,7 +22,7 @@ const CommunityHeader: React.FC<Props> = (props) => {
         <View style={styles.headerContainer}>
             {showError && (
                 <Text style={styles.followErrorText}>
-                    {`You need ${props.community.followPrice} digicoin to follow this user`}
+                    {`You need ${props.community.followPrice} digicoin to follow this community`}
                 </Text>
             )}
             <View style={styles.headerHeader}>
