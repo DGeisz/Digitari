@@ -48,6 +48,8 @@ export type NewCommunityNavProp = StackNavigationProp<
     "NewCommunity"
 >;
 export type UserNavProp = StackNavigationProp<MainEntryStack, "User">;
+export type FollowsNavProp = StackNavigationProp<MainEntryStack, "Follows">;
+export type CommunityNavProp = StackNavigationProp<MainEntryStack, "Community">;
 
 /**
  * Route props
@@ -57,3 +59,4 @@ export type ConvoRouteProp = RouteProp<MainEntryStack, "Convo">;
 export type NewResponseRouteProp = RouteProp<MainEntryStack, "NewResponse">;
 export type CommunityRouteProp = RouteProp<MainEntryStack, "Community">;
 export type UserRouteProp = RouteProp<MainEntryStack, "User">;
+export type FollowsRouteProp = RouteProp<MainEntryStack, "Follows">;

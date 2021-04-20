@@ -14,7 +14,7 @@ import {
     GetCommunityQueryData,
     GetCommunityQueryVariables,
 } from "./gql/Queries";
-import { CommunityRouteProp } from "../../MainEntryNavTypes";
+import { CommunityNavProp, CommunityRouteProp } from "../../MainEntryNavTypes";
 import LoadingWheel from "../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import ErrorMessage from "../../../../global_building_blocks/error_message/ErrorMessage";
 import {
@@ -27,9 +27,11 @@ import {
 } from "./gql/Mutations";
 import { localUid } from "../../../../global_state/UserState";
 import { USER_TYPENAME } from "../../../../global_types/UserTypes";
+import Followers from "./sub_screens/followers/Followers";
 
 interface Props {
     route: CommunityRouteProp;
+    navigation: CommunityNavProp;
 }
 
 const Tab = createMaterialCollapsibleTopTabNavigator();
@@ -201,7 +203,15 @@ const Community: React.FC<Props> = (props) => {
                             ),
                         }}
                     >
-                        {() => <View />}
+                        {() => (
+                            <Followers
+                                routeKey="CommunityFollowers"
+                                tid={props.route.params.cmid}
+                                onSelectUser={(uid) => {
+                                    props.navigation.push("User", { uid });
+                                }}
+                            />
+                        )}
                     </Tab.Screen>
                 </Tab.Navigator>
             </View>

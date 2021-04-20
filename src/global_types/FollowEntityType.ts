@@ -1,6 +1,6 @@
 export enum FollowEntityEnum {
-    User,
-    Community,
+    user,
+    community,
 }
 
 export interface FollowEntityType {

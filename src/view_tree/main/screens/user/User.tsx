@@ -157,102 +157,94 @@ const User: React.FC<Props> = (props) => {
 
     if (!!data?.user) {
         return (
-            <>
-                <View style={basicLayouts.flexGrid1}>
-                    <Tab.Navigator
-                        collapsibleOptions={{
-                            renderHeader: () => (
-                                <ProfileHeader
-                                    openFollows={() => {
-                                        props.navigation.navigate("Follows", {
-                                            name: `${data.user.firstName} ${data.user.lastName}`,
-                                            uid: data?.user.id,
-                                        });
-                                    }}
-                                    user={data.user}
-                                    isMe={data?.user.id === uid}
-                                    handleFollow={follow}
-                                    handleUnFollow={unFollow}
-                                    handleSettings={Auth.signOut}
-                                />
+            <View style={basicLayouts.flexGrid1}>
+                <Tab.Navigator
+                    collapsibleOptions={{
+                        renderHeader: () => (
+                            <ProfileHeader
+                                openFollows={() => {
+                                    props.navigation.push("Follows", {
+                                        name: `${data.user.firstName} ${data.user.lastName}`,
+                                        uid: data?.user.id,
+                                    });
+                                }}
+                                user={data.user}
+                                isMe={data?.user.id === uid}
+                                handleFollow={follow}
+                                handleUnFollow={unFollow}
+                                handleSettings={Auth.signOut}
+                            />
+                        ),
+                        headerHeight: 250,
+                    }}
+                    tabBarOptions={{
+                        scrollEnabled: true,
+                        tabStyle: {
+                            flex: 0,
+                            width: 100,
+                            padding: 0,
+                        },
+                    }}
+                >
+                    <Tab.Screen
+                        name="UserPosts"
+                        options={{
+                            tabBarLabel: ({ color }) => (
+                                <TabLabel title={"Posts"} color={color} />
                             ),
-                            headerHeight: 250,
-                        }}
-                        tabBarOptions={{
-                            scrollEnabled: true,
-                            tabStyle: {
-                                flex: 0,
-                                width: 100,
-                                padding: 0,
-                            },
                         }}
                     >
-                        <Tab.Screen
-                            name="UserPosts"
-                            options={{
-                                tabBarLabel: ({ color }) => (
-                                    <TabLabel title={"Posts"} color={color} />
-                                ),
-                            }}
-                        >
-                            {() => (
-                                <UserPosts
-                                    routeKey={"UserPosts"}
-                                    uid={data?.user.id}
-                                />
-                            )}
-                        </Tab.Screen>
-                        <Tab.Screen
-                            name="UserConvos"
-                            options={{
-                                tabBarLabel: ({ color }) => (
-                                    <TabLabel title={"Convos"} color={color} />
-                                ),
-                            }}
-                        >
-                            {() => (
-                                <UserConvos
-                                    routeKey={"UserConvos"}
-                                    uid={data?.user.id}
-                                />
-                            )}
-                        </Tab.Screen>
-                        <Tab.Screen
-                            name="UserChallenges"
-                            options={{
-                                tabBarLabel: ({ color }) => (
-                                    <TabLabel
-                                        title={"Challenges"}
-                                        color={color}
-                                    />
-                                ),
-                            }}
-                        >
-                            {() => (
-                                <UserChallenges
-                                    user={data.user}
-                                    routeKey={"UserChallenges"}
-                                />
-                            )}
-                        </Tab.Screen>
-                        <Tab.Screen
-                            name="UserStats"
-                            options={{
-                                tabBarLabel: ({ color }) => (
-                                    <TabLabel title={"Stats"} color={color} />
-                                ),
-                            }}
-                        >
-                            {() => (
-                                <UserStats
-                                    routeKey="UserStats"
-                                    user={data.user}
-                                />
-                            )}
-                        </Tab.Screen>
-                    </Tab.Navigator>
-                </View>
-            </>
+                        {() => (
+                            <UserPosts
+                                routeKey={"UserPosts"}
+                                uid={data?.user.id}
+                            />
+                        )}
+                    </Tab.Screen>
+                    <Tab.Screen
+                        name="UserConvos"
+                        options={{
+                            tabBarLabel: ({ color }) => (
+                                <TabLabel title={"Convos"} color={color} />
+                            ),
+                        }}
+                    >
+                        {() => (
+                            <UserConvos
+                                routeKey={"UserConvos"}
+                                uid={data?.user.id}
+                            />
+                        )}
+                    </Tab.Screen>
+                    <Tab.Screen
+                        name="UserChallenges"
+                        options={{
+                            tabBarLabel: ({ color }) => (
+                                <TabLabel title={"Challenges"} color={color} />
+                            ),
+                        }}
+                    >
+                        {() => (
+                            <UserChallenges
+                                user={data.user}
+                                routeKey={"UserChallenges"}
+                            />
+                        )}
+                    </Tab.Screen>
+                    <Tab.Screen
+                        name="UserStats"
+                        options={{
+                            tabBarLabel: ({ color }) => (
+                                <TabLabel title={"Stats"} color={color} />
+                            ),
+                        }}
+                    >
+                        {() => (
+                            <UserStats routeKey="UserStats" user={data.user} />
+                        )}
+                    </Tab.Screen>
+                </Tab.Navigator>
+            </View>
         );
     } else {
         return <View style={basicLayouts.flexGrid1} />;
