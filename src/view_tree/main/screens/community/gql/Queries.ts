@@ -6,7 +6,6 @@ export const GET_COMMUNITY = gql`
         community(cmid: $cmid) {
             id
             amFollowing
-            followPrice
             uid
             name
             description

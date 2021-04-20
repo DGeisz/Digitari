@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { Keyboard, Text, TouchableOpacity, View } from "react-native";
 import { useAuthKeyboardBuffer } from "../../building_blocks/use_auth_keyboard_buffer/UseAuthKeyboardBuffer";
 import { authStyles } from "../../styles/AuthStyles";
@@ -14,12 +14,12 @@ interface Props {
 }
 
 const ForgotPwd: React.FC<Props> = (props) => {
-    const [email, setEmail] = React.useState<string>("");
-    const [active, setActive] = React.useState<boolean>(false);
+    const [email, setEmail] = useState<string>("");
+    const [active, setActive] = useState<boolean>(false);
 
-    const [loading, setLoading] = React.useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
 
-    const [errorActive, setErrorActive] = React.useState<boolean>(false);
+    const [errorActive, setErrorActive] = useState<boolean>(false);
 
     const bufferHeight = useAuthKeyboardBuffer();
 

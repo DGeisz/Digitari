@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 
 interface TabNavActions {
     openPost: (pid: string) => void;
@@ -7,6 +7,7 @@ interface TabNavActions {
     openNew: () => void;
     openCommunity: (cmid: string) => void;
     openUser: (uid: string) => void;
+    openFollows: (name: string, uid: string) => void;
 }
 
 export const TabNavContext = React.createContext<TabNavActions>({
@@ -16,4 +17,5 @@ export const TabNavContext = React.createContext<TabNavActions>({
     openNew: () => {},
     openCommunity: () => {},
     openUser: () => {},
+    openFollows: () => {},
 });

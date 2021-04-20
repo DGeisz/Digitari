@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Image, View, Text } from "react-native";
 import { styles } from "./CoinBoxStyles";
 import { toCommaRep, toRep } from "../../global_utils/ValueRepUtils";

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import MainEntry from "./main/MainEntry";
 import AuthEntry from "./auth/AuthEntry";
 import * as SplashScreen from "expo-splash-screen";
@@ -13,14 +13,14 @@ import {
 import { localUid } from "../global_state/UserState";
 
 const AppView: React.FC = () => {
-    const [checkedAuth, setCheckAuth] = React.useState<boolean>(false);
-    const [fetchedUser, setFetchedUser] = React.useState<boolean>(false);
+    const [checkedAuth, setCheckAuth] = useState<boolean>(false);
+    const [fetchedUser, setFetchedUser] = useState<boolean>(false);
 
-    const [authenticated, setAuthenticated] = React.useState<boolean>(true);
-    const [newUser, setNewUser] = React.useState<boolean>(false);
+    const [authenticated, setAuthenticated] = useState<boolean>(true);
+    const [newUser, setNewUser] = useState<boolean>(false);
     const client = useApolloClient();
 
-    React.useEffect(() => {
+    useEffect(() => {
         Hub.listen("auth", async ({ payload: { event } }: HubCapsule) => {
             console.log("Amplify Hub event:", event);
 
@@ -51,7 +51,7 @@ const AppView: React.FC = () => {
         })();
     }, []);
 
-    React.useEffect(() => {
+    useEffect(() => {
         (async () => {
             if (checkedAuth) {
                 if (authenticated) {
@@ -67,7 +67,7 @@ const AppView: React.FC = () => {
         })();
     }, [fetchedUser, checkedAuth]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         console.log("Calling fetch effect");
 
         (async () => {
@@ -97,8 +97,6 @@ const AppView: React.FC = () => {
                             lastName: family_name,
                         },
                     });
-
-                    console.log("Here is data", data?.createOrFetchUser);
 
                     if (data?.createOrFetchUser) {
                         setFetchedUser(true);

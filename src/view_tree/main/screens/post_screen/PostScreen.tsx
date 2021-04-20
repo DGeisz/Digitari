@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { FlatList } from "react-native";
 import { exampleConvoCover } from "../../../../global_types/ConvoCoverTypes";
 import ConvoCover from "../../../../global_building_blocks/convo_cover/ConvoCover";

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { Keyboard, Text, TouchableOpacity, View } from "react-native";
 import { authStyles } from "../../styles/AuthStyles";
 import { basicLayouts } from "../../../../global_styles/BasicLayouts";
@@ -19,14 +19,14 @@ interface Props {
 }
 
 const NewAccountEmailPwd: React.FC<Props> = (props) => {
-    const [email, setEmail] = React.useState<string>("");
-    const [password, setPassword] = React.useState<string>("");
-    const [pwdActive, setActive] = React.useState<boolean>(false);
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [pwdActive, setActive] = useState<boolean>(false);
 
-    const [loading, setLoading] = React.useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
 
-    const [error, setError] = React.useState<string>("");
-    const [errorActive, setErrorActive] = React.useState<boolean>(false);
+    const [error, setError] = useState<string>("");
+    const [errorActive, setErrorActive] = useState<boolean>(false);
 
     const bufferHeight = useAuthKeyboardBuffer();
 

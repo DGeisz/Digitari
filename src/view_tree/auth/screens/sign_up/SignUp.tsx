@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import SocialAuth from "../../building_blocks/social_auth/SocialAuth";
 import { SignUpNavProp } from "../../AuthEntryNavTypes";
 import { Auth } from "aws-amplify";

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Animated, View } from "react-native";
 import StatsHeader from "./building_blocks/stats_header/StatsHeader";
 import { useCollapsibleScene } from "react-native-collapsible-tab-view";

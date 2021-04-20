@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { styles } from "./WalletHeaderStyles";
 import { Text, TouchableOpacity, View } from "react-native";
 import { WalletType } from "../../../../../../../../global_types/WalletTypes";

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { Keyboard, Text, TouchableOpacity, View } from "react-native";
 import {
     NewResponseNavProp,
@@ -34,7 +34,7 @@ const NewResponse: React.FC<Props> = (props) => {
     const firstName = localFirstName();
     const uid = localUid();
 
-    const [anony, setAnony] = React.useState<boolean>(false);
+    const [anony, setAnony] = useState<boolean>(false);
 
     const [newConvoBase] = useMutation<
         NewResponseMutationData,

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { styles } from "./StatusFooterStyles";
 import { Text, TouchableOpacity, View } from "react-native";
 import CancelConfirmModal from "../../../../../../global_building_blocks/cancel_confirm_modal/CancelConfirmModal";

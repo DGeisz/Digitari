@@ -22,6 +22,46 @@ export const cache = new InMemoryCache({
                         }
                     },
                 },
+                following: {
+                    keyArgs: ["sid", "entityType"],
+                    merge(existing, incoming) {
+                        if (existing && incoming) {
+                            return [...existing, ...incoming];
+                        } else if (existing) {
+                            return existing;
+                        } else if (incoming) {
+                            return incoming;
+                        } else {
+                            return [];
+                        }
+                    },
+                },
+                followers: {
+                    keyArgs: ["tid"],
+                    merge(existing, incoming) {
+                        if (existing && incoming) {
+                            return [...existing, ...incoming];
+                        } else if (existing) {
+                            return existing;
+                        } else if (incoming) {
+                            return incoming;
+                        } else {
+                            return [];
+                        }
+                    },
+                },
+                search: {
+                    keyArgs: ["text", "entityType"],
+                    merge(existing, incoming) {
+                        if (existing && !!incoming) {
+                            return [...existing, ...incoming];
+                        } else if (existing) {
+                            return existing;
+                        } else {
+                            return incoming;
+                        }
+                    },
+                },
             },
         },
         Convo: {
@@ -50,9 +90,6 @@ export const cache = new InMemoryCache({
         },
         ConvoMsg: {
             keyFields: ["id", "time"],
-        },
-        FollowEntity: {
-            keyFields: ["tid", "sid"],
         },
     },
 });

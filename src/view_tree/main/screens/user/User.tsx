@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useContext } from "react";
 import { View } from "react-native";
 import { createMaterialCollapsibleTopTabNavigator } from "react-native-collapsible-tab-view";
 import { basicLayouts } from "../../../../global_styles/BasicLayouts";
@@ -16,7 +16,7 @@ import {
 } from "../../routes/tab_nav/screens/profile/gql/Queries";
 import LoadingWheel from "../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import ErrorMessage from "../../../../global_building_blocks/error_message/ErrorMessage";
-import { UserRouteProp } from "../../MainEntryNavTypes";
+import { UserNavProp, UserRouteProp } from "../../MainEntryNavTypes";
 import { localUid } from "../../../../global_state/UserState";
 import {
     FOLLOW_USER,
@@ -32,17 +32,17 @@ import { Auth } from "aws-amplify";
 const Tab = createMaterialCollapsibleTopTabNavigator();
 
 interface Props {
+    navigation: UserNavProp;
     route: UserRouteProp;
 }
 
 const User: React.FC<Props> = (props) => {
     const uid = localUid();
 
-    const { data, networkStatus, error, refetch } = useQuery<
+    const { data, loading, error, refetch } = useQuery<
         GetUserQueryData,
         GetUserQueryVariables
     >(GET_USER, {
-        notifyOnNetworkStatusChange: true,
         variables: {
             uid: props.route.params.uid,
         },
@@ -147,7 +147,7 @@ const User: React.FC<Props> = (props) => {
         }
     );
 
-    if (!data?.user && networkStatus === NetworkStatus.loading) {
+    if (!data?.user && loading) {
         return <LoadingWheel />;
     }
 
@@ -163,6 +163,12 @@ const User: React.FC<Props> = (props) => {
                         collapsibleOptions={{
                             renderHeader: () => (
                                 <ProfileHeader
+                                    openFollows={() => {
+                                        props.navigation.navigate("Follows", {
+                                            name: `${data.user.firstName} ${data.user.lastName}`,
+                                            uid: data?.user.id,
+                                        });
+                                    }}
                                     user={data.user}
                                     isMe={data?.user.id === uid}
                                     handleFollow={follow}

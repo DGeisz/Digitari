@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { basicLayouts } from "../../../../global_styles/BasicLayouts";
 import { styles } from "./NewStyles";

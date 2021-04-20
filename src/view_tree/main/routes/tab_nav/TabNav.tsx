@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Entypo, FontAwesome, Ionicons } from "@expo/vector-icons";
 import MainFeed from "./screens/main_feed/MainFeed";
 import Wallet from "./screens/wallet/Wallet";
@@ -44,6 +44,10 @@ const TabNav: React.FC<Props> = (props) => {
         props.navigation.navigate("User", { uid });
     };
 
+    const openFollows = (name: string, uid: string) => {
+        props.navigation.navigate("Follows", { uid, name });
+    };
+
     return (
         <>
             <TabNavContext.Provider
@@ -54,6 +58,7 @@ const TabNav: React.FC<Props> = (props) => {
                     openNew,
                     openCommunity,
                     openUser,
+                    openFollows,
                 }}
             >
                 <Tab.Navigator

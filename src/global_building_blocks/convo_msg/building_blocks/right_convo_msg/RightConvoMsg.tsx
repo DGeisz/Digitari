@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { View } from "react-native";
 import { Text } from "react-native";
 import { ConvoMsgType } from "../../../../global_types/ConvoMsgTypes";

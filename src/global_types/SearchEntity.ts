@@ -6,6 +6,7 @@ export enum SearchEntityEnum {
 export interface SearchEntityType {
     id: string;
     name: string;
+    imgUrl?: string;
     followers: number;
     entityType: SearchEntityEnum;
 }

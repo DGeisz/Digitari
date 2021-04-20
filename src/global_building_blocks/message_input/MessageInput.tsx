@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
     EmitterSubscription,
     Keyboard,
@@ -37,22 +37,20 @@ const MessageInput: React.FC<Props> = ({
     const insets = useSafeAreaInsets();
 
     //Height of the window to avoid keyboard
-    const [height, setHeight] = React.useState<number>(insets.bottom);
+    const [height, setHeight] = useState<number>(insets.bottom);
 
     //Height of the children in the screen
-    const [childHeight, setChildHeight] = React.useState<number>(windowHeight);
+    const [childHeight, setChildHeight] = useState<number>(windowHeight);
 
     //Boolean to determine if the child's initial height has been set
-    const [isChildFixed, fixChild] = React.useState<boolean>(false);
+    const [isChildFixed, fixChild] = useState<boolean>(false);
 
     //Message text
-    const [text, setText] = React.useState<string>("");
+    const [text, setText] = useState<string>("");
     const canSend = !!text;
 
     //Text input ref
-    const textInputRef: React.RefObject<TextInput> = React.useRef<TextInput>(
-        null
-    );
+    const textInputRef: React.RefObject<TextInput> = useRef<TextInput>(null);
 
     const handleSend = (): void => {
         Keyboard.dismiss();
@@ -69,7 +67,7 @@ const MessageInput: React.FC<Props> = ({
         }
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (autoFocus) {
             setTimeout(() => {
                 textInputRef.current && textInputRef.current.focus();

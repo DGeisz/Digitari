@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { View } from "react-native";
 import { createMaterialCollapsibleTopTabNavigator } from "react-native-collapsible-tab-view";
 import { basicLayouts } from "../../../../global_styles/BasicLayouts";
@@ -6,7 +6,7 @@ import CommunityHeader from "./sub_screens/community_header/CommunityHeader";
 import TabLabel from "../../../../global_building_blocks/tab_label/TabLabel";
 import {
     COMMUNITY_TYPENAME,
-    exampleCommunity,
+    FOLLOW_COMMUNITY_PRICE,
 } from "../../../../global_types/CommunityTypes";
 import { NetworkStatus, useMutation, useQuery } from "@apollo/client";
 import {
@@ -75,7 +75,7 @@ const Community: React.FC<Props> = (props) => {
                             return existing + 1;
                         },
                         coin(existing) {
-                            return existing - data.community.followPrice;
+                            return existing - FOLLOW_COMMUNITY_PRICE;
                         },
                     },
                 });
@@ -188,6 +188,16 @@ const Community: React.FC<Props> = (props) => {
                         options={{
                             tabBarLabel: ({ color }) => (
                                 <TabLabel title={"Convos"} color={color} />
+                            ),
+                        }}
+                    >
+                        {() => <View />}
+                    </Tab.Screen>
+                    <Tab.Screen
+                        name="CommunityFollowers"
+                        options={{
+                            tabBarLabel: ({ color }) => (
+                                <TabLabel title={"Followers"} color={color} />
                             ),
                         }}
                     >

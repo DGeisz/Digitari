@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import React from "react";
+import { Text, TouchableOpacity, View, Image } from "react-native";
 import { styles } from "./SearchResultStyles";
 import {
     SearchEntityEnum,
@@ -23,13 +23,22 @@ export default class SearchResult extends React.PureComponent<Props> {
             >
                 <View style={styles.resultLeft}>
                     {this.props.result.entityType === SearchEntityEnum.user ? (
-                        <View style={styles.userIconContainer}>
-                            <FontAwesome
-                                name="user"
-                                color={palette.white}
-                                size={23}
+                        !!this.props.result.imgUrl ? (
+                            <Image
+                                style={styles.userImageContainer}
+                                source={{
+                                    uri: this.props.result.imgUrl,
+                                }}
                             />
-                        </View>
+                        ) : (
+                            <View style={styles.userIconContainer}>
+                                <FontAwesome
+                                    name="user"
+                                    color={palette.white}
+                                    size={23}
+                                />
+                            </View>
+                        )
                     ) : (
                         <View style={styles.communityIconContainer}>
                             <FontAwesome
@@ -44,7 +53,10 @@ export default class SearchResult extends React.PureComponent<Props> {
                     </Text>
                 </View>
                 <View style={styles.resultRight}>
-                    <FontAwesome name="chevron-right" />
+                    <FontAwesome
+                        name="chevron-right"
+                        color={palette.lightGray}
+                    />
                 </View>
             </TouchableOpacity>
         );

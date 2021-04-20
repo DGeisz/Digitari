@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { palette } from "../../global_styles/Palette";
 import Modal from "react-native-modal";
 import { Text, TouchableOpacity, View } from "react-native";

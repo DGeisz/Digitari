@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import {
     EmitterSubscription,
     Keyboard,
@@ -19,9 +19,9 @@ interface Props {
 }
 
 const NewAccountName: React.FC<Props> = (props) => {
-    const [firstName, setFirstName] = React.useState<string>("");
-    const [lastName, setLastName] = React.useState<string>("");
-    const [active, setActive] = React.useState<boolean>(false);
+    const [firstName, setFirstName] = useState<string>("");
+    const [lastName, setLastName] = useState<string>("");
+    const [active, setActive] = useState<boolean>(false);
 
     const bufferHeight = useAuthKeyboardBuffer();
 

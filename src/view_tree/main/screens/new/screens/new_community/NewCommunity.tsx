@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import {
     ActivityIndicator,
     Keyboard,
@@ -74,11 +74,11 @@ const NewCommunity: React.FC<Props> = (props) => {
         },
     });
 
-    const [name, setName] = React.useState<string>("");
-    const [description, setDescription] = React.useState<string>("");
+    const [name, setName] = useState<string>("");
+    const [description, setDescription] = useState<string>("");
 
-    const [error, setError] = React.useState<boolean>(false);
-    const [loading, setLoading] = React.useState<boolean>(false);
+    const [error, setError] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const create = async () => {
         if (!(name && description)) {

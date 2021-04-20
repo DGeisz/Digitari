@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useContext, useState } from "react";
 import { FlatList, RefreshControl, View } from "react-native";
 import { NetworkStatus, useQuery } from "@apollo/client";
 import LoadingWheel from "../../../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
@@ -25,7 +25,7 @@ interface QueryVariables {
 const NewConvos: React.FC<Props> = () => {
     const uid = localUid();
 
-    const { openConvo } = React.useContext(TabNavContext);
+    const { openConvo } = useContext(TabNavContext);
 
     const { data, error, networkStatus, refetch } = useQuery<
         QueryData,
@@ -35,7 +35,7 @@ const NewConvos: React.FC<Props> = () => {
         notifyOnNetworkStatusChange: true,
     });
 
-    const [stillSpin, setStillSpin] = React.useState<boolean>(false);
+    const [stillSpin, setStillSpin] = useState<boolean>(false);
 
     if (!data?.newConvos && networkStatus === NetworkStatus.loading) {
         return <LoadingWheel />;

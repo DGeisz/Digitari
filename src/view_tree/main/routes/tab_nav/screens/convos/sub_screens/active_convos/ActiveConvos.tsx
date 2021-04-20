@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useContext, useState } from "react";
 import { FlatList, RefreshControl, View } from "react-native";
 import { basicLayouts } from "../../../../../../../../global_styles/BasicLayouts";
 import ConvoMsg from "../../../../../../../../global_building_blocks/convo_msg/ConvoMsg";
@@ -27,7 +27,7 @@ interface QueryVariables {
 const ActiveConvos: React.FC<Props> = () => {
     const uid = localUid();
 
-    const { openConvo } = React.useContext(TabNavContext);
+    const { openConvo } = useContext(TabNavContext);
 
     const { data, error, networkStatus, refetch } = useQuery<
         QueryData,
@@ -43,7 +43,7 @@ const ActiveConvos: React.FC<Props> = () => {
         networkStatus
     );
 
-    const [stillSpin, setStillSpin] = React.useState<boolean>(false);
+    const [stillSpin, setStillSpin] = useState<boolean>(false);
 
     if (!data?.activeConvos && networkStatus === NetworkStatus.loading) {
         return <LoadingWheel />;

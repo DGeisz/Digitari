@@ -1,24 +1,35 @@
-import * as React from "react";
-import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
+import React, { useState } from "react";
+import {
+    View,
+    Image,
+    Text,
+    TouchableOpacity,
+    ActivityIndicator,
+    Keyboard,
+} from "react-native";
 import { styles } from "./ProfileHeaderStyles";
 import { UserType } from "../../../global_types/UserTypes";
 import Tier from "../../tier/Tier";
 import { toRep } from "../../../global_utils/ValueRepUtils";
 import CoinBox from "../../coin_box/CoinBox";
-import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { palette } from "../../../global_styles/Palette";
+import BioModal from "./building_blocks/bio_modal/BioModal";
 
 interface Props {
     user: UserType;
     isMe: boolean;
+    openFollows: () => void;
     handleFollow: () => void;
     handleUnFollow: () => void;
     handleSettings: () => void;
 }
 
 const ProfileHeader: React.FC<Props> = (props) => {
-    const [showError, setShowError] = React.useState<boolean>(false);
-    const [loading, setLoading] = React.useState<boolean>(false);
+    const [showError, setShowError] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
+
+    const [editBioVisible, showEditBio] = useState<boolean>(false);
 
     return (
         <View pointerEvents="box-none">
@@ -31,19 +42,44 @@ const ProfileHeader: React.FC<Props> = (props) => {
                         {`You need ${props.user.followPrice} digicoin to follow this user`}
                     </Text>
                 )}
-                <View style={styles.profileSplit1} pointerEvents="box-none">
-                    <View style={styles.split1Left} pointerEvents="none">
-                        <Tier size={40} ranking={123} />
-                        <View style={styles.userLevelContainer}>
-                            <Text style={styles.profileUserText}>
-                                {`${props.user.firstName} ${props.user.lastName}`}
-                            </Text>
-                            <Text style={styles.profileLevelText}>
-                                {["Level:", props.user.level].join(" ")}
-                            </Text>
-                        </View>
+                <View style={styles.profileSplit0}>
+                    <View style={styles.split0Left}>
+                        {!!props.user.imgUrl ? (
+                            <Image
+                                style={styles.userImage}
+                                source={{ uri: props.user.imgUrl }}
+                            />
+                        ) : (
+                            <View style={styles.userIconContainer}>
+                                <FontAwesome
+                                    name="user"
+                                    color={palette.white}
+                                    size={30}
+                                />
+                            </View>
+                        )}
+                        {props.isMe && (
+                            <>
+                                <BioModal
+                                    imgUrl={props.user.imgUrl}
+                                    bio={props.user.bio}
+                                    visible={editBioVisible}
+                                    hideModal={() => {
+                                        showEditBio(false);
+                                        Keyboard.dismiss();
+                                    }}
+                                />
+                                <TouchableOpacity
+                                    onPress={() => showEditBio(true)}
+                                >
+                                    <Text style={styles.editProfileText}>
+                                        Edit
+                                    </Text>
+                                </TouchableOpacity>
+                            </>
+                        )}
                     </View>
-                    <View style={styles.split1Right}>
+                    <View style={styles.split0Right}>
                         {props.isMe ? (
                             <TouchableOpacity onPress={props.handleSettings}>
                                 <Ionicons
@@ -98,14 +134,28 @@ const ProfileHeader: React.FC<Props> = (props) => {
                         )}
                     </View>
                 </View>
+                <View style={styles.profileSplit1} pointerEvents="box-none">
+                    <View style={styles.split1Left} pointerEvents="none">
+                        <Tier size={40} ranking={123} />
+                        <View style={styles.userLevelContainer}>
+                            <Text style={styles.profileUserText}>
+                                {`${props.user.firstName} ${props.user.lastName}`}
+                            </Text>
+                            <Text style={styles.profileLevelText}>
+                                {["Level:", props.user.level].join(" ")}
+                            </Text>
+                        </View>
+                    </View>
+                </View>
                 <View style={styles.profileSplit3} pointerEvents="none">
                     <Text style={styles.profileBioText}>{props.user.bio}</Text>
                 </View>
-                <View style={styles.profileSplit4} pointerEvents="none">
+                <View style={styles.profileSplit4} pointerEvents="box-none">
                     <View style={styles.split4Left}>
                         <TouchableOpacity
                             style={styles.followsButton}
                             activeOpacity={0.5}
+                            onPress={props.openFollows}
                         >
                             <Text style={styles.followNumeralText}>
                                 {[toRep(props.user.followers)]}

@@ -1,13 +1,18 @@
 import { gql } from "@apollo/client";
 
 export const schema = gql`
-    type User {
+    directive @aws_iam on FIELD_DEFINITION | OBJECT
+
+    directive @aws_cognito_user_pools on FIELD_DEFINITION | OBJECT
+
+    type User @aws_iam @aws_cognito_user_pools {
         id: ID
         firstName: String
         lastName: String
         userName: String
         email: String
         timeCreated: String
+        imgUrl: String
 
         # Indicates whether the person who fetched this user is following this user.
         amFollowing: Boolean
@@ -119,7 +124,7 @@ export const schema = gql`
         uid: ID
         user: String
         ranking: Int
-        time: Int
+        time: String
         content: String
         link: String
         convoReward: Int
@@ -158,7 +163,7 @@ export const schema = gql`
         price: Int
     }
 
-    type Community {
+    type Community @aws_iam @aws_cognito_user_pools {
         id: ID
 
         amFollowing: Boolean
@@ -171,22 +176,34 @@ export const schema = gql`
         timeCreated: String
     }
 
-    type SearchEntity {
+    type SearchEntity @aws_iam @aws_cognito_user_pools {
         id: ID
         name: String
+        imgUrl: String
         followers: Int
         entityType: Int
     }
 
-    type FollowEntity {
+    type FollowEntity @aws_iam @aws_cognito_user_pools {
         sid: ID
         tid: ID
         time: String
         name: String
+        imgUrl: String
         entityType: Int
     }
 
-    type Query {
+    type PaginatedFollowEntities @aws_iam @aws_cognito_user_pools {
+        entities: [FollowEntity]
+        nextToken: String
+    }
+
+    type ImgUrl {
+        url: String
+        presignedUrl: String
+    }
+
+    type Query @aws_iam @aws_cognito_user_pools {
         feed(uid: ID!, lastTime: Int): [Post]
         wallet(id: ID!): Wallet
         user(uid: ID!): User
@@ -199,8 +216,10 @@ export const schema = gql`
         convo(cid: ID!): Convo
         createCommunityCoinCheck: CoinCheck
         community(cmid: ID!): Community
-        search(text: String!): [SearchEntity]
+        search(text: String!, offset: Int, entityType: Int): [SearchEntity]
         searchEntity(id: ID!): SearchEntity
+        followers(tid: ID!, lastTime: String): [FollowEntity]
+        following(sid: ID!, lastTime: String, entityType: Int): [FollowEntity]
     }
 
     type Mutation {
@@ -228,6 +247,24 @@ export const schema = gql`
         unFollowUser(tid: ID!): FollowEntity
         followCommunity(tid: ID!): FollowEntity
         unFollowCommunity(tid: ID!): FollowEntity
+        createPost(
+            content: String
+            link: String
+            convoReward: Int
+            responseCost: Int
+            post2Followers: Boolean
+            numUserFollowers: Int
+            post2Community: Boolean
+            cmid: ID
+            numComFollowers: Int
+        ): Post
+        updateBio(bio: String): User
+        updateProfilePic(imgName: String): ImgUrl
+    }
+
+    schema {
+        mutation: Mutation
+        query: Query
     }
 `;
 

@@ -23,6 +23,10 @@ export type MainEntryStack = {
     User: {
         uid: string;
     };
+    Follows: {
+        uid: string;
+        name: string;
+    };
 };
 
 /**
@@ -43,6 +47,7 @@ export type NewCommunityNavProp = StackNavigationProp<
     MainEntryStack,
     "NewCommunity"
 >;
+export type UserNavProp = StackNavigationProp<MainEntryStack, "User">;
 
 /**
  * Route props

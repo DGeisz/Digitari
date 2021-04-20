@@ -17,6 +17,7 @@ export interface UserType {
     blocked: number;
     beenBlocked: number;
     coin: number;
+    imgUrl?: string;
 
     // Challenge fields
     coinSpent: number;

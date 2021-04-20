@@ -1,11 +1,11 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import { EmitterSubscription, Keyboard, Platform } from "react-native";
 import { scheduleLayoutAnimation } from "../../../../global_animations/KeyboardAnimation";
 
 export function useAuthKeyboardBuffer(): number {
-    const [bufferHeight, setHeight] = React.useState<number>(0);
+    const [bufferHeight, setHeight] = useState<number>(0);
 
-    React.useEffect(() => {
+    useEffect(() => {
         let subscriptions: EmitterSubscription[] = [];
         if (Platform.OS == "ios") {
             subscriptions.push(

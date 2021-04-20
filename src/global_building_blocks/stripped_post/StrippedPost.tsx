@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { View, Text } from "react-native";
 import { millisToRep } from "../../global_utils/TimeRepUtils";
 import { styles } from "./StrippedPostStyles";

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { styles } from "./StatsHeaderStyles";
 import { Text, View } from "react-native";
 import { UserType } from "../../../../../global_types/UserTypes";

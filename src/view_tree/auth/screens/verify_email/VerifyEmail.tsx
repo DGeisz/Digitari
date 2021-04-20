@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Keyboard, Text, TouchableOpacity, View } from "react-native";
 import { useAuthKeyboardBuffer } from "../../building_blocks/use_auth_keyboard_buffer/UseAuthKeyboardBuffer";
 import { authStyles } from "../../styles/AuthStyles";
@@ -14,13 +14,13 @@ interface Props {
 }
 
 const VerifyEmail: React.FC<Props> = (props) => {
-    const [code, setCode] = React.useState<string>("");
-    const [resent, setResent] = React.useState<boolean>(false);
+    const [code, setCode] = useState<string>("");
+    const [resent, setResent] = useState<boolean>(false);
 
-    const [error, setError] = React.useState<string>("");
-    const [errorActive, setErrorActive] = React.useState<boolean>(false);
+    const [error, setError] = useState<string>("");
+    const [errorActive, setErrorActive] = useState<boolean>(false);
 
-    const [loading, setLoading] = React.useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const bufferHeight = useAuthKeyboardBuffer();
 

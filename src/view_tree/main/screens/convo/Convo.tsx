@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FlatList, View } from "react-native";
 import MessageInput from "../../../../global_building_blocks/message_input/MessageInput";
 import { basicLayouts } from "../../../../global_styles/BasicLayouts";
@@ -397,7 +397,7 @@ const Convo: React.FC<Props> = (props) => {
     }
 
     // Set title of page
-    React.useEffect(() => {
+    useEffect(() => {
         if (!!data?.convo) {
             const { sid, tid, sanony, sname, tname } = data.convo.cover;
 
@@ -411,8 +411,8 @@ const Convo: React.FC<Props> = (props) => {
         }
     }, [data]);
 
-    const [autoFocus, setAutoFocus] = React.useState<boolean>(false);
-    const listRef: React.RefObject<FlatList> = React.useRef<FlatList>(null);
+    const [autoFocus, setAutoFocus] = useState<boolean>(false);
+    const listRef: React.RefObject<FlatList> = useRef<FlatList>(null);
 
     if (!data?.convo && networkStatus === NetworkStatus.loading) {
         return <LoadingWheel />;

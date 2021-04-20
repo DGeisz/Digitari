@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ActivityIndicator, Text, TouchableOpacity } from "react-native";
 import { styles } from "./AuthButtonStyles";
 import { palette } from "../../../../global_styles/Palette";

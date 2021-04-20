@@ -18,6 +18,11 @@ export const styles = StyleSheet.create({
         ...basicLayouts.flexGrid2,
         flexDirection: "row",
     },
+    userImageContainer: {
+        height: iconSideLength,
+        width: iconSideLength,
+        borderRadius: 30,
+    },
     userIconContainer: {
         ...basicLayouts.grid5,
         backgroundColor: palette.deepBlue,
@@ -39,5 +44,7 @@ export const styles = StyleSheet.create({
         color: palette.hardGray,
         marginLeft: 10,
     },
-    resultRight: {},
+    resultRight: {
+        ...basicLayouts.grid5,
+    },
 });

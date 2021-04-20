@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useContext, useState } from "react";
 import { FlatList, RefreshControl, View, StyleSheet } from "react-native";
 import { basicLayouts } from "../../../../../../global_styles/BasicLayouts";
 import { PostType } from "../../../../../../global_types/PostTypes";
@@ -26,7 +26,7 @@ interface QueryVariables {
 const MainFeed: React.FC<Props> = () => {
     const uid = localUid();
 
-    const { openPost, openConvo, openNew, openNewMessage } = React.useContext(
+    const { openPost, openConvo, openNew, openNewMessage } = useContext(
         TabNavContext
     );
 
@@ -38,7 +38,7 @@ const MainFeed: React.FC<Props> = () => {
         notifyOnNetworkStatusChange: true,
     });
 
-    const [stillSpin, setStillSpin] = React.useState<boolean>(false);
+    const [stillSpin, setStillSpin] = useState<boolean>(false);
 
     if (!data?.feed && networkStatus === NetworkStatus.loading) {
         return <LoadingWheel />;

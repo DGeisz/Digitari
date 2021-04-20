@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import { styles } from "./NewButtonStyles";
 import { FontAwesome } from "@expo/vector-icons";

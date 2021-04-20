@@ -1,7 +1,13 @@
+export enum FollowEntityEnum {
+    User,
+    Community,
+}
+
 export interface FollowEntityType {
     sid: string;
     tid: string;
     name: string;
     time: string;
-    entityType: number;
+    imgUrl?: string;
+    entityType: FollowEntityEnum;
 }

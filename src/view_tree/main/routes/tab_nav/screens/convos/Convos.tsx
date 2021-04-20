@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useContext } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import NewConvos from "./sub_screens/new_convos/NewConvos";
 import ActiveConvos from "./sub_screens/active_convos/ActiveConvos";
@@ -11,7 +11,7 @@ interface Props {}
 const Tab = createMaterialTopTabNavigator();
 
 const Convos: React.FC<Props> = () => {
-    const { openNew } = React.useContext(TabNavContext);
+    const { openNew } = useContext(TabNavContext);
 
     return (
         <>

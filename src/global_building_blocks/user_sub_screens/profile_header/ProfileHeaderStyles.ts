@@ -2,6 +2,8 @@ import { StyleSheet } from "react-native";
 import { palette } from "../../../global_styles/Palette";
 import { basicLayouts } from "../../../global_styles/BasicLayouts";
 
+const profilePicSideLength = 58;
+
 export const styles = StyleSheet.create({
     profileHeaderContainer: {
         backgroundColor: palette.white,
@@ -12,6 +14,35 @@ export const styles = StyleSheet.create({
     followErrorText: {
         color: palette.danger,
         paddingBottom: 10,
+    },
+    profileSplit0: {
+        flexDirection: "row",
+        marginBottom: 10,
+    },
+    split0Left: {
+        ...basicLayouts.flexGrid2,
+        flexDirection: "row",
+    },
+    editProfileText: {
+        marginLeft: 8,
+        fontWeight: "bold",
+        fontSize: 16,
+        color: palette.lightGray,
+    },
+    userImage: {
+        height: profilePicSideLength,
+        width: profilePicSideLength,
+        borderRadius: 30,
+    },
+    userIconContainer: {
+        ...basicLayouts.grid5,
+        backgroundColor: palette.deepBlue,
+        height: profilePicSideLength,
+        width: profilePicSideLength,
+        borderRadius: 30,
+    },
+    split0Right: {
+        ...basicLayouts.grid5,
     },
     profileSplit1: {
         flexDirection: "row",

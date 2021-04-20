@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { Animated, RefreshControl, View } from "react-native";
 import { NetworkStatus, useQuery } from "@apollo/client";
 import { useCollapsibleScene } from "react-native-collapsible-tab-view";
@@ -28,7 +28,7 @@ const UserChallenges: React.FC<Props> = ({ user, routeKey }) => {
     );
 
     const scrollPropsAndRef = useCollapsibleScene(routeKey);
-    const [stillSpin, setStillSpin] = React.useState<boolean>(false);
+    const [stillSpin, setStillSpin] = useState<boolean>(false);
 
     if (!data?.challenges && networkStatus === NetworkStatus.loading) {
         return <LoadingWheel />;

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { styles } from "./ConvoCoverStyles";
 import { View, Text, TouchableOpacity, LayoutAnimation } from "react-native";
 import Tier from "../tier/Tier";

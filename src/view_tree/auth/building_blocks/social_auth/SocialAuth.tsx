@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { SocialIcon } from "react-native-elements";
 import { palette } from "../../../../global_styles/Palette";

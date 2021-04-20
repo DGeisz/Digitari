@@ -13,6 +13,7 @@ export const GET_USER = gql`
             blocked
             beenBlocked
             coin
+            imgUrl
 
             amFollowing
             followPrice

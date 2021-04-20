@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import {
     ActivityIndicator,
     Keyboard,
@@ -20,13 +20,13 @@ interface Props {
 }
 
 const SignInEmailPwd: React.FC<Props> = (props) => {
-    const [email, setEmail] = React.useState<string>("");
-    const [password, setPassword] = React.useState<string>("");
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
 
-    const [loginLoading, setLoginLoading] = React.useState<boolean>(false);
+    const [loginLoading, setLoginLoading] = useState<boolean>(false);
 
-    const [error, setError] = React.useState<string>("");
-    const [errorActive, setErrorActive] = React.useState<boolean>(false);
+    const [error, setError] = useState<string>("");
+    const [errorActive, setErrorActive] = useState<boolean>(false);
 
     const bufferHeight = useAuthKeyboardBuffer();
 

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Text, View } from "react-native";
 import { authStyles } from "../../styles/AuthStyles";
 import AuthButton from "../../building_blocks/auth_button/AuthButton";

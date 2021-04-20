@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import TabNav from "./routes/tab_nav/TabNav";
 import Convo from "./screens/convo/Convo";
 import NewResponse from "./screens/new_response/NewResponse";
@@ -11,6 +11,7 @@ import New from "./screens/new/New";
 import NewCommunity from "./screens/new/screens/new_community/NewCommunity";
 import Community from "./screens/community/Community";
 import User from "./screens/user/User";
+import Follows from "./screens/follows/Follows";
 
 const RootStack = createStackNavigator<MainEntryStack>();
 
@@ -63,6 +64,12 @@ const MainEntry: React.FC = () => {
                 name="User"
                 component={User}
                 initialParams={{ uid: "" }}
+            />
+            <RootStack.Screen
+                name="Follows"
+                component={Follows}
+                initialParams={{ uid: "", name: "" }}
+                options={({ route }) => ({ title: route.params.name })}
             />
         </RootStack.Navigator>
     );

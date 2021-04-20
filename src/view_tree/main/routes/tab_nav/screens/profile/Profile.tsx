@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useContext } from "react";
 import { View } from "react-native";
 import { basicLayouts } from "../../../../../../global_styles/BasicLayouts";
 import TabLabel from "../../../../../../global_building_blocks/tab_label/TabLabel";
@@ -24,7 +24,7 @@ import { Auth } from "aws-amplify";
 const Tab = createMaterialCollapsibleTopTabNavigator();
 
 const Profile: React.FC = () => {
-    const { openNew } = React.useContext(TabNavContext);
+    const { openNew, openFollows } = useContext(TabNavContext);
     const uid = localUid();
 
     const { data, networkStatus, error, refetch } = useQuery<
@@ -54,6 +54,12 @@ const Profile: React.FC = () => {
                         collapsibleOptions={{
                             renderHeader: () => (
                                 <ProfileHeader
+                                    openFollows={() =>
+                                        openFollows(
+                                            `${data.user.firstName} ${data.user.lastName}`,
+                                            data.user.id
+                                        )
+                                    }
                                     user={data.user}
                                     isMe
                                     handleSettings={() => Auth.signOut()}

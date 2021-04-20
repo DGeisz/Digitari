@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { styles } from "./ResponseResponseStyles";
 import { Text, TouchableOpacity, View } from "react-native";
 import { Entypo, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";

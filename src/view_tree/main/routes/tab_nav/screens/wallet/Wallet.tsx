@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useContext, useState } from "react";
 import { FlatList, RefreshControl, View } from "react-native";
 import { basicLayouts } from "../../../../../../global_styles/BasicLayouts";
 import WalletHeader from "./building_blocks/wallet_header/WalletHeader";
@@ -31,9 +31,9 @@ const Wallet: React.FC<Props> = () => {
         notifyOnNetworkStatusChange: true,
     });
 
-    const { openNew } = React.useContext(TabNavContext);
+    const { openNew } = useContext(TabNavContext);
 
-    const [stillSpin, setStillSpin] = React.useState<boolean>(false);
+    const [stillSpin, setStillSpin] = useState<boolean>(false);
 
     if (!data?.wallet && networkStatus === NetworkStatus.loading) {
         return <LoadingWheel />;

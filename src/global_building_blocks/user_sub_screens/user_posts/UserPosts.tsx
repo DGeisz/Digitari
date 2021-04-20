@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useContext, useState } from "react";
 import { Animated, RefreshControl } from "react-native";
 import { NetworkStatus, useQuery } from "@apollo/client";
 import { GET_USER_POSTS } from "./gql/Queries";
@@ -26,7 +26,7 @@ interface QueryVariables {
 }
 
 const UserPosts: React.FC<Props> = (props) => {
-    const { openConvo, openPost } = React.useContext(TabNavContext);
+    const { openConvo, openPost } = useContext(TabNavContext);
 
     const { data, error, networkStatus, refetch } = useQuery<
         QueryData,
@@ -37,7 +37,7 @@ const UserPosts: React.FC<Props> = (props) => {
     });
 
     const scrollPropsAndRef = useCollapsibleScene(props.routeKey);
-    const [stillSpin, setStillSpin] = React.useState<boolean>(false);
+    const [stillSpin, setStillSpin] = useState<boolean>(false);
 
     if (!data?.userPosts && networkStatus === NetworkStatus.loading) {
         return <LoadingWheel />;

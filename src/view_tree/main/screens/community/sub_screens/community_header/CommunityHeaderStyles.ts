@@ -2,6 +2,8 @@ import { StyleSheet } from "react-native";
 import { basicLayouts } from "../../../../../../global_styles/BasicLayouts";
 import { palette } from "../../../../../../global_styles/Palette";
 
+const iconSideLength = 60;
+
 export const styles = StyleSheet.create({
     headerContainer: {
         backgroundColor: palette.white,
@@ -12,6 +14,7 @@ export const styles = StyleSheet.create({
     headerHeader: {
         ...basicLayouts.flexGrid2,
         flexDirection: "row",
+        marginBottom: 10,
     },
     followErrorText: {
         color: palette.danger,
@@ -20,6 +23,14 @@ export const styles = StyleSheet.create({
     headerLeft: {
         ...basicLayouts.flexGrid2,
         flexDirection: "row",
+    },
+    iconContainer: {
+        ...basicLayouts.grid5,
+        height: iconSideLength,
+        width: iconSideLength,
+        borderRadius: 30,
+        borderWidth: 2,
+        borderColor: palette.deepBlue,
     },
     headerRight: {
         ...basicLayouts.grid5,
@@ -47,7 +58,6 @@ export const styles = StyleSheet.create({
     nameText: {
         fontSize: 20,
         fontWeight: "bold",
-        marginLeft: 5,
         color: palette.hardGray,
     },
     headerBody: {
