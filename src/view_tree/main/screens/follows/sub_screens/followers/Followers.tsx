@@ -13,9 +13,7 @@ import FollowEntity from "../../../../../../global_building_blocks/follow_entity
 
 interface Props {
     tid: string;
-    onSelectCommunity: (cmid: string) => void;
     onSelectUser: (uid: string) => void;
-    isUser: boolean;
 }
 
 const Followers: React.FC<Props> = (props) => {
@@ -46,7 +44,7 @@ const Followers: React.FC<Props> = (props) => {
                 renderItem={({ item }) => (
                     <FollowEntity
                         entity={item}
-                        onSelectCommunity={props.onSelectCommunity}
+                        onSelectCommunity={() => {}}
                         onSelectUser={props.onSelectUser}
                         isFollower={true}
                     />

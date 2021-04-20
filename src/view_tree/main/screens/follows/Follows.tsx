@@ -4,6 +4,7 @@ import { View } from "react-native";
 import TabLabel from "../../../../global_building_blocks/tab_label/TabLabel";
 import { FollowsNavProp, FollowsRouteProp } from "../../MainEntryNavTypes";
 import Followers from "./sub_screens/followers/Followers";
+import Following from "./sub_screens/following/Following";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -25,11 +26,6 @@ const Follows: React.FC<Props> = (props) => {
             >
                 {() => (
                     <Followers
-                        onSelectCommunity={(cmid: string) =>
-                            props.navigation.navigate("Community", {
-                                cmid,
-                            })
-                        }
                         onSelectUser={(uid: string) =>
                             props.navigation.navigate("User", {
                                 uid,
@@ -41,13 +37,26 @@ const Follows: React.FC<Props> = (props) => {
             </Tab.Screen>
             <Tab.Screen
                 name={"Following"}
-                component={View}
                 options={{
                     tabBarLabel: ({ color }) => (
                         <TabLabel title={"Following"} color={color} />
                     ),
                 }}
-            />
+            >
+                {() => (
+                    <Following
+                        onSelectUser={(uid: string) =>
+                            props.navigation.navigate("User", {
+                                uid,
+                            })
+                        }
+                        onSelectCommunity={(cmid: string) =>
+                            props.navigation.navigate("Community", { cmid })
+                        }
+                        sid={props.route.params.uid}
+                    />
+                )}
+            </Tab.Screen>
         </Tab.Navigator>
     );
 };
