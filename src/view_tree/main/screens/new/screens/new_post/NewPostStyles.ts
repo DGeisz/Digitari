@@ -108,6 +108,14 @@ export const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: "bold",
         color: palette.hardGray,
+        marginBottom: 3,
+    },
+    commFollowerNumeral: {
+        fontWeight: "bold",
+    },
+    commFollowersText: {
+        color: palette.mediumGray,
+        fontSize: 16,
     },
     createCommunityButton: {
         marginLeft: 10,
@@ -123,6 +131,12 @@ export const styles = StyleSheet.create({
         ...basicLayouts.grid5,
         marginTop: 20,
         marginBottom: 40,
+    },
+    postErrorMessage: {
+        fontSize: 16,
+        fontWeight: "bold",
+        color: palette.danger,
+        marginBottom: 10,
     },
     postButton: {
         flexDirection: "row",

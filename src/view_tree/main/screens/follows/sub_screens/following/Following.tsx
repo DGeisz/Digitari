@@ -13,6 +13,7 @@ import { styles } from "./FollowingStyles";
 import { palette } from "../../../../../../global_styles/Palette";
 import { FollowEntityEnum } from "../../../../../../global_types/FollowEntityType";
 import { basicLayouts } from "../../../../../../global_styles/BasicLayouts";
+import { localUid } from "../../../../../../global_state/UserState";
 
 interface Props {
     sid: string;
@@ -24,6 +25,8 @@ const activeColor = palette.white;
 const inactiveColor = palette.mediumGray;
 
 const Following: React.FC<Props> = (props) => {
+    const uid = localUid();
+
     const [followEntity, setFollowEntity] = useState<
         FollowEntityEnum | undefined
     >(undefined);
@@ -36,6 +39,7 @@ const Following: React.FC<Props> = (props) => {
             sid: props.sid,
             entityType: followEntity,
         },
+        fetchPolicy: uid === props.sid ? "network-only" : "cache-first",
     });
 
     if (error) {
@@ -125,7 +129,7 @@ const Following: React.FC<Props> = (props) => {
                         renderItem={({ item }) => (
                             <FollowEntity
                                 entity={item}
-                                onSelectCommunity={() => {}}
+                                onSelectCommunity={props.onSelectCommunity}
                                 onSelectUser={props.onSelectUser}
                                 isFollower={false}
                             />

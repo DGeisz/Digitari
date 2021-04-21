@@ -33,7 +33,7 @@ const TabNav: React.FC<Props> = (props) => {
     };
 
     const openNew = () => {
-        props.navigation.navigate("NewPost");
+        props.navigation.navigate("NewPost", {});
     };
 
     const openCommunity = (cmid: string) => {

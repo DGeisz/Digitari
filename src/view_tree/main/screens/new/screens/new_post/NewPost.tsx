@@ -32,10 +32,15 @@ import { localUid } from "../../../../../../global_state/UserState";
 import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import ErrorMessage from "../../../../../../global_building_blocks/error_message/ErrorMessage";
 import { toCommaRep } from "../../../../../../global_utils/ValueRepUtils";
-import { NewPostNavProp } from "../../../../MainEntryNavTypes";
+import {
+    NewPostNavProp,
+    NewPostRouteProp,
+} from "../../../../MainEntryNavTypes";
+import SelectCommunityModal from "./building_blocks/select_community_modal/SelectCommunityModal";
 
 interface Props {
     navigation: NewPostNavProp;
+    route: NewPostRouteProp;
 }
 
 const NewPost: React.FC<Props> = (props) => {
@@ -106,11 +111,104 @@ const NewPost: React.FC<Props> = (props) => {
     });
 
     const [selectComVisible, showSelectCom] = useState<boolean>(false);
+    const [targetComId, setTargetComId] = useState<string>("");
 
     const [getPostCommunity, { data: postCommData }] = useLazyQuery<
         GetPostCommunityData,
         GetPostCommunityVariables
     >(GET_POST_COMMUNITY);
+
+    useEffect(() => {
+        if (!!props.route.params.cmid) {
+            const id = props.route.params.cmid;
+
+            getPostCommunity({ variables: { id } });
+            setTargetComId(id);
+        }
+    }, [props.route.params.cmid]);
+
+    /*
+     * Completing the post
+     */
+    const [errorMessage, setErrorMessage] = useState<string>("");
+
+    const post = () => {
+        if (!content) {
+            setErrorMessage("Enter post content " + content);
+            return;
+        }
+
+        /*
+         * Handle add on errors
+         */
+        if (addOn === PostAddOn.Text && !addOnText) {
+            setErrorMessage("Enter post additional content");
+            return;
+        }
+
+        if (addOn === PostAddOn.Link && !addOnLink) {
+            setErrorMessage("Enter post link");
+            return;
+        }
+
+        if (addOn === PostAddOn.Image && (!imgUrl || !img)) {
+            setErrorMessage("Select post image");
+            return;
+        }
+
+        /*
+         * Coin check
+         */
+        if (!data?.user) {
+            setErrorMessage("An error occurred, please try again");
+            return;
+        }
+
+        if (data.user.coin < recipients) {
+            setErrorMessage(`You only have ${toCommaRep(data.user.coin)} coin`);
+            return;
+        }
+
+        /*
+         * Target followers check
+         */
+        if (recipients === 0) {
+            setErrorMessage("Post to at least one recipient");
+            return;
+        }
+
+        if (
+            target === PostTarget.MyFollowers &&
+            recipients > data.user.followers
+        ) {
+            setErrorMessage(
+                `You can only post to ${toCommaRep(
+                    data.user.followers
+                )} followers`
+            );
+            return;
+        }
+
+        if (target === PostTarget.Community && !postCommData?.community) {
+            setErrorMessage("Please select a community");
+            return;
+        }
+
+        if (
+            target === PostTarget.Community &&
+            postCommData?.community &&
+            postCommData.community.followers < recipients
+        ) {
+            setErrorMessage(
+                `You can only post to ${toCommaRep(
+                    postCommData.community.followers
+                )} followers`
+            );
+            return;
+        }
+
+        setErrorMessage("");
+    };
 
     /*
      * Structure
@@ -298,6 +396,14 @@ const NewPost: React.FC<Props> = (props) => {
                 )}
             </View>
             <View style={styles.postFieldContainer}>
+                <SelectCommunityModal
+                    visible={selectComVisible}
+                    onHide={() => showSelectCom(false)}
+                    selectCommunity={(id) => {
+                        getPostCommunity({ variables: { id } });
+                        setTargetComId(id);
+                    }}
+                />
                 <Text style={styles.fieldTitle}>Target</Text>
                 <View style={styles.postOptionBar}>
                     <TouchableOpacity
@@ -346,7 +452,10 @@ const NewPost: React.FC<Props> = (props) => {
                     </Text>
                 ) : (
                     <>
-                        <TouchableOpacity style={styles.communityContainer}>
+                        <TouchableOpacity
+                            style={styles.communityContainer}
+                            onPress={() => showSelectCom(true)}
+                        >
                             {!postCommData?.community ? (
                                 <Text style={styles.selectCommunityText}>
                                     Select Community
@@ -356,8 +465,10 @@ const NewPost: React.FC<Props> = (props) => {
                                     <Text style={styles.communityText}>
                                         {postCommData.community.name}
                                     </Text>
-                                    <Text style={styles.followersText}>
-                                        <Text style={styles.followersNumeral}>
+                                    <Text style={styles.commFollowersText}>
+                                        <Text
+                                            style={styles.commFollowerNumeral}
+                                        >
                                             {toCommaRep(
                                                 postCommData.community.followers
                                             ) + " "}
@@ -407,7 +518,10 @@ const NewPost: React.FC<Props> = (props) => {
                 />
             </View>
             <View style={styles.postFooter}>
-                <TouchableOpacity style={styles.postButton}>
+                {!!errorMessage && (
+                    <Text style={styles.postErrorMessage}>{errorMessage}</Text>
+                )}
+                <TouchableOpacity style={styles.postButton} onPress={post}>
                     <View style={styles.postButtonTextContainer}>
                         <Text style={styles.postButtonText}>Post</Text>
                     </View>

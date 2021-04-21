@@ -15,7 +15,9 @@ export type MainEntryStack = {
         pid: string;
     };
     AccountSettings: undefined;
-    NewPost: undefined;
+    NewPost: {
+        cmid?: string;
+    };
     NewCommunity: undefined;
     Community: {
         cmid: string;
@@ -60,3 +62,4 @@ export type NewResponseRouteProp = RouteProp<MainEntryStack, "NewResponse">;
 export type CommunityRouteProp = RouteProp<MainEntryStack, "Community">;
 export type UserRouteProp = RouteProp<MainEntryStack, "User">;
 export type FollowsRouteProp = RouteProp<MainEntryStack, "Follows">;
+export type NewPostRouteProp = RouteProp<MainEntryStack, "NewPost">;

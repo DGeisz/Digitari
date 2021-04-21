@@ -7,26 +7,26 @@ export const cache = new InMemoryCache({
                 activeConvos: {
                     merge(existing, incoming) {
                         try {
-                            // console.log(incoming, existing);
-                            // console.log(incoming.length, existing.length);
                             if (incoming.length > existing.length) {
-                                console.log("yoda");
                                 return incoming;
                             } else {
-                                console.log("yanger");
                                 return existing;
                             }
                         } catch (e) {
-                            // console.log("born");
                             return incoming;
                         }
                     },
                 },
                 following: {
                     keyArgs: ["sid", "entityType"],
-                    merge(existing, incoming) {
+                    // @ts-ignore
+                    merge(existing, incoming, { args: { lastTime } }) {
                         if (existing && incoming) {
-                            return [...existing, ...incoming];
+                            if (!!lastTime) {
+                                return [...existing, ...incoming];
+                            } else {
+                                return incoming;
+                            }
                         } else if (existing) {
                             return existing;
                         } else if (incoming) {

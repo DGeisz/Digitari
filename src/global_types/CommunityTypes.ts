@@ -10,6 +10,7 @@ export interface CommunityType {
     description: string;
     followers: number;
     timeCreated: string;
+    __typename?: string;
 }
 
 export const exampleCommunity: CommunityType = {

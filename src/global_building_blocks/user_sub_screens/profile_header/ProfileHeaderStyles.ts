@@ -33,6 +33,7 @@ export const styles = StyleSheet.create({
         height: profilePicSideLength,
         width: profilePicSideLength,
         borderRadius: 30,
+        backgroundColor: palette.softGray,
     },
     userIconContainer: {
         ...basicLayouts.grid5,
