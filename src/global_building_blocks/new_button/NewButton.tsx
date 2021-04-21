@@ -13,7 +13,7 @@ export default class NewButton extends React.PureComponent<Props> {
         return (
             <View style={styles.viewContainer} pointerEvents="box-none">
                 <TouchableOpacity
-                    style={styles.newButton}
+                    style={styles.newPostButton}
                     onPress={this.props.openNew}
                     activeOpacity={0.5}
                 >

@@ -7,11 +7,11 @@ import AccountSettings from "./screens/account_settings/AccountSettings";
 import { getTabNavHeaderTitle } from "./routes/tab_nav/TabNavUtils";
 import { createStackNavigator } from "@react-navigation/stack";
 import { MainEntryStack } from "./MainEntryNavTypes";
-import New from "./screens/new/New";
 import NewCommunity from "./screens/new/screens/new_community/NewCommunity";
 import Community from "./screens/community/Community";
 import User from "./screens/user/User";
 import Follows from "./screens/follows/Follows";
+import NewPost from "./screens/new/screens/new_post/NewPost";
 
 const RootStack = createStackNavigator<MainEntryStack>();
 
@@ -34,7 +34,6 @@ const MainEntry: React.FC = () => {
                 }}
             />
             <RootStack.Screen name="Convo" component={Convo} />
-            <RootStack.Screen name="New" component={New} />
             <RootStack.Screen
                 name="NewResponse"
                 component={NewResponse}
@@ -70,6 +69,11 @@ const MainEntry: React.FC = () => {
                 component={Follows}
                 initialParams={{ uid: "", name: "" }}
                 options={({ route }) => ({ title: route.params.name })}
+            />
+            <RootStack.Screen
+                name="NewPost"
+                component={NewPost}
+                options={{ title: "New Post" }}
             />
         </RootStack.Navigator>
     );

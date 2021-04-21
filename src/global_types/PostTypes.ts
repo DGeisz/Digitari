@@ -1,5 +1,20 @@
 import { ConvoCoverType, exampleConvoCover } from "./ConvoCoverTypes";
 
+export const POST_CONTENT_MAX_LEN = 250;
+export const POST_ADD_ON_CONTENT_MAX_LEN = 10000;
+
+export enum PostAddOn {
+    None,
+    Text,
+    Image,
+    Link,
+}
+
+export enum PostTarget {
+    MyFollowers,
+    Community,
+}
+
 export interface PostType {
     id: string;
     user: string;

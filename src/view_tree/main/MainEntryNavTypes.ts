@@ -6,7 +6,6 @@ export type MainEntryStack = {
     Convo: {
         cid: string;
     };
-    New: undefined;
     NewResponse: {
         tname: string;
         pid: string;
@@ -16,6 +15,7 @@ export type MainEntryStack = {
         pid: string;
     };
     AccountSettings: undefined;
+    NewPost: undefined;
     NewCommunity: undefined;
     Community: {
         cmid: string;
@@ -42,7 +42,6 @@ export type NewResponseNavProp = StackNavigationProp<
     "NewResponse"
 >;
 export type ConvoNavProp = StackNavigationProp<MainEntryStack, "Convo">;
-export type NewNavProp = StackNavigationProp<MainEntryStack, "New">;
 export type NewCommunityNavProp = StackNavigationProp<
     MainEntryStack,
     "NewCommunity"
@@ -50,6 +49,7 @@ export type NewCommunityNavProp = StackNavigationProp<
 export type UserNavProp = StackNavigationProp<MainEntryStack, "User">;
 export type FollowsNavProp = StackNavigationProp<MainEntryStack, "Follows">;
 export type CommunityNavProp = StackNavigationProp<MainEntryStack, "Community">;
+export type NewPostNavProp = StackNavigationProp<MainEntryStack, "NewPost">;
 
 /**
  * Route props

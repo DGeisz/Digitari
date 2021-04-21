@@ -10,17 +10,22 @@ export const styles = StyleSheet.create({
     nameInput: {
         marginBottom: 20,
     },
+    createContainer: {
+        ...basicLayouts.flexGrid2,
+        marginTop: 20,
+    },
     createButton: {
         flexDirection: "row",
-        backgroundColor: palette.oceanSurf,
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 30,
+        borderWidth: 2,
+        borderColor: palette.deepBlue,
     },
     createButtonTextContainer: {
         ...basicLayouts.grid4,
         borderRightWidth: 1,
-        borderRightColor: palette.mediumOceanSurf,
+        borderRightColor: palette.lightGray,
         paddingRight: 20,
         marginRight: 3,
     },

@@ -139,7 +139,7 @@ const NewCommunity: React.FC<Props> = (props) => {
                         onChangeText={(text) => setDescription(text)}
                         multiline
                     />
-                    <View style={basicLayouts.flexGrid5}>
+                    <View style={styles.createContainer}>
                         {loading ? (
                             <ActivityIndicator
                                 color={palette.deepBlue}
