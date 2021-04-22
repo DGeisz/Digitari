@@ -229,7 +229,10 @@ const Convo: React.FC<Props> = (props) => {
                 fields: {
                     coin(existing) {
                         if (!!data?.convo) {
-                            return existing - data.convo.post.convoReward;
+                            return Math.max(
+                                existing - data.convo.post.convoReward,
+                                0
+                            );
                         } else {
                             return existing;
                         }

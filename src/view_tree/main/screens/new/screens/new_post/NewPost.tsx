@@ -27,7 +27,7 @@ import {
     GetSelfData,
     GetSelfVariables,
 } from "./gql/queries";
-import { useLazyQuery, useQuery } from "@apollo/client";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { localUid } from "../../../../../../global_state/UserState";
 import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import ErrorMessage from "../../../../../../global_building_blocks/error_message/ErrorMessage";
@@ -37,6 +37,14 @@ import {
     NewPostRouteProp,
 } from "../../../../MainEntryNavTypes";
 import SelectCommunityModal from "./building_blocks/select_community_modal/SelectCommunityModal";
+import {
+    CREATE_POST,
+    CreatePostData,
+    CreatePostVariables,
+} from "./gql/Mutations";
+import { cache } from "../../../../../../global_state/Cache";
+import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
+import InfoModal from "./building_blocks/info_modal/InfoModal";
 
 interface Props {
     navigation: NewPostNavProp;
@@ -85,7 +93,10 @@ const NewPost: React.FC<Props> = (props) => {
                 const typeSplit = blob.type.split("/");
 
                 if (typeSplit.length === 2 && typeSplit[0] === "image") {
-                    let file = new File([blob], `p.${typeSplit[1]}`);
+                    let file = new File([blob], `post.${typeSplit[1]}`);
+
+                    console.log("File set!: ", JSON.stringify(file));
+
                     setImgUrl(result.uri);
                     setImg(file);
                 }
@@ -132,7 +143,39 @@ const NewPost: React.FC<Props> = (props) => {
      */
     const [errorMessage, setErrorMessage] = useState<string>("");
 
-    const post = () => {
+    const [createPost, { loading: postLoading }] = useMutation<
+        CreatePostData,
+        CreatePostVariables
+    >(CREATE_POST, {
+        update(_, { data }) {
+            if (!!data?.createPost && !!data.createPost.presignedUrl && !!img) {
+                fetch(data.createPost.presignedUrl, {
+                    method: "PUT",
+                    body: img,
+                })
+                    .then(() => {
+                        console.log("Image put successful!");
+                    })
+                    .catch((e) => {
+                        console.log("Image put failed: ", e);
+                    });
+            }
+
+            cache.modify({
+                id: cache.identify({
+                    __typename: USER_TYPENAME,
+                    id: uid,
+                }),
+                fields: {
+                    coin(existing) {
+                        return Math.max(existing - recipients, 0);
+                    },
+                },
+            });
+        },
+    });
+
+    const post = async () => {
         if (!content) {
             setErrorMessage("Enter post content " + content);
             return;
@@ -208,6 +251,38 @@ const NewPost: React.FC<Props> = (props) => {
         }
 
         setErrorMessage("");
+
+        let addOnContent = "";
+
+        switch (addOn) {
+            case PostAddOn.Image:
+                if (!!img?.name) {
+                    addOnContent = img.name;
+                }
+                break;
+            case PostAddOn.Link:
+                addOnContent = addOnLink;
+                break;
+            case PostAddOn.Text:
+                addOnContent = addOnText;
+                break;
+        }
+
+        await createPost({
+            variables: {
+                content,
+                addOn,
+                addOnContent,
+                target,
+                cmid:
+                    target === PostTarget.Community
+                        ? postCommData?.community.id
+                        : undefined,
+                recipients,
+            },
+        });
+
+        props.navigation.goBack();
     };
 
     /*
@@ -404,7 +479,16 @@ const NewPost: React.FC<Props> = (props) => {
                         setTargetComId(id);
                     }}
                 />
-                <Text style={styles.fieldTitle}>Target</Text>
+                <View style={styles.fieldTitleContainer}>
+                    <Text style={styles.fieldTitle}>Target</Text>
+                    <InfoModal
+                        title={"Target"}
+                        content={
+                            'When you post to Digitari, you can either send your post to your personal followers ("My Followers"), or you ' +
+                            'can send your post to a community of users ("Community").'
+                        }
+                    />
+                </View>
                 <View style={styles.postOptionBar}>
                     <TouchableOpacity
                         style={
@@ -494,7 +578,18 @@ const NewPost: React.FC<Props> = (props) => {
                 )}
             </View>
             <View style={styles.postFieldContainer}>
-                <Text style={styles.fieldTitle}>Recipients</Text>
+                <View style={styles.fieldTitleContainer}>
+                    <Text style={styles.fieldTitle}>Recipients</Text>
+                    <InfoModal
+                        title={"Recipients"}
+                        content={
+                            "This is the number of users who will receive this post in their main feed. " +
+                            "\n\nEach post costs 1 digicoin per recipient." +
+                            '\n\nFor example, if you specify "My Followers" for Target and set recipients to 8, this post will go to 8 of your followers' +
+                            " and cost you 8 digicoin."
+                        }
+                    />
+                </View>
                 <TextInput
                     style={styles.recipientsInput}
                     placeholder="0"
@@ -521,17 +616,21 @@ const NewPost: React.FC<Props> = (props) => {
                 {!!errorMessage && (
                     <Text style={styles.postErrorMessage}>{errorMessage}</Text>
                 )}
-                <TouchableOpacity style={styles.postButton} onPress={post}>
-                    <View style={styles.postButtonTextContainer}>
-                        <Text style={styles.postButtonText}>Post</Text>
-                    </View>
-                    <CoinBox
-                        amount={recipients}
-                        fontColor={palette.hardGray}
-                        fontSize={20}
-                        coinSize={25}
-                    />
-                </TouchableOpacity>
+                {postLoading ? (
+                    <LoadingWheel />
+                ) : (
+                    <TouchableOpacity style={styles.postButton} onPress={post}>
+                        <View style={styles.postButtonTextContainer}>
+                            <Text style={styles.postButtonText}>Post</Text>
+                        </View>
+                        <CoinBox
+                            amount={recipients}
+                            fontColor={palette.hardGray}
+                            fontSize={20}
+                            coinSize={25}
+                        />
+                    </TouchableOpacity>
+                )}
             </View>
             <View style={{ height: bufferHeight }} />
         </ScrollView>

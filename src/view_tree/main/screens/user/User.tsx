@@ -75,7 +75,10 @@ const User: React.FC<Props> = (props) => {
                                 return existing + 1;
                             },
                             coin(existing) {
-                                return existing - data.user.followPrice;
+                                return Math.max(
+                                    existing - data.user.followPrice,
+                                    0
+                                );
                             },
                         },
                     });

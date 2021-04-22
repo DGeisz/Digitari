@@ -122,16 +122,33 @@ export const schema = gql`
     type Post {
         id: ID
         uid: ID
+
+        # Main content
         user: String
-        ranking: Int
+        tier: Int
         time: String
         content: String
-        link: String
+
+        # Add on
+        addOn: Int
+        addOnContent: String
+        target: Int
+        cmid: ID
+        communityName: String
+
+        # Coin fields
         convoReward: Int
         responseCost: Int
         coin: Int
         coinDonated: Boolean
+
+        # Top convos
         convos: [ConvoCover]
+    }
+
+    type PostPackage {
+        post: Post
+        presignedUrl: String
     }
 
     type Wallet {
@@ -249,17 +266,16 @@ export const schema = gql`
         unFollowCommunity(tid: ID!): FollowEntity
         createPost(
             content: String
-            link: String
-            convoReward: Int
-            responseCost: Int
-            post2Followers: Boolean
-            numUserFollowers: Int
-            post2Community: Boolean
+            addOn: Int
+            addOnContent: String
+            target: Int
             cmid: ID
-            numComFollowers: Int
-        ): Post
+
+            recipients: Int
+        ): PostPackage
         updateBio(bio: String): User
         updateProfilePic(imgName: String): ImgUrl
+        deleteSearchEntity(id: String): SearchEntity
     }
 
     schema {

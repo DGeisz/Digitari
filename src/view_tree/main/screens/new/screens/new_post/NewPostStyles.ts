@@ -17,11 +17,15 @@ export const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: palette.softGray,
     },
+    fieldTitleContainer: {
+        flexDirection: "row",
+    },
     fieldTitle: {
         fontSize: 16,
         fontWeight: "bold",
         color: palette.hardGray,
         marginBottom: 15,
+        marginRight: 8,
     },
     contentInput: {
         fontSize: 20,

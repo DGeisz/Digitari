@@ -65,7 +65,10 @@ const NewResponse: React.FC<Props> = (props) => {
                     }),
                     fields: {
                         coin(existing) {
-                            return existing - props.route.params.responseCost;
+                            return Math.max(
+                                existing - props.route.params.responseCost,
+                                0
+                            );
                         },
                     },
                 });

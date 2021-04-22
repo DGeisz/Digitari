@@ -4,11 +4,22 @@ export const GET_FEED = gql`
     query GetFeed($uid: ID!, $lastTime: Int) {
         feed(uid: $uid, lastTime: $lastTime) {
             id
+            uid
+
+            # Main content
             user
-            ranking
+            tier
             time
             content
-            link
+
+            # Add on
+            addOn
+            addOnContent
+            target
+            cmid
+            communityName
+
+            # Coin fields
             convoReward
             responseCost
             coin
@@ -31,43 +42,6 @@ export const GET_FEED = gql`
                 tname
                 tviewed
             }
-        }
-    }
-`;
-
-export const GET_FEED_TYPE = gql`
-    query GetFeed($uid: ID!, $lastTime: Int) {
-        feed(uid: $uid, lastTime: $lastTime) {
-            id
-            user
-            ranking
-            time
-            content
-            link
-            convoReward
-            responseCost
-            coin
-            coinDonated
-            convos {
-                id
-                pid
-
-                time
-                msg
-
-                sid
-                sranking
-                sname
-                sanony
-                sviewed
-
-                tid
-                tranking
-                tname
-                tviewed
-                __typename
-            }
-            __typename
         }
     }
 `;

@@ -19,7 +19,7 @@ export interface PostType {
     id: string;
     user: string;
     uid: string;
-    ranking: number;
+    tier: number;
     time: number;
     content: string;
     link?: string;
@@ -55,7 +55,7 @@ export const postExampleNoLink: PostType = {
     coin: 40000,
     content: `Hi my name is Jeff and I'm an antelope. Why, you ask, do I mention that? It is my cornerstone, and I'm in love with that fact about myself.`,
     convoReward: 200,
-    ranking: 142,
+    tier: 0,
     responseCost: 4,
     time: 1612394591366,
     user: "Danny",
@@ -86,7 +86,7 @@ export const postExampleWithLink: PostType = {
     coin: 40000,
     content: `Hi my name is Jeff and I'm an antelope. Why, you ask, do I mention that? It is my cornerstone, and I'm in love with that fact about myself.`,
     convoReward: 200,
-    ranking: 142,
+    tier: 0,
     responseCost: 4,
     time: 1612394591366,
     user: "Danny",

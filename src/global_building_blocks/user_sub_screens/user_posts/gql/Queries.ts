@@ -4,11 +4,22 @@ export const GET_USER_POSTS = gql`
     query GetUserPosts($uid: ID!, $lastTime: Int) {
         userPosts(uid: $uid, lastTime: $lastTime) {
             id
+            uid
+
+            # Main content
             user
-            ranking
+            tier
             time
             content
-            link
+
+            # Add on
+            addOn
+            addOnContent
+            target
+            cmid
+            communityName
+
+            # Coin fields
             convoReward
             responseCost
             coin
@@ -31,43 +42,6 @@ export const GET_USER_POSTS = gql`
                 tname
                 tviewed
             }
-        }
-    }
-`;
-
-export const GET_USER_POSTS_TYPE = gql`
-    query GetUserPosts($uid: ID!, $lastTime: Int) {
-        userPosts(uid: $uid, lastTime: $lastTime) {
-            id
-            user
-            ranking
-            time
-            content
-            link
-            convoReward
-            responseCost
-            coin
-            coinDonated
-            convos {
-                id
-                pid
-
-                time
-                msg
-
-                sid
-                sranking
-                sname
-                sanony
-                sviewed
-
-                tid
-                tranking
-                tname
-                tviewed
-                __typename
-            }
-            __typename
         }
     }
 `;

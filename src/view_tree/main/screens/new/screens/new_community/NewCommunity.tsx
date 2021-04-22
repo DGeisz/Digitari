@@ -64,9 +64,11 @@ const NewCommunity: React.FC<Props> = (props) => {
                         }),
                         fields: {
                             coin(existing) {
-                                return (
+                                return Math.max(
                                     existing -
-                                    checkData.createCommunityCoinCheck.price
+                                        checkData.createCommunityCoinCheck
+                                            .price,
+                                    0
                                 );
                             },
                         },

@@ -77,7 +77,10 @@ const Community: React.FC<Props> = (props) => {
                             return existing + 1;
                         },
                         coin(existing) {
-                            return existing - FOLLOW_COMMUNITY_PRICE;
+                            return Math.max(
+                                existing - FOLLOW_COMMUNITY_PRICE,
+                                0
+                            );
                         },
                     },
                 });
