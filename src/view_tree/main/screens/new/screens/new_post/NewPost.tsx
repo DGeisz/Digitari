@@ -304,6 +304,7 @@ const NewPost: React.FC<Props> = (props) => {
                 <Text style={styles.fieldTitle}>Post</Text>
                 <TextInput
                     ref={contentRef}
+                    keyboardType="twitter"
                     style={styles.contentInput}
                     placeholder="Content..."
                     multiline

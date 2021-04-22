@@ -59,15 +59,20 @@ export interface GStrippedPostType extends StrippedPostType {
 }
 
 export const postExampleNoLink: PostType = {
-    addOn: PostAddOn.None,
-    addOnContent: "",
+    addOn: PostAddOn.Link,
+    // addOnContent: `Hi my name is Jeff and I'm an antelope. Why, you ask, do I mention that? It is my cornerstone, and I'm in love with that fact about myself. and I'm in love with that fact about myself and I'm in love with that fact about myself. h that fact about myself`,
+    // addOnContent:
+    //     "https://d3671gkd53urlb.cloudfront.net/c17c121d-6594-41bf-9d38-37fba3154c99/p-SZF.jpg",
+    addOnContent:
+        "https://www.reddit.com/r/berkeley/comments/mw85w8/best_feeling_ever/",
+    // addOnContent: "https://andrejgajdos.com/how-to-create-a-link-preview/",
     target: PostTarget.Community,
     communityName: "This is my community oh yes it is",
     cmid: "220c250a-6bf4-4929-b55e-da69d97b7a45",
     id: "asd",
     uid: "c17c121d-6594-41bf-9d38-37fba3154c99",
     coin: 40000,
-    content: `Hi my name is Jeff and I'm an antelope. Why, you ask, do I mention that? It is my cornerstone, and I'm in love with that fact about myself.`,
+    content: `Hi my name is Jeff and I'm an antelope. Why, you ask, do I mention that? It is my cornerstone, and I'm in love with that fact about myself. and I'm in love with that fact about myself and I'm in love with that fact about myself. h that fact about myself`,
     convoReward: 200,
     tier: 0,
     responseCost: 4,

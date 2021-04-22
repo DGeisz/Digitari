@@ -1,5 +1,11 @@
 import React, { useContext, useState } from "react";
-import { FlatList, RefreshControl, View, StyleSheet } from "react-native";
+import {
+    FlatList,
+    RefreshControl,
+    View,
+    StyleSheet,
+    ScrollView,
+} from "react-native";
 import { basicLayouts } from "../../../../../../global_styles/BasicLayouts";
 import {
     postExampleNoLink,
@@ -53,8 +59,8 @@ const MainFeed: React.FC<Props> = () => {
 
     return (
         <>
-            <View style={basicLayouts.flexGrid1}>
-                <Post post={postExampleNoLink} />
+            <ScrollView style={basicLayouts.flexGrid1}>
+                <Post post={postExampleNoLink} postIsLink />
                 {/*<FlatList*/}
                 {/*    data={data?.feed}*/}
                 {/*    renderItem={({ item }) => (*/}
@@ -90,7 +96,7 @@ const MainFeed: React.FC<Props> = () => {
                 {/*        />*/}
                 {/*    }*/}
                 {/*/>*/}
-            </View>
+            </ScrollView>
             <NewButton openNew={openNew} />
         </>
     );

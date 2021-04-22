@@ -1,20 +1,22 @@
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./PostStyles";
 import Tier from "../tier/Tier";
 import CoinBox from "../coin_box/CoinBox";
 import { Entypo, Ionicons } from "@expo/vector-icons";
-import { PostTarget, PostType } from "../../global_types/PostTypes";
+import { PostAddOn, PostTarget, PostType } from "../../global_types/PostTypes";
 import { millisToRep } from "../../global_utils/TimeRepUtils";
 import { palette } from "../../global_styles/Palette";
 import CancelConfirmModal from "../cancel_confirm_modal/CancelConfirmModal";
 import { toCommaRep, toRep } from "../../global_utils/ValueRepUtils";
 import { TabNavContext } from "../../view_tree/main/routes/tab_nav/TabNavContext";
+import LinkPreview from "../link_preview/LinkPreview";
 
 const COMMUNITY_NAME_MAX_LEN = 30;
 
 interface Props {
     post: PostType;
+    abbreviateAddOn?: boolean;
     showConvos?: boolean;
     showFooter?: boolean;
     openConvo?: (cid: string) => void;
@@ -36,6 +38,7 @@ export default class Post extends React.PureComponent<Props, State> {
         standAlone: false,
         postIsLink: true,
         showFooter: true,
+        abbreviateAddOn: true,
     };
 
     state = {
@@ -61,7 +64,7 @@ export default class Post extends React.PureComponent<Props, State> {
 
         return (
             <TabNavContext.Consumer>
-                {({ openUser, openCommunity }) => (
+                {({ openUser, openCommunity, openPost }) => (
                     <View
                         style={[
                             styles.postContainer,
@@ -97,8 +100,7 @@ export default class Post extends React.PureComponent<Props, State> {
                             activeOpacity={1}
                             onPress={() =>
                                 this.props.postIsLink &&
-                                this.props.onPress &&
-                                this.props.onPress(this.props.post.id)
+                                openPost(this.props.post.id)
                             }
                         >
                             <View style={styles.postSideBuffer}>
@@ -194,7 +196,36 @@ export default class Post extends React.PureComponent<Props, State> {
                                         {this.props.post.content}
                                     </Text>
                                 </View>
-                                {this.props.showFooter && (
+                                {this.props.post.addOn === PostAddOn.Text ? (
+                                    <View style={styles.addOnTextContainer}>
+                                        <Text
+                                            style={styles.addOnText}
+                                            numberOfLines={
+                                                !!this.props.abbreviateAddOn
+                                                    ? 4
+                                                    : undefined
+                                            }
+                                        >
+                                            {this.props.post.addOnContent}
+                                        </Text>
+                                    </View>
+                                ) : this.props.post.addOn ===
+                                  PostAddOn.Image ? (
+                                    <View style={styles.addOnImageContainer}>
+                                        <Image
+                                            style={styles.addOnImage}
+                                            source={{
+                                                uri: this.props.post
+                                                    .addOnContent,
+                                            }}
+                                        />
+                                    </View>
+                                ) : this.props.post.addOn === PostAddOn.Link ? (
+                                    <LinkPreview
+                                        url={this.props.post.addOnContent}
+                                    />
+                                ) : null}
+                                {this.props.showFooter ? (
                                     <View style={styles.postMainFooter}>
                                         <View style={styles.mainFooterLeft}>
                                             <TouchableOpacity>
@@ -364,6 +395,8 @@ export default class Post extends React.PureComponent<Props, State> {
                                             )}
                                         </View>
                                     </View>
+                                ) : (
+                                    <View style={styles.footerBuffer} />
                                 )}
                             </View>
                         </TouchableOpacity>

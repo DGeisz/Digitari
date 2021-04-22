@@ -1,7 +1,11 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 import { basicLayouts } from "../../global_styles/BasicLayouts";
 import { palette } from "../../global_styles/Palette";
 import { globalTextStyles } from "../../global_styles/GlobalTextStyles";
+
+const { width } = Dimensions.get("window");
+
+const imageSize = width * 0.7;
 
 export const styles = StyleSheet.create({
     postContainer: {
@@ -76,13 +80,29 @@ export const styles = StyleSheet.create({
     },
     postMainBody: {
         paddingTop: 10,
-        paddingBottom: 25,
     },
     postMainText: {
         color: palette.hardGray,
         fontSize: 18,
     },
+    addOnTextContainer: {
+        marginTop: 20,
+    },
+    addOnText: {
+        color: palette.mediumGray,
+    },
+    addOnImageContainer: {
+        // ...basicLayouts.grid2,
+        marginTop: 20,
+    },
+    addOnImage: {
+        width: imageSize,
+        height: imageSize,
+        borderRadius: 10,
+        backgroundColor: palette.softGray,
+    },
     postMainFooter: {
+        marginTop: 20,
         flexDirection: "row",
     },
     mainFooterLeft: {
@@ -150,5 +170,9 @@ export const styles = StyleSheet.create({
         fontWeight: "600",
         color: palette.beneathTheWaves,
         marginRight: 2,
+    },
+
+    footerBuffer: {
+        height: 20,
     },
 });
