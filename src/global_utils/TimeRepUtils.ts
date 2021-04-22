@@ -11,7 +11,7 @@ export function millisToRep(millis: number): string {
     if (millis > millisInYear) {
         return Math.floor(millis / millisInYear) + "y";
     } else if (millis > millisInMonth) {
-        return Math.floor(millis / millisInMonth) + "mth";
+        return Math.floor(millis / millisInMonth) + "mo";
     } else if (millis > millisInDay) {
         return Math.floor(millis / millisInDay) + "d";
     } else if (millis > millisInHour) {

@@ -17,17 +17,26 @@ export enum PostTarget {
 
 export interface PostType {
     id: string;
-    user: string;
     uid: string;
+
+    user: string;
     tier: number;
-    time: number;
+    time: string;
     content: string;
-    link?: string;
+
+    addOn: PostAddOn;
+    addOnContent: string;
+    target: PostTarget;
+    cmid?: string;
+    communityName?: string;
+
     convoReward: number;
     responseCost: number;
+
     coin: number;
-    coinDonated: boolean;
-    convos: ConvoCoverType[];
+    coinDonated?: boolean;
+
+    convoCount: number;
 }
 
 export interface GPostType extends PostType {
@@ -50,18 +59,22 @@ export interface GStrippedPostType extends StrippedPostType {
 }
 
 export const postExampleNoLink: PostType = {
+    addOn: PostAddOn.None,
+    addOnContent: "",
+    target: PostTarget.Community,
+    communityName: "This is my community oh yes it is",
+    cmid: "220c250a-6bf4-4929-b55e-da69d97b7a45",
     id: "asd",
-    uid: "danny",
+    uid: "c17c121d-6594-41bf-9d38-37fba3154c99",
     coin: 40000,
     content: `Hi my name is Jeff and I'm an antelope. Why, you ask, do I mention that? It is my cornerstone, and I'm in love with that fact about myself.`,
     convoReward: 200,
     tier: 0,
     responseCost: 4,
-    time: 1612394591366,
+    time: (1612394591366).toString(),
     user: "Danny",
     coinDonated: false,
-    // convo: []
-    convos: [exampleConvoCover, exampleConvoCover],
+    convoCount: 10,
 };
 
 export const exampleStrippedPost: StrippedPostType = {
@@ -78,25 +91,3 @@ export const exampleStrippedPost: StrippedPostType = {
 export const gExampleStrippedPost = Object.assign({}, exampleStrippedPost, {
     __typename: "Post",
 });
-
-export const postExampleWithLink: PostType = {
-    link: "https://expo.io/",
-    id: "asd",
-    uid: "danny",
-    coin: 40000,
-    content: `Hi my name is Jeff and I'm an antelope. Why, you ask, do I mention that? It is my cornerstone, and I'm in love with that fact about myself.`,
-    convoReward: 200,
-    tier: 0,
-    responseCost: 4,
-    time: 1612394591366,
-    user: "Danny",
-    coinDonated: false,
-    // convos: [],
-    convos: [exampleConvoCover, exampleConvoCover],
-};
-
-export const gPostExampleWithLink: GPostType = Object.assign(
-    {},
-    postExampleWithLink,
-    { __typename: "Post" }
-);

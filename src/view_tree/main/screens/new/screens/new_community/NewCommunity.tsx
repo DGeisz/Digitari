@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
     ActivityIndicator,
     Keyboard,
+    ScrollView,
     Text,
+    TextInput,
     TouchableOpacity,
     View,
 } from "react-native";
@@ -28,7 +30,12 @@ import {
 import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
 import { localUid } from "../../../../../../global_state/UserState";
 import { NewCommunityNavProp } from "../../../../MainEntryNavTypes";
-import { COMMUNITY_TYPENAME } from "../../../../../../global_types/CommunityTypes";
+import {
+    COMMUNITY_DESCRIPTION_MAX_LEN,
+    COMMUNITY_NAME_MAX_LEN,
+    COMMUNITY_TYPENAME,
+} from "../../../../../../global_types/CommunityTypes";
+import { useAuthKeyboardBuffer } from "../../../../../auth/building_blocks/use_auth_keyboard_buffer/UseAuthKeyboardBuffer";
 
 interface Props {
     navigation: NewCommunityNavProp;
@@ -99,6 +106,8 @@ const NewCommunity: React.FC<Props> = (props) => {
     const [error, setError] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
 
+    const keyboardHeight = useAuthKeyboardBuffer();
+
     const create = async () => {
         if (!(name && description)) {
             setError(true);
@@ -118,6 +127,8 @@ const NewCommunity: React.FC<Props> = (props) => {
         }
     };
 
+    const scrollViewRef = useRef<ScrollView>(null);
+
     if (!checkData?.createCommunityCoinCheck && checkLoading) {
         return <LoadingWheel />;
     }
@@ -127,7 +138,7 @@ const NewCommunity: React.FC<Props> = (props) => {
     }
 
     return (
-        <>
+        <ScrollView ref={scrollViewRef}>
             {checkData &&
             checkData.createCommunityCoinCheck.coin >=
                 checkData.createCommunityCoinCheck.price ? (
@@ -141,19 +152,43 @@ const NewCommunity: React.FC<Props> = (props) => {
                             Please enter your community's name and description
                         </Text>
                     )}
-                    <Input
+                    <Text style={styles.fieldTitle}>Name</Text>
+                    <TextInput
                         placeholder="Community name"
-                        labelStyle={{ color: palette.hardGray }}
-                        label="Name"
-                        onChangeText={(text) => setName(text)}
+                        style={styles.fieldInput}
+                        value={name}
+                        onChangeText={(text) =>
+                            setName(text.substring(0, COMMUNITY_NAME_MAX_LEN))
+                        }
                     />
-                    <Input
+                    {COMMUNITY_NAME_MAX_LEN - name.length <= 20 && (
+                        <Text style={styles.remainingText}>
+                            {COMMUNITY_NAME_MAX_LEN - name.length}
+                        </Text>
+                    )}
+                    <View style={styles.buffer} />
+                    <Text style={styles.fieldTitle}>Community</Text>
+                    <TextInput
                         placeholder="Community description"
-                        labelStyle={{ color: palette.hardGray }}
-                        label="Description"
-                        onChangeText={(text) => setDescription(text)}
+                        style={styles.fieldInput}
+                        onFocus={() => {
+                            !!scrollViewRef?.current &&
+                                scrollViewRef.current.scrollToEnd();
+                        }}
+                        onChangeText={(text) =>
+                            setDescription(
+                                text.substring(0, COMMUNITY_DESCRIPTION_MAX_LEN)
+                            )
+                        }
+                        value={description}
                         multiline
                     />
+                    {COMMUNITY_DESCRIPTION_MAX_LEN - description.length <=
+                        20 && (
+                        <Text style={styles.remainingText}>
+                            {COMMUNITY_DESCRIPTION_MAX_LEN - description.length}
+                        </Text>
+                    )}
                     <View style={styles.createContainer}>
                         {loading ? (
                             <ActivityIndicator
@@ -182,6 +217,7 @@ const NewCommunity: React.FC<Props> = (props) => {
                             </TouchableOpacity>
                         )}
                     </View>
+                    <View style={{ height: keyboardHeight }} />
                 </TouchableOpacity>
             ) : (
                 <View style={styles.cantCreateContainer}>
@@ -190,7 +226,7 @@ const NewCommunity: React.FC<Props> = (props) => {
                     </Text>
                 </View>
             )}
-        </>
+        </ScrollView>
     );
 };
 

@@ -7,8 +7,26 @@ export const styles = StyleSheet.create({
         ...basicLayouts.flexGrid1,
         padding: 20,
     },
-    nameInput: {
-        marginBottom: 20,
+    fieldTitle: {
+        fontWeight: "bold",
+        fontSize: 16,
+        color: palette.hardGray,
+        marginBottom: 10,
+    },
+    fieldInput: {
+        marginBottom: 0,
+        fontSize: 18,
+        paddingBottom: 8,
+        borderBottomWidth: 1,
+        borderBottomColor: palette.lightGray,
+        color: palette.hardGray,
+    },
+    remainingText: {
+        marginTop: 2,
+        color: palette.hardGray,
+    },
+    buffer: {
+        height: 30,
     },
     createContainer: {
         ...basicLayouts.flexGrid2,

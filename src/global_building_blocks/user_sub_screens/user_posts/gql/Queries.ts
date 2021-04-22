@@ -24,24 +24,7 @@ export const GET_USER_POSTS = gql`
             responseCost
             coin
             coinDonated
-            convos {
-                id
-                pid
-
-                time
-                msg
-
-                sid
-                sranking
-                sname
-                sanony
-                sviewed
-
-                tid
-                tranking
-                tname
-                tviewed
-            }
+            convoCount
         }
     }
 `;

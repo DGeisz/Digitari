@@ -1,7 +1,10 @@
 import React, { useContext, useState } from "react";
 import { FlatList, RefreshControl, View, StyleSheet } from "react-native";
 import { basicLayouts } from "../../../../../../global_styles/BasicLayouts";
-import { PostType } from "../../../../../../global_types/PostTypes";
+import {
+    postExampleNoLink,
+    PostType,
+} from "../../../../../../global_types/PostTypes";
 import { GET_FEED } from "./gql/Queries";
 import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import ErrorMessage from "../../../../../../global_building_blocks/error_message/ErrorMessage";
@@ -51,41 +54,42 @@ const MainFeed: React.FC<Props> = () => {
     return (
         <>
             <View style={basicLayouts.flexGrid1}>
-                <FlatList
-                    data={data?.feed}
-                    renderItem={({ item }) => (
-                        <Post
-                            post={item}
-                            onPress={openPost}
-                            openConvo={openConvo}
-                            onMessage={openNewMessage}
-                        />
-                    )}
-                    keyExtractor={(item, index) =>
-                        [item.id, "feed", index].join(":")
-                    }
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={
-                                networkStatus === NetworkStatus.refetch ||
-                                stillSpin
-                            }
-                            onRefresh={() => {
-                                setStillSpin(true);
-                                refetch && refetch();
-                                setTimeout(() => {
-                                    setStillSpin(false);
-                                }, 1000);
-                            }}
-                            colors={[
-                                palette.deepBlue,
-                                palette.darkForestGreen,
-                                palette.oceanSurf,
-                            ]}
-                            tintColor={palette.deepBlue}
-                        />
-                    }
-                />
+                <Post post={postExampleNoLink} />
+                {/*<FlatList*/}
+                {/*    data={data?.feed}*/}
+                {/*    renderItem={({ item }) => (*/}
+                {/*        <Post*/}
+                {/*            post={item}*/}
+                {/*            onPress={openPost}*/}
+                {/*            openConvo={openConvo}*/}
+                {/*            onMessage={openNewMessage}*/}
+                {/*        />*/}
+                {/*    )}*/}
+                {/*    keyExtractor={(item, index) =>*/}
+                {/*        [item.id, "feed", index].join(":")*/}
+                {/*    }*/}
+                {/*    refreshControl={*/}
+                {/*        <RefreshControl*/}
+                {/*            refreshing={*/}
+                {/*                networkStatus === NetworkStatus.refetch ||*/}
+                {/*                stillSpin*/}
+                {/*            }*/}
+                {/*            onRefresh={() => {*/}
+                {/*                setStillSpin(true);*/}
+                {/*                refetch && refetch();*/}
+                {/*                setTimeout(() => {*/}
+                {/*                    setStillSpin(false);*/}
+                {/*                }, 1000);*/}
+                {/*            }}*/}
+                {/*            colors={[*/}
+                {/*                palette.deepBlue,*/}
+                {/*                palette.darkForestGreen,*/}
+                {/*                palette.oceanSurf,*/}
+                {/*            ]}*/}
+                {/*            tintColor={palette.deepBlue}*/}
+                {/*        />*/}
+                {/*    }*/}
+                {/*/>*/}
             </View>
             <NewButton openNew={openNew} />
         </>

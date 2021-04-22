@@ -1,15 +1,17 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./PostStyles";
 import Tier from "../tier/Tier";
 import CoinBox from "../coin_box/CoinBox";
-import { Entypo } from "@expo/vector-icons";
-import ConvoCover from "../convo_cover/ConvoCover";
-import { PostType } from "../../global_types/PostTypes";
+import { Entypo, Ionicons } from "@expo/vector-icons";
+import { PostTarget, PostType } from "../../global_types/PostTypes";
 import { millisToRep } from "../../global_utils/TimeRepUtils";
 import { palette } from "../../global_styles/Palette";
 import CancelConfirmModal from "../cancel_confirm_modal/CancelConfirmModal";
-import { toCommaRep } from "../../global_utils/ValueRepUtils";
+import { toCommaRep, toRep } from "../../global_utils/ValueRepUtils";
+import { TabNavContext } from "../../view_tree/main/routes/tab_nav/TabNavContext";
+
+const COMMUNITY_NAME_MAX_LEN = 30;
 
 interface Props {
     post: PostType;
@@ -41,110 +43,278 @@ export default class Post extends React.PureComponent<Props, State> {
     };
 
     render() {
+        let communityName = "";
+
+        if (!!this.props.post.communityName) {
+            if (this.props.post.communityName.length > COMMUNITY_NAME_MAX_LEN) {
+                communityName = [
+                    this.props.post.communityName.substring(
+                        0,
+                        COMMUNITY_NAME_MAX_LEN
+                    ),
+                    "...",
+                ].join("");
+            } else {
+                communityName = this.props.post.communityName;
+            }
+        }
+
         return (
-            <View
-                style={[
-                    styles.postContainer,
-                    { marginBottom: this.props.standAlone ? 0 : 20 },
-                ]}
-            >
-                <CancelConfirmModal
-                    visible={this.state.postModalVisible}
-                    body={`Use ${toCommaRep(
-                        this.props.post.responseCost
-                    )} digicoin to message ${this.props.post.user}?`}
-                    title={"New Message"}
-                    onConfirm={() => {
-                        this.setState({ postModalVisible: false });
-                        this.props.onMessage &&
-                            this.props.onMessage(
-                                this.props.post.user,
-                                this.props.post.id,
+            <TabNavContext.Consumer>
+                {({ openUser, openCommunity }) => (
+                    <View
+                        style={[
+                            styles.postContainer,
+                            { marginBottom: this.props.standAlone ? 0 : 20 },
+                        ]}
+                    >
+                        <CancelConfirmModal
+                            visible={this.state.postModalVisible}
+                            body={`Use ${toCommaRep(
                                 this.props.post.responseCost
-                            );
-                    }}
-                    onCancel={() => this.setState({ postModalVisible: false })}
-                />
-                <TouchableOpacity
-                    style={[
-                        styles.postContentContainer,
-                        this.props.standAlone ? styles.pCCBottomBorder : {},
-                    ]}
-                    activeOpacity={1}
-                    onPress={() =>
-                        this.props.postIsLink &&
-                        this.props.onPress &&
-                        this.props.onPress(this.props.post.id)
-                    }
-                >
-                    <View style={styles.postSideBuffer}>
-                        <View style={styles.sideBufferTop}>
-                            <Tier size={30} ranking={this.props.post.ranking} />
-                            <View style={styles.sideBufferDivider} />
-                        </View>
-                        <View style={styles.sideBufferBottom}>
-                            <CoinBox
-                                amount={this.props.post.coin}
-                                coinSize={22}
-                                fontSize={14}
-                            />
-                        </View>
-                    </View>
-                    <View style={styles.postMain}>
-                        <View style={styles.postHeader}>
-                            <Text style={styles.postUserText}>
-                                {this.props.post.user}
-                            </Text>
-                            <Text style={styles.postDotText}>·</Text>
-                            <Text style={styles.postTimeText}>
-                                {millisToRep(Date.now() - this.props.post.time)}
-                            </Text>
-                        </View>
-                        <View style={styles.postMainBody}>
-                            <Text style={styles.postMainText}>
-                                {this.props.post.content}
-                            </Text>
-                        </View>
-                        {this.props.showFooter && (
-                            <View style={styles.postMainFooter}>
-                                <View style={styles.mainFooterLeft}>
-                                    <TouchableOpacity>
-                                        <CoinBox
-                                            amount={0}
-                                            showAmount={false}
-                                            coinSize={25}
-                                            active={this.props.post.coinDonated}
-                                        />
-                                    </TouchableOpacity>
+                            )} digicoin to message ${this.props.post.user}?`}
+                            title={"New Message"}
+                            onConfirm={() => {
+                                this.setState({ postModalVisible: false });
+                                this.props.onMessage &&
+                                    this.props.onMessage(
+                                        this.props.post.user,
+                                        this.props.post.id,
+                                        this.props.post.responseCost
+                                    );
+                            }}
+                            onCancel={() =>
+                                this.setState({ postModalVisible: false })
+                            }
+                        />
+                        <TouchableOpacity
+                            style={[
+                                styles.postContentContainer,
+                                this.props.standAlone
+                                    ? styles.pCCBottomBorder
+                                    : {},
+                            ]}
+                            activeOpacity={1}
+                            onPress={() =>
+                                this.props.postIsLink &&
+                                this.props.onPress &&
+                                this.props.onPress(this.props.post.id)
+                            }
+                        >
+                            <View style={styles.postSideBuffer}>
+                                <View style={styles.sideBufferTop}>
+                                    <Tier
+                                        size={30}
+                                        ranking={this.props.post.tier}
+                                    />
+                                    <View style={styles.sideBufferDivider} />
                                 </View>
-                                <View style={styles.mainFooterRight}>
-                                    {this.props.showFullRespond ? (
-                                        <>
-                                            <View style={styles.exRightTop}>
-                                                <View
+                                <View style={styles.sideBufferBottom}>
+                                    <CoinBox
+                                        amount={this.props.post.coin}
+                                        coinSize={22}
+                                        fontSize={14}
+                                    />
+                                </View>
+                            </View>
+                            <View style={styles.postMain}>
+                                <View style={styles.postHeader}>
+                                    <TouchableOpacity
+                                        style={styles.postHeaderTop}
+                                        onPress={() =>
+                                            openUser(this.props.post.uid)
+                                        }
+                                        activeOpacity={0.5}
+                                    >
+                                        <Text style={styles.postUserText}>
+                                            {this.props.post.user}
+                                        </Text>
+                                        <Text style={styles.postDotText}>
+                                            ·
+                                        </Text>
+                                        <Text style={styles.postTimeText}>
+                                            {millisToRep(
+                                                Date.now() -
+                                                    parseInt(
+                                                        this.props.post.time
+                                                    )
+                                            )}
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <View style={styles.postHeaderBottom}>
+                                        {this.props.post.target ===
+                                        PostTarget.MyFollowers ? (
+                                            <>
+                                                <Entypo
+                                                    name="arrow-right"
+                                                    style={styles.targetIcon}
+                                                    size={18}
+                                                    color={palette.semiSoftGray}
+                                                />
+                                                <Text
                                                     style={
-                                                        styles.rewardContainer
+                                                        styles.followersTargetText
                                                     }
                                                 >
-                                                    <Text
+                                                    Followers
+                                                </Text>
+                                            </>
+                                        ) : (
+                                            <TouchableOpacity
+                                                style={
+                                                    styles.communityTargetButton
+                                                }
+                                                activeOpacity={0.5}
+                                                onPress={() =>
+                                                    !!this.props.post.cmid &&
+                                                    openCommunity(
+                                                        this.props.post.cmid
+                                                    )
+                                                }
+                                            >
+                                                <Entypo
+                                                    name="arrow-right"
+                                                    style={styles.targetIcon}
+                                                    size={18}
+                                                    color={palette.deepBlue}
+                                                />
+                                                <Text
+                                                    style={
+                                                        styles.communityTargetText
+                                                    }
+                                                >
+                                                    {communityName}
+                                                </Text>
+                                            </TouchableOpacity>
+                                        )}
+                                    </View>
+                                </View>
+                                <View style={styles.postMainBody}>
+                                    <Text style={styles.postMainText}>
+                                        {this.props.post.content}
+                                    </Text>
+                                </View>
+                                {this.props.showFooter && (
+                                    <View style={styles.postMainFooter}>
+                                        <View style={styles.mainFooterLeft}>
+                                            <TouchableOpacity>
+                                                <CoinBox
+                                                    amount={0}
+                                                    showAmount={false}
+                                                    coinSize={25}
+                                                    active={
+                                                        this.props.post
+                                                            .coinDonated
+                                                    }
+                                                />
+                                            </TouchableOpacity>
+                                        </View>
+                                        <View style={styles.mainFooterCenter}>
+                                            <View
+                                                style={
+                                                    styles.convosCountContainer
+                                                }
+                                            >
+                                                <Ionicons
+                                                    name="chatbubbles"
+                                                    size={18}
+                                                    color={palette.semiSoftGray}
+                                                />
+                                                <Text
+                                                    style={
+                                                        styles.convosCountText
+                                                    }
+                                                >
+                                                    {toRep(
+                                                        this.props.post
+                                                            .convoCount
+                                                    )}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                        <View style={styles.mainFooterRight}>
+                                            {this.props.showFullRespond ? (
+                                                <>
+                                                    <View
                                                         style={
-                                                            styles.convoRewardText
+                                                            styles.exRightTop
                                                         }
                                                     >
-                                                        Convo Reward
-                                                    </Text>
-                                                    <CoinBox
-                                                        amount={
-                                                            this.props.post
-                                                                .convoReward
+                                                        <View
+                                                            style={
+                                                                styles.rewardContainer
+                                                            }
+                                                        >
+                                                            <Text
+                                                                style={
+                                                                    styles.convoRewardText
+                                                                }
+                                                            >
+                                                                Convo Reward
+                                                            </Text>
+                                                            <CoinBox
+                                                                amount={
+                                                                    this.props
+                                                                        .post
+                                                                        .convoReward
+                                                                }
+                                                                coinSize={24}
+                                                                fontSize={16}
+                                                                showCoinPlus
+                                                            />
+                                                        </View>
+                                                    </View>
+                                                    <View
+                                                        style={
+                                                            styles.exRightBottom
                                                         }
-                                                        coinSize={24}
-                                                        fontSize={16}
-                                                        showCoinPlus
-                                                    />
-                                                </View>
-                                            </View>
-                                            <View style={styles.exRightBottom}>
+                                                    >
+                                                        <TouchableOpacity
+                                                            style={
+                                                                styles.responseButton
+                                                            }
+                                                            activeOpacity={0.5}
+                                                            onPress={() =>
+                                                                this.setState({
+                                                                    postModalVisible: true,
+                                                                })
+                                                            }
+                                                        >
+                                                            <View
+                                                                style={
+                                                                    styles.costContainer
+                                                                }
+                                                            >
+                                                                <Entypo
+                                                                    name="pencil"
+                                                                    size={24}
+                                                                    style={
+                                                                        styles.pencil
+                                                                    }
+                                                                    color={
+                                                                        palette.beneathTheWaves
+                                                                    }
+                                                                />
+                                                                <Text
+                                                                    style={
+                                                                        styles.exResponseText
+                                                                    }
+                                                                >
+                                                                    Message
+                                                                </Text>
+                                                            </View>
+                                                            <CoinBox
+                                                                amount={
+                                                                    this.props
+                                                                        .post
+                                                                        .responseCost
+                                                                }
+                                                                coinSize={17}
+                                                            />
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                </>
+                                            ) : (
                                                 <TouchableOpacity
                                                     style={
                                                         styles.responseButton
@@ -171,13 +341,17 @@ export default class Post extends React.PureComponent<Props, State> {
                                                                 palette.beneathTheWaves
                                                             }
                                                         />
-                                                        <Text
-                                                            style={
-                                                                styles.exResponseText
+                                                        <CoinBox
+                                                            amount={
+                                                                this.props.post
+                                                                    .convoReward
                                                             }
-                                                        >
-                                                            Message
-                                                        </Text>
+                                                            coinSize={17}
+                                                            showCoinPlus
+                                                            boxColor={
+                                                                palette.lightForestGreen
+                                                            }
+                                                        />
                                                     </View>
                                                     <CoinBox
                                                         amount={
@@ -187,74 +361,15 @@ export default class Post extends React.PureComponent<Props, State> {
                                                         coinSize={17}
                                                     />
                                                 </TouchableOpacity>
-                                            </View>
-                                        </>
-                                    ) : (
-                                        <TouchableOpacity
-                                            style={styles.responseButton}
-                                            activeOpacity={0.5}
-                                            onPress={() =>
-                                                this.setState({
-                                                    postModalVisible: true,
-                                                })
-                                            }
-                                        >
-                                            <View style={styles.costContainer}>
-                                                <Entypo
-                                                    name="pencil"
-                                                    size={24}
-                                                    style={styles.pencil}
-                                                    color={
-                                                        palette.beneathTheWaves
-                                                    }
-                                                />
-                                                <CoinBox
-                                                    amount={
-                                                        this.props.post
-                                                            .convoReward
-                                                    }
-                                                    coinSize={17}
-                                                    showCoinPlus
-                                                    boxColor={
-                                                        palette.lightForestGreen
-                                                    }
-                                                />
-                                            </View>
-                                            <CoinBox
-                                                amount={
-                                                    this.props.post.responseCost
-                                                }
-                                                coinSize={17}
-                                            />
-                                        </TouchableOpacity>
-                                    )}
-                                </View>
+                                            )}
+                                        </View>
+                                    </View>
+                                )}
                             </View>
-                        )}
-                    </View>
-                </TouchableOpacity>
-                {this.props.showConvos && !!this.props.post.convos.length && (
-                    <View style={styles.postConvosContainer}>
-                        {this.props.post.convos.map((convo, index) => {
-                            const showBottom =
-                                index != this.props.post.convos.length - 1;
-                            return (
-                                <ConvoCover
-                                    key={
-                                        this.props.post.id +
-                                        this.props.post.time +
-                                        index
-                                    }
-                                    openConvo={this.props.openConvo}
-                                    showUnViewedDot={false}
-                                    convoCover={convo}
-                                    showBottomBorder={showBottom}
-                                />
-                            );
-                        })}
+                        </TouchableOpacity>
                     </View>
                 )}
-            </View>
+            </TabNavContext.Consumer>
         );
     }
 }

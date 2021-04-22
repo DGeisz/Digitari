@@ -143,7 +143,7 @@ export const schema = gql`
         coinDonated: Boolean
 
         # Top convos
-        convos: [ConvoCover]
+        convoCount: Int
     }
 
     type PostPackage {

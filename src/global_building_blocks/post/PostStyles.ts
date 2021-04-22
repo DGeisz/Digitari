@@ -38,18 +38,41 @@ export const styles = StyleSheet.create({
         paddingBottom: 5,
     },
     postHeader: {
+        // flexDirection: "row",
+        // ...basicLayouts.grid3,
+    },
+    postHeaderTop: {
+        flexDirection: "row",
+        ...basicLayouts.grid3,
+    },
+    postHeaderBottom: {
         flexDirection: "row",
         ...basicLayouts.grid3,
     },
     postUserText: {
-        ...globalTextStyles.userText,
-        fontWeight: "700",
+        color: palette.hardGray,
+        fontWeight: "600",
     },
     postDotText: {
         ...globalTextStyles.dotText,
     },
     postTimeText: {
         ...globalTextStyles.timeText,
+    },
+    targetIcon: {
+        marginRight: 2,
+    },
+    followersTargetText: {
+        fontWeight: "bold",
+        color: palette.semiSoftGray,
+    },
+    communityTargetButton: {
+        ...basicLayouts.grid2,
+        flexDirection: "row",
+    },
+    communityTargetText: {
+        fontWeight: "bold",
+        color: palette.deepBlue,
     },
     postMainBody: {
         paddingTop: 10,
@@ -62,12 +85,23 @@ export const styles = StyleSheet.create({
     postMainFooter: {
         flexDirection: "row",
     },
-    mainFooterRight: {
-        ...basicLayouts.flexGrid6,
-    },
     mainFooterLeft: {
         ...basicLayouts.flexGrid7,
     },
+    mainFooterCenter: {
+        ...basicLayouts.flexGrid7,
+        paddingBottom: 4,
+    },
+    convosCountContainer: {
+        ...basicLayouts.grid2,
+        flexDirection: "row",
+    },
+    convosCountText: {
+        fontWeight: "600",
+        color: palette.lightGray,
+        marginLeft: 2,
+    },
+    mainFooterRight: {},
     responseButton: {
         flexDirection: "row",
         backgroundColor: palette.oceanFroth,
