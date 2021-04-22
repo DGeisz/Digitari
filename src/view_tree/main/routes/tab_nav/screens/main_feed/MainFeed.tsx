@@ -11,7 +11,7 @@ import {
     postExampleNoLink,
     PostType,
 } from "../../../../../../global_types/PostTypes";
-import { GET_FEED } from "./gql/Queries";
+import { GET_FEED, GetFeedData, GetFeedVariables } from "./gql/Queries";
 import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import ErrorMessage from "../../../../../../global_building_blocks/error_message/ErrorMessage";
 import Post from "../../../../../../global_building_blocks/post/Post";
@@ -23,29 +23,19 @@ import NewButton from "../../../../../../global_building_blocks/new_button/NewBu
 
 interface Props {}
 
-interface QueryData {
-    feed: PostType[];
-}
-
-interface QueryVariables {
-    uid: string;
-    lastTime?: number;
-}
-
 const MainFeed: React.FC<Props> = () => {
-    const uid = localUid();
-
     const { openPost, openConvo, openNew, openNewMessage } = useContext(
         TabNavContext
     );
 
     const { data, error, networkStatus, refetch } = useQuery<
-        QueryData,
-        QueryVariables
+        GetFeedData,
+        GetFeedVariables
     >(GET_FEED, {
-        variables: { uid: uid },
         notifyOnNetworkStatusChange: true,
     });
+
+    console.log(data, error);
 
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
@@ -57,46 +47,43 @@ const MainFeed: React.FC<Props> = () => {
         return <ErrorMessage refresh={refetch} />;
     }
 
+    // const finalFeed = !!data?.feed ? data.feed.filter(post => )
+
     return (
         <>
-            <ScrollView style={basicLayouts.flexGrid1}>
-                <Post post={postExampleNoLink} postIsLink />
-                {/*<FlatList*/}
-                {/*    data={data?.feed}*/}
-                {/*    renderItem={({ item }) => (*/}
-                {/*        <Post*/}
-                {/*            post={item}*/}
-                {/*            onPress={openPost}*/}
-                {/*            openConvo={openConvo}*/}
-                {/*            onMessage={openNewMessage}*/}
-                {/*        />*/}
-                {/*    )}*/}
-                {/*    keyExtractor={(item, index) =>*/}
-                {/*        [item.id, "feed", index].join(":")*/}
-                {/*    }*/}
-                {/*    refreshControl={*/}
-                {/*        <RefreshControl*/}
-                {/*            refreshing={*/}
-                {/*                networkStatus === NetworkStatus.refetch ||*/}
-                {/*                stillSpin*/}
-                {/*            }*/}
-                {/*            onRefresh={() => {*/}
-                {/*                setStillSpin(true);*/}
-                {/*                refetch && refetch();*/}
-                {/*                setTimeout(() => {*/}
-                {/*                    setStillSpin(false);*/}
-                {/*                }, 1000);*/}
-                {/*            }}*/}
-                {/*            colors={[*/}
-                {/*                palette.deepBlue,*/}
-                {/*                palette.darkForestGreen,*/}
-                {/*                palette.oceanSurf,*/}
-                {/*            ]}*/}
-                {/*            tintColor={palette.deepBlue}*/}
-                {/*        />*/}
-                {/*    }*/}
-                {/*/>*/}
-            </ScrollView>
+            <FlatList
+                data={data?.feed.filter((post) => !!post)}
+                renderItem={({ item }) => (
+                    <Post
+                        post={item}
+                        onPress={openPost}
+                        onMessage={openNewMessage}
+                    />
+                )}
+                keyExtractor={(item, index) =>
+                    [item.id, "feed", index].join(":")
+                }
+                refreshControl={
+                    <RefreshControl
+                        refreshing={
+                            networkStatus === NetworkStatus.refetch || stillSpin
+                        }
+                        onRefresh={() => {
+                            setStillSpin(true);
+                            refetch && refetch();
+                            setTimeout(() => {
+                                setStillSpin(false);
+                            }, 1000);
+                        }}
+                        colors={[
+                            palette.deepBlue,
+                            palette.darkForestGreen,
+                            palette.oceanSurf,
+                        ]}
+                        tintColor={palette.deepBlue}
+                    />
+                }
+            />
             <NewButton openNew={openNew} />
         </>
     );

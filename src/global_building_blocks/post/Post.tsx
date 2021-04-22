@@ -19,7 +19,6 @@ interface Props {
     abbreviateAddOn?: boolean;
     showConvos?: boolean;
     showFooter?: boolean;
-    openConvo?: (cid: string) => void;
     showFullRespond?: boolean;
     standAlone?: boolean;
     postIsLink?: boolean;

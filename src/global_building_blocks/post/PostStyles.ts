@@ -22,6 +22,7 @@ export const styles = StyleSheet.create({
     },
     postSideBuffer: {
         paddingHorizontal: 2,
+        minWidth: 60,
     },
     sideBufferTop: {
         ...basicLayouts.grid8,

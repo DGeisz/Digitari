@@ -1,8 +1,9 @@
 import { gql } from "@apollo/client";
+import { PostType } from "../../../../../../../global_types/PostTypes";
 
 export const GET_FEED = gql`
-    query GetFeed($uid: ID!, $lastTime: Int) {
-        feed(uid: $uid, lastTime: $lastTime) {
+    query GetFeed($lastTime: Int) {
+        feed(lastTime: $lastTime) {
             id
             uid
 
@@ -24,24 +25,16 @@ export const GET_FEED = gql`
             responseCost
             coin
             coinDonated
-            convos {
-                id
-                pid
 
-                time
-                msg
-
-                sid
-                sranking
-                sname
-                sanony
-                sviewed
-
-                tid
-                tranking
-                tname
-                tviewed
-            }
+            convoCount
         }
     }
 `;
+
+export interface GetFeedData {
+    feed: PostType[];
+}
+
+export interface GetFeedVariables {
+    lastTime?: string;
+}
