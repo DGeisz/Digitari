@@ -136,7 +136,7 @@ const ProfileHeader: React.FC<Props> = (props) => {
                 </View>
                 <View style={styles.profileSplit1} pointerEvents="box-none">
                     <View style={styles.split1Left} pointerEvents="none">
-                        <Tier size={40} ranking={123} />
+                        <Tier size={40} ranking={props.user.ranking} />
                         <View style={styles.userLevelContainer}>
                             <Text style={styles.profileUserText}>
                                 {`${props.user.firstName} ${props.user.lastName}`}

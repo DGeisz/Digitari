@@ -98,7 +98,7 @@ export default class Post extends React.PureComponent<Props, State> {
                 >
                     <View style={styles.postSideBuffer}>
                         <View style={styles.sideBufferTop}>
-                            <Tier size={30} ranking={this.props.post.tier} />
+                            <Tier size={30} tier={this.props.post.tier} />
                             <View style={styles.sideBufferDivider} />
                         </View>
                         <View style={styles.sideBufferBottom}>

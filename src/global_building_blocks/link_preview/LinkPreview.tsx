@@ -45,6 +45,30 @@ export default class LinkPreview extends React.PureComponent<Props, State> {
             });
     }
 
+    componentDidUpdate() {
+        getLinkPreview(this.props.url)
+            .then((raw) => {
+                const data = raw as LinkInfo;
+
+                this.setState({
+                    fetched: true,
+                    title: !!data.title ? data.title.trim() : undefined,
+                    siteName: !!data.siteName
+                        ? data.siteName.trim()
+                        : undefined,
+                    image:
+                        !!data.images && !!data.images.length
+                            ? data.images[0]
+                            : undefined,
+                });
+            })
+            .catch((_) => {
+                this.setState({
+                    fetched: true,
+                });
+            });
+    }
+
     render() {
         return (
             <TouchableOpacity

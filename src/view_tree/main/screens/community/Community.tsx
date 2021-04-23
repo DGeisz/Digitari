@@ -28,6 +28,8 @@ import {
 import { localUid } from "../../../../global_state/UserState";
 import { USER_TYPENAME } from "../../../../global_types/UserTypes";
 import Followers from "./sub_screens/followers/Followers";
+import CommunityPosts from "./sub_screens/community_posts/CommunityPosts";
+import NewButton from "../../../../global_building_blocks/new_button/NewButton";
 
 interface Props {
     route: CommunityRouteProp;
@@ -186,7 +188,12 @@ const Community: React.FC<Props> = (props) => {
                             ),
                         }}
                     >
-                        {() => <View />}
+                        {() => (
+                            <CommunityPosts
+                                routeKey={"CommunityPosts"}
+                                cmid={data?.community.id}
+                            />
+                        )}
                     </Tab.Screen>
                     <Tab.Screen
                         name="CommunityConvos"
@@ -217,6 +224,13 @@ const Community: React.FC<Props> = (props) => {
                         )}
                     </Tab.Screen>
                 </Tab.Navigator>
+                <NewButton
+                    openNew={() =>
+                        props.navigation.navigate("NewPost", {
+                            cmid: props.route.params.cmid,
+                        })
+                    }
+                />
             </View>
         );
     } else {

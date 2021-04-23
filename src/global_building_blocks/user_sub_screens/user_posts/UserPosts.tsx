@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Animated, FlatList, RefreshControl, View } from "react-native";
+import { Animated, RefreshControl, View } from "react-native";
 import { NetworkStatus, useQuery } from "@apollo/client";
 import {
     GET_USER_POSTS,
@@ -7,8 +7,6 @@ import {
     GetUserPostVariables,
 } from "./gql/Queries";
 import { useCollapsibleScene } from "react-native-collapsible-tab-view";
-import { PostType } from "../../../global_types/PostTypes";
-import { localUid } from "../../../global_state/UserState";
 import { TabNavContext } from "../../../view_tree/main/routes/tab_nav/TabNavContext";
 import LoadingWheel from "../../loading_wheel/LoadingWheel";
 import ErrorMessage from "../../error_message/ErrorMessage";

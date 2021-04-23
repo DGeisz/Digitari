@@ -7,11 +7,19 @@ import NewButton from "../../../../../../global_building_blocks/new_button/NewBu
 import { SearchBar } from "react-native-elements";
 import { SearchEntityEnum } from "../../../../../../global_types/SearchEntity";
 import SearchResult from "./building_blocks/search_result/SearchResult";
-import { useLazyQuery } from "@apollo/client";
-import { SEARCH, SearchQueryData, SearchQueryVariables } from "./gql/Queries";
+import { useLazyQuery, useQuery } from "@apollo/client";
+import {
+    SEARCH,
+    SearchQueryData,
+    SearchQueryVariables,
+    TOP_RESULTS,
+    TopResultsData,
+    TopResultsVariables,
+} from "./gql/Queries";
 import { FontAwesome } from "@expo/vector-icons";
 import { palette } from "../../../../../../global_styles/Palette";
 import ErrorMessage from "../../../../../../global_building_blocks/error_message/ErrorMessage";
+import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
 
 const activeColor = palette.white;
 const inactiveColor = palette.mediumGray;
@@ -29,6 +37,18 @@ const Search: React.FC = () => {
         { data, loading, error, refetch, fetchMore },
     ] = useLazyQuery<SearchQueryData, SearchQueryVariables>(SEARCH);
 
+    const {
+        data: topData,
+        error: topError,
+        loading: topLoading,
+        refetch: topRefetch,
+        fetchMore: topFetchMore,
+    } = useQuery<TopResultsData, TopResultsVariables>(TOP_RESULTS, {
+        variables: {
+            entityType: searchOption,
+        },
+    });
+
     useEffect(() => {
         if (!!query) {
             searchQuery({
@@ -39,8 +59,6 @@ const Search: React.FC = () => {
             });
         }
     }, [searchOption]);
-
-    console.log(data, loading);
 
     return (
         <>
@@ -67,102 +85,147 @@ const Search: React.FC = () => {
                         inputContainerStyle={styles.searchInputContainer}
                         lightTheme
                     />
-                    <View style={styles.searchOptionsBar}>
-                        <TouchableOpacity
-                            style={[
-                                styles.searchOption,
-                                searchOption === null
-                                    ? { backgroundColor: palette.deepBlue }
-                                    : {},
-                            ]}
-                            onPress={() => setSearchOption(null)}
-                        >
-                            <Text
+                    <View style={styles.searchUnderHeader}>
+                        <View style={styles.searchOptionsBar}>
+                            <TouchableOpacity
                                 style={[
-                                    styles.searchOptionText,
-                                    {
-                                        color:
-                                            searchOption === null
-                                                ? activeColor
-                                                : inactiveColor,
-                                    },
+                                    styles.searchOption,
+                                    searchOption === null
+                                        ? { backgroundColor: palette.deepBlue }
+                                        : {},
                                 ]}
+                                onPress={() => setSearchOption(null)}
                             >
-                                All
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={[
-                                styles.searchOption,
-                                searchOption === SearchEntityEnum.user
-                                    ? { backgroundColor: palette.deepBlue }
-                                    : {},
-                            ]}
-                            onPress={() =>
-                                setSearchOption(SearchEntityEnum.user)
-                            }
-                        >
-                            <Text
+                                <Text
+                                    style={[
+                                        styles.searchOptionText,
+                                        {
+                                            color:
+                                                searchOption === null
+                                                    ? activeColor
+                                                    : inactiveColor,
+                                        },
+                                    ]}
+                                >
+                                    All
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
                                 style={[
-                                    styles.searchOptionText,
-                                    {
-                                        color:
-                                            searchOption ===
-                                            SearchEntityEnum.user
-                                                ? activeColor
-                                                : inactiveColor,
-                                    },
+                                    styles.searchOption,
+                                    searchOption === SearchEntityEnum.user
+                                        ? { backgroundColor: palette.deepBlue }
+                                        : {},
                                 ]}
+                                onPress={() =>
+                                    setSearchOption(SearchEntityEnum.user)
+                                }
                             >
-                                Users
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={[
-                                styles.searchOption,
-                                searchOption === SearchEntityEnum.community
-                                    ? { backgroundColor: palette.deepBlue }
-                                    : {},
-                            ]}
-                            onPress={() =>
-                                setSearchOption(SearchEntityEnum.community)
-                            }
-                        >
-                            <Text
+                                <Text
+                                    style={[
+                                        styles.searchOptionText,
+                                        {
+                                            color:
+                                                searchOption ===
+                                                SearchEntityEnum.user
+                                                    ? activeColor
+                                                    : inactiveColor,
+                                        },
+                                    ]}
+                                >
+                                    Users
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
                                 style={[
-                                    styles.searchOptionText,
-                                    {
-                                        color:
-                                            searchOption ===
-                                            SearchEntityEnum.community
-                                                ? activeColor
-                                                : inactiveColor,
-                                    },
+                                    styles.searchOption,
+                                    searchOption === SearchEntityEnum.community
+                                        ? { backgroundColor: palette.deepBlue }
+                                        : {},
                                 ]}
+                                onPress={() =>
+                                    setSearchOption(SearchEntityEnum.community)
+                                }
                             >
-                                Communities
-                            </Text>
-                        </TouchableOpacity>
+                                <Text
+                                    style={[
+                                        styles.searchOptionText,
+                                        {
+                                            color:
+                                                searchOption ===
+                                                SearchEntityEnum.community
+                                                    ? activeColor
+                                                    : inactiveColor,
+                                        },
+                                    ]}
+                                >
+                                    Communities
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                        <Text style={styles.resultsTitle}>
+                            {!!query ? "Search results" : "Top"}
+                        </Text>
                     </View>
                 </View>
-                {error ? (
-                    <ErrorMessage refresh={() => !!refetch && refetch()} />
-                ) : query && data?.search ? (
-                    data.search.length === 0 ? (
-                        <View style={styles.noResultsContainer}>
-                            <FontAwesome
-                                name="search"
-                                color={palette.lightGray}
-                                size={20}
+                {!!query ? (
+                    error ? (
+                        <ErrorMessage refresh={() => !!refetch && refetch()} />
+                    ) : data?.search ? (
+                        data.search.length === 0 ? (
+                            <View style={styles.noResultsContainer}>
+                                <FontAwesome
+                                    name="search"
+                                    color={palette.lightGray}
+                                    size={20}
+                                />
+                                <Text style={styles.noResultsText}>
+                                    {`No results for: "${query}"`}
+                                </Text>
+                            </View>
+                        ) : (
+                            <FlatList
+                                style={basicLayouts.flexGrid1}
+                                data={data.search}
+                                renderItem={({ item }) => (
+                                    <SearchResult
+                                        result={item}
+                                        onSelect={
+                                            item.entityType ===
+                                            SearchEntityEnum.user
+                                                ? openUser
+                                                : openCommunity
+                                        }
+                                    />
+                                )}
+                                keyExtractor={(item, index) =>
+                                    [item, index].join(":")
+                                }
+                                onEndReached={() => {
+                                    !!fetchMore &&
+                                        !!data?.search &&
+                                        fetchMore({
+                                            variables: {
+                                                text: query,
+                                                entityType: searchOption,
+                                                offset: data.search.length,
+                                            },
+                                        });
+                                }}
                             />
-                            <Text style={styles.noResultsText}>
-                                {`No results for: "${query}"`}
-                            </Text>
-                        </View>
+                        )
                     ) : (
+                        <View />
+                    )
+                ) : topLoading ? (
+                    <LoadingWheel />
+                ) : topError ? (
+                    <ErrorMessage refresh={topRefetch} />
+                ) : topData?.topResults ? (
+                    topData.topResults.length !== 0 && (
                         <FlatList
                             style={basicLayouts.flexGrid1}
-                            data={data.search}
+                            data={topData.topResults}
                             renderItem={({ item }) => (
                                 <SearchResult
                                     result={item}
@@ -178,21 +241,18 @@ const Search: React.FC = () => {
                                 [item, index].join(":")
                             }
                             onEndReached={() => {
-                                !!fetchMore &&
-                                    !!data?.search &&
-                                    fetchMore({
+                                !!topFetchMore &&
+                                    !!topData?.topResults &&
+                                    topFetchMore({
                                         variables: {
-                                            text: query,
                                             entityType: searchOption,
-                                            offset: data.search.length,
+                                            offset: topData.topResults.length,
                                         },
                                     });
                             }}
                         />
                     )
-                ) : (
-                    <View />
-                )}
+                ) : null}
             </TouchableOpacity>
             <NewButton openNew={openNew} />
         </>

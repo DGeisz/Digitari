@@ -50,6 +50,25 @@ export const cache = new InMemoryCache({
                         }
                     },
                 },
+                communityPosts: {
+                    keyArgs: ["cmid", "tier"],
+                    //@ts-ignore
+                    merge(existing, incoming, { args: { lastTime } }) {
+                        if (existing && incoming) {
+                            if (!!lastTime) {
+                                return [...existing, ...incoming];
+                            } else {
+                                return incoming;
+                            }
+                        } else if (existing) {
+                            return existing;
+                        } else if (incoming) {
+                            return incoming;
+                        } else {
+                            return [];
+                        }
+                    },
+                },
                 activeConvos: {
                     merge(existing, incoming) {
                         try {

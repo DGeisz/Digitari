@@ -38,13 +38,21 @@ export const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: palette.deepBlue,
     },
+    resultInfoContainer: {
+        marginLeft: 10,
+    },
     resultNameText: {
         fontSize: 20,
         fontWeight: "bold",
         color: palette.hardGray,
-        marginLeft: 10,
     },
     resultRight: {
         ...basicLayouts.grid5,
+    },
+    followsNumeral: {
+        fontWeight: "bold",
+    },
+    followsText: {
+        color: palette.lightGray,
     },
 });

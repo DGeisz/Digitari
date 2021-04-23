@@ -21,7 +21,7 @@ export function millisToRep(millis: number): string {
     } else if (millis > millisInMinute) {
         return Math.floor(millis / millisInMinute) + "m";
     } else if (millis > millisIn10Seconds) {
-        return Math.floor(millisIn10Seconds) * 10 + "s";
+        return Math.floor(millis / millisIn10Seconds) * 10 + "s";
     } else {
         return Math.floor(millis / millisInSecond) + "s";
     }

@@ -17,6 +17,7 @@ export const styles = StyleSheet.create({
         borderRadius: 30,
         paddingHorizontal: 7,
     },
+    searchUnderHeader: {},
     searchOptionsBar: {
         ...basicLayouts.flexRow,
         marginLeft: 10,
@@ -29,6 +30,12 @@ export const styles = StyleSheet.create({
     },
     searchOptionText: {
         fontWeight: "bold",
+    },
+    resultsTitle: {
+        marginTop: 5,
+        fontWeight: "bold",
+        color: palette.deepBlue,
+        marginLeft: 10,
     },
     noResultsContainer: {
         ...basicLayouts.flexGrid5,

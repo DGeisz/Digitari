@@ -28,6 +28,7 @@ import {
 } from "./gql/Mutation";
 import { USER_TYPENAME } from "../../../../global_types/UserTypes";
 import { Auth } from "aws-amplify";
+import NewButton from "../../../../global_building_blocks/new_button/NewButton";
 
 const Tab = createMaterialCollapsibleTopTabNavigator();
 
@@ -247,6 +248,9 @@ const User: React.FC<Props> = (props) => {
                         )}
                     </Tab.Screen>
                 </Tab.Navigator>
+                <NewButton
+                    openNew={() => props.navigation.navigate("NewPost", {})}
+                />
             </View>
         );
     } else {

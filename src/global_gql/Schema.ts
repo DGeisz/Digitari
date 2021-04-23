@@ -233,7 +233,9 @@ export const schema = gql`
         convo(cid: ID!): Convo
         createCommunityCoinCheck: CoinCheck
         community(cmid: ID!): Community
+        communityPosts(cmid: ID!, lastTime: String, tier: Int): [Post]
         search(text: String!, offset: Int, entityType: Int): [SearchEntity]
+        topResults(offset: Int, entityType: Int): [SearchEntity]
         searchEntity(id: ID!): SearchEntity
         followers(tid: ID!, lastTime: String): [FollowEntity]
         following(sid: ID!, lastTime: String, entityType: Int): [FollowEntity]

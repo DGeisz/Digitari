@@ -45,6 +45,7 @@ import {
 import { cache } from "../../../../../../global_state/Cache";
 import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
 import InfoModal from "./building_blocks/info_modal/InfoModal";
+import LinkPreview from "../../../../../../global_building_blocks/link_preview/LinkPreview";
 
 interface Props {
     navigation: NewPostNavProp;
@@ -120,7 +121,6 @@ const NewPost: React.FC<Props> = (props) => {
     });
 
     const [selectComVisible, showSelectCom] = useState<boolean>(false);
-    const [targetComId, setTargetComId] = useState<string>("");
 
     const [getPostCommunity, { data: postCommData }] = useLazyQuery<
         GetPostCommunityData,
@@ -132,7 +132,7 @@ const NewPost: React.FC<Props> = (props) => {
             const id = props.route.params.cmid;
 
             getPostCommunity({ variables: { id } });
-            setTargetComId(id);
+            setTarget(PostTarget.Community);
         }
     }, [props.route.params.cmid]);
 
@@ -437,6 +437,7 @@ const NewPost: React.FC<Props> = (props) => {
                                 {POST_ADD_ON_CONTENT_MAX_LEN - content.length}
                             </Text>
                         )}
+                        {!!addOnLink && <LinkPreview url={addOnLink} />}
                     </>
                 ) : (
                     addOn === PostAddOn.Image && (
@@ -475,7 +476,6 @@ const NewPost: React.FC<Props> = (props) => {
                     onHide={() => showSelectCom(false)}
                     selectCommunity={(id) => {
                         getPostCommunity({ variables: { id } });
-                        setTargetComId(id);
                     }}
                 />
                 <View style={styles.fieldTitleContainer}>
