@@ -50,7 +50,6 @@ export default class ChallengeTier extends React.PureComponent<Props> {
                     />
                 );
             case 4:
-                console.log("teer");
                 return (
                     <Image
                         source={require("../../../../assets/master_coin.png")}

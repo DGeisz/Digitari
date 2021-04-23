@@ -221,7 +221,7 @@ export const schema = gql`
     }
 
     type Query @aws_iam @aws_cognito_user_pools {
-        feed(lastTime: Int): [Post]
+        feed(lastTime: String): [Post]
         wallet(id: ID!): Wallet
         user(uid: ID!): User
         userPosts(uid: ID!, lastTime: Int): [Post]

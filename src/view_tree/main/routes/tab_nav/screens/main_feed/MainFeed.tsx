@@ -1,25 +1,14 @@
 import React, { useContext, useState } from "react";
-import {
-    FlatList,
-    RefreshControl,
-    View,
-    StyleSheet,
-    ScrollView,
-} from "react-native";
-import { basicLayouts } from "../../../../../../global_styles/BasicLayouts";
-import {
-    postExampleNoLink,
-    PostType,
-} from "../../../../../../global_types/PostTypes";
+import { FlatList, RefreshControl, View } from "react-native";
 import { GET_FEED, GetFeedData, GetFeedVariables } from "./gql/Queries";
 import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import ErrorMessage from "../../../../../../global_building_blocks/error_message/ErrorMessage";
 import Post from "../../../../../../global_building_blocks/post/Post";
 import { palette } from "../../../../../../global_styles/Palette";
-import { localUid } from "../../../../../../global_state/UserState";
 import { NetworkStatus, useQuery } from "@apollo/client";
 import { TabNavContext } from "../../TabNavContext";
 import NewButton from "../../../../../../global_building_blocks/new_button/NewButton";
+import { globalScreenStyles } from "../../../../../../global_styles/GlobalScreenStyles";
 
 interface Props {}
 
@@ -28,14 +17,16 @@ const MainFeed: React.FC<Props> = () => {
         TabNavContext
     );
 
-    const { data, error, networkStatus, refetch } = useQuery<
+    const { data, error, networkStatus, refetch, fetchMore } = useQuery<
         GetFeedData,
         GetFeedVariables
     >(GET_FEED, {
         notifyOnNetworkStatusChange: true,
     });
 
-    console.log(data, error);
+    // console.log(data, error);
+
+    const [fetchMoreLen, setFetchMoreLen] = useState<number>(0);
 
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
@@ -47,12 +38,14 @@ const MainFeed: React.FC<Props> = () => {
         return <ErrorMessage refresh={refetch} />;
     }
 
-    // const finalFeed = !!data?.feed ? data.feed.filter(post => )
+    const finalFeed = !!data?.feed ? data.feed.filter((post) => !!post) : [];
+
+    console.log(finalFeed.length);
 
     return (
         <>
             <FlatList
-                data={data?.feed.filter((post) => !!post)}
+                data={finalFeed}
                 renderItem={({ item }) => (
                     <Post
                         post={item}
@@ -70,6 +63,7 @@ const MainFeed: React.FC<Props> = () => {
                         }
                         onRefresh={() => {
                             setStillSpin(true);
+                            setFetchMoreLen(0);
                             refetch && refetch();
                             setTimeout(() => {
                                 setStillSpin(false);
@@ -83,6 +77,30 @@ const MainFeed: React.FC<Props> = () => {
                         tintColor={palette.deepBlue}
                     />
                 }
+                onEndReached={async () => {
+                    if (finalFeed.length > fetchMoreLen) {
+                        const lastTime = finalFeed[finalFeed.length - 1].time;
+                        const ffLen = finalFeed.length;
+
+                        console.log(lastTime, fetchMore, !!fetchMore);
+
+                        setFetchMoreLen(ffLen);
+
+                        !!fetchMore &&
+                            (await fetchMore({
+                                variables: {
+                                    lastTime,
+                                },
+                            }));
+                    }
+                }}
+                ListFooterComponent={() => {
+                    return networkStatus === NetworkStatus.fetchMore ? (
+                        <LoadingWheel />
+                    ) : (
+                        <View style={globalScreenStyles.listFooterBuffer} />
+                    );
+                }}
             />
             <NewButton openNew={openNew} />
         </>

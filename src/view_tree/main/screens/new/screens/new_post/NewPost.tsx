@@ -95,8 +95,6 @@ const NewPost: React.FC<Props> = (props) => {
                 if (typeSplit.length === 2 && typeSplit[0] === "image") {
                     let file = new File([blob], `post.${typeSplit[1]}`);
 
-                    console.log("File set!: ", JSON.stringify(file));
-
                     setImgUrl(result.uri);
                     setImg(file);
                 }

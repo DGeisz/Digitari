@@ -68,8 +68,6 @@ const AppView: React.FC = () => {
     }, [fetchedUser, checkedAuth]);
 
     useEffect(() => {
-        console.log("Calling fetch effect");
-
         (async () => {
             try {
                 const { sub, email, given_name, family_name } = (

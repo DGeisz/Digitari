@@ -4,6 +4,27 @@ export const cache = new InMemoryCache({
     typePolicies: {
         Query: {
             fields: {
+                feed: {
+                    keyArgs: [],
+                    //@ts-ignore
+                    merge(existing, incoming, { args: { lastTime } }) {
+                        console.log("This be it", existing, incoming);
+
+                        if (existing && incoming) {
+                            if (!!lastTime) {
+                                return [...existing, ...incoming];
+                            } else {
+                                return incoming;
+                            }
+                        } else if (existing) {
+                            return existing;
+                        } else if (incoming) {
+                            return incoming;
+                        } else {
+                            return [];
+                        }
+                    },
+                },
                 activeConvos: {
                     merge(existing, incoming) {
                         try {
@@ -68,20 +89,13 @@ export const cache = new InMemoryCache({
             fields: {
                 messages: {
                     merge(existing, incoming): any {
-                        console.log("\n\n ---- BOOKER ---- \n\n");
-
                         try {
-                            console.log(incoming, existing);
-                            // console.log(incoming.length, existing.length);
                             if (incoming.length > existing.length) {
-                                console.log("oda");
                                 return incoming;
                             } else {
-                                console.log("anger");
                                 return existing;
                             }
                         } catch (e) {
-                            console.log("born");
                             return incoming;
                         }
                     },

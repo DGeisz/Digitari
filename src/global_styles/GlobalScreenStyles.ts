@@ -5,4 +5,7 @@ export const globalScreenStyles = StyleSheet.create({
     whiteScreen: {
         backgroundColor: palette.white,
     },
+    listFooterBuffer: {
+        height: 60,
+    },
 });

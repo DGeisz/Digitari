@@ -28,8 +28,6 @@ export default class LinkPreview extends React.PureComponent<Props, State> {
             .then((raw) => {
                 const data = raw as LinkInfo;
 
-                console.log(data);
-
                 this.setState({
                     fetched: true,
                     title: data.title,
@@ -48,12 +46,10 @@ export default class LinkPreview extends React.PureComponent<Props, State> {
     }
 
     render() {
-        console.log(this.state);
-
         return (
             <TouchableOpacity
                 style={styles.linkPreviewContainer}
-                activeOpacity={0.5}
+                activeOpacity={0.8}
                 onPress={() => {
                     Linking.openURL(this.props.url);
                 }}

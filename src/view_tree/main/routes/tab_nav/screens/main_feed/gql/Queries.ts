@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 import { PostType } from "../../../../../../../global_types/PostTypes";
 
 export const GET_FEED = gql`
-    query GetFeed($lastTime: Int) {
+    query GetFeed($lastTime: String) {
         feed(lastTime: $lastTime) {
             id
             uid
