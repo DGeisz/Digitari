@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Keyboard, Text, TouchableOpacity, View } from "react-native";
 import { useAuthKeyboardBuffer } from "../../building_blocks/use_auth_keyboard_buffer/UseAuthKeyboardBuffer";
 import { authStyles } from "../../styles/AuthStyles";

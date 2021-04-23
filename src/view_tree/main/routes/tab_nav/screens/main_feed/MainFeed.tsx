@@ -13,9 +13,13 @@ import { globalScreenStyles } from "../../../../../../global_styles/GlobalScreen
 interface Props {}
 
 const MainFeed: React.FC<Props> = () => {
-    const { openPost, openConvo, openNew, openNewMessage } = useContext(
-        TabNavContext
-    );
+    const {
+        openPost,
+        openNew,
+        openCommunity,
+        openUser,
+        openNewMessage,
+    } = useContext(TabNavContext);
 
     const { data, error, networkStatus, refetch, fetchMore } = useQuery<
         GetFeedData,
@@ -48,9 +52,11 @@ const MainFeed: React.FC<Props> = () => {
                 data={finalFeed}
                 renderItem={({ item }) => (
                     <Post
-                        post={item}
-                        onPress={openPost}
+                        openUser={openUser}
+                        openCommunity={openCommunity}
+                        openPost={openPost}
                         onMessage={openNewMessage}
+                        post={item}
                     />
                 )}
                 keyExtractor={(item, index) =>
@@ -81,8 +87,6 @@ const MainFeed: React.FC<Props> = () => {
                     if (finalFeed.length > fetchMoreLen) {
                         const lastTime = finalFeed[finalFeed.length - 1].time;
                         const ffLen = finalFeed.length;
-
-                        console.log(lastTime, fetchMore, !!fetchMore);
 
                         setFetchMoreLen(ffLen);
 

@@ -1,7 +1,8 @@
 import { gql } from "@apollo/client";
+import { PostType } from "../../../../global_types/PostTypes";
 
 export const GET_USER_POSTS = gql`
-    query GetUserPosts($uid: ID!, $lastTime: Int) {
+    query GetUserPosts($uid: ID!, $lastTime: String) {
         userPosts(uid: $uid, lastTime: $lastTime) {
             id
             uid
@@ -28,3 +29,12 @@ export const GET_USER_POSTS = gql`
         }
     }
 `;
+
+export interface GetUserPostsData {
+    userPosts: PostType[];
+}
+
+export interface GetUserPostVariables {
+    uid: string;
+    lastTime?: string;
+}

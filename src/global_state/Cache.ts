@@ -25,6 +25,31 @@ export const cache = new InMemoryCache({
                         }
                     },
                 },
+                userPosts: {
+                    keyArgs: ["uid"],
+                    //@ts-ignore
+                    merge(existing, incoming, { args: { lastTime } }) {
+                        console.log(
+                            "Here comes the barge! ",
+                            existing,
+                            incoming
+                        );
+
+                        if (existing && incoming) {
+                            if (!!lastTime) {
+                                return [...existing, ...incoming];
+                            } else {
+                                return incoming;
+                            }
+                        } else if (existing) {
+                            return existing;
+                        } else if (incoming) {
+                            return incoming;
+                        } else {
+                            return [];
+                        }
+                    },
+                },
                 activeConvos: {
                     merge(existing, incoming) {
                         try {
