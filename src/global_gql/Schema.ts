@@ -144,6 +144,7 @@ export const schema = gql`
 
         # Top convos
         convoCount: Int
+        responseCount: Int
     }
 
     type PostPackage {

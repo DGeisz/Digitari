@@ -37,6 +37,7 @@ export interface PostType {
     coinDonated?: boolean;
 
     convoCount: number;
+    responseCount: number;
 }
 
 export interface GPostType extends PostType {
@@ -80,6 +81,7 @@ export const postExampleNoLink: PostType = {
     user: "Danny",
     coinDonated: false,
     convoCount: 10,
+    responseCount: 10,
 };
 
 export const exampleStrippedPost: StrippedPostType = {

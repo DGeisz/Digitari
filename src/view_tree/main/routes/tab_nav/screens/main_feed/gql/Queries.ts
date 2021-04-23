@@ -27,6 +27,7 @@ export const GET_FEED = gql`
             coinDonated
 
             convoCount
+            responseCount
         }
     }
 `;

@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const GET_USER_CONVOS = gql`
-    query GetUserConvos($uid: ID!, $lastTime: Int) {
+    query GetUserConvos($uid: ID!, $lastTime: String) {
         userConvos(uid: $uid, lastTime: $lastTime) {
             id
             pid
@@ -24,7 +24,7 @@ export const GET_USER_CONVOS = gql`
 `;
 
 export const GET_USER_CONVOS_TYPE = gql`
-    query GetUserConvos($uid: ID!, $lastTime: Int) {
+    query GetUserConvos($uid: ID!, $lastTime: String) {
         userConvos(uid: $uid, lastTime: $lastTime) {
             id
             pid
