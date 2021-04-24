@@ -22,18 +22,16 @@ import { globalScreenStyles } from "../../../../../../global_styles/GlobalScreen
 import { useCollapsibleScene } from "react-native-collapsible-tab-view";
 import { TierEmoji, TierEnum } from "../../../../../../global_types/TierTypes";
 import { styles } from "./CommunityPostStyles";
+import { CommunityNavProp } from "../../../../MainEntryNavTypes";
 
 interface Props {
     routeKey: string;
     cmid: string;
+    navigation: CommunityNavProp;
 }
 
 const CommunityPosts: React.FC<Props> = (props) => {
     const [tier, setTier] = useState<TierEnum | undefined>(undefined);
-
-    const { openPost, openCommunity, openUser, openNewMessage } = useContext(
-        TabNavContext
-    );
 
     const { data, error, networkStatus, refetch, fetchMore } = useQuery<
         GetCommunityPostsData,
@@ -56,7 +54,6 @@ const CommunityPosts: React.FC<Props> = (props) => {
     }
 
     if (error) {
-        console.log(error);
         return <ErrorMessage refresh={refetch} />;
     }
 
@@ -244,10 +241,26 @@ const CommunityPosts: React.FC<Props> = (props) => {
             data={finalFeed}
             renderItem={({ item }) => (
                 <Post
-                    openUser={openUser}
-                    openCommunity={openCommunity}
-                    openPost={openPost}
-                    onMessage={openNewMessage}
+                    openUser={(uid: string) => {
+                        props.navigation.navigate("User", { uid });
+                    }}
+                    openCommunity={(cmid: string) => {
+                        props.navigation.navigate("Community", { cmid });
+                    }}
+                    openPost={(pid: string) => {
+                        props.navigation.navigate("PostScreen", { pid });
+                    }}
+                    onMessage={(
+                        tname: string,
+                        pid: string,
+                        responseCost: number
+                    ) => {
+                        props.navigation.navigate("NewResponse", {
+                            tname,
+                            pid,
+                            responseCost,
+                        });
+                    }}
                     post={item}
                 />
             )}

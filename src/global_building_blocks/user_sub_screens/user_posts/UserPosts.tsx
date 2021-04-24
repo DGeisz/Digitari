@@ -42,7 +42,6 @@ const UserPosts: React.FC<Props> = (props) => {
     }
 
     if (error) {
-        console.log(error);
         return <ErrorMessage refresh={refetch} />;
     }
 

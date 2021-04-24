@@ -13,6 +13,11 @@ export const styles = StyleSheet.create({
         backgroundColor: palette.white,
         borderRadius: 20,
     },
+    errorText: {
+        marginBottom: 10,
+        fontWeight: "bold",
+        color: palette.danger,
+    },
     modalHeader: {
         ...basicLayouts.grid5,
         paddingVertical: 10,

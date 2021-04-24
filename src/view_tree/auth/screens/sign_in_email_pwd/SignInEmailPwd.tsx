@@ -45,7 +45,6 @@ const SignInEmailPwd: React.FC<Props> = (props) => {
                         pwd: password,
                     });
                 } else if (e.message) {
-                    console.log("Error signing in:", e);
                     setError(e.message);
                     setErrorActive(true);
                 } else {

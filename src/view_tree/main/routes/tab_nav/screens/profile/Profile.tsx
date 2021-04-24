@@ -49,7 +49,6 @@ const Profile: React.FC = () => {
     }
 
     if (error) {
-        console.log(error);
         return <ErrorMessage refresh={refetch} />;
     }
 

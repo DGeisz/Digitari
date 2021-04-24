@@ -1,14 +1,14 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-import { ConvoMsgType } from "../../../../global_types/ConvoMsgTypes";
 import { styles } from "./LeftConvoMsgStyles";
 import { millisToRep } from "../../../../global_utils/TimeRepUtils";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { palette } from "../../../../global_styles/Palette";
 import CancelConfirmModal from "../../../cancel_confirm_modal/CancelConfirmModal";
+import { MessageType } from "../../../../global_types/MessageTypes";
 
 interface Props {
-    msg: ConvoMsgType;
+    msg: MessageType;
     showUser: boolean;
     showBlockMsg: boolean;
     blockMessage: string;

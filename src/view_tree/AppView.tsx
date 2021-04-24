@@ -26,8 +26,6 @@ const AppView: React.FC = () => {
 
     useEffect(() => {
         Hub.listen("auth", async ({ payload: { event } }: HubCapsule) => {
-            console.log("Amplify Hub event:", event);
-
             try {
                 const { sub, given_name } = (
                     await Auth.currentSession()

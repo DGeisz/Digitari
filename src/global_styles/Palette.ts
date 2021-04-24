@@ -21,6 +21,7 @@ export const palette = {
 
     // Grays
     soapStone: "#fafafa",
+    heavySoap: "#f2f2f2",
     softGray: "#e6e6e6",
     semiSoftGray: "#c2c2c2",
     lightGray: "#949494",

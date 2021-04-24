@@ -80,43 +80,43 @@ export const schema = gql`
         nextI2CIndex: Int
     }
 
-    type ConvoCover {
+    type Convo {
         id: ID
         pid: ID
+        cmid: ID
 
-        new: Boolean
-        active: Boolean
+        status: Int
 
-        time: Int
-        msg: String
+        initialTime: String
+        initialMsg: String
+
+        lastTime: String
+        lastMsg: String
 
         sid: ID
+        stier: Int
         sranking: Int
         sname: String
         sanony: Boolean
         sviewed: Boolean
 
         tid: ID
+        ttier: Int
         tranking: Int
         tname: String
         tviewed: Boolean
+
+        targetMsgCount: Int
     }
 
-    type ConvoMsg {
+    type Message {
         id: ID
-        uid: String
+        uid: ID
+        tid: ID
         user: String
         time: Int
         anonymous: Boolean
         content: String
-    }
-
-    type Convo {
-        id: ID
-        cover: ConvoCover
-        post: Post
-        status: Int
-        messages: [ConvoMsg]
     }
 
     type Post {
@@ -142,7 +142,7 @@ export const schema = gql`
         coin: Int
         coinDonated: Boolean
 
-        # Top convos
+        # Convos
         convoCount: Int
         responseCount: Int
     }
@@ -226,9 +226,9 @@ export const schema = gql`
         wallet(id: ID!): Wallet
         user(uid: ID!): User
         userPosts(uid: ID!, lastTime: String): [Post]
-        userConvos(uid: ID!, lastTime: String): [ConvoCover]
-        newConvos(uid: ID!, lastTime: String): [ConvoCover]
-        activeConvos(uid: ID!, lastTime: String): [ConvoCover]
+        userConvos(uid: ID!, lastTime: String): [Convo]
+        newConvos(orderingType: Int!, lastTime: String): [Convo]
+        activeConvos(uid: ID!, lastTime: String): [Convo]
         challenges: [Challenge]
         post(pid: ID!): Post
         convo(cid: ID!): Convo
@@ -240,6 +240,7 @@ export const schema = gql`
         searchEntity(id: ID!): SearchEntity
         followers(tid: ID!, lastTime: String): [FollowEntity]
         following(sid: ID!, lastTime: String, entityType: Int): [FollowEntity]
+        postResponseCheck(pid: ID): Boolean
     }
 
     type Mutation {
@@ -248,19 +249,14 @@ export const schema = gql`
             lastName: String!
             email: String!
         ): User
+
+        createConvo(pid: ID, message: String, anonymous: Boolean): Convo
+
         dismissConvo(cid: ID!): Convo
         blockInitialConvo(cid: ID!): Convo
         activateConvo(cid: ID!): Convo
         blockMessage(cid: ID!): Convo
         finishConvo(cid: ID!): Convo
-        sendMessage(
-            cid: ID!
-            uid: String
-            user: String
-            anonymous: Boolean
-            content: String
-        ): ConvoMsg
-        newConvo(pid: ID!, sanony: Boolean!, msg: String!): Convo
         createCommunity(name: String, description: String): Community
         indexUser(id: ID, firstName: String, lastName: String): SearchEntity
         followUser(tid: ID!): FollowEntity

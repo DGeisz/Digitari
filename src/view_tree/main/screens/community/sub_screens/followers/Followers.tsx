@@ -30,8 +30,6 @@ const Followers: React.FC<Props> = (props) => {
 
     const scrollPropsAndRef = useCollapsibleScene(props.routeKey);
 
-    console.log(data);
-
     if (loading || !data?.followers) {
         return <LoadingWheel />;
     }

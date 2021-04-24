@@ -47,23 +47,24 @@ const MessageInput: React.FC<Props> = ({
 
     //Message text
     const [text, setText] = useState<string>("");
-    const canSend = !!text;
 
     //Text input ref
     const textInputRef: React.RefObject<TextInput> = useRef<TextInput>(null);
 
     const handleSend = (): void => {
-        Keyboard.dismiss();
-        onSend(text);
-        setText("");
-        textInputRef.current && textInputRef.current.clear();
-        if (Platform.OS === "ios") {
-            textInputRef.current &&
-                textInputRef.current.setNativeProps({ text: "" });
-            setTimeout(() => {
+        if (!!text) {
+            Keyboard.dismiss();
+            onSend(text);
+            setText("");
+            textInputRef.current && textInputRef.current.clear();
+            if (Platform.OS === "ios") {
                 textInputRef.current &&
                     textInputRef.current.setNativeProps({ text: "" });
-            }, 500);
+                setTimeout(() => {
+                    textInputRef.current &&
+                        textInputRef.current.setNativeProps({ text: "" });
+                }, 500);
+            }
         }
     };
 
@@ -149,13 +150,17 @@ const MessageInput: React.FC<Props> = ({
                             autoFocus={autoFocus}
                         />
                         <TouchableOpacity
-                            activeOpacity={canSend ? 0.3 : 1}
+                            activeOpacity={!!text ? 0.3 : 1}
                             onPress={handleSend}
                         >
                             <MaterialIcons
                                 name="send"
                                 size={28}
-                                color={palette.deepBlue}
+                                color={
+                                    !!text
+                                        ? palette.deepBlue
+                                        : palette.notDeepBlue
+                                }
                             />
                         </TouchableOpacity>
                     </View>

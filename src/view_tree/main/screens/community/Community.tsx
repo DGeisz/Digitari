@@ -190,6 +190,7 @@ const Community: React.FC<Props> = (props) => {
                     >
                         {() => (
                             <CommunityPosts
+                                navigation={props.navigation}
                                 routeKey={"CommunityPosts"}
                                 cmid={data?.community.id}
                             />

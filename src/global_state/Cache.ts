@@ -8,8 +8,6 @@ export const cache = new InMemoryCache({
                     keyArgs: [],
                     //@ts-ignore
                     merge(existing, incoming, { args: { lastTime } }) {
-                        console.log("This be it", existing, incoming);
-
                         if (existing && incoming) {
                             if (!!lastTime) {
                                 return [...existing, ...incoming];
@@ -29,12 +27,6 @@ export const cache = new InMemoryCache({
                     keyArgs: ["uid"],
                     //@ts-ignore
                     merge(existing, incoming, { args: { lastTime } }) {
-                        console.log(
-                            "Here comes the barge! ",
-                            existing,
-                            incoming
-                        );
-
                         if (existing && incoming) {
                             if (!!lastTime) {
                                 return [...existing, ...incoming];
@@ -54,6 +46,26 @@ export const cache = new InMemoryCache({
                     keyArgs: ["cmid", "tier"],
                     //@ts-ignore
                     merge(existing, incoming, { args: { lastTime } }) {
+                        if (existing && incoming) {
+                            if (!!lastTime) {
+                                return [...existing, ...incoming];
+                            } else {
+                                return incoming;
+                            }
+                        } else if (existing) {
+                            return existing;
+                        } else if (incoming) {
+                            return incoming;
+                        } else {
+                            return [];
+                        }
+                    },
+                },
+                newConvos: {
+                    keyArgs: ["orderingType"],
+                    //@ts-ignore
+                    merge(existing, incoming, { args: { lastTime } }) {
+                        console.log("new convos: ", existing, incoming);
                         if (existing && incoming) {
                             if (!!lastTime) {
                                 return [...existing, ...incoming];

@@ -1,12 +1,12 @@
 import React from "react";
 import { View } from "react-native";
 import { Text } from "react-native";
-import { ConvoMsgType } from "../../../../global_types/ConvoMsgTypes";
 import { styles } from "./RightConvoMsgStyles";
 import { millisToRep } from "../../../../global_utils/TimeRepUtils";
+import { MessageType } from "../../../../global_types/MessageTypes";
 
 interface Props {
-    msg: ConvoMsgType;
+    msg: MessageType;
     showUser: boolean;
 }
 

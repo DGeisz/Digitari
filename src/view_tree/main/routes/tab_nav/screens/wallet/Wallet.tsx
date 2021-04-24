@@ -40,7 +40,6 @@ const Wallet: React.FC<Props> = () => {
     }
 
     if (error) {
-        console.log(error);
         return <ErrorMessage refresh={refetch} />;
     }
 

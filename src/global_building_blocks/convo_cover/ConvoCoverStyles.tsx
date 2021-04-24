@@ -37,11 +37,20 @@ export const styles = StyleSheet.create({
         ...basicLayouts.flexGrid2,
     },
     mainHeaderTextContainer: {
-        flexDirection: "row",
         ...basicLayouts.flexGrid3,
+        flexDirection: "row",
+        flexWrap: "wrap",
+    },
+    headerTop: {
+        ...basicLayouts.flexGrid3,
+        flexDirection: "row",
+    },
+    headerBottom: {
+        ...basicLayouts.flexGrid3,
+        flexDirection: "row",
     },
     arrowText: {
-        color: palette.mediumOceanSurf,
+        color: palette.deepBlue,
     },
     mainHeaderDotText: {
         ...globalTextStyles.dotText,
@@ -54,7 +63,7 @@ export const styles = StyleSheet.create({
         marginRight: 3,
     },
     mainBody: {
-        paddingTop: 8,
+        paddingTop: 12,
         paddingBottom: 15,
         marginRight: 20,
     },
