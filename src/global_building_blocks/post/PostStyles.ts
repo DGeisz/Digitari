@@ -36,6 +36,12 @@ export const styles = StyleSheet.create({
     sideBufferBottom: {
         ...basicLayouts.flexGrid2,
     },
+    coinText: {
+        color: palette.mediumGray,
+        fontWeight: "bold",
+        fontSize: 13,
+        transform: [{ translateY: -5 }],
+    },
     postMain: {
         ...basicLayouts.flexGrid1,
         marginLeft: 3,
@@ -108,16 +114,17 @@ export const styles = StyleSheet.create({
     },
     mainFooterLeft: {
         ...basicLayouts.flexGrid7,
+        paddingBottom: 4,
     },
     mainFooterCenter: {
         ...basicLayouts.flexGrid7,
         paddingBottom: 4,
     },
-    convosCountContainer: {
+    infoIconContainer: {
         ...basicLayouts.grid2,
         flexDirection: "row",
     },
-    convosCountText: {
+    infoIconText: {
         fontWeight: "600",
         color: palette.lightGray,
         marginLeft: 2,

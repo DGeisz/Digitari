@@ -71,7 +71,10 @@ export default class Post extends React.PureComponent<Props, State> {
                     visible={this.state.postModalVisible}
                     body={`Use ${toCommaRep(
                         this.props.post.responseCost
-                    )} digicoin to message ${this.props.post.user}?`}
+                    )} digicoin to message ${this.props.post.user}? 
+                    \nThe reward for a successful convo is ${
+                        this.props.post.convoReward
+                    } digicoin.`}
                     title={"New Message"}
                     onConfirm={() => {
                         this.setState({ postModalVisible: false });
@@ -102,11 +105,19 @@ export default class Post extends React.PureComponent<Props, State> {
                             <View style={styles.sideBufferDivider} />
                         </View>
                         <View style={styles.sideBufferBottom}>
-                            <CoinBox
-                                amount={this.props.post.coin}
-                                coinSize={22}
-                                fontSize={14}
-                            />
+                            <TouchableOpacity>
+                                <CoinBox
+                                    active={!!this.props.post.coinDonated}
+                                    showAmount={false}
+                                    coinSize={30}
+                                    fontSize={14}
+                                    paddingVertical={0}
+                                />
+                            </TouchableOpacity>
+                            <Text style={styles.coinText}>
+                                {/*{toRep(this.props.post.coin)}*/}
+                                {toRep(10000)}
+                            </Text>
                         </View>
                     </View>
                     <View style={styles.postMain}>
@@ -204,23 +215,27 @@ export default class Post extends React.PureComponent<Props, State> {
                         {this.props.showFooter ? (
                             <View style={styles.postMainFooter}>
                                 <View style={styles.mainFooterLeft}>
-                                    <TouchableOpacity>
-                                        <CoinBox
-                                            amount={0}
-                                            showAmount={false}
-                                            coinSize={25}
-                                            active={this.props.post.coinDonated}
+                                    <View style={styles.infoIconContainer}>
+                                        <Entypo
+                                            name="pencil"
+                                            size={20}
+                                            color={palette.semiSoftGray}
                                         />
-                                    </TouchableOpacity>
+                                        <Text style={styles.infoIconText}>
+                                            {toRep(
+                                                this.props.post.responseCount
+                                            )}
+                                        </Text>
+                                    </View>
                                 </View>
                                 <View style={styles.mainFooterCenter}>
-                                    <View style={styles.convosCountContainer}>
+                                    <View style={styles.infoIconContainer}>
                                         <Ionicons
                                             name="chatbubbles"
                                             size={18}
                                             color={palette.semiSoftGray}
                                         />
-                                        <Text style={styles.convosCountText}>
+                                        <Text style={styles.infoIconText}>
                                             {toRep(this.props.post.convoCount)}
                                         </Text>
                                     </View>

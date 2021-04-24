@@ -38,6 +38,8 @@ const MainFeed: React.FC<Props> = () => {
         return <LoadingWheel />;
     }
 
+    console.log(error);
+
     if (error) {
         return <ErrorMessage refresh={refetch} />;
     }

@@ -14,6 +14,7 @@ interface Props {
     boxColor?: string;
     showCoinPlus?: boolean;
     showAbbreviated?: boolean;
+    paddingVertical?: number;
 }
 
 export default class CoinBox extends React.Component<Props> {
@@ -35,6 +36,9 @@ export default class CoinBox extends React.Component<Props> {
                 style={[
                     styles.coinBoxContainer,
                     { backgroundColor: this.props.boxColor },
+                    !!this.props.paddingVertical
+                        ? { paddingVertical: this.props.paddingVertical }
+                        : {},
                 ]}
             >
                 {this.props.active ? (
