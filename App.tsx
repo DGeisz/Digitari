@@ -44,8 +44,15 @@ const url =
 const region = "us-east-2";
 const auth: AuthOptions = {
     type: AUTH_TYPE.AMAZON_COGNITO_USER_POOLS,
-    jwtToken: async () =>
-        (await Auth.currentSession()).getIdToken().getJwtToken(),
+    jwtToken: async () => {
+        try {
+            const session = await Auth.currentSession();
+
+            return session.getIdToken().getJwtToken();
+        } catch (e) {
+            return "";
+        }
+    },
 };
 
 const httpLink = createHttpLink({ uri: url });

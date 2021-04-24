@@ -22,7 +22,7 @@ const CommunityHeader: React.FC<Props> = (props) => {
     const [loading, setLoading] = useState<boolean>(false);
 
     return (
-        <View style={styles.headerContainer}>
+        <View style={styles.headerContainer} pointerEvents="box-none">
             {showError && (
                 <Text style={styles.followErrorText}>
                     {`You need ${FOLLOW_COMMUNITY_PRICE} digicoin to follow this community`}

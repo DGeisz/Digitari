@@ -1,15 +1,36 @@
 import { makeVar } from "@apollo/client";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const MOCK = true;
+const UID_KEY = "UID_KEY";
 
-const initialUid = MOCK ? "danny" : "";
+export const localUid = makeVar<string>("");
 
-export const localUid = makeVar<string>(initialUid);
+AsyncStorage.getItem(UID_KEY).then((raw) => {
+    if (raw) {
+        const uid = JSON.parse(raw);
+        localUid(uid);
+    }
+});
 
-const initialSuid = MOCK ? "sanny" : "";
+export function setLocalUid(uid: string): void {
+    localUid(uid);
+    AsyncStorage.setItem(UID_KEY, JSON.stringify(uid)).then();
+}
 
-export const localSuid = makeVar<string>(initialSuid);
+export const localSuid = makeVar<string>("");
 
-const initialFirstName = MOCK ? "Danny" : "";
+export const NAME_KEY = "NAME_KEY";
 
-export const localFirstName = makeVar<string>(initialFirstName);
+export const localFirstName = makeVar<string>("");
+
+AsyncStorage.getItem(NAME_KEY).then((raw) => {
+    if (raw) {
+        const name = JSON.parse(raw);
+        localFirstName(name);
+    }
+});
+
+export function setLocalFirstName(name: string): void {
+    localFirstName(name);
+    AsyncStorage.setItem(NAME_KEY, JSON.stringify(name)).then();
+}

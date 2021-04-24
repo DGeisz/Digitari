@@ -10,7 +10,11 @@ import {
     CreateOrFetchUserMutationData,
     CreateOrFetchUserMutationVariables,
 } from "./gql/Mutations";
-import { localUid } from "../global_state/UserState";
+import {
+    localUid,
+    setLocalFirstName,
+    setLocalUid,
+} from "../global_state/UserState";
 
 const AppView: React.FC = () => {
     const [checkedAuth, setCheckAuth] = useState<boolean>(false);
@@ -25,11 +29,12 @@ const AppView: React.FC = () => {
             console.log("Amplify Hub event:", event);
 
             try {
-                const { sub } = (
+                const { sub, given_name } = (
                     await Auth.currentSession()
                 ).getIdToken().payload;
 
-                !!sub && localUid(sub);
+                !!sub && setLocalUid(sub);
+                !!given_name && setLocalFirstName(given_name);
                 setAuthenticated(true);
             } catch (_) {
                 setAuthenticated(false);
@@ -38,11 +43,12 @@ const AppView: React.FC = () => {
 
         (async () => {
             try {
-                const { sub } = (
+                const { sub, given_name } = (
                     await Auth.currentSession()
                 ).getIdToken().payload;
 
-                !!sub && localUid(sub);
+                !!sub && setLocalUid(sub);
+                !!given_name && setLocalFirstName(given_name);
                 setAuthenticated(true);
             } catch (_) {
                 setAuthenticated(false);
@@ -74,7 +80,8 @@ const AppView: React.FC = () => {
                     await Auth.currentSession()
                 ).getIdToken().payload;
 
-                !!sub && localUid(sub);
+                !!sub && setLocalUid(sub);
+                !!given_name && setLocalFirstName(given_name);
 
                 console.log(
                     "Here are user attributes: ",

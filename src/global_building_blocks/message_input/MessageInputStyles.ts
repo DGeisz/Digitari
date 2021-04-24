@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 5,
         borderRadius: 15,
-        backgroundColor: palette.oceanFroth,
+        backgroundColor: palette.brightBlue,
         borderWidth: 1,
         borderColor: palette.oceanSurf,
         fontSize: 16,

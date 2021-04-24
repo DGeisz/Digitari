@@ -24,7 +24,14 @@ import { Auth } from "aws-amplify";
 const Tab = createMaterialCollapsibleTopTabNavigator();
 
 const Profile: React.FC = () => {
-    const { openNew, openFollows } = useContext(TabNavContext);
+    const {
+        openNew,
+        openFollows,
+        openPost,
+        openCommunity,
+        openUser,
+        openNewMessage,
+    } = useContext(TabNavContext);
     const uid = localUid();
 
     const { data, networkStatus, error, refetch } = useQuery<
@@ -87,7 +94,14 @@ const Profile: React.FC = () => {
                             }}
                         >
                             {() => (
-                                <UserPosts routeKey={"UserPosts"} uid={uid} />
+                                <UserPosts
+                                    routeKey={"UserPosts"}
+                                    uid={uid}
+                                    openPost={openPost}
+                                    openUser={openUser}
+                                    openCommunity={openCommunity}
+                                    openNewMessage={openNewMessage}
+                                />
                             )}
                         </Tab.Screen>
                         <Tab.Screen

@@ -125,7 +125,7 @@ export const styles = StyleSheet.create({
         flexDirection: "row",
     },
     infoIconText: {
-        fontWeight: "600",
+        // fontWeight: "600",
         color: palette.lightGray,
         marginLeft: 2,
     },

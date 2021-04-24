@@ -16,6 +16,7 @@ export const palette = {
     mediumOceanSurf: "#31b09e",
     notDeepBlue: "#a1d9ed",
     deepBlue: "#32afdd",
+    brightBlue: "#edf9fc",
     beneathTheWaves: "#283f52",
 
     // Grays

@@ -10,12 +10,12 @@ export const styles = StyleSheet.create({
         borderBottomWidth: 1,
     },
     arrowText: {
-        color: palette.mediumOceanSurf,
+        color: palette.deepBlue,
         fontSize: 17,
     },
     targetText: {
         color: palette.hardGray,
-        fontWeight: "500",
+        fontWeight: "bold",
     },
     postAsChoiceContainer: {
         flexDirection: "row",
@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
     },
     postAsText: {
         color: palette.hardGray,
-        fontWeight: "500",
+        fontWeight: "bold",
         fontSize: 17,
     },
     postAsChoice: {

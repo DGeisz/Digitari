@@ -16,13 +16,8 @@ import {
     NewResponseMutationData,
     NewResponseMutationVariables,
 } from "./gql/Mutations";
-import {
-    CONVO_TYPENAME,
-    convoStatus,
-} from "../../../../global_types/ConvoTypes";
 import { NEW_RESPONSE_CONVO } from "./gql/Fragments";
 import { QUERY_TYPENAME } from "../../../../global_gql/Schema";
-import { UPDATE_CONVO_STATUS } from "../convo/gql/Fragments";
 import { USER_TYPENAME } from "../../../../global_types/UserTypes";
 
 interface Props {
@@ -114,16 +109,23 @@ const NewResponse: React.FC<Props> = (props) => {
                 <TouchableOpacity
                     style={[
                         styles.postAsChoice,
-                        anony ? {} : { backgroundColor: palette.oceanSurf },
+                        anony ? {} : { backgroundColor: palette.deepBlue },
                     ]}
                     onPress={() => setAnony(false)}
                 >
-                    <Text style={styles.postAsText}>{firstName}</Text>
+                    <Text
+                        style={[
+                            styles.postAsText,
+                            anony ? {} : { color: palette.white },
+                        ]}
+                    >
+                        {firstName}
+                    </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={[
                         styles.postAsChoice,
-                        anony ? { backgroundColor: palette.oceanSurf } : {},
+                        anony ? { backgroundColor: palette.deepBlue } : {},
                     ]}
                     onPress={() => {
                         setAnony(true);
@@ -132,7 +134,7 @@ const NewResponse: React.FC<Props> = (props) => {
                     <MaterialCommunityIcons
                         name="incognito"
                         size={17}
-                        color={palette.hardGray}
+                        color={anony ? palette.white : palette.hardGray}
                     />
                 </TouchableOpacity>
             </View>

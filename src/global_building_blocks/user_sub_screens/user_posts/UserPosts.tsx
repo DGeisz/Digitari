@@ -17,13 +17,13 @@ import { globalScreenStyles } from "../../../global_styles/GlobalScreenStyles";
 interface Props {
     routeKey: string;
     uid: string;
+    openPost: (pid: string) => void;
+    openNewMessage: (tname: string, pid: string, responseCost: number) => void;
+    openCommunity: (cmid: string) => void;
+    openUser: (uid: string) => void;
 }
 
 const UserPosts: React.FC<Props> = (props) => {
-    const { openPost, openCommunity, openUser, openNewMessage } = useContext(
-        TabNavContext
-    );
-
     const { data, error, networkStatus, refetch, fetchMore } = useQuery<
         GetUserPostsData,
         GetUserPostVariables
@@ -56,10 +56,10 @@ const UserPosts: React.FC<Props> = (props) => {
             data={finalFeed}
             renderItem={({ item }) => (
                 <Post
-                    openUser={openUser}
-                    openCommunity={openCommunity}
-                    openPost={openPost}
-                    onMessage={openNewMessage}
+                    openUser={props.openUser}
+                    openCommunity={props.openCommunity}
+                    openPost={props.openPost}
+                    onMessage={props.openNewMessage}
                     post={item}
                 />
             )}

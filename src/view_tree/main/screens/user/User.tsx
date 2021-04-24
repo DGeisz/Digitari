@@ -202,6 +202,30 @@ const User: React.FC<Props> = (props) => {
                             <UserPosts
                                 routeKey={"UserPosts"}
                                 uid={data?.user.id}
+                                openPost={(pid: string) =>
+                                    props.navigation.navigate("PostScreen", {
+                                        pid,
+                                    })
+                                }
+                                openCommunity={(cmid: string) =>
+                                    props.navigation.navigate("Community", {
+                                        cmid,
+                                    })
+                                }
+                                openNewMessage={(
+                                    tname: string,
+                                    pid: string,
+                                    responseCost: number
+                                ) =>
+                                    props.navigation.navigate("NewResponse", {
+                                        tname,
+                                        pid,
+                                        responseCost,
+                                    })
+                                }
+                                openUser={(uid: string) => {
+                                    props.navigation.navigate("User", { uid });
+                                }}
                             />
                         )}
                     </Tab.Screen>
