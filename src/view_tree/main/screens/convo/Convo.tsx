@@ -1,5 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import {
+    FlatList,
+    RefreshControl,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
 import { ConvoNavProp, ConvoRouteProp } from "../../MainEntryNavTypes";
 import { NetworkStatus, useMutation, useQuery } from "@apollo/client";
 import {
@@ -44,6 +50,9 @@ import {
     BLOCK_CONVO,
     BlockConvoData,
     BlockConvoVariables,
+    CREATE_MESSAGE,
+    CreateMessageData,
+    CreateMessageVariables,
     DISMISS_CONVO,
     DismissConvoData,
     DismissConvoVariables,
@@ -72,6 +81,8 @@ const Convo: React.FC<Props> = (props) => {
     const uid = localUid();
     const hid = localHid();
 
+    const { cvid } = props.route.params;
+
     const [error, setError] = useState<string>("");
 
     /*
@@ -95,7 +106,7 @@ const Convo: React.FC<Props> = (props) => {
         refetch: convoRefetch,
     } = useQuery<ConvoData, ConvoVariables>(CONVO, {
         variables: {
-            cvid: props.route.params.cvid,
+            cvid: cvid,
         },
     });
 
@@ -107,7 +118,7 @@ const Convo: React.FC<Props> = (props) => {
         fetchMore,
     } = useQuery<ConvoMessagesData, ConvoMessagesVariables>(CONVO_MESSAGES, {
         variables: {
-            cvid: props.route.params.cvid,
+            cvid: cvid,
         },
     });
 
@@ -119,12 +130,12 @@ const Convo: React.FC<Props> = (props) => {
         MarkConvoViewedVariables
     >(MARK_CONVO_VIEWED, {
         variables: {
-            cvid: props.route.params.cvid,
+            cvid: cvid,
         },
         update(cache) {
             cache.modify({
                 id: cache.identify({
-                    id: props.route.params.cvid,
+                    id: cvid,
                     __typename: CONVO_TYPENAME,
                 }),
                 fields: {
@@ -143,7 +154,7 @@ const Convo: React.FC<Props> = (props) => {
         DISMISS_CONVO,
         {
             variables: {
-                cvid: props.route.params.cvid,
+                cvid: cvid,
             },
             update(cache) {
                 /*
@@ -151,7 +162,7 @@ const Convo: React.FC<Props> = (props) => {
                  */
                 cache.modify({
                     id: cache.identify({
-                        id: props.route.params.cvid,
+                        id: cvid,
                         __typename: CONVO_TYPENAME,
                     }),
                     fields: {
@@ -172,8 +183,7 @@ const Convo: React.FC<Props> = (props) => {
                         newConvos(existing, { readField }) {
                             return existing.filter(
                                 (reqRef: any) =>
-                                    readField("id", reqRef) !==
-                                    props.route.params.cvid
+                                    readField("id", reqRef) !== cvid
                             );
                         },
                     },
@@ -186,7 +196,7 @@ const Convo: React.FC<Props> = (props) => {
         BLOCK_CONVO,
         {
             variables: {
-                cvid: props.route.params.cvid,
+                cvid: cvid,
             },
             update(cache) {
                 /*
@@ -194,7 +204,7 @@ const Convo: React.FC<Props> = (props) => {
                  */
                 cache.modify({
                     id: cache.identify({
-                        id: props.route.params.cvid,
+                        id: cvid,
                         __typename: CONVO_TYPENAME,
                     }),
                     fields: {
@@ -215,8 +225,7 @@ const Convo: React.FC<Props> = (props) => {
                         newConvos(existing, { readField }) {
                             return existing.filter(
                                 (reqRef: any) =>
-                                    readField("id", reqRef) !==
-                                    props.route.params.cvid
+                                    readField("id", reqRef) !== cvid
                             );
                         },
                     },
@@ -248,7 +257,7 @@ const Convo: React.FC<Props> = (props) => {
         ActivateConvoVariables
     >(ACTIVATE_CONVO, {
         variables: {
-            cvid: props.route.params.cvid,
+            cvid: cvid,
         },
         update(cache, { data, errors }) {
             if (!!errors && errors.length > 0) {
@@ -259,7 +268,7 @@ const Convo: React.FC<Props> = (props) => {
                  */
                 cache.modify({
                     id: cache.identify({
-                        id: props.route.params.cvid,
+                        id: cvid,
                         __typename: CONVO_TYPENAME,
                     }),
                     fields: {
@@ -280,8 +289,7 @@ const Convo: React.FC<Props> = (props) => {
                         newConvos(existing, { readField }) {
                             return existing.filter(
                                 (reqRef: any) =>
-                                    readField("id", reqRef) !==
-                                    props.route.params.cvid
+                                    readField("id", reqRef) !== cvid
                             );
                         },
                     },
@@ -309,6 +317,46 @@ const Convo: React.FC<Props> = (props) => {
                 /*
                  * TODO: On activate, add convo to active convos, and user's convos
                  */
+            }
+        },
+    });
+
+    const [createMessage] = useMutation<
+        CreateMessageData,
+        CreateMessageVariables
+    >(CREATE_MESSAGE, {
+        update(cache, { data }) {
+            if (!!data?.createMessage && !!messagesData?.convoMessages) {
+                cache.writeQuery<ConvoMessagesData, ConvoMessagesVariables>({
+                    query: CONVO_MESSAGES,
+                    variables: {
+                        cvid,
+                    },
+                    data: {
+                        convoMessages: [
+                            ...messagesData.convoMessages,
+                            data.createMessage,
+                        ],
+                    },
+                });
+
+                /*
+                 * Modify the convo
+                 */
+                cache.modify({
+                    id: cache.identify({
+                        __typename: CONVO_TYPENAME,
+                        id: cvid,
+                    }),
+                    fields: {
+                        lastMsg() {
+                            return data.createMessage.content;
+                        },
+                        lastTime() {
+                            return Date.now().toString();
+                        },
+                    },
+                });
             }
         },
     });
@@ -342,6 +390,12 @@ const Convo: React.FC<Props> = (props) => {
         !!messagesData?.convoMessages ? messagesData.convoMessages.length : 0,
     ]);
 
+    /*
+     * Structure ref
+     */
+    const scrollRef = useRef<FlatList>(null);
+    const [stillSpin, setStillSpin] = useState<boolean>(false);
+
     if (
         postLoading ||
         convoLoading ||
@@ -354,6 +408,8 @@ const Convo: React.FC<Props> = (props) => {
     ) {
         return <LoadingWheel />;
     }
+
+    // console.log(messagesData);
 
     if (!!postError) {
         return <ErrorMessage refresh={postRefetch} />;
@@ -372,7 +428,15 @@ const Convo: React.FC<Props> = (props) => {
      */
 
     const isActive = convoData.convo.status === ConvoStatus.Active;
-    const { status, targetMsgCount, tid, sid, sanony } = convoData.convo;
+    const {
+        status,
+        targetMsgCount,
+        tid,
+        tname,
+        sname,
+        sid,
+        sanony,
+    } = convoData.convo;
 
     const checkLeft = getCheckLeft(uid, tid);
 
@@ -384,7 +448,27 @@ const Convo: React.FC<Props> = (props) => {
 
     const convoContent = (
         <FlatList
-            style={basicLayouts.flexGrid1}
+            ref={scrollRef}
+            refreshControl={
+                <RefreshControl
+                    refreshing={
+                        networkStatus === NetworkStatus.refetch || stillSpin
+                    }
+                    onRefresh={() => {
+                        setStillSpin(true);
+                        !!messagesRefetch && messagesRefetch();
+                        setTimeout(() => {
+                            setStillSpin(false);
+                        }, 1000);
+                    }}
+                    colors={[
+                        palette.deepBlue,
+                        palette.darkForestGreen,
+                        palette.oceanSurf,
+                    ]}
+                    tintColor={palette.deepBlue}
+                />
+            }
             ListHeaderComponent={() => (
                 <View style={styles.convoContainer}>
                     <View style={styles.convoHeaderContainer}>
@@ -495,8 +579,18 @@ const Convo: React.FC<Props> = (props) => {
                     left={checkLeft(item.uid)}
                     msg={item}
                     showUser={true}
+                    onBlock={async () => {
+                        try {
+                            await blockConvo();
+                        } catch (e) {
+                            console.log("Block error: ", e);
+                        }
+                    }}
                 />
             )}
+            keyExtractor={(item, index) => {
+                return [item.id, index].join(":");
+            }}
             ListFooterComponent={() => {
                 switch (status) {
                     case ConvoStatus.Blocked:
@@ -527,6 +621,7 @@ const Convo: React.FC<Props> = (props) => {
                                 );
                             }
                         }
+
                         return <View />;
                     default:
                         return <View />;
@@ -541,9 +636,65 @@ const Convo: React.FC<Props> = (props) => {
     if (!participant) {
         return convoContent;
     } else if (status === ConvoStatus.Active) {
+        let mAnony: boolean;
+        let mUid: string;
+        let mTid: string;
+        let mUser: string;
+
+        if (uid === tid) {
+            /*
+             * In this case, this user is the target
+             */
+            mAnony = false;
+            mUid = tid;
+            mTid = sid;
+            mUser = tname;
+        } else {
+            /*
+             * In this case, this user is the source
+             */
+            mAnony = sanony;
+            mUid = sid;
+            mTid = tid;
+            mUser = sname;
+        }
+
         return (
-            <MessageInput onSend={() => {}} autoFocus>
-                {convoContent}
+            <MessageInput
+                onKeyboardShow={() => {
+                    setTimeout(() => {
+                        !!scrollRef.current && scrollRef.current.scrollToEnd();
+                    }, 50);
+
+                    setTimeout(() => {
+                        !!scrollRef.current && scrollRef.current.scrollToEnd();
+                    }, 500);
+                }}
+                onSend={async (message) => {
+                    try {
+                        await createMessage({
+                            variables: {
+                                cvid: cvid,
+                                message,
+                            },
+                            optimisticResponse: {
+                                createMessage: {
+                                    id: cvid,
+                                    anonymous: mAnony,
+                                    content: message,
+                                    time: Date.now().toString(),
+                                    uid: mUid,
+                                    tid: mTid,
+                                    user: mUser,
+                                },
+                            },
+                        });
+                    } catch (e) {
+                        console.log("Send error: ", e);
+                    }
+                }}
+            >
+                <View style={basicLayouts.flexGrid1}>{convoContent}</View>
             </MessageInput>
         );
     } else if (uid === tid && status === ConvoStatus.New) {

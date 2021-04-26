@@ -16,6 +16,7 @@ import { basicLayouts } from "../../global_styles/BasicLayouts";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { palette } from "../../global_styles/Palette";
+import { MESSAGE_MAX_LEN } from "../../global_types/MessageTypes";
 
 const { height } = Dimensions.get("window");
 const windowHeight = height;
@@ -73,10 +74,6 @@ const MessageInput: React.FC<Props> = ({
             setTimeout(() => {
                 textInputRef.current && textInputRef.current.focus();
             }, 500);
-
-            setTimeout(() => {
-                textInputRef.current && textInputRef.current.focus();
-            }, 1000);
         }
 
         let subscriptions: EmitterSubscription[] = [];
@@ -128,14 +125,18 @@ const MessageInput: React.FC<Props> = ({
                     }}
                 >
                     <View
-                        style={{
-                            position: "absolute",
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
+                        style={
+                            // {
+                            // position: "absolute",
+                            // left: 0,
+                            // right: 0,
+                            // bottom: 0,
+                            // top: 0,
                             // top: 20,
-                            height: childHeight,
-                        }}
+                            // height: childHeight,
+                            // }
+                            basicLayouts.flexGrid1
+                        }
                         pointerEvents="box-none"
                     >
                         {children}
@@ -150,7 +151,9 @@ const MessageInput: React.FC<Props> = ({
                             multiline={true}
                             scrollEnabled={true}
                             value={text}
-                            onChangeText={setText}
+                            onChangeText={(text) =>
+                                setText(text.substring(0, MESSAGE_MAX_LEN))
+                            }
                             autoFocus={autoFocus}
                         />
                         <TouchableOpacity

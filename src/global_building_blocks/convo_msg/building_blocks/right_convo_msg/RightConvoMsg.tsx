@@ -49,7 +49,9 @@ export default class RightConvoMsg extends React.PureComponent<Props> {
                                 <Text style={styles.msgDotText}>·</Text>
                             )}
                             <Text style={styles.msgTimeText}>
-                                {millisToRep(Date.now() - this.props.msg.time)}
+                                {millisToRep(
+                                    Date.now() - parseInt(this.props.msg.time)
+                                )}
                             </Text>
                         </View>
                     </View>

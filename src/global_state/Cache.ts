@@ -67,16 +67,8 @@ export const cache = new InMemoryCache({
                         existing,
                         incoming,
                         //@ts-ignore
-                        { args: { orderingType, offset } }
+                        { args: { offset } }
                     ) {
-                        console.log(
-                            "New convos: ",
-                            orderingType,
-                            offset,
-                            existing,
-                            incoming
-                        );
-
                         if (existing && incoming) {
                             if (!!offset) {
                                 return [...existing, ...incoming];
@@ -93,15 +85,39 @@ export const cache = new InMemoryCache({
                     },
                 },
                 activeConvos: {
-                    merge(existing, incoming) {
-                        try {
-                            if (incoming.length > existing.length) {
-                                return incoming;
+                    // @ts-ignore
+                    merge(existing, incoming, { args: { lastTime } }) {
+                        if (existing && incoming) {
+                            if (!!lastTime) {
+                                return [...existing, ...incoming];
                             } else {
-                                return existing;
+                                return incoming;
                             }
-                        } catch (e) {
+                        } else if (existing) {
+                            return existing;
+                        } else if (incoming) {
                             return incoming;
+                        } else {
+                            return [];
+                        }
+                    },
+                },
+                convoMessages: {
+                    keyArgs: ["cvid"],
+                    // @ts-ignore
+                    merge(existing, incoming, { args: { lastTime } }) {
+                        if (existing && incoming) {
+                            if (!!lastTime) {
+                                return [...existing, ...incoming];
+                            } else {
+                                return incoming;
+                            }
+                        } else if (existing) {
+                            return existing;
+                        } else if (incoming) {
+                            return incoming;
+                        } else {
+                            return [];
                         }
                     },
                 },
@@ -169,7 +185,7 @@ export const cache = new InMemoryCache({
                 },
             },
         },
-        ConvoMsg: {
+        Message: {
             keyFields: ["id", "time"],
         },
     },

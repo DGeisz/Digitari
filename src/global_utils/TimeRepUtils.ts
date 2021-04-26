@@ -16,8 +16,6 @@ export function millisToRep(millis: number): string {
         return Math.floor(millis / millisInDay) + "d";
     } else if (millis > millisInHour) {
         return Math.floor(millis / millisInHour) + "h";
-    } else if (millis > millisIn10Minutes) {
-        return Math.floor(millis / millisIn10Minutes) * 10 + "m";
     } else if (millis > millisInMinute) {
         return Math.floor(millis / millisInMinute) + "m";
     } else if (millis > millisIn10Seconds) {

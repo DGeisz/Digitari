@@ -14,7 +14,12 @@ import { basicLayouts } from "../../../../../../../../global_styles/BasicLayouts
 import ConvoCover from "../../../../../../../../global_building_blocks/convo_cover/ConvoCover";
 import { palette } from "../../../../../../../../global_styles/Palette";
 import { TabNavContext } from "../../../../TabNavContext";
-import { NEW_CONVOS, NewConvosData, NewConvosVariables } from "./gql/Queries";
+import {
+    NEW_CONVOS,
+    NEW_CONVOS_PER_PAGE,
+    NewConvosData,
+    NewConvosVariables,
+} from "./gql/Queries";
 import { ConvoOrder } from "../../../../../../../../global_types/ConvoTypes";
 import { globalScreenStyles } from "../../../../../../../../global_styles/GlobalScreenStyles";
 
@@ -25,24 +30,22 @@ const NewConvos: React.FC<Props> = () => {
 
     const { openConvo } = useContext(TabNavContext);
 
-    const {
-        data,
-        error,
-        networkStatus,
-        loading,
-        refetch,
-        fetchMore,
-    } = useQuery<NewConvosData, NewConvosVariables>(NEW_CONVOS, {
+    const { data, error, networkStatus, refetch, fetchMore } = useQuery<
+        NewConvosData,
+        NewConvosVariables
+    >(NEW_CONVOS, {
         variables: {
             orderingType: orderType,
         },
         notifyOnNetworkStatusChange: true,
     });
 
-    console.log(networkStatus, loading);
-
     const [stillSpin, setStillSpin] = useState<boolean>(false);
-    const [fetchMoreLen, setFetchMoreLen] = useState<number>(0);
+    /*
+     * The query*/
+    const [fetchMoreLen, setFetchMoreLen] = useState<number>(
+        NEW_CONVOS_PER_PAGE - 1
+    );
 
     useEffect(() => {
         setFetchMoreLen(0);

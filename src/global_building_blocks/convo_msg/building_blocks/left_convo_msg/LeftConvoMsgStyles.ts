@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
         borderBottomRightRadius: msgBorderRadius,
     },
     leftMainText: {
-        fontSize: 15,
+        fontSize: 16,
         color: palette.hardGray,
     },
     leftMainFooter: {

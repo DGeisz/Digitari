@@ -5,6 +5,7 @@ import { Entypo, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { palette } from "../../../../../../global_styles/Palette";
 import CancelConfirmModal from "../../../../../../global_building_blocks/cancel_confirm_modal/CancelConfirmModal";
 import { toCommaRep } from "../../../../../../global_utils/ValueRepUtils";
+import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
 
 interface Props {
     responseCost: number;
@@ -17,6 +18,7 @@ interface State {
     blockVisible: boolean;
     dismissVisible: boolean;
     messageVisible: boolean;
+    loading: boolean;
 }
 
 export default class ResponseResponse extends React.PureComponent<
@@ -27,6 +29,7 @@ export default class ResponseResponse extends React.PureComponent<
         blockVisible: false,
         dismissVisible: false,
         messageVisible: false,
+        loading: false,
     };
 
     render() {
@@ -37,7 +40,7 @@ export default class ResponseResponse extends React.PureComponent<
                     body="Block convo?"
                     title="Block"
                     onConfirm={() => {
-                        this.setState({ blockVisible: false });
+                        this.setState({ blockVisible: false, loading: true });
                         this.props.onBlock();
                     }}
                     confirmBackgroundColor={palette.warningLight}
@@ -50,7 +53,7 @@ export default class ResponseResponse extends React.PureComponent<
                     body="Dismiss convo?"
                     title="Dismiss"
                     onConfirm={() => {
-                        this.setState({ dismissVisible: false });
+                        this.setState({ dismissVisible: false, loading: true });
                         this.props.onDismiss();
                     }}
                     confirmMessage="Dismiss"
@@ -65,7 +68,7 @@ export default class ResponseResponse extends React.PureComponent<
                     confirmBackgroundColor={palette.oceanSurf}
                     confirmTextColor={palette.deepBlue}
                     onConfirm={() => {
-                        this.setState({ messageVisible: false });
+                        this.setState({ messageVisible: false, loading: true });
                         setTimeout(() => {
                             this.props.onRespond();
                         }, 200);
@@ -73,51 +76,61 @@ export default class ResponseResponse extends React.PureComponent<
                     confirmMessage="Respond"
                     onCancel={() => this.setState({ messageVisible: false })}
                 />
-                <View style={styles.rRLeft}>
-                    <View style={styles.rRLeftLeft}>
-                        <TouchableOpacity
-                            style={styles.dismissButton}
-                            onPress={() =>
-                                this.setState({ dismissVisible: true })
-                            }
-                        >
-                            <Entypo
-                                name="cross"
-                                size={20}
-                                color={palette.mediumGray}
-                            />
-                            <Text style={styles.dismissText}>Dismiss</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.rRLeftRight}>
-                        <TouchableOpacity
-                            style={styles.blockButton}
-                            onPress={() =>
-                                this.setState({ blockVisible: true })
-                            }
-                        >
-                            <MaterialCommunityIcons
-                                name="hand-left"
-                                color={palette.warning}
-                                size={20}
-                            />
-                            <Text style={styles.blockText}>Block</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                <View style={styles.rRRight}>
-                    <TouchableOpacity
-                        style={styles.respondButton}
-                        onPress={() => this.setState({ messageVisible: true })}
-                    >
-                        <Ionicons
-                            name="chatbubble"
-                            size={20}
-                            color={palette.deepBlue}
-                        />
-                        <Text style={styles.respondText}>Respond</Text>
-                    </TouchableOpacity>
-                </View>
+                {this.state.loading ? (
+                    <LoadingWheel />
+                ) : (
+                    <>
+                        <View style={styles.rRLeft}>
+                            <View style={styles.rRLeftLeft}>
+                                <TouchableOpacity
+                                    style={styles.dismissButton}
+                                    onPress={() =>
+                                        this.setState({ dismissVisible: true })
+                                    }
+                                >
+                                    <Entypo
+                                        name="cross"
+                                        size={20}
+                                        color={palette.mediumGray}
+                                    />
+                                    <Text style={styles.dismissText}>
+                                        Dismiss
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={styles.rRLeftRight}>
+                                <TouchableOpacity
+                                    style={styles.blockButton}
+                                    onPress={() =>
+                                        this.setState({ blockVisible: true })
+                                    }
+                                >
+                                    <MaterialCommunityIcons
+                                        name="hand-left"
+                                        color={palette.warning}
+                                        size={20}
+                                    />
+                                    <Text style={styles.blockText}>Block</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        <View style={styles.rRRight}>
+                            <TouchableOpacity
+                                style={styles.respondButton}
+                                onPress={() =>
+                                    this.setState({ messageVisible: true })
+                                }
+                            >
+                                <Ionicons
+                                    name="chatbubble"
+                                    size={20}
+                                    color={palette.deepBlue}
+                                />
+                                <Text style={styles.respondText}>Respond</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </>
+                )}
             </View>
         );
     }

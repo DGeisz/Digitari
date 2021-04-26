@@ -1,5 +1,6 @@
 import { gql } from "@apollo/client";
 import { ConvoType } from "../../../../../global_types/ConvoTypes";
+import { MessageType } from "../../../../../global_types/MessageTypes";
 
 export const MARK_CONVO_VIEWED = gql`
     mutation MarkConvoViewed($cvid: ID!) {
@@ -163,4 +164,27 @@ export interface ActivateConvoData {
 
 export interface ActivateConvoVariables {
     cvid: string;
+}
+
+export const CREATE_MESSAGE = gql`
+    mutation CreateMessage($cvid: ID!, $message: String!) {
+        createMessage(cvid: $cvid, message: $message) {
+            id
+            uid
+            tid
+            user
+            time
+            anonymous
+            content
+        }
+    }
+`;
+
+export interface CreateMessageData {
+    createMessage: MessageType;
+}
+
+export interface CreateMessageVariables {
+    cvid: string;
+    message: string;
 }

@@ -114,7 +114,7 @@ export const schema = gql`
         uid: ID
         tid: ID
         user: String
-        time: Int
+        time: String
         anonymous: Boolean
         content: String
     }
@@ -229,7 +229,7 @@ export const schema = gql`
         userPosts(uid: ID!, lastTime: String): [Post]
         userConvos(uid: ID!, lastTime: String): [Convo]
         newConvos(orderingType: Int, offset: Int): [Convo]
-        activeConvos(uid: ID!, lastTime: String): [Convo]
+        activeConvos(lastTime: String): [Convo]
         challenges: [Challenge]
         post(pid: ID!): Post
         convo(cvid: ID!): Convo
@@ -259,6 +259,9 @@ export const schema = gql`
         blockConvo(cvid: ID!): Convo
         activateConvo(cvid: ID!): Convo
         finishConvo(cvid: ID!): Convo
+
+        createMessage(cvid: ID!, message: String!): Message
+
         createCommunity(name: String, description: String): Community
         indexUser(id: ID, firstName: String, lastName: String): SearchEntity
         followUser(tid: ID!): FollowEntity

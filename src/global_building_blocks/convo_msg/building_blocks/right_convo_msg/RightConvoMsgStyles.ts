@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
         ...basicLayouts.flexGrid1,
     },
     rightMsgMain: {
-        maxWidth: (4 * width) / 5,
+        maxWidth: 280,
         paddingRight: 5,
     },
     msgBodyContainer: {
@@ -30,7 +30,7 @@ export const styles = StyleSheet.create({
         borderBottomLeftRadius: msgBorderRadius,
     },
     msgBodyText: {
-        fontSize: 15,
+        fontSize: 16,
         color: palette.white,
     },
     rightMsgFooter: {

@@ -23,6 +23,7 @@ export const styles = StyleSheet.create({
         fontSize: 16,
         marginRight: 10,
         maxHeight: 120,
+        color: palette.hardGray,
     },
     disabledInput: {
         flex: 1,

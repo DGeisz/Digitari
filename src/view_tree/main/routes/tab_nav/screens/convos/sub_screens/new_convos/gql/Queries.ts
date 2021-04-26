@@ -4,6 +4,8 @@ import {
     ConvoType,
 } from "../../../../../../../../../global_types/ConvoTypes";
 
+export const NEW_CONVOS_PER_PAGE = 50;
+
 export const NEW_CONVOS = gql`
     query NewConvos($orderingType: Int, $offset: Int) {
         newConvos(orderingType: $orderingType, offset: $offset) {
