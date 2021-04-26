@@ -38,6 +38,9 @@ import {
 } from "./building_blocks/status_footers/StatusFooters";
 import MessageInput from "../../../../global_building_blocks/message_input/MessageInput";
 import {
+    ACTIVATE_CONVO,
+    ActivateConvoData,
+    ActivateConvoVariables,
     BLOCK_CONVO,
     BlockConvoData,
     BlockConvoVariables,
@@ -50,6 +53,7 @@ import {
 } from "./gql/Mutations";
 import { QUERY_TYPENAME } from "../../../../global_gql/Schema";
 import { USER_TYPENAME } from "../../../../global_types/UserTypes";
+import { basicLayouts } from "../../../../global_styles/BasicLayouts";
 
 function getCheckLeft(uid: string, tid: string): (id: string) => boolean {
     if (uid === tid) {
@@ -67,6 +71,8 @@ interface Props {
 const Convo: React.FC<Props> = (props) => {
     const uid = localUid();
     const hid = localHid();
+
+    const [error, setError] = useState<string>("");
 
     /*
      * Queries
@@ -116,8 +122,6 @@ const Convo: React.FC<Props> = (props) => {
             cvid: props.route.params.cvid,
         },
         update(cache) {
-            console.log("Marked convo as viewed!");
-
             cache.modify({
                 id: cache.identify({
                     id: props.route.params.cvid,
@@ -239,6 +243,76 @@ const Convo: React.FC<Props> = (props) => {
         }
     );
 
+    const [activateConvo] = useMutation<
+        ActivateConvoData,
+        ActivateConvoVariables
+    >(ACTIVATE_CONVO, {
+        variables: {
+            cvid: props.route.params.cvid,
+        },
+        update(cache, { data, errors }) {
+            if (!!errors && errors.length > 0) {
+                setError("You don't have enough coin to respond.");
+            } else if (!!data?.activateConvo) {
+                /*
+                 * Change the convo status
+                 */
+                cache.modify({
+                    id: cache.identify({
+                        id: props.route.params.cvid,
+                        __typename: CONVO_TYPENAME,
+                    }),
+                    fields: {
+                        status() {
+                            return ConvoStatus.Active;
+                        },
+                    },
+                });
+
+                /*
+                 * Remove convo from new convos
+                 */
+                cache.modify({
+                    id: cache.identify({
+                        __typename: QUERY_TYPENAME,
+                    }),
+                    fields: {
+                        newConvos(existing, { readField }) {
+                            return existing.filter(
+                                (reqRef: any) =>
+                                    readField("id", reqRef) !==
+                                    props.route.params.cvid
+                            );
+                        },
+                    },
+                });
+
+                /*
+                 * Update user's coin
+                 */
+                cache.modify({
+                    id: cache.identify({
+                        __typename: USER_TYPENAME,
+                        id: uid,
+                    }),
+                    fields: {
+                        coin(existing) {
+                            if (!!postData?.post) {
+                                return existing - postData.post.convoReward;
+                            } else {
+                                return existing;
+                            }
+                        },
+                    },
+                });
+
+                /*
+                 * TODO: On activate, add convo to active convos, and user's convos
+                 */
+            }
+        },
+    });
+
     let participant = false;
 
     if (!!convoData?.convo) {
@@ -308,10 +382,9 @@ const Convo: React.FC<Props> = (props) => {
      * Make the footer
      */
 
-    console.log("Convo time", convoData.convo);
-
     const convoContent = (
         <FlatList
+            style={basicLayouts.flexGrid1}
             ListHeaderComponent={() => (
                 <View style={styles.convoContainer}>
                     <View style={styles.convoHeaderContainer}>
@@ -400,6 +473,13 @@ const Convo: React.FC<Props> = (props) => {
                                     />
                                 </View>
                             </View>
+                            {!!error && (
+                                <View style={styles.errorContainer}>
+                                    <Text style={styles.errorText}>
+                                        {error}
+                                    </Text>
+                                </View>
+                            )}
                         </View>
                     </View>
                 </View>
@@ -461,9 +541,12 @@ const Convo: React.FC<Props> = (props) => {
     if (!participant) {
         return convoContent;
     } else if (status === ConvoStatus.Active) {
-        return <MessageInput onSend={() => {}}>{convoContent}</MessageInput>;
+        return (
+            <MessageInput onSend={() => {}} autoFocus>
+                {convoContent}
+            </MessageInput>
+        );
     } else if (uid === tid && status === ConvoStatus.New) {
-        console.log("We should be here?");
         return (
             <>
                 {convoContent}
@@ -483,7 +566,13 @@ const Convo: React.FC<Props> = (props) => {
                             console.log("Dismiss error: ", e);
                         }
                     }}
-                    onRespond={() => {}}
+                    onRespond={async () => {
+                        try {
+                            await activateConvo();
+                        } catch (e) {
+                            console.log("Activation error: ", e);
+                        }
+                    }}
                 />
             </>
         );
@@ -493,567 +582,3 @@ const Convo: React.FC<Props> = (props) => {
 };
 
 export default Convo;
-
-// const uid = localUid();
-// const suid = localSuid();
-// const firstName = localFirstName();
-// const cid = props.route.params.cid;
-//
-// // Query
-// const { data, error, networkStatus, refetch } = useQuery<
-//     QueryData,
-//     QueryVariables
-// >(GET_CONVO, {
-//     variables: { cid: cid },
-//     notifyOnNetworkStatusChange: true,
-// });
-//
-// // Mutations
-// const [dismissConvo] = useMutation<
-//     DismissMutationData,
-//     DismissMutationVariables
-// >(DISMISS_CONVO, {
-//     variables: { cid: cid },
-//     optimisticResponse: {
-//         dismissConvo: {
-//             id: cid,
-//             __typename: CONVO_TYPENAME,
-//         },
-//     },
-//     update(cache) {
-//         // Remove convo from new convos query
-//         cache.modify({
-//             id: cache.identify({
-//                 __typename: QUERY_TYPENAME,
-//             }),
-//             fields: {
-//                 newConvos(existing, { readField }) {
-//                     return existing.filter(
-//                         (reqRef: any) => readField("id", reqRef) !== cid
-//                     );
-//                 },
-//             },
-//         });
-//     },
-// });
-//
-// const [blockConvo] = useMutation<
-//     BlockInitialMutationData,
-//     BlockInitialMutationVariables
-// >(BLOCK_INITIAL_CONVO, {
-//     variables: { cid: cid },
-//     optimisticResponse: {
-//         blockInitialConvo: {
-//             id: cid,
-//             __typename: CONVO_TYPENAME,
-//         },
-//     },
-//     update(cache) {
-//         // Remove convo from new convos query
-//         cache.modify({
-//             id: cache.identify({
-//                 __typename: QUERY_TYPENAME,
-//             }),
-//             fields: {
-//                 newConvos(existing, { readField }) {
-//                     return existing.filter(
-//                         (reqRef: any) => readField("id", reqRef) !== cid
-//                     );
-//                 },
-//             },
-//         });
-//
-//         cache.writeFragment({
-//             id: cache.identify({
-//                 __typename: CONVO_TYPENAME,
-//                 id: cid,
-//             }),
-//             data: {
-//                 status: convoStatus.blocked,
-//             },
-//             fragment: BLOCK_CONVO,
-//         });
-//
-//         // Increase user blocked count
-//         cache.modify({
-//             id: cache.identify({
-//                 __typename: USER_TYPENAME,
-//                 id: uid,
-//             }),
-//             fields: {
-//                 blocked(existing) {
-//                     return existing + 1;
-//                 },
-//                 ranking(existing) {
-//                     return existing - 1;
-//                 },
-//             },
-//         });
-//     },
-// });
-//
-// const [activateConvo] = useMutation<
-//     ActivateConvoMutationData,
-//     ActivateConvoMutationVariables
-// >(ACTIVATE_CONVO, {
-//     variables: { cid: cid },
-//     optimisticResponse: {
-//         activateConvo: {
-//             id: cid,
-//             __typename: CONVO_TYPENAME,
-//         },
-//     },
-//     update(cache) {
-//
-//         // Remove convo from new convos and add to active convos
-//         cache.modify({
-//             id: cache.identify({
-//                 __typename: QUERY_TYPENAME,
-//             }),
-//             fields: {
-//                 newConvos(existing, { readField }) {
-//                     return existing.filter(
-//                         (reqRef: any) => readField("id", reqRef) !== cid
-//                     );
-//                 },
-//                 activeConvos(existing) {
-//                     // Update the convo status as well
-//                     const updatedConvoRef = cache.writeFragment({
-//                         id: cache.identify({
-//                             __typename: CONVO_TYPENAME,
-//                             id: cid,
-//                         }),
-//                         data: {
-//                             status: convoStatus.active,
-//                         },
-//                         fragment: UPDATE_CONVO_STATUS,
-//                     });
-//
-//                     return [updatedConvoRef, ...existing];
-//                 },
-//             },
-//         });
-//
-//         cache.modify({
-//             id: cache.identify({
-//                 __typename: USER_TYPENAME,
-//                 id: uid,
-//             }),
-//             fields: {
-//                 coin(existing) {
-//                     if (!!data?.convo) {
-//                         return Math.max(
-//                             existing - data.convo.post.convoReward,
-//                             0
-//                         );
-//                     } else {
-//                         return existing;
-//                     }
-//                 },
-//             },
-//         });
-//     },
-// });
-//
-// const [blockMessage] = useMutation<
-//     BlockMessageMutationData,
-//     BlockMessageMutationVariables
-// >(BLOCK_MESSAGE, {
-//     variables: { cid: cid },
-//     optimisticResponse: {
-//         blockMessage: {
-//             id: cid,
-//             __typename: CONVO_TYPENAME,
-//         },
-//     },
-//     update(cache) {
-//         cache.writeFragment({
-//             id: cache.identify({
-//                 __typename: CONVO_TYPENAME,
-//                 id: cid,
-//             }),
-//             data: {
-//                 status: convoStatus.blocked,
-//             },
-//             fragment: BLOCK_CONVO,
-//         });
-//
-//         // Increase user blocked count
-//         cache.modify({
-//             id: cache.identify({
-//                 __typename: USER_TYPENAME,
-//                 id: uid,
-//             }),
-//             fields: {
-//                 blocked(existing) {
-//                     console.log("Blocked: ", existing);
-//                     return existing + 1;
-//                 },
-//                 ranking(existing) {
-//                     console.log("Ranking: ", existing);
-//                     return existing - 1;
-//                 },
-//             },
-//         });
-//     },
-// });
-//
-// const [finishConvo] = useMutation<
-//     FinishConvoMutationData,
-//     FinishConvoMutationVariables
-// >(FINISH_CONVO, {
-//     variables: { cid: cid },
-//     optimisticResponse: {
-//         finishConvo: {
-//             id: cid,
-//             __typename: CONVO_TYPENAME,
-//         },
-//     },
-//     update(cache) {
-//         cache.writeFragment({
-//             id: cache.identify({
-//                 __typename: CONVO_TYPENAME,
-//                 id: cid,
-//             }),
-//             data: {
-//                 status: convoStatus.finished,
-//             },
-//             fragment: BLOCK_CONVO,
-//         });
-//
-//         // Increase user successful Convo count
-//         cache.modify({
-//             id: cache.identify({
-//                 __typename: USER_TYPENAME,
-//                 id: uid,
-//             }),
-//             fields: {
-//                 successfulConvos(existing) {
-//                     return existing + 1;
-//                 },
-//                 ranking(existing) {
-//                     return existing + 1;
-//                 },
-//             },
-//         });
-//
-//         // Increase target's coin by the amount of the reward
-//         cache.modify({
-//             id: cache.identify({
-//                 __typename: USER_TYPENAME,
-//                 id: uid,
-//             }),
-//             fields: {
-//                 coin(existing) {
-//                     if (!!data?.convo && data.convo.cover.tid === uid) {
-//                         return existing + data.convo.post.convoReward;
-//                     } else {
-//                         return existing;
-//                     }
-//                 },
-//             },
-//         });
-//     },
-// });
-//
-// // Send message
-// const [sendMsgBase] = useMutation<
-//     SendMessageMutationData,
-//     SendMessageMutationVariables
-// >(SEND_MESSAGE, {
-//     update(cache, { data }) {
-//         console.log("ang", data);
-//
-//         cache.modify({
-//             id: cache.identify({
-//                 __typename: CONVO_TYPENAME,
-//                 id: cid,
-//             }),
-//             fields: {
-//                 messages(existing) {
-//                     const newMsgRef = cache.writeFragment({
-//                         data: data?.sendMessage,
-//                         fragment: MESSAGE_SENT,
-//                     });
-//
-//                     return [newMsgRef, ...existing];
-//                 },
-//             },
-//         });
-//     },
-// });
-//
-// async function sendMessage(msg: string) {
-//     if (!!data?.convo) {
-//         const { tid, sanony } = data.convo.cover;
-//         const anony = uid === tid ? false : sanony;
-//         const muid = anony ? suid : uid;
-//
-//         await sendMsgBase({
-//             variables: {
-//                 cid,
-//                 uid: muid,
-//                 user: firstName,
-//                 anonymous: anony,
-//                 content: msg,
-//             },
-//             optimisticResponse: {
-//                 sendMessage: {
-//                     id: cid,
-//                     uid: muid,
-//                     user: firstName,
-//                     time: Date.now(),
-//                     anonymous: anony,
-//                     content: msg,
-//                 },
-//             },
-//         });
-//     }
-// }
-//
-// // Set title of page
-// useEffect(() => {
-//     if (!!data?.convo) {
-//         const { sid, tid, sanony, sname, tname } = data.convo.cover;
-//
-//         if (uid === tid || uid === sid || suid === suid) {
-//             if (uid === tid && !sanony) {
-//                 props.navigation.setOptions({ title: sname });
-//             } else if (uid !== tid) {
-//                 props.navigation.setOptions({ title: tname });
-//             }
-//         }
-//     }
-// }, [data]);
-//
-// const [autoFocus, setAutoFocus] = useState<boolean>(false);
-// const listRef: React.RefObject<FlatList> = useRef<FlatList>(null);
-//
-// if (!data?.convo && networkStatus === NetworkStatus.loading) {
-//     return <LoadingWheel />;
-// }
-//
-// if (error) {
-//     console.log(error);
-//     return <ErrorMessage refresh={refetch} />;
-// }
-//
-// if (!!data?.convo) {
-//     const { sid, tid } = data.convo.cover;
-//
-//     // Check if user is a conversation participant
-//     if (uid === tid || uid === sid || suid === suid) {
-//         let status = data.convo.status;
-//         const checkLeft = getCheckLeft(uid, tid);
-//
-//         if (status === convoStatus.new) {
-//             if (uid === tid) {
-//                 return (
-//                     <>
-//                         <View style={basicLayouts.flexGrid1}>
-//                             <FlatList
-//                                 ref={listRef}
-//                                 ListHeaderComponent={
-//                                     <StrippedPost post={data.convo.post} />
-//                                 }
-//                                 data={data.convo.messages}
-//                                 renderItem={({ item }) => (
-//                                     <ConvoMsg
-//                                         msg={item}
-//                                         left={checkLeft(item.uid)}
-//                                         showUser={true}
-//                                         showBlockMsg={false}
-//                                     />
-//                                 )}
-//                                 keyExtractor={(item, index) =>
-//                                     [item.id, index].join(":")
-//                                 }
-//                             />
-//                         </View>
-//                         <ResponseResponse
-//                             respondModalMessage={`Respond to message and place ${data.convo.post.convoReward} digicoin in escrow?`}
-//                             onBlock={async () => {
-//                                 try {
-//                                     await blockConvo();
-//                                 } catch (e) {
-//                                     console.log(e);
-//                                 } finally {
-//                                     props.navigation.pop();
-//                                 }
-//                             }}
-//                             onDismiss={async () => {
-//                                 try {
-//                                     await dismissConvo();
-//                                 } catch (e) {
-//                                     console.log(e);
-//                                 } finally {
-//                                     props.navigation.pop();
-//                                 }
-//                             }}
-//                             onMessage={async () => {
-//                                 try {
-//                                     setAutoFocus(true);
-//                                     await activateConvo();
-//                                 } catch (e) {
-//                                     console.log(e);
-//                                 }
-//                             }}
-//                         />
-//                     </>
-//                 );
-//             } else {
-//                 return (
-//                     <View style={basicLayouts.flexGrid1}>
-//                         <FlatList
-//                             ref={listRef}
-//                             ListHeaderComponent={
-//                                 <StrippedPost post={data.convo.post} />
-//                             }
-//                             data={data.convo.messages}
-//                             renderItem={({ item }) => (
-//                                 <ConvoMsg
-//                                     msg={item}
-//                                     left={checkLeft(item.uid)}
-//                                     showUser={true}
-//                                     showBlockMsg={false}
-//                                 />
-//                             )}
-//                             keyExtractor={(item, index) =>
-//                                 [item.id, index].join(":")
-//                             }
-//                         />
-//                     </View>
-//                 );
-//             }
-//         } else if (status < 0) {
-//             let footer;
-//
-//             switch (status) {
-//                 case convoStatus.dismissed:
-//                     footer = <DismissedFooter />;
-//                     break;
-//                 case convoStatus.blocked:
-//                     footer = <BlockedFooter />;
-//                     break;
-//                 case convoStatus.finished:
-//                     footer = <SuccessFooter />;
-//                     break;
-//             }
-//
-//             return (
-//                 <View style={basicLayouts.flexGrid1}>
-//                     <FlatList
-//                         ref={listRef}
-//                         ListHeaderComponent={
-//                             <StrippedPost post={data.convo.post} />
-//                         }
-//                         ListFooterComponent={footer}
-//                         data={data.convo.messages}
-//                         renderItem={({ item }) => (
-//                             <ConvoMsg
-//                                 msg={item}
-//                                 left={checkLeft(item.uid)}
-//                                 showUser={true}
-//                                 showBlockMsg={false}
-//                             />
-//                         )}
-//                         keyExtractor={(item, index) =>
-//                             [item.id, index].join(":")
-//                         }
-//                     />
-//                 </View>
-//             );
-//         } else {
-//             const footer =
-//                 status === convoStatus.pendingCompletion ? (
-//                     <PendingFinishFooter
-//                         onFinish={finishConvo}
-//                         finishMessage={
-//                             uid === tid
-//                                 ? "Finish convo and collect reward?"
-//                                 : "Finish convo?"
-//                         }
-//                     />
-//                 ) : null;
-//
-//             return (
-//                 <MessageInput
-//                     onSend={sendMessage}
-//                     onKeyboardShow={() => {
-//                         listRef.current?.scrollToEnd();
-//                     }}
-//                     autoFocus={autoFocus}
-//                 >
-//                     <>
-//                         <View style={basicLayouts.flexGrid1}>
-//                             <FlatList
-//                                 ref={listRef}
-//                                 ListFooterComponent={footer}
-//                                 ListHeaderComponent={
-//                                     <StrippedPost
-//                                         showEscrow
-//                                         post={exampleStrippedPost}
-//                                     />
-//                                 }
-//                                 data={data.convo.messages}
-//                                 renderItem={({ item, index }) => (
-//                                     <ConvoMsg
-//                                         msg={item}
-//                                         left={checkLeft(item.uid)}
-//                                         showUser={true}
-//                                         showBlockMsg={
-//                                             index ===
-//                                             data.convo.messages.length - 1
-//                                         }
-//                                         onBlock={async () => {
-//                                             try {
-//                                                 setAutoFocus(false);
-//                                                 await blockMessage();
-//                                             } catch (e) {
-//                                                 console.log(e);
-//                                             }
-//                                         }}
-//                                         blockMessage={
-//                                             "Block message and drop digicoin in escrow?"
-//                                         }
-//                                     />
-//                                 )}
-//                                 keyExtractor={(item, index) =>
-//                                     [item.id, index].join(":")
-//                                 }
-//                             />
-//                         </View>
-//                     </>
-//                 </MessageInput>
-//             );
-//         }
-//     } else {
-//         return (
-//             <View style={basicLayouts.flexGrid1}>
-//                 <FlatList
-//                     ref={listRef}
-//                     ListHeaderComponent={
-//                         <StrippedPost
-//                             showEscrow
-//                             post={exampleStrippedPost}
-//                         />
-//                     }
-//                     data={data.convo.messages}
-//                     renderItem={({ item }) => (
-//                         <ConvoMsg
-//                             msg={item}
-//                             left={item.uid === tid}
-//                             showUser={true}
-//                             showBlockMsg={false}
-//                         />
-//                     )}
-//                     keyExtractor={(item, index) =>
-//                         [item.id, index].join(":")
-//                     }
-//                 />
-//             </View>
-//         );
-//     }
-// } else {
-//     return <View />;
-// }

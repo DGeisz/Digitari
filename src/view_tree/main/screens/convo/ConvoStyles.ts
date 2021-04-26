@@ -43,4 +43,11 @@ export const styles = StyleSheet.create({
     coinBoxContainer: {
         ...basicLayouts.grid4,
     },
+    errorContainer: {
+        marginTop: 20,
+    },
+    errorText: {
+        fontWeight: "bold",
+        color: palette.danger,
+    },
 });
