@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import { ConvoNavProp, ConvoRouteProp } from "../../MainEntryNavTypes";
-import { NetworkStatus, useQuery } from "@apollo/client";
+import { NetworkStatus, useMutation, useQuery } from "@apollo/client";
 import {
     CONVO,
     CONVO_MESSAGES,
@@ -26,6 +26,7 @@ import ConvoMsg from "../../../../global_building_blocks/convo_msg/ConvoMsg";
 import ResponseResponse from "./building_blocks/response_response/ResponseResponse";
 import { localHid, localUid } from "../../../../global_state/UserState";
 import {
+    CONVO_TYPENAME,
     ConvoStatus,
     TARGET_MESSAGE_COUNT_THRESHOLD,
 } from "../../../../global_types/ConvoTypes";
@@ -36,6 +37,15 @@ import {
     SuccessFooter,
 } from "./building_blocks/status_footers/StatusFooters";
 import MessageInput from "../../../../global_building_blocks/message_input/MessageInput";
+import {
+    DISMISS_CONVO,
+    DismissConvoData,
+    DismissConvoVariables,
+    MARK_CONVO_VIEWED,
+    MarkConvoViewedData,
+    MarkConvoViewedVariables,
+} from "./gql/Mutations";
+import { QUERY_TYPENAME } from "../../../../global_gql/Schema";
 
 function getCheckLeft(uid: string, tid: string): (id: string) => boolean {
     if (uid === tid) {
@@ -54,6 +64,9 @@ const Convo: React.FC<Props> = (props) => {
     const uid = localUid();
     const hid = localHid();
 
+    /*
+     * Queries
+     */
     const {
         data: postData,
         loading: postLoading,
@@ -88,6 +101,97 @@ const Convo: React.FC<Props> = (props) => {
         },
     });
 
+    /*
+     * Mutations
+     */
+    const [markConvoViewed] = useMutation<
+        MarkConvoViewedData,
+        MarkConvoViewedVariables
+    >(MARK_CONVO_VIEWED, {
+        variables: {
+            cvid: props.route.params.cvid,
+        },
+        update(cache) {
+            console.log("Marked convo as viewed!");
+
+            cache.modify({
+                id: cache.identify({
+                    id: props.route.params.cvid,
+                    __typename: CONVO_TYPENAME,
+                }),
+                fields: {
+                    tviewed() {
+                        return true;
+                    },
+                    sviewed() {
+                        return true;
+                    },
+                },
+            });
+        },
+    });
+
+    const [dismissConvo] = useMutation<DismissConvoData, DismissConvoVariables>(
+        DISMISS_CONVO,
+        {
+            update(cache, { data }) {
+                /*
+                 * Change the convo status
+                 */
+                cache.modify({
+                    id: cache.identify({
+                        id: props.route.params.cvid,
+                        __typename: CONVO_TYPENAME,
+                    }),
+                    fields: {
+                        status() {
+                            return ConvoStatus.Dismissed;
+                        },
+                    },
+                });
+
+                /*
+                 * Remove convo from new convos
+                 */
+                cache.modify({
+                    id: cache.identify({
+                        __typename: QUERY_TYPENAME,
+                    }),
+                    fields: {
+                        newConvos(existing, { readField }) {
+                            return existing.filter(
+                                (reqRef: any) =>
+                                    readField("id", reqRef) !==
+                                    props.route.params.cvid
+                            );
+                        },
+                    },
+                });
+            },
+        }
+    );
+
+    let participant = false;
+
+    if (!!convoData?.convo) {
+        participant =
+            convoData.convo.sid === uid ||
+            convoData.convo.sid === hid ||
+            convoData.convo.tid === uid;
+    }
+
+    /*
+     * Handle marking the convo as viewed
+     */
+    useEffect(() => {
+        if (participant) {
+            markConvoViewed().then();
+        }
+    }, [
+        !!convoData?.convo,
+        !!messagesData?.convoMessages ? messagesData.convoMessages.length : 0,
+    ]);
+
     if (
         postLoading ||
         convoLoading ||
@@ -116,13 +220,9 @@ const Convo: React.FC<Props> = (props) => {
     /*
      * Get fields necessary to render the conversation
      */
-    const participant =
-        convoData.convo.sid === uid ||
-        convoData.convo.sid === hid ||
-        convoData.convo.tid === uid;
 
     const isActive = convoData.convo.status === ConvoStatus.Active;
-    const { status, targetMsgCount, tid } = convoData.convo;
+    const { status, targetMsgCount, tid, sid, sanony } = convoData.convo;
 
     const checkLeft = getCheckLeft(uid, tid);
 
@@ -169,19 +269,39 @@ const Convo: React.FC<Props> = (props) => {
                                     ranking={convoData.convo.sranking}
                                     size={14}
                                 />
-                                <UserLabel
-                                    name={convoData.convo.sname}
-                                    anonymous={convoData.convo.sanony}
-                                />
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        if (!sanony) {
+                                            props.navigation.navigate("User", {
+                                                uid: sid,
+                                            });
+                                        }
+                                    }}
+                                    activeOpacity={sanony ? 1 : 0.5}
+                                >
+                                    <UserLabel
+                                        name={convoData.convo.sname}
+                                        anonymous={convoData.convo.sanony}
+                                    />
+                                </TouchableOpacity>
                                 <Text style={styles.arrowText}>{"  ➤  "}</Text>
                                 <Tier
                                     ranking={convoData.convo.tranking}
                                     size={14}
                                 />
-                                <UserLabel
-                                    name={convoData.convo.tname}
-                                    anonymous={false}
-                                />
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        props.navigation.navigate("User", {
+                                            uid: tid,
+                                        });
+                                    }}
+                                    activeOpacity={0.5}
+                                >
+                                    <UserLabel
+                                        name={convoData.convo.tname}
+                                        anonymous={false}
+                                    />
+                                </TouchableOpacity>
                                 <Text style={styles.mainHeaderDotText}>·</Text>
                                 <Text style={styles.coverTimeText}>
                                     {millisToRep(
@@ -238,7 +358,7 @@ const Convo: React.FC<Props> = (props) => {
                                     />
                                 );
                             } else if (
-                                targetMsgCount > TARGET_MESSAGE_COUNT_THRESHOLD
+                                targetMsgCount >= TARGET_MESSAGE_COUNT_THRESHOLD
                             ) {
                                 return (
                                     <PendingFinishFooter
@@ -271,10 +391,20 @@ const Convo: React.FC<Props> = (props) => {
             <>
                 {convoContent}
                 <ResponseResponse
-                    respondModalMessage={"yup"}
+                    responseCost={postData.post.convoReward}
                     onBlock={() => {}}
-                    onDismiss={() => {}}
-                    onMessage={() => {}}
+                    onDismiss={async () => {
+                        try {
+                            await dismissConvo({
+                                variables: {
+                                    cvid: props.route.params.cvid,
+                                },
+                            });
+                        } catch (e) {
+                            console.log("Dismiss error: ", e);
+                        }
+                    }}
+                    onRespond={() => {}}
                 />
             </>
         );

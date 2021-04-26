@@ -254,11 +254,12 @@ export const schema = gql`
 
         createConvo(pid: ID, message: String, anonymous: Boolean): Convo
 
-        dismissConvo(cid: ID!): Convo
-        blockInitialConvo(cid: ID!): Convo
-        activateConvo(cid: ID!): Convo
-        blockMessage(cid: ID!): Convo
-        finishConvo(cid: ID!): Convo
+        markConvoViewed(cvid: ID!): Convo
+        dismissConvo(cvid: ID!): Convo
+        blockInitialConvo(cvid: ID!): Convo
+        activateConvo(cvid: ID!): Convo
+        blockMessage(cvid: ID!): Convo
+        finishConvo(cvid: ID!): Convo
         createCommunity(name: String, description: String): Community
         indexUser(id: ID, firstName: String, lastName: String): SearchEntity
         followUser(tid: ID!): FollowEntity

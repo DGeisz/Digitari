@@ -4,12 +4,13 @@ import { Text, TouchableOpacity, View } from "react-native";
 import { Entypo, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { palette } from "../../../../../../global_styles/Palette";
 import CancelConfirmModal from "../../../../../../global_building_blocks/cancel_confirm_modal/CancelConfirmModal";
+import { toCommaRep } from "../../../../../../global_utils/ValueRepUtils";
 
 interface Props {
-    respondModalMessage: string;
+    responseCost: number;
     onBlock: () => void;
     onDismiss: () => void;
-    onMessage: () => void;
+    onRespond: () => void;
 }
 
 interface State {
@@ -57,14 +58,16 @@ export default class ResponseResponse extends React.PureComponent<
                 />
                 <CancelConfirmModal
                     visible={this.state.messageVisible}
-                    body={this.props.respondModalMessage}
+                    body={`Use ${toCommaRep(
+                        this.props.responseCost
+                    )} digicoin to respond?`}
                     title="Respond"
                     confirmBackgroundColor={palette.oceanSurf}
                     confirmTextColor={palette.deepBlue}
                     onConfirm={() => {
                         this.setState({ messageVisible: false });
                         setTimeout(() => {
-                            this.props.onMessage();
+                            this.props.onRespond();
                         }, 200);
                     }}
                     confirmMessage="Respond"

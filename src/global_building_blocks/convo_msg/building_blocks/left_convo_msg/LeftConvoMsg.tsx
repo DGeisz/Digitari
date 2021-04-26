@@ -39,12 +39,20 @@ export default class LeftConvoMsg extends React.PureComponent<Props, State> {
                         <View style={styles.mainFooterContainer}>
                             {this.props.showUser && (
                                 <View style={styles.leftFooterLeft}>
-                                    <Text
-                                        style={styles.msgUserText}
-                                        numberOfLines={1}
-                                    >
-                                        {this.props.msg.user}
-                                    </Text>
+                                    {this.props.msg.anonymous ? (
+                                        <MaterialCommunityIcons
+                                            name="incognito"
+                                            size={15}
+                                            color={palette.lightGray}
+                                        />
+                                    ) : (
+                                        <Text
+                                            style={styles.msgUserText}
+                                            numberOfLines={1}
+                                        >
+                                            {this.props.msg.user}
+                                        </Text>
+                                    )}
                                 </View>
                             )}
                             <View style={styles.leftFooterRight}>

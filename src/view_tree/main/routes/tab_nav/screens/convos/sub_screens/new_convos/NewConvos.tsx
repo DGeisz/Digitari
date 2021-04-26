@@ -72,7 +72,7 @@ const NewConvos: React.FC<Props> = () => {
                                     : {},
                             ]}
                         >
-                            Ranking
+                            Tier
                         </Text>
                     </TouchableOpacity>
                     <TouchableOpacity

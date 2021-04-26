@@ -63,8 +63,20 @@ export const cache = new InMemoryCache({
                 },
                 newConvos: {
                     keyArgs: ["orderingType"],
-                    //@ts-ignore
-                    merge(existing, incoming, { args: { offset } }) {
+                    merge(
+                        existing,
+                        incoming,
+                        //@ts-ignore
+                        { args: { orderingType, offset } }
+                    ) {
+                        console.log(
+                            "New convos: ",
+                            orderingType,
+                            offset,
+                            existing,
+                            incoming
+                        );
+
                         if (existing && incoming) {
                             if (!!offset) {
                                 return [...existing, ...incoming];
