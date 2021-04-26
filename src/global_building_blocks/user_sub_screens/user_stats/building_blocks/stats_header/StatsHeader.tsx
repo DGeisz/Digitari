@@ -33,7 +33,7 @@ export default class StatsHeader extends React.PureComponent<Props, State> {
                 <View style={styles.statsLeft}>
                     <Text style={styles.statsTitleText}>Tier Breakdown</Text>
                     <View style={styles.leftSplit1}>
-                        <Tier size={30} ranking={123} />
+                        <Tier size={30} ranking={this.props.user.ranking} />
                         <Text style={styles.statsRankingText}>
                             {toRep(this.props.user.ranking)}
                         </Text>

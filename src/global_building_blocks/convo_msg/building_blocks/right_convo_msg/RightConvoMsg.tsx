@@ -4,6 +4,8 @@ import { Text } from "react-native";
 import { styles } from "./RightConvoMsgStyles";
 import { millisToRep } from "../../../../global_utils/TimeRepUtils";
 import { MessageType } from "../../../../global_types/MessageTypes";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { palette } from "../../../../global_styles/Palette";
 
 interface Props {
     msg: MessageType;
@@ -26,12 +28,20 @@ export default class RightConvoMsg extends React.PureComponent<Props> {
                     <View style={styles.rightMsgFooter}>
                         {this.props.showUser && (
                             <View style={styles.msgFooterLeft}>
-                                <Text
-                                    style={styles.msgUserText}
-                                    numberOfLines={1}
-                                >
-                                    {this.props.msg.user}
-                                </Text>
+                                {this.props.msg.anonymous ? (
+                                    <MaterialCommunityIcons
+                                        name="incognito"
+                                        size={15}
+                                        color={palette.lightGray}
+                                    />
+                                ) : (
+                                    <Text
+                                        style={styles.msgUserText}
+                                        numberOfLines={1}
+                                    >
+                                        {this.props.msg.user}
+                                    </Text>
+                                )}
                             </View>
                         )}
                         <View style={styles.msgFooterRight}>

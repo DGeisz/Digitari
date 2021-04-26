@@ -83,6 +83,47 @@ export interface DismissConvoVariables {
     cvid: string;
 }
 
+export const BLOCK_CONVO = gql`
+    mutation BlockConvo($cvid: ID!) {
+        blockConvo(cvid: $cvid) {
+            id
+            pid
+            cmid
+
+            status
+
+            initialTime
+            initialMsg
+
+            lastTime
+            lastMsg
+
+            sid
+            stier
+            sranking
+            sname
+            sanony
+            sviewed
+
+            tid
+            ttier
+            tranking
+            tname
+            tviewed
+
+            targetMsgCount
+        }
+    }
+`;
+
+export interface BlockConvoData {
+    blockConvo: ConvoType;
+}
+
+export interface BlockConvoVariables {
+    cvid: string;
+}
+
 // // Dismiss mutation
 // export const DISMISS_CONVO = gql`
 //     mutation DismissConvo($cid: ID!) {

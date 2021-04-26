@@ -256,9 +256,8 @@ export const schema = gql`
 
         markConvoViewed(cvid: ID!): Convo
         dismissConvo(cvid: ID!): Convo
-        blockInitialConvo(cvid: ID!): Convo
+        blockConvo(cvid: ID!): Convo
         activateConvo(cvid: ID!): Convo
-        blockMessage(cvid: ID!): Convo
         finishConvo(cvid: ID!): Convo
         createCommunity(name: String, description: String): Community
         indexUser(id: ID, firstName: String, lastName: String): SearchEntity

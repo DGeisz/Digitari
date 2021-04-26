@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import { ConvoNavProp, ConvoRouteProp } from "../../MainEntryNavTypes";
 import { NetworkStatus, useMutation, useQuery } from "@apollo/client";
@@ -38,6 +38,9 @@ import {
 } from "./building_blocks/status_footers/StatusFooters";
 import MessageInput from "../../../../global_building_blocks/message_input/MessageInput";
 import {
+    BLOCK_CONVO,
+    BlockConvoData,
+    BlockConvoVariables,
     DISMISS_CONVO,
     DismissConvoData,
     DismissConvoVariables,
@@ -46,6 +49,7 @@ import {
     MarkConvoViewedVariables,
 } from "./gql/Mutations";
 import { QUERY_TYPENAME } from "../../../../global_gql/Schema";
+import { USER_TYPENAME } from "../../../../global_types/UserTypes";
 
 function getCheckLeft(uid: string, tid: string): (id: string) => boolean {
     if (uid === tid) {
@@ -134,7 +138,10 @@ const Convo: React.FC<Props> = (props) => {
     const [dismissConvo] = useMutation<DismissConvoData, DismissConvoVariables>(
         DISMISS_CONVO,
         {
-            update(cache, { data }) {
+            variables: {
+                cvid: props.route.params.cvid,
+            },
+            update(cache) {
                 /*
                  * Change the convo status
                  */
@@ -171,6 +178,67 @@ const Convo: React.FC<Props> = (props) => {
         }
     );
 
+    const [blockConvo] = useMutation<BlockConvoData, BlockConvoVariables>(
+        BLOCK_CONVO,
+        {
+            variables: {
+                cvid: props.route.params.cvid,
+            },
+            update(cache) {
+                /*
+                 * Change the convo status
+                 */
+                cache.modify({
+                    id: cache.identify({
+                        id: props.route.params.cvid,
+                        __typename: CONVO_TYPENAME,
+                    }),
+                    fields: {
+                        status() {
+                            return ConvoStatus.Blocked;
+                        },
+                    },
+                });
+
+                /*
+                 * Remove convo from new convos
+                 */
+                cache.modify({
+                    id: cache.identify({
+                        __typename: QUERY_TYPENAME,
+                    }),
+                    fields: {
+                        newConvos(existing, { readField }) {
+                            return existing.filter(
+                                (reqRef: any) =>
+                                    readField("id", reqRef) !==
+                                    props.route.params.cvid
+                            );
+                        },
+                    },
+                });
+
+                /*
+                 * Update user's blocked and ranking numbers
+                 */
+                cache.modify({
+                    id: cache.identify({
+                        __typename: USER_TYPENAME,
+                        id: uid,
+                    }),
+                    fields: {
+                        blocked(existing) {
+                            return existing + 1;
+                        },
+                        ranking(existing) {
+                            return existing - 1;
+                        },
+                    },
+                });
+            },
+        }
+    );
+
     let participant = false;
 
     if (!!convoData?.convo) {
@@ -179,6 +247,14 @@ const Convo: React.FC<Props> = (props) => {
             convoData.convo.sid === hid ||
             convoData.convo.tid === uid;
     }
+
+    const [convoTime, setConvoTime] = useState<string>(`${Date.now()}`);
+
+    useEffect(() => {
+        if (!!convoData?.convo && !!convoData.convo.lastTime) {
+            setConvoTime(convoData.convo.lastTime);
+        }
+    }, [!!convoData?.convo]);
 
     /*
      * Handle marking the convo as viewed
@@ -231,6 +307,8 @@ const Convo: React.FC<Props> = (props) => {
     /*
      * Make the footer
      */
+
+    console.log("Convo time", convoData.convo);
 
     const convoContent = (
         <FlatList
@@ -305,8 +383,7 @@ const Convo: React.FC<Props> = (props) => {
                                 <Text style={styles.mainHeaderDotText}>·</Text>
                                 <Text style={styles.coverTimeText}>
                                     {millisToRep(
-                                        Date.now() -
-                                            parseInt(convoData.convo.lastTime)
+                                        Date.now() - parseInt(convoTime)
                                     )}
                                 </Text>
                             </View>
@@ -392,14 +469,16 @@ const Convo: React.FC<Props> = (props) => {
                 {convoContent}
                 <ResponseResponse
                     responseCost={postData.post.convoReward}
-                    onBlock={() => {}}
+                    onBlock={async () => {
+                        try {
+                            await blockConvo();
+                        } catch (e) {
+                            console.log("Block error: ", e);
+                        }
+                    }}
                     onDismiss={async () => {
                         try {
-                            await dismissConvo({
-                                variables: {
-                                    cvid: props.route.params.cvid,
-                                },
-                            });
+                            await dismissConvo();
                         } catch (e) {
                             console.log("Dismiss error: ", e);
                         }
