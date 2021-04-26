@@ -2,7 +2,7 @@ import React from "react";
 
 interface TabNavActions {
     openPost: (pid: string) => void;
-    openConvo: (cid: string) => void;
+    openConvo: (cvid: string, pid: string) => void;
     openNewMessage: (tname: string, pid: string, responseCost: number) => void;
     openNew: () => void;
     openCommunity: (cmid: string) => void;

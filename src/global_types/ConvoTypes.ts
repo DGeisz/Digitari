@@ -1,11 +1,26 @@
 export const CONVO_TYPENAME = "Convo";
 
+/*
+ * This is the number of messages the target user must
+ * write before the source user of the convo can successfully
+ * finish the conversation
+ */
+export const TARGET_MESSAGE_COUNT_THRESHOLD = 2;
+
+export enum ConvoStatus {
+    Dismissed = -2,
+    Blocked,
+    New,
+    Active,
+    Finished,
+}
+
 export interface ConvoType {
     id: string;
     pid: string;
     cmid: string;
 
-    status: number;
+    status: ConvoStatus;
 
     initialTime: string;
     initialMsg: string;

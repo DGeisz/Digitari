@@ -13,8 +13,10 @@ import {
 import {
     localUid,
     setLocalFirstName,
+    setLocalHid,
     setLocalUid,
 } from "../global_state/UserState";
+import { HID, HidData } from "./gql/Queries";
 
 const AppView: React.FC = () => {
     const [checkedAuth, setCheckAuth] = useState<boolean>(false);
@@ -81,13 +83,6 @@ const AppView: React.FC = () => {
                 !!sub && setLocalUid(sub);
                 !!given_name && setLocalFirstName(given_name);
 
-                console.log(
-                    "Here are user attributes: ",
-                    email,
-                    given_name,
-                    family_name
-                );
-
                 if (authenticated && email && given_name && family_name) {
                     const { data } = await client.mutate<
                         CreateOrFetchUserMutationData,
@@ -104,6 +99,15 @@ const AppView: React.FC = () => {
                     if (data?.createOrFetchUser) {
                         setFetchedUser(true);
                         setNewUser(!!data.createOrFetchUser.newUser);
+                    }
+
+                    const { data: hidData } = await client.query<HidData>({
+                        query: HID,
+                    });
+
+                    if (!!hidData?.hid) {
+                        console.log("Here's hid: ", hidData.hid);
+                        setLocalHid(hidData.hid);
                     }
                 }
             } finally {

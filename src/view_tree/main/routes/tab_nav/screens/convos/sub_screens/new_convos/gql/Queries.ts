@@ -5,8 +5,8 @@ import {
 } from "../../../../../../../../../global_types/ConvoTypes";
 
 export const NEW_CONVOS = gql`
-    query NewConvos($orderType: Int!, $lastTime: String) {
-        newConvos(orderingType: $orderType, lastTime: $lastTime) {
+    query NewConvos($orderingType: Int, $offset: Int) {
+        newConvos(orderingType: $orderingType, offset: $offset) {
             id
             pid
             cmid
@@ -43,52 +43,5 @@ export interface NewConvosData {
 
 export interface NewConvosVariables {
     orderingType: ConvoOrder;
-    lastTime?: string;
+    offset?: number;
 }
-
-// export const GET_NEW_CONVOS = gql`
-//     query GetNewConvos($uid: ID!, $lastTime: Int) {
-//         newConvos(uid: $uid, lastTime: $lastTime) {
-//             id
-//             pid
-//
-//             time
-//             msg
-//
-//             sid
-//             sranking
-//             sname
-//             sanony
-//             sviewed
-//
-//             tid
-//             tranking
-//             tname
-//             tviewed
-//         }
-//     }
-// `;
-//
-// export const GET_NEW_CONVOS_TYPE = gql`
-//     query GetNewConvos($uid: ID!, $lastTime: Int) {
-//         newConvos(uid: $uid, lastTime: $lastTime) {
-//             id
-//             pid
-//
-//             time
-//             msg
-//
-//             sid
-//             sranking
-//             sname
-//             sanony
-//             sviewed
-//
-//             tid
-//             tranking
-//             tname
-//             tviewed
-//             __typename
-//         }
-//     }
-// `;

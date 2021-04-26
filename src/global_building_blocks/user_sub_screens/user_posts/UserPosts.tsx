@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Animated, RefreshControl, View } from "react-native";
+import { Animated, RefreshControl, Text, View } from "react-native";
 import { NetworkStatus, useQuery } from "@apollo/client";
 import {
     GET_USER_POSTS,
@@ -13,6 +13,7 @@ import ErrorMessage from "../../error_message/ErrorMessage";
 import Post from "../../post/Post";
 import { palette } from "../../../global_styles/Palette";
 import { globalScreenStyles } from "../../../global_styles/GlobalScreenStyles";
+import { styles } from "./UserPostsStyles";
 
 interface Props {
     routeKey: string;
@@ -52,6 +53,19 @@ const UserPosts: React.FC<Props> = (props) => {
     return (
         <Animated.FlatList
             {...scrollPropsAndRef}
+            ListHeaderComponent={() => {
+                if (finalFeed.length === 0) {
+                    return (
+                        <View style={styles.noPostsContainer}>
+                            <Text style={styles.noPostsText}>
+                                This user hasn't created any posts
+                            </Text>
+                        </View>
+                    );
+                } else {
+                    return null;
+                }
+            }}
             data={finalFeed}
             renderItem={({ item }) => (
                 <Post

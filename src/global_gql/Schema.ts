@@ -225,13 +225,15 @@ export const schema = gql`
         feed(lastTime: String): [Post]
         wallet(id: ID!): Wallet
         user(uid: ID!): User
+        hid: String
         userPosts(uid: ID!, lastTime: String): [Post]
         userConvos(uid: ID!, lastTime: String): [Convo]
-        newConvos(orderingType: Int!, lastTime: String): [Convo]
+        newConvos(orderingType: Int, offset: Int): [Convo]
         activeConvos(uid: ID!, lastTime: String): [Convo]
         challenges: [Challenge]
         post(pid: ID!): Post
-        convo(cid: ID!): Convo
+        convo(cvid: ID!): Convo
+        convoMessages(cvid: ID!, lastTime: String): [Message]
         createCommunityCoinCheck: CoinCheck
         community(cmid: ID!): Community
         communityPosts(cmid: ID!, lastTime: String, tier: Int): [Post]

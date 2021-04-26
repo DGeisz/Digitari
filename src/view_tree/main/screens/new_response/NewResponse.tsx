@@ -69,7 +69,8 @@ const NewResponse: React.FC<Props> = (props) => {
 
                     props.navigation.pop();
                     props.navigation.navigate("Convo", {
-                        cid: data.createConvo.id,
+                        cvid: data.createConvo.id,
+                        pid: props.route.params.pid,
                     });
                 } else {
                     console.log("No new data for new response");

@@ -1,95 +1,108 @@
 import { gql } from "@apollo/client";
+import { ConvoType } from "../../../../../global_types/ConvoTypes";
+import { PostType } from "../../../../../global_types/PostTypes";
+import { MessageType } from "../../../../../global_types/MessageTypes";
 
-export const GET_CONVO = gql`
-    query GetConvo($cid: ID!) {
-        convo(cid: $cid) {
+export const CONVO = gql`
+    query Convo($cvid: ID!) {
+        convo(cvid: $cvid) {
             id
+            pid
+            cmid
+
             status
-            post {
-                id
-                uid
-                user
-                ranking
-                time
-                content
-                link
-                convoReward
-            }
-            cover {
-                id
-                pid
 
-                time
-                msg
+            initialTime
+            initialMsg
 
-                sid
-                sranking
-                sname
-                sanony
-                sviewed
+            lastTime
+            lastMsg
 
-                tid
-                tranking
-                tname
-                tviewed
-            }
-            messages {
-                id
-                uid
-                user
-                time
-                anonymous
-                content
-            }
+            sid
+            stier
+            sranking
+            sname
+            sanony
+            sviewed
+
+            tid
+            ttier
+            tranking
+            tname
+            tviewed
+
+            targetMsgCount
         }
     }
 `;
 
-export const GET_CONVO_TYPE = gql`
-    query GetConvo($cid: ID!) {
-        convo(cid: $cid) {
+export interface ConvoData {
+    convo: ConvoType;
+}
+
+export interface ConvoVariables {
+    cvid: string;
+}
+
+export const CONVO_POST = gql`
+    query Post($pid: ID!) {
+        post(pid: $pid) {
             id
-            status
-            post {
-                id
-                uid
-                user
-                ranking
-                time
-                content
-                link
-                convoReward
-                __typename
-            }
-            cover {
-                id
-                pid
+            uid
 
-                time
-                msg
+            # Main content
+            user
+            tier
+            time
+            content
 
-                sid
-                sranking
-                sname
-                sanony
-                sviewed
+            # Add on
+            addOn
+            addOnContent
+            target
+            cmid
+            communityName
 
-                tid
-                tranking
-                tname
-                tviewed
-                __typename
-            }
-            messages {
-                id
-                uid
-                user
-                time
-                anonymous
-                content
-                __typename
-            }
-            __typename
+            # Coin fields
+            convoReward
+            responseCost
+            coin
+            coinDonated
+
+            # Convos
+            convoCount
+            responseCount
         }
     }
 `;
+
+export interface ConvoPostData {
+    post: PostType;
+}
+
+export interface ConvoPostVariables {
+    pid: string;
+}
+
+export const CONVO_MESSAGES = gql`
+    query ConvoMessages($cvid: ID!, $lastTime: String) {
+        convoMessages(cvid: $cvid, lastTime: $lastTime) {
+            id
+            uid
+            tid
+            user
+            time
+            anonymous
+            content
+        }
+    }
+`;
+
+export interface ConvoMessagesData {
+    convoMessages: MessageType[];
+}
+
+export interface ConvoMessagesVariables {
+    cvid: string;
+    lastTime?: string;
+}

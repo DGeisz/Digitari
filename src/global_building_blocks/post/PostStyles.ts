@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
     },
     postSideBuffer: {
         paddingHorizontal: 2,
-        minWidth: 60,
+        minWidth: 50,
     },
     sideBufferTop: {
         ...basicLayouts.grid8,
@@ -44,8 +44,7 @@ export const styles = StyleSheet.create({
     },
     postMain: {
         ...basicLayouts.flexGrid1,
-        marginLeft: 3,
-        paddingRight: 10,
+        paddingHorizontal: 10,
         paddingBottom: 5,
     },
     postHeader: {

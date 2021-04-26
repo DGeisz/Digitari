@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { palette } from "../../../../../../../../global_styles/Palette";
+import { basicLayouts } from "../../../../../../../../global_styles/BasicLayouts";
 
 export const styles = StyleSheet.create({
     orderOptionContainer: {
@@ -11,7 +12,7 @@ export const styles = StyleSheet.create({
     },
     orderByTitle: {
         fontWeight: "bold",
-        fontSize: 13,
+        fontSize: 12,
         color: palette.hardGray,
     },
     orderOptionBar: {
@@ -26,5 +27,13 @@ export const styles = StyleSheet.create({
     orderOptionText: {
         fontWeight: "bold",
         color: palette.hardGray,
+    },
+    noNewConvos: {
+        ...basicLayouts.flexGrid5,
+    },
+    noNewConvosText: {
+        fontSize: 18,
+        fontWeight: "bold",
+        color: palette.semiSoftGray,
     },
 });

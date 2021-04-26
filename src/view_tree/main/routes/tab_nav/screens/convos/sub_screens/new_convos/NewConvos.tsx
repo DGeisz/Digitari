@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { styles } from "./NewConvosStyles";
 import {
     FlatList,
@@ -13,7 +13,6 @@ import ErrorMessage from "../../../../../../../../global_building_blocks/error_m
 import { basicLayouts } from "../../../../../../../../global_styles/BasicLayouts";
 import ConvoCover from "../../../../../../../../global_building_blocks/convo_cover/ConvoCover";
 import { palette } from "../../../../../../../../global_styles/Palette";
-import { localUid } from "../../../../../../../../global_state/UserState";
 import { TabNavContext } from "../../../../TabNavContext";
 import { NEW_CONVOS, NewConvosData, NewConvosVariables } from "./gql/Queries";
 import { ConvoOrder } from "../../../../../../../../global_types/ConvoTypes";
@@ -22,24 +21,32 @@ import { globalScreenStyles } from "../../../../../../../../global_styles/Global
 interface Props {}
 
 const NewConvos: React.FC<Props> = () => {
-    const uid = localUid();
-
     const [orderType, setOrder] = useState<ConvoOrder>(ConvoOrder.ranking);
 
     const { openConvo } = useContext(TabNavContext);
 
-    const { data, error, networkStatus, refetch, fetchMore } = useQuery<
-        NewConvosData,
-        NewConvosVariables
-    >(NEW_CONVOS, {
+    const {
+        data,
+        error,
+        networkStatus,
+        loading,
+        refetch,
+        fetchMore,
+    } = useQuery<NewConvosData, NewConvosVariables>(NEW_CONVOS, {
         variables: {
             orderingType: orderType,
         },
         notifyOnNetworkStatusChange: true,
     });
 
+    console.log(networkStatus, loading);
+
     const [stillSpin, setStillSpin] = useState<boolean>(false);
     const [fetchMoreLen, setFetchMoreLen] = useState<number>(0);
+
+    useEffect(() => {
+        setFetchMoreLen(0);
+    }, [orderType]);
 
     const finalFeed = !!data?.newConvos ? data.newConvos : [];
 
@@ -90,10 +97,19 @@ const NewConvos: React.FC<Props> = () => {
                     </TouchableOpacity>
                 </View>
             </View>
-            {!data?.newConvos && networkStatus === NetworkStatus.loading ? (
+            {!data?.newConvos &&
+            (networkStatus === NetworkStatus.loading ||
+                networkStatus === NetworkStatus.refetch ||
+                networkStatus === NetworkStatus.setVariables) ? (
                 <LoadingWheel />
             ) : !!error ? (
                 <ErrorMessage refresh={refetch} />
+            ) : finalFeed.length === 0 ? (
+                <View style={styles.noNewConvos}>
+                    <Text style={styles.noNewConvosText}>
+                        You don't have any new convos
+                    </Text>
+                </View>
             ) : (
                 <FlatList
                     data={finalFeed}
@@ -131,8 +147,6 @@ const NewConvos: React.FC<Props> = () => {
                     }
                     onEndReached={async () => {
                         if (finalFeed.length > fetchMoreLen) {
-                            const lastTime =
-                                finalFeed[finalFeed.length - 1].initialTime;
                             const ffLen = finalFeed.length;
 
                             setFetchMoreLen(ffLen);
@@ -140,7 +154,8 @@ const NewConvos: React.FC<Props> = () => {
                             !!fetchMore &&
                                 (await fetchMore({
                                     variables: {
-                                        lastTime,
+                                        orderingType: orderType,
+                                        offset: ffLen,
                                     },
                                 }));
                         }

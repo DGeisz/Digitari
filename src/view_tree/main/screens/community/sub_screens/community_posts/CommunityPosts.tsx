@@ -66,176 +66,218 @@ const CommunityPosts: React.FC<Props> = (props) => {
             {...scrollPropsAndRef}
             ListHeaderComponent={() => {
                 return (
-                    <ScrollView horizontal style={styles.tierBar}>
-                        <View style={styles.tierBarContainer}>
-                            <TouchableOpacity
-                                style={[
-                                    styles.tierOption,
-                                    tier === undefined
-                                        ? { backgroundColor: palette.deepBlue }
-                                        : {},
-                                ]}
-                                onPress={() => setTier(undefined)}
-                                key={[props.cmid, "all"].join(":")}
-                            >
-                                <Text
+                    <>
+                        <ScrollView horizontal style={styles.tierBar}>
+                            <View style={styles.tierBarContainer}>
+                                <TouchableOpacity
                                     style={[
-                                        styles.tierOptionText,
-                                        {
-                                            color:
-                                                tier === undefined
-                                                    ? palette.white
-                                                    : palette.hardGray,
-                                        },
+                                        styles.tierOption,
+                                        tier === undefined
+                                            ? {
+                                                  backgroundColor:
+                                                      palette.deepBlue,
+                                              }
+                                            : {},
                                     ]}
+                                    onPress={() => setTier(undefined)}
+                                    key={[props.cmid, "all"].join(":")}
                                 >
-                                    All
+                                    <Text
+                                        style={[
+                                            styles.tierOptionText,
+                                            {
+                                                color:
+                                                    tier === undefined
+                                                        ? palette.white
+                                                        : palette.hardGray,
+                                            },
+                                        ]}
+                                    >
+                                        All
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={[
+                                        styles.tierOption,
+                                        tier === TierEnum.Angel
+                                            ? {
+                                                  backgroundColor:
+                                                      palette.deepBlue,
+                                              }
+                                            : {},
+                                    ]}
+                                    onPress={() => setTier(TierEnum.Angel)}
+                                    key={[props.cmid, "angel"].join(":")}
+                                >
+                                    <Text style={styles.tierOptionText}>
+                                        {TierEmoji.Angel}
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={[
+                                        styles.tierOption,
+                                        tier === TierEnum.HeartEyes
+                                            ? {
+                                                  backgroundColor:
+                                                      palette.deepBlue,
+                                              }
+                                            : {},
+                                    ]}
+                                    onPress={() => setTier(TierEnum.HeartEyes)}
+                                    key={[props.cmid, "heart"].join(":")}
+                                >
+                                    <Text style={styles.tierOptionText}>
+                                        {TierEmoji.HeartEyes}
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={[
+                                        styles.tierOption,
+                                        tier === TierEnum.Sunglasses
+                                            ? {
+                                                  backgroundColor:
+                                                      palette.deepBlue,
+                                              }
+                                            : {},
+                                    ]}
+                                    onPress={() => setTier(TierEnum.Sunglasses)}
+                                    key={[props.cmid, "sun"].join(":")}
+                                >
+                                    <Text style={styles.tierOptionText}>
+                                        {TierEmoji.Sunglasses}
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={[
+                                        styles.tierOption,
+                                        tier === TierEnum.Hugging
+                                            ? {
+                                                  backgroundColor:
+                                                      palette.deepBlue,
+                                              }
+                                            : {},
+                                    ]}
+                                    onPress={() => setTier(TierEnum.Hugging)}
+                                    key={[props.cmid, "hug"].join(":")}
+                                >
+                                    <Text style={styles.tierOptionText}>
+                                        {TierEmoji.Hugging}
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={[
+                                        styles.tierOption,
+                                        tier === TierEnum.Grinning
+                                            ? {
+                                                  backgroundColor:
+                                                      palette.deepBlue,
+                                              }
+                                            : {},
+                                    ]}
+                                    onPress={() => setTier(TierEnum.Grinning)}
+                                    key={[props.cmid, "grin"].join(":")}
+                                >
+                                    <Text style={styles.tierOptionText}>
+                                        {TierEmoji.Grinning}
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={[
+                                        styles.tierOption,
+                                        tier === TierEnum.Smiling
+                                            ? {
+                                                  backgroundColor:
+                                                      palette.deepBlue,
+                                              }
+                                            : {},
+                                    ]}
+                                    onPress={() => setTier(TierEnum.Smiling)}
+                                    key={[props.cmid, "smile"].join(":")}
+                                >
+                                    <Text style={styles.tierOptionText}>
+                                        {TierEmoji.Smiling}
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={[
+                                        styles.tierOption,
+                                        tier === TierEnum.SlightlySmiling
+                                            ? {
+                                                  backgroundColor:
+                                                      palette.deepBlue,
+                                              }
+                                            : {},
+                                    ]}
+                                    onPress={() =>
+                                        setTier(TierEnum.SlightlySmiling)
+                                    }
+                                    key={[props.cmid, "ssmile"].join(":")}
+                                >
+                                    <Text style={styles.tierOptionText}>
+                                        {TierEmoji.SlightlySmiling}
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={[
+                                        styles.tierOption,
+                                        tier === TierEnum.Frowning
+                                            ? {
+                                                  backgroundColor:
+                                                      palette.deepBlue,
+                                              }
+                                            : {},
+                                    ]}
+                                    onPress={() => setTier(TierEnum.Frowning)}
+                                    key={[props.cmid, "frown"].join(":")}
+                                >
+                                    <Text style={styles.tierOptionText}>
+                                        {TierEmoji.Frowning}
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={[
+                                        styles.tierOption,
+                                        tier === TierEnum.Steam
+                                            ? {
+                                                  backgroundColor:
+                                                      palette.deepBlue,
+                                              }
+                                            : {},
+                                    ]}
+                                    onPress={() => setTier(TierEnum.Steam)}
+                                    key={[props.cmid, "steam"].join(":")}
+                                >
+                                    <Text style={styles.tierOptionText}>
+                                        {TierEmoji.Steam}
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={[
+                                        styles.tierOption,
+                                        tier === TierEnum.AngryHorns
+                                            ? {
+                                                  backgroundColor:
+                                                      palette.deepBlue,
+                                              }
+                                            : {},
+                                    ]}
+                                    onPress={() => setTier(TierEnum.AngryHorns)}
+                                    key={[props.cmid, "horns"].join(":")}
+                                >
+                                    <Text style={styles.tierOptionText}>
+                                        {TierEmoji.AngryHorns}
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        </ScrollView>
+                        {finalFeed.length === 0 ? (
+                            <View style={styles.noPostsContainer}>
+                                <Text style={styles.noPostsText}>
+                                    No one has posted to this community
                                 </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={[
-                                    styles.tierOption,
-                                    tier === TierEnum.Angel
-                                        ? { backgroundColor: palette.deepBlue }
-                                        : {},
-                                ]}
-                                onPress={() => setTier(TierEnum.Angel)}
-                                key={[props.cmid, "angel"].join(":")}
-                            >
-                                <Text style={styles.tierOptionText}>
-                                    {TierEmoji.Angel}
-                                </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={[
-                                    styles.tierOption,
-                                    tier === TierEnum.HeartEyes
-                                        ? { backgroundColor: palette.deepBlue }
-                                        : {},
-                                ]}
-                                onPress={() => setTier(TierEnum.HeartEyes)}
-                                key={[props.cmid, "heart"].join(":")}
-                            >
-                                <Text style={styles.tierOptionText}>
-                                    {TierEmoji.HeartEyes}
-                                </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={[
-                                    styles.tierOption,
-                                    tier === TierEnum.Sunglasses
-                                        ? { backgroundColor: palette.deepBlue }
-                                        : {},
-                                ]}
-                                onPress={() => setTier(TierEnum.Sunglasses)}
-                                key={[props.cmid, "sun"].join(":")}
-                            >
-                                <Text style={styles.tierOptionText}>
-                                    {TierEmoji.Sunglasses}
-                                </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={[
-                                    styles.tierOption,
-                                    tier === TierEnum.Hugging
-                                        ? { backgroundColor: palette.deepBlue }
-                                        : {},
-                                ]}
-                                onPress={() => setTier(TierEnum.Hugging)}
-                                key={[props.cmid, "hug"].join(":")}
-                            >
-                                <Text style={styles.tierOptionText}>
-                                    {TierEmoji.Hugging}
-                                </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={[
-                                    styles.tierOption,
-                                    tier === TierEnum.Grinning
-                                        ? { backgroundColor: palette.deepBlue }
-                                        : {},
-                                ]}
-                                onPress={() => setTier(TierEnum.Grinning)}
-                                key={[props.cmid, "grin"].join(":")}
-                            >
-                                <Text style={styles.tierOptionText}>
-                                    {TierEmoji.Grinning}
-                                </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={[
-                                    styles.tierOption,
-                                    tier === TierEnum.Smiling
-                                        ? { backgroundColor: palette.deepBlue }
-                                        : {},
-                                ]}
-                                onPress={() => setTier(TierEnum.Smiling)}
-                                key={[props.cmid, "smile"].join(":")}
-                            >
-                                <Text style={styles.tierOptionText}>
-                                    {TierEmoji.Smiling}
-                                </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={[
-                                    styles.tierOption,
-                                    tier === TierEnum.SlightlySmiling
-                                        ? { backgroundColor: palette.deepBlue }
-                                        : {},
-                                ]}
-                                onPress={() =>
-                                    setTier(TierEnum.SlightlySmiling)
-                                }
-                                key={[props.cmid, "ssmile"].join(":")}
-                            >
-                                <Text style={styles.tierOptionText}>
-                                    {TierEmoji.SlightlySmiling}
-                                </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={[
-                                    styles.tierOption,
-                                    tier === TierEnum.Frowning
-                                        ? { backgroundColor: palette.deepBlue }
-                                        : {},
-                                ]}
-                                onPress={() => setTier(TierEnum.Frowning)}
-                                key={[props.cmid, "frown"].join(":")}
-                            >
-                                <Text style={styles.tierOptionText}>
-                                    {TierEmoji.Frowning}
-                                </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={[
-                                    styles.tierOption,
-                                    tier === TierEnum.Steam
-                                        ? { backgroundColor: palette.deepBlue }
-                                        : {},
-                                ]}
-                                onPress={() => setTier(TierEnum.Steam)}
-                                key={[props.cmid, "steam"].join(":")}
-                            >
-                                <Text style={styles.tierOptionText}>
-                                    {TierEmoji.Steam}
-                                </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={[
-                                    styles.tierOption,
-                                    tier === TierEnum.AngryHorns
-                                        ? { backgroundColor: palette.deepBlue }
-                                        : {},
-                                ]}
-                                onPress={() => setTier(TierEnum.AngryHorns)}
-                                key={[props.cmid, "horns"].join(":")}
-                            >
-                                <Text style={styles.tierOptionText}>
-                                    {TierEmoji.AngryHorns}
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
-                    </ScrollView>
+                            </View>
+                        ) : null}
+                    </>
                 );
             }}
             data={finalFeed}

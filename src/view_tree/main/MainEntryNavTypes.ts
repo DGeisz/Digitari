@@ -4,7 +4,8 @@ import { RouteProp } from "@react-navigation/native";
 export type MainEntryStack = {
     TabNav: undefined;
     Convo: {
-        cid: string;
+        cvid: string;
+        pid: string;
     };
     NewResponse: {
         tname: string;

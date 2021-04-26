@@ -20,8 +20,8 @@ const TabNav: React.FC<Props> = (props) => {
         props.navigation.navigate("PostScreen", { pid });
     };
 
-    const openConvo = (cid: string) => {
-        props.navigation.navigate("Convo", { cid });
+    const openConvo = (cvid: string, pid: string) => {
+        props.navigation.navigate("Convo", { cvid, pid });
     };
 
     const openNewMessage = (

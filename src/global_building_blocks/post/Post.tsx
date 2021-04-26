@@ -22,6 +22,7 @@ const COMMUNITY_NAME_MAX_LEN = 30;
 
 interface Props {
     post: PostType;
+    stripped: boolean;
     openUser: (uid: string) => void;
     openCommunity: (cmid: string) => void;
     openPost?: (pid: string) => void;
@@ -41,6 +42,7 @@ interface State {
 
 export default class Post extends React.PureComponent<Props, State> {
     static defaultProps = {
+        stripped: false,
         showFullRespond: false,
         standAlone: false,
         postIsLink: true,
@@ -80,9 +82,7 @@ export default class Post extends React.PureComponent<Props, State> {
                             style={[
                                 styles.postContainer,
                                 {
-                                    marginBottom: this.props.standAlone
-                                        ? 0
-                                        : 20,
+                                    marginBottom: this.props.stripped ? 0 : 20,
                                 },
                             ]}
                         >
@@ -157,34 +157,36 @@ export default class Post extends React.PureComponent<Props, State> {
                                     this.props.openPost(this.props.post.id)
                                 }
                             >
-                                <View style={styles.postSideBuffer}>
-                                    <View style={styles.sideBufferTop}>
-                                        <Tier
-                                            size={30}
-                                            tier={this.props.post.tier}
-                                        />
-                                        <View
-                                            style={styles.sideBufferDivider}
-                                        />
-                                    </View>
-                                    <View style={styles.sideBufferBottom}>
-                                        <TouchableOpacity>
-                                            <CoinBox
-                                                active={
-                                                    !!this.props.post
-                                                        .coinDonated
-                                                }
-                                                showAmount={false}
-                                                coinSize={30}
-                                                fontSize={14}
-                                                paddingVertical={0}
+                                {!this.props.stripped && (
+                                    <View style={styles.postSideBuffer}>
+                                        <View style={styles.sideBufferTop}>
+                                            <Tier
+                                                size={30}
+                                                tier={this.props.post.tier}
                                             />
-                                        </TouchableOpacity>
-                                        <Text style={styles.coinText}>
-                                            {toRep(this.props.post.coin)}
-                                        </Text>
+                                            <View
+                                                style={styles.sideBufferDivider}
+                                            />
+                                        </View>
+                                        <View style={styles.sideBufferBottom}>
+                                            <TouchableOpacity>
+                                                <CoinBox
+                                                    active={
+                                                        !!this.props.post
+                                                            .coinDonated
+                                                    }
+                                                    showAmount={false}
+                                                    coinSize={30}
+                                                    fontSize={14}
+                                                    paddingVertical={0}
+                                                />
+                                            </TouchableOpacity>
+                                            <Text style={styles.coinText}>
+                                                {toRep(this.props.post.coin)}
+                                            </Text>
+                                        </View>
                                     </View>
-                                </View>
+                                )}
                                 <View style={styles.postMain}>
                                     <View style={styles.postHeader}>
                                         <TouchableOpacity
@@ -271,8 +273,8 @@ export default class Post extends React.PureComponent<Props, State> {
                                             {this.props.post.content}
                                         </Text>
                                     </View>
-                                    {this.props.post.addOn ===
-                                    PostAddOn.Text ? (
+                                    {this.props.stripped ? null : this.props
+                                          .post.addOn === PostAddOn.Text ? (
                                         <View style={styles.addOnTextContainer}>
                                             <Text
                                                 style={styles.addOnText}
@@ -304,7 +306,8 @@ export default class Post extends React.PureComponent<Props, State> {
                                             url={this.props.post.addOnContent}
                                         />
                                     ) : null}
-                                    {this.props.showFooter ? (
+                                    {!this.props.stripped &&
+                                    this.props.showFooter ? (
                                         <View style={styles.postMainFooter}>
                                             <View style={styles.mainFooterLeft}>
                                                 <View

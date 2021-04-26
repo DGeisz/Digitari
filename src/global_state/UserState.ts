@@ -1,6 +1,7 @@
 import { makeVar } from "@apollo/client";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+/*User id*/
 const UID_KEY = "UID_KEY";
 
 export const localUid = makeVar<string>("");
@@ -17,8 +18,24 @@ export function setLocalUid(uid: string): void {
     AsyncStorage.setItem(UID_KEY, JSON.stringify(uid)).then();
 }
 
-export const localSuid = makeVar<string>("");
+/*User hidden id*/
+const HID_KEY = "HID_KEY";
 
+export const localHid = makeVar<string>("");
+
+AsyncStorage.getItem(HID_KEY).then((raw) => {
+    if (raw) {
+        const uid = JSON.parse(raw);
+        localHid(uid);
+    }
+});
+
+export function setLocalHid(hid: string): void {
+    localHid(hid);
+    AsyncStorage.setItem(HID_KEY, JSON.stringify(hid)).then();
+}
+
+/*User first name*/
 export const NAME_KEY = "NAME_KEY";
 
 export const localFirstName = makeVar<string>("");

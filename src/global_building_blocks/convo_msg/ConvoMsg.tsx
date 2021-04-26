@@ -1,10 +1,10 @@
 import React from "react";
-import { ConvoMsgType } from "../../global_types/ConvoMsgTypes";
 import LeftConvoMsg from "./building_blocks/left_convo_msg/LeftConvoMsg";
 import RightConvoMsg from "./building_blocks/right_convo_msg/RightConvoMsg";
+import { MessageType } from "../../global_types/MessageTypes";
 
 interface Props {
-    msg: ConvoMsgType;
+    msg: MessageType;
     left: boolean;
     showUser: boolean;
     showBlockMsg: boolean;

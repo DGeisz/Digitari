@@ -1,20 +1,19 @@
 import React from "react";
 import { styles } from "./ConvoCoverStyles";
-import { View, Text, TouchableOpacity, LayoutAnimation } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import Tier from "../tier/Tier";
 import { palette } from "../../global_styles/Palette";
-import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
 import { millisToRep } from "../../global_utils/TimeRepUtils";
-import { localSuid, localUid } from "../../global_state/UserState";
+import { localUid } from "../../global_state/UserState";
 import UserLabel from "./building_blocks/user_label/UserLabel";
-import { layoutAnimationConfig } from "../../global_animations/LayoutAnimationConfig";
 import { ConvoType } from "../../global_types/ConvoTypes";
 
 interface Props {
     convo: ConvoType;
 
     displayActive: boolean;
-    openConvo?: (cid: string) => void;
+    openConvo?: (cvid: string, pid: string) => void;
     showUnViewedDot?: boolean;
     showBottomBorder?: boolean;
 }
@@ -28,11 +27,10 @@ export default class ConvoCover extends React.PureComponent<Props> {
     render() {
         const uid = localUid();
 
-        // const viewed =
-        //     this.props.convo.tid === uid
-        //         ? this.props.convo.tviewed
-        //         : this.props.convo.sviewed;
-        const viewed = true;
+        const viewed =
+            this.props.convo.tid === uid
+                ? this.props.convo.tviewed
+                : this.props.convo.sviewed;
 
         const displayTime = this.props.displayActive
             ? parseInt(this.props.convo.lastTime)
@@ -48,7 +46,10 @@ export default class ConvoCover extends React.PureComponent<Props> {
                     style={styles.coverBodyContainer}
                     onPress={() => {
                         this.props.openConvo &&
-                            this.props.openConvo(this.props.convo.id);
+                            this.props.openConvo(
+                                this.props.convo.id,
+                                this.props.convo.pid
+                            );
                     }}
                     activeOpacity={0.5}
                 >
