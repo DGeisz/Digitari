@@ -31,6 +31,7 @@ interface Props {
     showFullRespond?: boolean;
     standAlone?: boolean;
     postIsLink?: boolean;
+    noBottomMargin?: boolean;
     onMessage?: (tname: string, pid: string, responseCost: number) => void;
 }
 
@@ -48,6 +49,7 @@ export default class Post extends React.PureComponent<Props, State> {
         postIsLink: true,
         showFooter: true,
         abbreviateAddOn: true,
+        noBottomMargin: false,
     };
 
     state = {
@@ -82,7 +84,11 @@ export default class Post extends React.PureComponent<Props, State> {
                             style={[
                                 styles.postContainer,
                                 {
-                                    marginBottom: this.props.stripped ? 0 : 20,
+                                    marginBottom:
+                                        this.props.stripped ||
+                                        this.props.noBottomMargin
+                                            ? 0
+                                            : 20,
                                 },
                             ]}
                         >

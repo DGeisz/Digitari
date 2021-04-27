@@ -237,6 +237,7 @@ export const schema = gql`
         activeConvos(lastTime: String): [Convo]
         challenges: [Challenge]
         post(pid: ID!): Post
+        postConvos(pid: ID!, orderingType: Int!, offset: Int): [Convo]
         convo(cvid: ID!): Convo
         convoMessages(cvid: ID!, lastTime: String): [Message]
         createCommunityCoinCheck: CoinCheck

@@ -44,7 +44,7 @@ const NewConvos: React.FC<Props> = () => {
     /*
      * The query*/
     const [fetchMoreLen, setFetchMoreLen] = useState<number>(
-        NEW_CONVOS_PER_PAGE - 1
+        NEW_CONVOS_PER_PAGE - 5
     );
 
     useEffect(() => {

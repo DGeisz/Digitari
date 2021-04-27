@@ -1,75 +1,88 @@
 import { gql } from "@apollo/client";
+import { PostType } from "../../../../../global_types/PostTypes";
+import { ConvoOrder, ConvoType } from "../../../../../global_types/ConvoTypes";
 
-export const GET_POST = gql`
-    query GetPost($pid: ID!) {
+export const POST_CONVOS_PER_PAGE = 50;
+
+export const POST = gql`
+    query Post($pid: ID!) {
         post(pid: $pid) {
             id
             uid
+
+            # Main content
             user
-            ranking
+            tier
             time
             content
-            link
+
+            # Add on
+            addOn
+            addOnContent
+            target
+            cmid
+            communityName
+
+            # Coin fields
             convoReward
             responseCost
             coin
             coinDonated
-            convos {
-                id
-                pid
 
-                time
-                msg
-
-                sid
-                sranking
-                sname
-                sanony
-                sviewed
-
-                tid
-                tranking
-                tname
-                tviewed
-            }
+            # Convos
+            convoCount
+            responseCount
         }
     }
 `;
 
-export const GET_POST_TYPE = gql`
-    query GetPost($pid: ID!) {
-        post(pid: $pid) {
+export interface PostData {
+    post: PostType;
+}
+
+export interface PostVariables {
+    pid: string;
+}
+
+export const POST_CONVOS = gql`
+    query PostConvos($pid: ID!, $orderingType: Int!, $offet: Int) {
+        postConvos(pid: $pid, orderingType: $orderingType, offset: $offet) {
             id
-            uid
-            user
-            ranking
-            time
-            content
-            link
-            convoReward
-            responseCost
-            coin
-            coinDonated
-            convos {
-                id
-                pid
+            pid
+            cmid
 
-                time
-                msg
+            status
 
-                sid
-                sranking
-                sname
-                sanony
-                sviewed
+            initialTime
+            initialMsg
 
-                tid
-                tranking
-                tname
-                tviewed
-                __typename
-            }
-            __typename
+            lastTime
+            lastMsg
+
+            sid
+            stier
+            sranking
+            sname
+            sanony
+            sviewed
+
+            tid
+            ttier
+            tranking
+            tname
+            tviewed
+
+            targetMsgCount
         }
     }
 `;
+
+export interface PostConvosData {
+    postConvos: ConvoType[];
+}
+
+export interface PostConvosVariables {
+    pid: string;
+    orderingType: ConvoOrder;
+    offset?: number;
+}
