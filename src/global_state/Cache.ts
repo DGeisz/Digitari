@@ -2,6 +2,20 @@ import { InMemoryCache } from "@apollo/client";
 
 export const cache = new InMemoryCache({
     typePolicies: {
+        Mutation: {
+            fields: {
+                blockConvo: {
+                    merge(existing, incoming) {
+                        return incoming;
+                    },
+                },
+                finishConvo: {
+                    merge(existing, incoming) {
+                        return incoming;
+                    },
+                },
+            },
+        },
         Query: {
             fields: {
                 feed: {

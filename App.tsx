@@ -4,7 +4,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Linking from "expo-linking";
 import { NavigationContainer } from "@react-navigation/native";
 import { MockedProvider } from "@apollo/client/testing";
-import { allMocks } from "./src/global_gql/Mocks";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { cache } from "./src/global_state/Cache";
 import AppView from "./src/view_tree/AppView";
@@ -59,8 +58,8 @@ const httpLink = createHttpLink({ uri: url });
 
 const link = ApolloLink.from([
     createAuthLink({ url, region, auth }),
-    httpLink,
-    // createSubscriptionHandshakeLink({ url, region, auth }),
+    // httpLink,
+    createSubscriptionHandshakeLink({ url, region, auth }),
 ]);
 
 const client = new ApolloClient({

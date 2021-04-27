@@ -273,7 +273,8 @@ const CommunityPosts: React.FC<Props> = (props) => {
                         {finalFeed.length === 0 ? (
                             <View style={styles.noPostsContainer}>
                                 <Text style={styles.noPostsText}>
-                                    No one has posted to this community
+                                    No one at this tier has posted to this
+                                    community
                                 </Text>
                             </View>
                         ) : null}

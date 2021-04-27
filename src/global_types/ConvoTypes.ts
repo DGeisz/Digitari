@@ -48,3 +48,8 @@ export enum ConvoOrder {
     time,
     ranking,
 }
+
+export interface ConvoUpdate {
+    convo: ConvoType;
+    tid: string;
+}

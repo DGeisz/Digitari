@@ -50,4 +50,13 @@ export const styles = StyleSheet.create({
         fontWeight: "bold",
         color: palette.danger,
     },
+    noResponseContainer: {
+        ...basicLayouts.grid5,
+        marginTop: 40,
+    },
+    noResponseText: {
+        fontWeight: "bold",
+        fontSize: 18,
+        color: palette.semiSoftGray,
+    },
 });

@@ -44,8 +44,6 @@ const Profile: React.FC = () => {
         },
     });
 
-    console.log("This is user data: ", uid, data?.user, !data?.user);
-
     if (!data?.user && networkStatus === NetworkStatus.loading) {
         return <LoadingWheel />;
     }

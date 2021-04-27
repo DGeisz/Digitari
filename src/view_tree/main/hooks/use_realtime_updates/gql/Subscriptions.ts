@@ -1,177 +1,13 @@
 import { gql } from "@apollo/client";
-import { ConvoType, ConvoUpdate } from "../../../../../global_types/ConvoTypes";
 import { MessageType } from "../../../../../global_types/MessageTypes";
+import { ConvoType, ConvoUpdate } from "../../../../../global_types/ConvoTypes";
 
-export const MARK_CONVO_VIEWED = gql`
-    mutation MarkConvoViewed($cvid: ID!) {
-        markConvoViewed(cvid: $cvid) {
-            id
-            pid
-            cmid
-
-            status
-
-            initialTime
-            initialMsg
-
-            lastTime
-            lastMsg
-
-            sid
-            stier
-            sranking
-            sname
-            sanony
-            sviewed
-
-            tid
-            ttier
-            tranking
-            tname
-            tviewed
-
-            targetMsgCount
-        }
-    }
-`;
-
-export interface MarkConvoViewedData {
-    markConvoViewed: ConvoType;
-}
-
-export interface MarkConvoViewedVariables {
-    cvid: string;
-}
-
-export const DISMISS_CONVO = gql`
-    mutation DismissConvo($cvid: ID!) {
-        dismissConvo(cvid: $cvid) {
-            id
-            pid
-            cmid
-
-            status
-
-            initialTime
-            initialMsg
-
-            lastTime
-            lastMsg
-
-            sid
-            stier
-            sranking
-            sname
-            sanony
-            sviewed
-
-            tid
-            ttier
-            tranking
-            tname
-            tviewed
-
-            targetMsgCount
-        }
-    }
-`;
-
-export interface DismissConvoData {
-    dismissConvo: ConvoType;
-}
-
-export interface DismissConvoVariables {
-    cvid: string;
-}
-
-export const BLOCK_CONVO = gql`
-    mutation BlockConvo($cvid: ID!) {
-        blockConvo(cvid: $cvid) {
-            convo {
-                id
-                pid
-                cmid
-
-                status
-
-                initialTime
-                initialMsg
-
-                lastTime
-                lastMsg
-
-                sid
-                stier
-                sranking
-                sname
-                sanony
-                sviewed
-
-                tid
-                ttier
-                tranking
-                tname
-                tviewed
-
-                targetMsgCount
-            }
-            tid
-        }
-    }
-`;
-
-export interface BlockConvoData {
-    blockConvo: ConvoUpdate;
-}
-
-export interface BlockConvoVariables {
-    cvid: string;
-}
-
-export const ACTIVATE_CONVO = gql`
-    mutation ActivateConvo($cvid: ID!) {
-        activateConvo(cvid: $cvid) {
-            id
-            pid
-            cmid
-
-            status
-
-            initialTime
-            initialMsg
-
-            lastTime
-            lastMsg
-
-            sid
-            stier
-            sranking
-            sname
-            sanony
-            sviewed
-
-            tid
-            ttier
-            tranking
-            tname
-            tviewed
-
-            targetMsgCount
-        }
-    }
-`;
-
-export interface ActivateConvoData {
-    activateConvo: ConvoType;
-}
-
-export interface ActivateConvoVariables {
-    cvid: string;
-}
-
-export const CREATE_MESSAGE = gql`
-    mutation CreateMessage($cvid: ID!, $message: String!) {
-        createMessage(cvid: $cvid, message: $message) {
+/*
+ * New message
+ */
+export const NEW_MESSAGE_ADDED = gql`
+    subscription NewMessageAdded($tid: ID!) {
+        messageAdded(tid: $tid) {
             id
             uid
             tid
@@ -183,18 +19,64 @@ export const CREATE_MESSAGE = gql`
     }
 `;
 
-export interface CreateMessageData {
-    createMessage: MessageType;
+export interface NewMessageAddedData {
+    messageAdded: MessageType;
 }
 
-export interface CreateMessageVariables {
-    cvid: string;
-    message: string;
+export interface NewMessageAddedVariables {
+    tid: string;
 }
 
-export const FINISH_CONVO = gql`
-    mutation FinishConvo($cvid: ID!) {
-        finishConvo(cvid: $cvid) {
+/*
+ * Convo dismissed
+ */
+export const CONVO_DISMISSED = gql`
+    subscription ConvoDismissed($sid: ID!) {
+        convoDismissed(sid: $sid) {
+            id
+            pid
+            cmid
+
+            status
+
+            initialTime
+            initialMsg
+
+            lastTime
+            lastMsg
+
+            sid
+            stier
+            sranking
+            sname
+            sanony
+            sviewed
+
+            tid
+            ttier
+            tranking
+            tname
+            tviewed
+
+            targetMsgCount
+        }
+    }
+`;
+
+export interface ConvoDismissedData {
+    convoDismissed: ConvoType;
+}
+
+export interface ConvoDismissedVariables {
+    sid: string;
+}
+
+/*
+ * Convo blocked
+ */
+export const CONVO_BLOCKED = gql`
+    subscription ConvoBlocked($tid: ID!) {
+        convoBlocked(tid: $tid) {
             convo {
                 id
                 pid
@@ -228,10 +110,145 @@ export const FINISH_CONVO = gql`
     }
 `;
 
-export interface FinishConvoData {
-    finishConvo: ConvoUpdate;
+export interface ConvoBlockedData {
+    convoBlocked: ConvoUpdate;
 }
 
-export interface FinishConvoVariables {
-    cvid: string;
+export interface ConvoBlockedVariables {
+    tid: string;
+}
+
+/*
+ * Convo activated
+ */
+export const CONVO_ACTIVATED = gql`
+    subscription ConvoActivated($sid: ID!) {
+        convoActivated(sid: $sid) {
+            id
+            pid
+            cmid
+
+            status
+
+            initialTime
+            initialMsg
+
+            lastTime
+            lastMsg
+
+            sid
+            stier
+            sranking
+            sname
+            sanony
+            sviewed
+
+            tid
+            ttier
+            tranking
+            tname
+            tviewed
+
+            targetMsgCount
+        }
+    }
+`;
+
+export interface ConvoActivatedData {
+    convoActivated: ConvoType;
+}
+
+export interface ConvoActivatedVariables {
+    sid: string;
+}
+
+/*
+ * Convo created
+ */
+export const CONVO_CREATED = gql`
+    subscription ConvoCreated($tid: ID!) {
+        convoCreated(tid: $tid) {
+            id
+            pid
+            cmid
+
+            status
+
+            initialTime
+            initialMsg
+
+            lastTime
+            lastMsg
+
+            sid
+            stier
+            sranking
+            sname
+            sanony
+            sviewed
+
+            tid
+            ttier
+            tranking
+            tname
+            tviewed
+
+            targetMsgCount
+        }
+    }
+`;
+
+export interface ConvoCreatedData {
+    convoCreated: ConvoType;
+}
+
+export interface ConvoCreatedVariables {
+    tid: string;
+}
+
+/*
+ * Convo finished
+ */
+export const CONVO_FINISHED = gql`
+    subscription ConvoFinished($tid: ID!) {
+        convoFinished(tid: $tid) {
+            convo {
+                id
+                pid
+                cmid
+
+                status
+
+                initialTime
+                initialMsg
+
+                lastTime
+                lastMsg
+
+                sid
+                stier
+                sranking
+                sname
+                sanony
+                sviewed
+
+                tid
+                ttier
+                tranking
+                tname
+                tviewed
+
+                targetMsgCount
+            }
+            tid
+        }
+    }
+`;
+
+export interface ConvoFinishedData {
+    convoFinished: ConvoUpdate;
+}
+
+export interface ConvoFinishedVariables {
+    tid: string;
 }

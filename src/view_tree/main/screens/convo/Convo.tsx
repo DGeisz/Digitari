@@ -18,6 +18,7 @@ import {
     ConvoPostData,
     ConvoPostVariables,
     ConvoVariables,
+    MAX_CONVO_MESSAGES_PER_PAGE,
 } from "./gql/Queries";
 import LoadingWheel from "../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import ErrorMessage from "../../../../global_building_blocks/error_message/ErrorMessage";
@@ -217,8 +218,11 @@ const Convo: React.FC<Props> = (props) => {
             optimisticResponse: !!convoData?.convo
                 ? {
                       blockConvo: {
-                          ...convoData.convo,
-                          status: ConvoStatus.Blocked,
+                          convo: {
+                              ...convoData.convo,
+                              status: ConvoStatus.Blocked,
+                          },
+                          tid: "",
                       },
                   }
                 : undefined,
@@ -377,12 +381,15 @@ const Convo: React.FC<Props> = (props) => {
             optimisticResponse: !!convoData?.convo
                 ? {
                       finishConvo: {
-                          ...convoData.convo,
-                          status: ConvoStatus.Finished,
+                          convo: {
+                              ...convoData.convo,
+                              status: ConvoStatus.Finished,
+                          },
+                          tid: "",
                       },
                   }
                 : undefined,
-            update(cache, { data }) {
+            update(cache) {
                 /*
                  * Change the convo status
                  */
@@ -485,6 +492,33 @@ const Convo: React.FC<Props> = (props) => {
                         },
                     },
                 });
+
+                /*
+                 * Modify the order of active convos so the most active
+                 * convo is up top
+                 */
+                const activeConvosData = cache.readQuery<
+                    ActiveConvosData,
+                    ActiveConvosVariables
+                >({
+                    query: ACTIVE_CONVOS,
+                });
+
+                if (!!activeConvosData?.activeConvos) {
+                    console.log("Now we're sorting everything");
+
+                    let convos = [...activeConvosData.activeConvos];
+                    convos.sort(
+                        (a, b) => parseInt(b.lastTime) - parseInt(a.lastTime)
+                    );
+
+                    cache.writeQuery<ActiveConvosData, ActiveConvosVariables>({
+                        query: ACTIVE_CONVOS,
+                        data: {
+                            activeConvos: convos,
+                        },
+                    });
+                }
             }
         },
     });
@@ -523,6 +557,9 @@ const Convo: React.FC<Props> = (props) => {
      */
     const scrollRef = useRef<FlatList>(null);
     const [stillSpin, setStillSpin] = useState<boolean>(false);
+    const [fetchMoreLen, setFetchMoreLen] = useState<number>(
+        MAX_CONVO_MESSAGES_PER_PAGE - 5
+    );
 
     if (
         postLoading ||
@@ -751,8 +788,40 @@ const Convo: React.FC<Props> = (props) => {
                         }
 
                         return <View />;
+                    case ConvoStatus.New:
+                        if (sid === uid || sid === hid) {
+                            return (
+                                <View style={styles.noResponseContainer}>
+                                    <Text style={styles.noResponseText}>
+                                        {tname} hasn't responded yet
+                                    </Text>
+                                </View>
+                            );
+                        }
+
+                        return <View />;
                     default:
                         return <View />;
+                }
+            }}
+            onEndReached={async () => {
+                if (
+                    !!messagesData?.convoMessages &&
+                    messagesData.convoMessages.length > fetchMoreLen
+                ) {
+                    const messages = messagesData.convoMessages;
+
+                    const lastTime = messages[messages.length - 1].time;
+                    const ffLen = messages.length;
+
+                    setFetchMoreLen(ffLen);
+
+                    !!fetchMore &&
+                        (await fetchMore({
+                            variables: {
+                                lastTime,
+                            },
+                        }));
                 }
             }}
         />

@@ -2,8 +2,8 @@ import { gql } from "@apollo/client";
 
 export const schema = gql`
     directive @aws_iam on FIELD_DEFINITION | OBJECT
-
     directive @aws_cognito_user_pools on FIELD_DEFINITION | OBJECT
+    directive @aws_subscribe(mutations: [String]) on FIELD_DEFINITION
 
     type User @aws_iam @aws_cognito_user_pools {
         id: ID
@@ -107,6 +107,11 @@ export const schema = gql`
         tviewed: Boolean
 
         targetMsgCount: Int
+    }
+
+    type ConvoUpdate {
+        convo: Convo
+        tid: ID
     }
 
     type Message {
@@ -256,9 +261,10 @@ export const schema = gql`
 
         markConvoViewed(cvid: ID!): Convo
         dismissConvo(cvid: ID!): Convo
-        blockConvo(cvid: ID!): Convo
         activateConvo(cvid: ID!): Convo
-        finishConvo(cvid: ID!): Convo
+
+        blockConvo(cvid: ID!): ConvoUpdate
+        finishConvo(cvid: ID!): ConvoUpdate
 
         createMessage(cvid: ID!, message: String!): Message
 
@@ -282,9 +288,27 @@ export const schema = gql`
         deleteSearchEntity(id: String): SearchEntity
     }
 
+    type Subscription {
+        convoCreated(tid: ID!): Convo @aws_subscribe(mutations: ["createConvo"])
+
+        messageAdded(tid: ID!): Message
+            @aws_subscribe(mutations: ["createMessage"])
+
+        convoDismissed(sid: ID!): Convo
+            @aws_subscribe(mutations: ["dismissConvo"])
+        convoActivated(sid: ID!): Convo
+            @aws_subscribe(mutations: ["activateConvo"])
+
+        convoBlocked(tid: ID!): ConvoUpdate
+            @aws_subscribe(mutations: ["blockConvo"])
+        convoFinished(tid: ID!): ConvoUpdate
+            @aws_subscribe(mutations: ["finishConvo"])
+    }
+
     schema {
         mutation: Mutation
         query: Query
+        subscription: Subscription
     }
 `;
 

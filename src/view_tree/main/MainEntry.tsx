@@ -12,10 +12,13 @@ import Community from "./screens/community/Community";
 import User from "./screens/user/User";
 import Follows from "./screens/follows/Follows";
 import NewPost from "./screens/new/screens/new_post/NewPost";
+import { useRealtimeUpdates } from "./hooks/use_realtime_updates/use_realtime_updates";
 
 const RootStack = createStackNavigator<MainEntryStack>();
 
 const MainEntry: React.FC = () => {
+    useRealtimeUpdates();
+
     return (
         <RootStack.Navigator
             initialRouteName="TabNav"

@@ -106,3 +106,5 @@ export interface ConvoMessagesVariables {
     cvid: string;
     lastTime?: string;
 }
+
+export const MAX_CONVO_MESSAGES_PER_PAGE = 50;
