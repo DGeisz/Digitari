@@ -188,3 +188,44 @@ export interface CreateMessageVariables {
     cvid: string;
     message: string;
 }
+
+export const FINISH_CONVO = gql`
+    mutation FinishConvo($cvid: ID!) {
+        finishConvo(cvid: $cvid) {
+            id
+            pid
+            cmid
+
+            status
+
+            initialTime
+            initialMsg
+
+            lastTime
+            lastMsg
+
+            sid
+            stier
+            sranking
+            sname
+            sanony
+            sviewed
+
+            tid
+            ttier
+            tranking
+            tname
+            tviewed
+
+            targetMsgCount
+        }
+    }
+`;
+
+export interface FinishConvoData {
+    finishConvo: ConvoType;
+}
+
+export interface FinishConvoVariables {
+    cvid: string;
+}

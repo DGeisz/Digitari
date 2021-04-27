@@ -1,5 +1,11 @@
 import React, { useContext, useState } from "react";
-import { Animated, RefreshControl, Text, View } from "react-native";
+import {
+    Animated,
+    RefreshControl,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
 import { NetworkStatus, useQuery } from "@apollo/client";
 import {
     GET_USER_POSTS,

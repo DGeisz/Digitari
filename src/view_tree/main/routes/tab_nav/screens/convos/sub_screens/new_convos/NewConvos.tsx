@@ -112,6 +112,13 @@ const NewConvos: React.FC<Props> = () => {
                     <Text style={styles.noNewConvosText}>
                         You don't have any new convos
                     </Text>
+                    <TouchableOpacity
+                        onPress={() => {
+                            !!refetch && refetch();
+                        }}
+                    >
+                        <Text style={styles.refreshText}>Refresh</Text>
+                    </TouchableOpacity>
                 </View>
             ) : (
                 <FlatList

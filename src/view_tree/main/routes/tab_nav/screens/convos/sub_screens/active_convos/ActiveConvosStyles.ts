@@ -1,17 +1,15 @@
 import { StyleSheet } from "react-native";
-import { basicLayouts } from "../../../../../../global_styles/BasicLayouts";
-import { palette } from "../../../../../../global_styles/Palette";
+import { basicLayouts } from "../../../../../../../../global_styles/BasicLayouts";
+import { palette } from "../../../../../../../../global_styles/Palette";
 
 export const styles = StyleSheet.create({
-    noFeedContainer: {
+    noActiveConvos: {
         ...basicLayouts.flexGrid5,
-        paddingHorizontal: 30,
     },
-    noFeedText: {
+    noActiveConvosText: {
         fontSize: 18,
         fontWeight: "bold",
         color: palette.semiSoftGray,
-        textAlign: "center",
     },
     refreshText: {
         marginTop: 10,

@@ -1,5 +1,11 @@
 import React, { useContext, useState } from "react";
-import { FlatList, RefreshControl, View } from "react-native";
+import {
+    FlatList,
+    RefreshControl,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
 import { localUid } from "../../../../../../../../global_state/UserState";
 import { TabNavContext } from "../../../../TabNavContext";
 import { NetworkStatus, useQuery } from "@apollo/client";
@@ -14,6 +20,7 @@ import ErrorMessage from "../../../../../../../../global_building_blocks/error_m
 import ConvoCover from "../../../../../../../../global_building_blocks/convo_cover/ConvoCover";
 import { palette } from "../../../../../../../../global_styles/Palette";
 import { globalScreenStyles } from "../../../../../../../../global_styles/GlobalScreenStyles";
+import { styles } from "./ActiveConvosStyles";
 
 interface Props {}
 
@@ -45,6 +52,23 @@ const ActiveConvos: React.FC<Props> = () => {
 
     if (!!error) {
         return <ErrorMessage refresh={refetch} />;
+    }
+
+    if (finalFeed.length === 0) {
+        return (
+            <View style={styles.noActiveConvos}>
+                <Text style={styles.noActiveConvosText}>
+                    You don't have any active convos
+                </Text>
+                <TouchableOpacity
+                    onPress={() => {
+                        !!refetch && refetch();
+                    }}
+                >
+                    <Text style={styles.refreshText}>Refresh</Text>
+                </TouchableOpacity>
+            </View>
+        );
     }
 
     return (

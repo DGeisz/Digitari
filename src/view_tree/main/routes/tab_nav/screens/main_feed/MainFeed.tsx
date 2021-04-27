@@ -1,5 +1,11 @@
 import React, { useContext, useState } from "react";
-import { FlatList, RefreshControl, Text, View } from "react-native";
+import {
+    FlatList,
+    RefreshControl,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
 import { GET_FEED, GetFeedData, GetFeedVariables } from "./gql/Queries";
 import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import ErrorMessage from "../../../../../../global_building_blocks/error_message/ErrorMessage";
@@ -53,6 +59,13 @@ const MainFeed: React.FC<Props> = () => {
                         Follow some users or communities to start receiving a
                         feed!
                     </Text>
+                    <TouchableOpacity
+                        onPress={() => {
+                            !!refetch && refetch();
+                        }}
+                    >
+                        <Text style={styles.refreshText}>Refresh</Text>
+                    </TouchableOpacity>
                 </View>
             ) : (
                 <FlatList

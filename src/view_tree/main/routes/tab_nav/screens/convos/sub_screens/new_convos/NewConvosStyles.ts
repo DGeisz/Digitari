@@ -36,4 +36,10 @@ export const styles = StyleSheet.create({
         fontWeight: "bold",
         color: palette.semiSoftGray,
     },
+    refreshText: {
+        marginTop: 10,
+        fontSize: 18,
+        fontWeight: "bold",
+        color: palette.deepBlue,
+    },
 });

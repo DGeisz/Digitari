@@ -56,6 +56,9 @@ import {
     DISMISS_CONVO,
     DismissConvoData,
     DismissConvoVariables,
+    FINISH_CONVO,
+    FinishConvoData,
+    FinishConvoVariables,
     MARK_CONVO_VIEWED,
     MarkConvoViewedData,
     MarkConvoViewedVariables,
@@ -63,6 +66,11 @@ import {
 import { QUERY_TYPENAME } from "../../../../global_gql/Schema";
 import { USER_TYPENAME } from "../../../../global_types/UserTypes";
 import { basicLayouts } from "../../../../global_styles/BasicLayouts";
+import {
+    ACTIVE_CONVOS,
+    ActiveConvosData,
+    ActiveConvosVariables,
+} from "../../routes/tab_nav/screens/convos/sub_screens/active_convos/gql/Queries";
 
 function getCheckLeft(uid: string, tid: string): (id: string) => boolean {
     if (uid === tid) {
@@ -156,6 +164,14 @@ const Convo: React.FC<Props> = (props) => {
             variables: {
                 cvid: cvid,
             },
+            optimisticResponse: !!convoData?.convo
+                ? {
+                      dismissConvo: {
+                          ...convoData.convo,
+                          status: ConvoStatus.Dismissed,
+                      },
+                  }
+                : undefined,
             update(cache) {
                 /*
                  * Change the convo status
@@ -198,6 +214,14 @@ const Convo: React.FC<Props> = (props) => {
             variables: {
                 cvid: cvid,
             },
+            optimisticResponse: !!convoData?.convo
+                ? {
+                      blockConvo: {
+                          ...convoData.convo,
+                          status: ConvoStatus.Blocked,
+                      },
+                  }
+                : undefined,
             update(cache) {
                 /*
                  * Change the convo status
@@ -259,6 +283,14 @@ const Convo: React.FC<Props> = (props) => {
         variables: {
             cvid: cvid,
         },
+        optimisticResponse: !!convoData?.convo
+            ? {
+                  activateConvo: {
+                      ...convoData.convo,
+                      status: ConvoStatus.Active,
+                  },
+              }
+            : undefined,
         update(cache, { data, errors }) {
             if (!!errors && errors.length > 0) {
                 setError("You don't have enough coin to respond.");
@@ -314,12 +346,108 @@ const Convo: React.FC<Props> = (props) => {
                     },
                 });
 
-                /*
-                 * TODO: On activate, add convo to active convos, and user's convos
-                 */
+                const activeConvos = cache.readQuery<
+                    ActiveConvosData,
+                    ActiveConvosVariables
+                >({
+                    query: ACTIVE_CONVOS,
+                });
+
+                if (!!activeConvos?.activeConvos) {
+                    cache.writeQuery<ActiveConvosData, ActiveConvosVariables>({
+                        query: ACTIVE_CONVOS,
+                        data: {
+                            activeConvos: [
+                                data.activateConvo,
+                                ...activeConvos.activeConvos,
+                            ],
+                        },
+                    });
+                }
             }
         },
     });
+
+    const [finishConvo] = useMutation<FinishConvoData, FinishConvoVariables>(
+        FINISH_CONVO,
+        {
+            variables: {
+                cvid,
+            },
+            optimisticResponse: !!convoData?.convo
+                ? {
+                      finishConvo: {
+                          ...convoData.convo,
+                          status: ConvoStatus.Finished,
+                      },
+                  }
+                : undefined,
+            update(cache, { data }) {
+                /*
+                 * Change the convo status
+                 */
+                cache.modify({
+                    id: cache.identify({
+                        id: cvid,
+                        __typename: CONVO_TYPENAME,
+                    }),
+                    fields: {
+                        status() {
+                            return ConvoStatus.Finished;
+                        },
+                    },
+                });
+
+                /*
+                 * Remove convo from active convos
+                 */
+                cache.modify({
+                    id: cache.identify({
+                        __typename: QUERY_TYPENAME,
+                    }),
+                    fields: {
+                        activeConvos(existing, { readField }) {
+                            return existing.filter(
+                                (reqRef: any) =>
+                                    readField("id", reqRef) !== cvid
+                            );
+                        },
+                    },
+                });
+
+                /*
+                 * Increase the user's ranking, successfulConvos, and
+                 * if this is the source user, also increase their coin
+                 */
+                cache.modify({
+                    id: cache.identify({
+                        __typename: USER_TYPENAME,
+                        id: uid,
+                    }),
+                    fields: {
+                        ranking(existing) {
+                            return existing + 1;
+                        },
+                        successfulConvos(existing) {
+                            return existing + 1;
+                        },
+                        coin(existing) {
+                            if (
+                                !!convoData?.convo &&
+                                (convoData.convo.sid === uid ||
+                                    convoData.convo.sid === hid) &&
+                                !!postData?.post
+                            ) {
+                                return existing + postData.post.convoReward;
+                            }
+
+                            return existing;
+                        },
+                    },
+                });
+            },
+        }
+    );
 
     const [createMessage] = useMutation<
         CreateMessageData,
@@ -604,7 +732,7 @@ const Convo: React.FC<Props> = (props) => {
                             if (uid === tid) {
                                 return (
                                     <PendingFinishFooter
-                                        onFinish={() => {}}
+                                        onFinish={finishConvo}
                                         finishMessage={"Finish convo?"}
                                     />
                                 );
@@ -613,7 +741,7 @@ const Convo: React.FC<Props> = (props) => {
                             ) {
                                 return (
                                     <PendingFinishFooter
-                                        onFinish={() => {}}
+                                        onFinish={finishConvo}
                                         finishMessage={
                                             "Finish convo and collect reward?"
                                         }
