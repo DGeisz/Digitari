@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Platform, UIManager } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Linking from "expo-linking";
-import { NavigationContainer } from "@react-navigation/native";
+import { LinkingOptions, NavigationContainer } from "@react-navigation/native";
 import { MockedProvider } from "@apollo/client/testing";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { cache } from "./src/global_state/Cache";
@@ -73,6 +73,28 @@ if (Platform.OS === "android") {
     }
 }
 
+const prefix = Linking.createURL("/");
+
+const linking: LinkingOptions = {
+    prefixes: [prefix],
+    config: {
+        screens: {
+            TabNav: {
+                screens: {
+                    Wallet: "wallet",
+                },
+            },
+            NewPost: "new-post",
+            User: "user/:uid",
+        },
+    },
+    subscribe(listener) {
+        // setTimeout(() => {
+        //     listener(prefix + "user/0faa3642-55df-45dd-962d-4be9b80ab979");
+        // }, 1000);
+    },
+};
+
 export default function App() {
     // const [client, setClient] = React.useState<ApolloClient<NormalizedCacheObject>>(new ApolloClient({ link, cache }));
 
@@ -91,9 +113,12 @@ export default function App() {
     //         }));
     //     })();
     // }, []);
+    useEffect(() => {
+        console.log("Here's the prefix!:", prefix);
+    }, []);
 
     return (
-        <NavigationContainer>
+        <NavigationContainer linking={linking}>
             <ApolloProvider client={client}>
                 {/*<MockedProvider cache={cache} mocks={allMocks} addTypename={false}>*/}
                 <SafeAreaProvider>

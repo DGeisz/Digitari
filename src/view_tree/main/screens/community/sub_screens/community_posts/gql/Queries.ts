@@ -1,6 +1,8 @@
 import { gql } from "@apollo/client";
 import { PostType } from "../../../../../../../global_types/PostTypes";
 
+export const MAX_COMMUNITY_POSTS_PER_PAGE = 20;
+
 export const GET_COMMUNITY_POSTS = gql`
     query GetCommunityPosts($cmid: ID!, $lastTime: String, $tier: Int) {
         communityPosts(cmid: $cmid, lastTime: $lastTime, tier: $tier) {

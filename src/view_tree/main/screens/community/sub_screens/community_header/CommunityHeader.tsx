@@ -28,8 +28,8 @@ const CommunityHeader: React.FC<Props> = (props) => {
                     {`You need ${FOLLOW_COMMUNITY_PRICE} digicoin to follow this community`}
                 </Text>
             )}
-            <View style={styles.headerHeader}>
-                <View style={styles.headerLeft}>
+            <View style={styles.headerHeader} pointerEvents="box-none">
+                <View style={styles.headerLeft} pointerEvents="box-none">
                     <View style={styles.iconContainer}>
                         <FontAwesome
                             name="users"
@@ -85,12 +85,12 @@ const CommunityHeader: React.FC<Props> = (props) => {
                 </View>
             </View>
             <Text style={styles.nameText}>{props.community.name}</Text>
-            <View style={styles.headerBody}>
+            <View style={styles.headerBody} pointerEvents="none">
                 <Text style={styles.descriptionText}>
                     {props.community.description}
                 </Text>
             </View>
-            <View style={styles.headerFooter}>
+            <View style={styles.headerFooter} pointerEvents="none">
                 <View style={styles.footerLeft}>
                     <Text style={styles.followsText}>
                         <Text style={styles.followsCountText}>

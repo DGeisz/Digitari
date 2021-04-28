@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import TabNav from "./routes/tab_nav/TabNav";
 import Convo from "./screens/convo/Convo";
 import NewResponse from "./screens/new_response/NewResponse";
@@ -13,11 +13,90 @@ import User from "./screens/user/User";
 import Follows from "./screens/follows/Follows";
 import NewPost from "./screens/new/screens/new_post/NewPost";
 import { useRealtimeUpdates } from "./hooks/use_realtime_updates/use_realtime_updates";
+import { useMutation } from "@apollo/client";
+import {
+    REGISTER_PUSH,
+    RegisterPushData,
+    RegisterPushVariables,
+} from "./gql/Mutations";
+import Constants from "expo-constants";
+import * as Notifications from "expo-notifications";
+import { Platform } from "react-native";
+import {
+    localFirstName,
+    localPushToken,
+    setLocalPushToken,
+} from "../../global_state/UserState";
 
 const RootStack = createStackNavigator<MainEntryStack>();
 
 const MainEntry: React.FC = () => {
+    /*
+     * Handle realtime subscriptions
+     */
     useRealtimeUpdates();
+
+    /*
+     * Handle push notifications
+     */
+    const [registerPush] = useMutation<RegisterPushData, RegisterPushVariables>(
+        REGISTER_PUSH
+    );
+
+    /*
+     * Register for push notifications
+     */
+    useEffect(() => {
+        if (Constants.isDevice) {
+            (async () => {
+                try {
+                    const {
+                        status: existingStatus,
+                    } = await Notifications.getPermissionsAsync();
+
+                    let finalStatus = existingStatus;
+
+                    if (existingStatus !== "granted") {
+                        const {
+                            status,
+                        } = await Notifications.requestPermissionsAsync();
+
+                        finalStatus = status;
+                    }
+
+                    if (finalStatus !== "granted") {
+                        /*
+                         * We officially failed to get permission to send push
+                         */
+
+                        return;
+                    }
+
+                    const token = (await Notifications.getExpoPushTokenAsync())
+                        .data;
+
+                    try {
+                        await registerPush({
+                            variables: {
+                                token,
+                            },
+                        });
+                    } catch (_) {
+                        console.log("Already registered, or perhaps error");
+                    }
+                } catch (e) {
+                    console.log("Error in push registration flow");
+                }
+            })();
+        }
+
+        if (Platform.OS === "android") {
+            Notifications.setNotificationChannelAsync("default", {
+                name: "default",
+                importance: Notifications.AndroidImportance.MAX,
+            }).then();
+        }
+    }, []);
 
     return (
         <RootStack.Navigator

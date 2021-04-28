@@ -243,6 +243,7 @@ export const schema = gql`
         createCommunityCoinCheck: CoinCheck
         community(cmid: ID!): Community
         communityPosts(cmid: ID!, lastTime: String, tier: Int): [Post]
+        communityConvos(cmid: ID!, lastTime: String, tier: Int): [Convo]
         search(text: String!, offset: Int, entityType: Int): [SearchEntity]
         topResults(offset: Int, entityType: Int): [SearchEntity]
         searchEntity(id: ID!): SearchEntity
@@ -257,6 +258,8 @@ export const schema = gql`
             lastName: String!
             email: String!
         ): User
+
+        registerPush(token: String!): Boolean
 
         createConvo(pid: ID, message: String, anonymous: Boolean): Convo
 

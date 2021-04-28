@@ -106,7 +106,6 @@ const AppView: React.FC = () => {
                     });
 
                     if (!!hidData?.hid) {
-                        console.log("Here's hid: ", hidData.hid);
                         setLocalHid(hidData.hid);
                     }
                 }

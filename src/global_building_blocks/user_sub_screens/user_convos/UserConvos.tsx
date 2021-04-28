@@ -73,6 +73,7 @@ const UserConvos: React.FC<Props> = (props) => {
                     displayActive={true}
                     convo={item}
                     showBottomBorder={index !== finalFeed.length - 1}
+                    showUnViewedDot={false}
                     openConvo={props.openConvo}
                 />
             )}

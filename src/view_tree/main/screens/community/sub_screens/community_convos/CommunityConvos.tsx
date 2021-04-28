@@ -7,23 +7,23 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
+import { CommunityNavProp } from "../../../../MainEntryNavTypes";
+import { TierEmoji, TierEnum } from "../../../../../../global_types/TierTypes";
 import { NetworkStatus, useQuery } from "@apollo/client";
 import {
-    GET_COMMUNITY_POSTS,
-    GetCommunityPostsData,
-    GetCommunityPostsVariables,
-    MAX_COMMUNITY_POSTS_PER_PAGE,
+    COMMUNITY_CONVOS,
+    CommunityConvosData,
+    CommunityConvosVariables,
+    MAX_COMMUNITY_CONVOS_PER_PAGE,
 } from "./gql/Queries";
+import { useCollapsibleScene } from "react-native-collapsible-tab-view";
+import { tierBarStyles } from "../styles/tierBarStyles";
+import { palette } from "../../../../../../global_styles/Palette";
 import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import ErrorMessage from "../../../../../../global_building_blocks/error_message/ErrorMessage";
-import Post from "../../../../../../global_building_blocks/post/Post";
-import { palette } from "../../../../../../global_styles/Palette";
 import { globalScreenStyles } from "../../../../../../global_styles/GlobalScreenStyles";
-import { useCollapsibleScene } from "react-native-collapsible-tab-view";
-import { TierEmoji, TierEnum } from "../../../../../../global_types/TierTypes";
-import { styles } from "./CommunityPostStyles";
-import { CommunityNavProp } from "../../../../MainEntryNavTypes";
-import { tierBarStyles } from "../styles/tierBarStyles";
+import ConvoCover from "../../../../../../global_building_blocks/convo_cover/ConvoCover";
+import { styles } from "./CommunityConvosStyles";
 
 interface Props {
     routeKey: string;
@@ -31,13 +31,13 @@ interface Props {
     navigation: CommunityNavProp;
 }
 
-const CommunityPosts: React.FC<Props> = (props) => {
+const CommunityConvos: React.FC<Props> = (props) => {
     const [tier, setTier] = useState<TierEnum | undefined>(undefined);
 
     const { data, error, networkStatus, refetch, fetchMore } = useQuery<
-        GetCommunityPostsData,
-        GetCommunityPostsVariables
-    >(GET_COMMUNITY_POSTS, {
+        CommunityConvosData,
+        CommunityConvosVariables
+    >(COMMUNITY_CONVOS, {
         variables: {
             cmid: props.cmid,
             tier,
@@ -49,11 +49,11 @@ const CommunityPosts: React.FC<Props> = (props) => {
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
     const [fetchMoreLen, setFetchMoreLen] = useState<number>(
-        MAX_COMMUNITY_POSTS_PER_PAGE - 5
+        MAX_COMMUNITY_CONVOS_PER_PAGE - 5
     );
 
-    const finalFeed = !!data?.communityPosts
-        ? data.communityPosts.filter((post) => !!post)
+    const finalFeed = !!data?.communityConvos
+        ? data.communityConvos.filter((convo) => !!convo)
         : [];
 
     return (
@@ -265,53 +265,35 @@ const CommunityPosts: React.FC<Props> = (props) => {
                                 </TouchableOpacity>
                             </View>
                         </ScrollView>
-                        {!data?.communityPosts ||
+                        {!data?.communityConvos ||
                         networkStatus === NetworkStatus.loading ? (
                             <LoadingWheel />
                         ) : error ? (
                             <ErrorMessage refresh={refetch} />
                         ) : finalFeed.length === 0 ? (
-                            <View style={styles.noPostsContainer}>
-                                <Text style={styles.noPostsText}>
-                                    No one at this tier has posted to this
-                                    community
+                            <View style={styles.noConvosContainer}>
+                                <Text style={styles.noConvosText}>
+                                    No one at this tier has had a convo about a
+                                    post to this community
                                 </Text>
                             </View>
-                        ) : (
-                            <View style={styles.postsBuffer} />
-                        )}
+                        ) : null}
                     </>
                 );
             }}
             data={finalFeed}
-            renderItem={({ item }) => (
-                <Post
-                    openUser={(uid: string) => {
-                        props.navigation.navigate("User", { uid });
-                    }}
-                    openCommunity={(cmid: string) => {
-                        props.navigation.navigate("Community", { cmid });
-                    }}
-                    openPost={(pid: string) => {
-                        props.navigation.navigate("PostScreen", { pid });
-                    }}
-                    onMessage={(
-                        tname: string,
-                        pid: string,
-                        responseCost: number
-                    ) => {
-                        props.navigation.navigate("NewResponse", {
-                            tname,
-                            pid,
-                            responseCost,
-                        });
-                    }}
-                    post={item}
+            renderItem={({ item, index }) => (
+                <ConvoCover
+                    displayActive={true}
+                    convo={item}
+                    showUnViewedDot={false}
+                    showBottomBorder={index !== finalFeed.length - 1}
+                    openConvo={(cvid, pid) =>
+                        props.navigation.navigate("Convo", { cvid, pid })
+                    }
                 />
             )}
-            keyExtractor={(item, index) =>
-                [item.id, "comPosts", index].join(":")
-            }
+            keyExtractor={(item, index) => [item.id, "comCon", index].join(":")}
             refreshControl={
                 <RefreshControl
                     refreshing={
@@ -335,7 +317,7 @@ const CommunityPosts: React.FC<Props> = (props) => {
             }
             onEndReached={async () => {
                 if (finalFeed.length > fetchMoreLen) {
-                    const lastTime = finalFeed[finalFeed.length - 1].time;
+                    const lastTime = finalFeed[finalFeed.length - 1].lastTime;
                     const ffLen = finalFeed.length;
 
                     setFetchMoreLen(ffLen);
@@ -343,6 +325,7 @@ const CommunityPosts: React.FC<Props> = (props) => {
                     !!fetchMore &&
                         (await fetchMore({
                             variables: {
+                                cmid: props.cmid,
                                 lastTime,
                                 tier,
                             },
@@ -360,4 +343,4 @@ const CommunityPosts: React.FC<Props> = (props) => {
     );
 };
 
-export default CommunityPosts;
+export default CommunityConvos;

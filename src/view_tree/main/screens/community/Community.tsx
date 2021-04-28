@@ -30,6 +30,7 @@ import { USER_TYPENAME } from "../../../../global_types/UserTypes";
 import Followers from "./sub_screens/followers/Followers";
 import CommunityPosts from "./sub_screens/community_posts/CommunityPosts";
 import NewButton from "../../../../global_building_blocks/new_button/NewButton";
+import CommunityConvos from "./sub_screens/community_convos/CommunityConvos";
 
 interface Props {
     route: CommunityRouteProp;
@@ -204,7 +205,13 @@ const Community: React.FC<Props> = (props) => {
                             ),
                         }}
                     >
-                        {() => <View />}
+                        {() => (
+                            <CommunityConvos
+                                routeKey={"CommunityConvos"}
+                                cmid={data?.community.id}
+                                navigation={props.navigation}
+                            />
+                        )}
                     </Tab.Screen>
                     <Tab.Screen
                         name="CommunityFollowers"

@@ -36,7 +36,7 @@ export function setLocalHid(hid: string): void {
 }
 
 /*User first name*/
-export const NAME_KEY = "NAME_KEY";
+const NAME_KEY = "NAME_KEY";
 
 export const localFirstName = makeVar<string>("");
 
@@ -50,4 +50,21 @@ AsyncStorage.getItem(NAME_KEY).then((raw) => {
 export function setLocalFirstName(name: string): void {
     localFirstName(name);
     AsyncStorage.setItem(NAME_KEY, JSON.stringify(name)).then();
+}
+
+/*Local push token*/
+const PUSH_KEY = "PUSH_KEY";
+
+export const localPushToken = makeVar<string>("");
+
+AsyncStorage.getItem(PUSH_KEY).then((raw) => {
+    if (raw) {
+        const token = JSON.parse(raw);
+        localPushToken(token);
+    }
+});
+
+export function setLocalPushToken(token: string): void {
+    localPushToken(token);
+    AsyncStorage.setItem(PUSH_KEY, JSON.stringify(token)).then();
 }
