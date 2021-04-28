@@ -241,6 +241,12 @@ const User: React.FC<Props> = (props) => {
                             <UserConvos
                                 routeKey={"UserConvos"}
                                 uid={data?.user.id}
+                                openConvo={(cvid: string, pid: string) => {
+                                    props.navigation.navigate("Convo", {
+                                        cvid,
+                                        pid,
+                                    });
+                                }}
                             />
                         )}
                     </Tab.Screen>

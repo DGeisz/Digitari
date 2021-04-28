@@ -31,6 +31,7 @@ const Profile: React.FC = () => {
         openCommunity,
         openUser,
         openNewMessage,
+        openConvo,
     } = useContext(TabNavContext);
     const uid = localUid();
 
@@ -112,7 +113,11 @@ const Profile: React.FC = () => {
                             }}
                         >
                             {() => (
-                                <UserConvos routeKey={"UserConvos"} uid={uid} />
+                                <UserConvos
+                                    routeKey={"UserConvos"}
+                                    uid={uid}
+                                    openConvo={openConvo}
+                                />
                             )}
                         </Tab.Screen>
                         <Tab.Screen

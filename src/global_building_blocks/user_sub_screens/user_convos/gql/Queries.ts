@@ -1,48 +1,46 @@
 import { gql } from "@apollo/client";
+import { ConvoType } from "../../../../global_types/ConvoTypes";
 
-export const GET_USER_CONVOS = gql`
-    query GetUserConvos($uid: ID!, $lastTime: String) {
+export const USER_CONVOS_PER_PAGE = 50;
+
+export const USER_CONVOS = gql`
+    query UserConvos($uid: ID!, $lastTime: String) {
         userConvos(uid: $uid, lastTime: $lastTime) {
             id
             pid
+            cmid
 
-            time
-            msg
+            status
+
+            initialTime
+            initialMsg
+
+            lastTime
+            lastMsg
 
             sid
+            stier
             sranking
             sname
             sanony
             sviewed
 
             tid
+            ttier
             tranking
             tname
             tviewed
+
+            targetMsgCount
         }
     }
 `;
 
-export const GET_USER_CONVOS_TYPE = gql`
-    query GetUserConvos($uid: ID!, $lastTime: String) {
-        userConvos(uid: $uid, lastTime: $lastTime) {
-            id
-            pid
+export interface UserConvosData {
+    userConvos: ConvoType[];
+}
 
-            time
-            msg
-
-            sid
-            sranking
-            sname
-            sanony
-            sviewed
-
-            tid
-            tranking
-            tname
-            tviewed
-            __typename
-        }
-    }
-`;
+export interface UserConvosVariables {
+    uid: string;
+    lastTime?: string;
+}

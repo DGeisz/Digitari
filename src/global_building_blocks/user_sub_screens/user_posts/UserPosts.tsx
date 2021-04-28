@@ -1,11 +1,5 @@
-import React, { useContext, useState } from "react";
-import {
-    Animated,
-    RefreshControl,
-    Text,
-    TouchableOpacity,
-    View,
-} from "react-native";
+import React, { useState } from "react";
+import { Animated, RefreshControl, Text, View } from "react-native";
 import { NetworkStatus, useQuery } from "@apollo/client";
 import {
     GET_USER_POSTS,
@@ -13,7 +7,6 @@ import {
     GetUserPostVariables,
 } from "./gql/Queries";
 import { useCollapsibleScene } from "react-native-collapsible-tab-view";
-import { TabNavContext } from "../../../view_tree/main/routes/tab_nav/TabNavContext";
 import LoadingWheel from "../../loading_wheel/LoadingWheel";
 import ErrorMessage from "../../error_message/ErrorMessage";
 import Post from "../../post/Post";
@@ -44,14 +37,6 @@ const UserPosts: React.FC<Props> = (props) => {
 
     const [fetchMoreLen, setFetchMoreLen] = useState<number>(0);
 
-    if (!data?.userPosts && networkStatus === NetworkStatus.loading) {
-        return <LoadingWheel />;
-    }
-
-    if (error) {
-        return <ErrorMessage refresh={refetch} />;
-    }
-
     const finalFeed = !!data?.userPosts
         ? data.userPosts.filter((post) => !!post)
         : [];
@@ -60,6 +45,17 @@ const UserPosts: React.FC<Props> = (props) => {
         <Animated.FlatList
             {...scrollPropsAndRef}
             ListHeaderComponent={() => {
+                if (
+                    !data?.userPosts &&
+                    networkStatus === NetworkStatus.loading
+                ) {
+                    return <LoadingWheel />;
+                }
+
+                if (error) {
+                    return <ErrorMessage refresh={refetch} />;
+                }
+
                 if (finalFeed.length === 0) {
                     return (
                         <View style={styles.noPostsContainer}>

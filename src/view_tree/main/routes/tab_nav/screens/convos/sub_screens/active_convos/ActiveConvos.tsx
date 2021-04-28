@@ -25,8 +25,6 @@ import { styles } from "./ActiveConvosStyles";
 interface Props {}
 
 const ActiveConvos: React.FC<Props> = () => {
-    const uid = localUid();
-
     const { openConvo } = useContext(TabNavContext);
 
     const { data, error, networkStatus, refetch, fetchMore } = useQuery<

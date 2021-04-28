@@ -23,6 +23,7 @@ import { useCollapsibleScene } from "react-native-collapsible-tab-view";
 import { TierEmoji, TierEnum } from "../../../../../../global_types/TierTypes";
 import { styles } from "./CommunityPostStyles";
 import { CommunityNavProp } from "../../../../MainEntryNavTypes";
+import { tierBarStyles } from "../styles/tierBarStyles";
 
 interface Props {
     routeKey: string;
@@ -49,14 +50,6 @@ const CommunityPosts: React.FC<Props> = (props) => {
 
     const [fetchMoreLen, setFetchMoreLen] = useState<number>(0);
 
-    if (!data?.communityPosts && networkStatus === NetworkStatus.loading) {
-        return <LoadingWheel />;
-    }
-
-    if (error) {
-        return <ErrorMessage refresh={refetch} />;
-    }
-
     const finalFeed = !!data?.communityPosts
         ? data.communityPosts.filter((post) => !!post)
         : [];
@@ -67,11 +60,11 @@ const CommunityPosts: React.FC<Props> = (props) => {
             ListHeaderComponent={() => {
                 return (
                     <>
-                        <ScrollView horizontal style={styles.tierBar}>
-                            <View style={styles.tierBarContainer}>
+                        <ScrollView horizontal style={tierBarStyles.tierBar}>
+                            <View style={tierBarStyles.tierBarContainer}>
                                 <TouchableOpacity
                                     style={[
-                                        styles.tierOption,
+                                        tierBarStyles.tierOption,
                                         tier === undefined
                                             ? {
                                                   backgroundColor:
@@ -84,7 +77,7 @@ const CommunityPosts: React.FC<Props> = (props) => {
                                 >
                                     <Text
                                         style={[
-                                            styles.tierOptionText,
+                                            tierBarStyles.tierOptionText,
                                             {
                                                 color:
                                                     tier === undefined
@@ -98,7 +91,7 @@ const CommunityPosts: React.FC<Props> = (props) => {
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={[
-                                        styles.tierOption,
+                                        tierBarStyles.tierOption,
                                         tier === TierEnum.Angel
                                             ? {
                                                   backgroundColor:
@@ -109,13 +102,13 @@ const CommunityPosts: React.FC<Props> = (props) => {
                                     onPress={() => setTier(TierEnum.Angel)}
                                     key={[props.cmid, "angel"].join(":")}
                                 >
-                                    <Text style={styles.tierOptionText}>
+                                    <Text style={tierBarStyles.tierOptionText}>
                                         {TierEmoji.Angel}
                                     </Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={[
-                                        styles.tierOption,
+                                        tierBarStyles.tierOption,
                                         tier === TierEnum.HeartEyes
                                             ? {
                                                   backgroundColor:
@@ -126,13 +119,13 @@ const CommunityPosts: React.FC<Props> = (props) => {
                                     onPress={() => setTier(TierEnum.HeartEyes)}
                                     key={[props.cmid, "heart"].join(":")}
                                 >
-                                    <Text style={styles.tierOptionText}>
+                                    <Text style={tierBarStyles.tierOptionText}>
                                         {TierEmoji.HeartEyes}
                                     </Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={[
-                                        styles.tierOption,
+                                        tierBarStyles.tierOption,
                                         tier === TierEnum.Sunglasses
                                             ? {
                                                   backgroundColor:
@@ -143,13 +136,13 @@ const CommunityPosts: React.FC<Props> = (props) => {
                                     onPress={() => setTier(TierEnum.Sunglasses)}
                                     key={[props.cmid, "sun"].join(":")}
                                 >
-                                    <Text style={styles.tierOptionText}>
+                                    <Text style={tierBarStyles.tierOptionText}>
                                         {TierEmoji.Sunglasses}
                                     </Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={[
-                                        styles.tierOption,
+                                        tierBarStyles.tierOption,
                                         tier === TierEnum.Hugging
                                             ? {
                                                   backgroundColor:
@@ -160,13 +153,13 @@ const CommunityPosts: React.FC<Props> = (props) => {
                                     onPress={() => setTier(TierEnum.Hugging)}
                                     key={[props.cmid, "hug"].join(":")}
                                 >
-                                    <Text style={styles.tierOptionText}>
+                                    <Text style={tierBarStyles.tierOptionText}>
                                         {TierEmoji.Hugging}
                                     </Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={[
-                                        styles.tierOption,
+                                        tierBarStyles.tierOption,
                                         tier === TierEnum.Grinning
                                             ? {
                                                   backgroundColor:
@@ -177,13 +170,13 @@ const CommunityPosts: React.FC<Props> = (props) => {
                                     onPress={() => setTier(TierEnum.Grinning)}
                                     key={[props.cmid, "grin"].join(":")}
                                 >
-                                    <Text style={styles.tierOptionText}>
+                                    <Text style={tierBarStyles.tierOptionText}>
                                         {TierEmoji.Grinning}
                                     </Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={[
-                                        styles.tierOption,
+                                        tierBarStyles.tierOption,
                                         tier === TierEnum.Smiling
                                             ? {
                                                   backgroundColor:
@@ -194,13 +187,13 @@ const CommunityPosts: React.FC<Props> = (props) => {
                                     onPress={() => setTier(TierEnum.Smiling)}
                                     key={[props.cmid, "smile"].join(":")}
                                 >
-                                    <Text style={styles.tierOptionText}>
+                                    <Text style={tierBarStyles.tierOptionText}>
                                         {TierEmoji.Smiling}
                                     </Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={[
-                                        styles.tierOption,
+                                        tierBarStyles.tierOption,
                                         tier === TierEnum.SlightlySmiling
                                             ? {
                                                   backgroundColor:
@@ -213,13 +206,13 @@ const CommunityPosts: React.FC<Props> = (props) => {
                                     }
                                     key={[props.cmid, "ssmile"].join(":")}
                                 >
-                                    <Text style={styles.tierOptionText}>
+                                    <Text style={tierBarStyles.tierOptionText}>
                                         {TierEmoji.SlightlySmiling}
                                     </Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={[
-                                        styles.tierOption,
+                                        tierBarStyles.tierOption,
                                         tier === TierEnum.Frowning
                                             ? {
                                                   backgroundColor:
@@ -230,13 +223,13 @@ const CommunityPosts: React.FC<Props> = (props) => {
                                     onPress={() => setTier(TierEnum.Frowning)}
                                     key={[props.cmid, "frown"].join(":")}
                                 >
-                                    <Text style={styles.tierOptionText}>
+                                    <Text style={tierBarStyles.tierOptionText}>
                                         {TierEmoji.Frowning}
                                     </Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={[
-                                        styles.tierOption,
+                                        tierBarStyles.tierOption,
                                         tier === TierEnum.Steam
                                             ? {
                                                   backgroundColor:
@@ -247,13 +240,13 @@ const CommunityPosts: React.FC<Props> = (props) => {
                                     onPress={() => setTier(TierEnum.Steam)}
                                     key={[props.cmid, "steam"].join(":")}
                                 >
-                                    <Text style={styles.tierOptionText}>
+                                    <Text style={tierBarStyles.tierOptionText}>
                                         {TierEmoji.Steam}
                                     </Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={[
-                                        styles.tierOption,
+                                        tierBarStyles.tierOption,
                                         tier === TierEnum.AngryHorns
                                             ? {
                                                   backgroundColor:
@@ -264,13 +257,18 @@ const CommunityPosts: React.FC<Props> = (props) => {
                                     onPress={() => setTier(TierEnum.AngryHorns)}
                                     key={[props.cmid, "horns"].join(":")}
                                 >
-                                    <Text style={styles.tierOptionText}>
+                                    <Text style={tierBarStyles.tierOptionText}>
                                         {TierEmoji.AngryHorns}
                                     </Text>
                                 </TouchableOpacity>
                             </View>
                         </ScrollView>
-                        {finalFeed.length === 0 ? (
+                        {!data?.communityPosts &&
+                        networkStatus === NetworkStatus.loading ? (
+                            <LoadingWheel />
+                        ) : error ? (
+                            <ErrorMessage refresh={refetch} />
+                        ) : finalFeed.length === 0 ? (
                             <View style={styles.noPostsContainer}>
                                 <Text style={styles.noPostsText}>
                                     No one at this tier has posted to this
