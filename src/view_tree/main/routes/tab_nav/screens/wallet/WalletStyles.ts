@@ -59,4 +59,15 @@ export const styles = StyleSheet.create({
     listFooter: {
         height: 80,
     },
+    noTransactionsContainer: {
+        ...basicLayouts.grid5,
+        // marginTop: 20,
+    },
+    noTransactionText: {
+        fontSize: 18,
+        fontWeight: "bold",
+        color: palette.semiSoftGray,
+        textAlign: "center",
+        marginHorizontal: 20,
+    },
 });

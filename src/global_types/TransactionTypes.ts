@@ -11,3 +11,8 @@ export interface TransactionType {
     transactionType: TransactionTypesEnum;
     data: string;
 }
+
+export interface EarningsReceipt {
+    coin: number;
+    time: number;
+}

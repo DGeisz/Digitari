@@ -14,6 +14,11 @@ export const cache = new InMemoryCache({
                         return incoming;
                     },
                 },
+                collectEarnings: {
+                    merge(existing, incoming) {
+                        return incoming;
+                    },
+                },
             },
         },
         Query: {

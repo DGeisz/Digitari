@@ -170,19 +170,9 @@ export const schema = gql`
         data: String
     }
 
-    type Wallet {
-        id: ID
-        sum: Int
-        expirationTime: Int
-        entries: [WalletEntry]
-    }
-
-    type WalletEntry {
-        time: Int
-        content: String
+    type EarningsReceipt {
         coin: Int
-        entryType: Int
-        meta: String
+        time: String
     }
 
     type Challenge {
@@ -304,6 +294,8 @@ export const schema = gql`
         updateBio(bio: String): User
         updateProfilePic(imgName: String): ImgUrl
         deleteSearchEntity(id: String): SearchEntity
+
+        collectEarnings: EarningsReceipt
     }
 
     type Subscription {

@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client";
+import { TransactionType } from "../../../../../../../global_types/TransactionTypes";
 
 export const LAST_COLLECTION_TIME = gql`
     query LastCollectionTime($uid: ID!) {
@@ -29,4 +30,25 @@ export const TRANSACTION_ACCUMULATION = gql`
 
 export interface TransactionAccumulationData {
     transactionAccumulation: number;
+}
+
+export const TRANSACTIONS = gql`
+    query Transactions($lastTime: String) {
+        transactions(lastTime: $lastTime) {
+            tid
+            time
+            coin
+            message
+            transactionType
+            data
+        }
+    }
+`;
+
+export interface TransactionsData {
+    transactions: TransactionType[];
+}
+
+export interface TransactionsVariables {
+    lastTime?: string;
 }

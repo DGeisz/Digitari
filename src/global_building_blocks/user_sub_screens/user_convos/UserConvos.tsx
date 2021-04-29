@@ -15,7 +15,6 @@ import { globalScreenStyles } from "../../../global_styles/GlobalScreenStyles";
 import { styles } from "./UserConvosStyles";
 import { localUid } from "../../../global_state/UserState";
 import ErrorMessage from "../../error_message/ErrorMessage";
-import { ConvoType } from "../../../global_types/ConvoTypes";
 
 interface Props {
     routeKey: string;
@@ -85,7 +84,7 @@ const UserConvos: React.FC<Props> = (props) => {
                     }
                     onRefresh={() => {
                         setStillSpin(true);
-                        refetch && refetch();
+                        !!refetch && refetch();
                         !!props.refreshHeader && props.refreshHeader();
                         setTimeout(() => {
                             setStillSpin(false);
@@ -123,63 +122,6 @@ const UserConvos: React.FC<Props> = (props) => {
             }}
         />
     );
-
-    // const { data, error, networkStatus, refetch } = useQuery<
-    //     QueryData,
-    //     QueryVariables
-    // >(GET_USER_CONVOS, {
-    //     variables: { uid: props.uid },
-    //     notifyOnNetworkStatusChange: true,
-    // });
-    //
-    // const scrollPropsAndRef = useCollapsibleScene(props.routeKey);
-    // const [stillSpin, setStillSpin] = useState<boolean>(false);
-    //
-    // if (!data?.userConvos && networkStatus === NetworkStatus.loading) {
-    //     return <LoadingWheel />;
-    // }
-    //
-    // if (error) {
-    //     return <ErrorMessage refresh={refetch} />;
-    // }
-    //
-    // return (
-    //     <Animated.FlatList
-    //         {...scrollPropsAndRef}
-    //         data={data?.userConvos}
-    //         renderItem={({ item }) => (
-    //             <ConvoCover
-    //                 convo={item}
-    //                 openConvo={openConvo}
-    //                 showUnViewedDot={false}
-    //                 displayActive={true}
-    //             />
-    //         )}
-    //         keyExtractor={(item, index) =>
-    //             [item.id, "userConv", index].join(":")
-    //         }
-    //         refreshControl={
-    //             <RefreshControl
-    //                 refreshing={
-    //                     networkStatus === NetworkStatus.refetch || stillSpin
-    //                 }
-    //                 onRefresh={() => {
-    //                     setStillSpin(true);
-    //                     refetch && refetch();
-    //                     setTimeout(() => {
-    //                         setStillSpin(false);
-    //                     }, 1000);
-    //                 }}
-    //                 colors={[
-    //                     palette.deepBlue,
-    //                     palette.darkForestGreen,
-    //                     palette.oceanSurf,
-    //                 ]}
-    //                 tintColor={palette.deepBlue}
-    //             />
-    //         }
-    //     />
-    // );
 };
 
 export default UserConvos;

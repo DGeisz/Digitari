@@ -18,6 +18,10 @@ import {
     CreateConvoVariables,
 } from "./gql/Mutations";
 import LoadingWheel from "../../../../global_building_blocks/loading_wheel/LoadingWheel";
+import {
+    COLLECT_EARNINGS,
+    CollectEarningsData,
+} from "../../routes/tab_nav/screens/wallet/gql/Mutations";
 
 interface Props {
     route: NewResponseRouteProp;

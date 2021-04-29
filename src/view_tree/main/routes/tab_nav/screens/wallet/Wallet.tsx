@@ -1,5 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import {
+    Animated,
+    FlatList,
+    RefreshControl,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
 import { basicLayouts } from "../../../../../../global_styles/BasicLayouts";
 import { TabNavContext } from "../../TabNavContext";
 import NewButton from "../../../../../../global_building_blocks/new_button/NewButton";
@@ -12,18 +19,25 @@ import {
 } from "../../../../../../global_types/TransactionTypes";
 import Transaction from "./building_blocks/transaction/Transaction";
 import { localUid } from "../../../../../../global_state/UserState";
-import { NetworkStatus, useQuery } from "@apollo/client";
+import { NetworkStatus, useMutation, useQuery } from "@apollo/client";
 import {
     LAST_COLLECTION_TIME,
     LastCollectionTimeData,
     LastCollectionTimeVariables,
     TRANSACTION_ACCUMULATION,
     TransactionAccumulationData,
+    TRANSACTIONS,
+    TransactionsData,
+    TransactionsVariables,
 } from "./gql/Queries";
 import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import ErrorMessage from "../../../../../../global_building_blocks/error_message/ErrorMessage";
 import { ranking2Wage } from "../../../../../../global_types/TierTypes";
 import { millisInHour } from "../../../../../../global_utils/TimeRepUtils";
+import { palette } from "../../../../../../global_styles/Palette";
+import { COLLECT_EARNINGS, CollectEarningsData } from "./gql/Mutations";
+import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
+import { QUERY_TYPENAME } from "../../../../../../global_gql/Schema";
 
 interface Props {
     navigation: WalletNavProp;
@@ -33,6 +47,9 @@ const Wallet: React.FC<Props> = (props) => {
     const uid = localUid();
     const { openNew, openConvo, openUser } = useContext(TabNavContext);
 
+    /*
+     * Queries
+     */
     const {
         data: collectionData,
         loading: collectionLoading,
@@ -50,18 +67,21 @@ const Wallet: React.FC<Props> = (props) => {
     const {
         data: accData,
         error: accErr,
-        networkStatus,
+        networkStatus: accNetworkStatus,
         refetch: accRefetch,
     } = useQuery<TransactionAccumulationData>(TRANSACTION_ACCUMULATION, {
         fetchPolicy: "cache-and-network",
         notifyOnNetworkStatusChange: true,
     });
 
-    console.log(
-        "Acc loading",
-        collectionLoading,
-        !!accData?.transactionAccumulation
-    );
+    const {
+        data: transData,
+        error: transError,
+        networkStatus: transNetworkStatus,
+        refetch: transRefetch,
+    } = useQuery<TransactionsData, TransactionsVariables>(TRANSACTIONS, {
+        notifyOnNetworkStatusChange: true,
+    });
 
     useEffect(() => {
         props.navigation.addListener("focus", () => {
@@ -69,14 +89,58 @@ const Wallet: React.FC<Props> = (props) => {
         });
     }, []);
 
+    /*
+     * Mutations
+     */
+    const [collectEarnings] = useMutation<CollectEarningsData>(
+        COLLECT_EARNINGS,
+        {
+            update(cache, { data, errors }) {
+                if (!!data?.collectEarnings) {
+                    cache.modify({
+                        id: cache.identify({
+                            __typename: QUERY_TYPENAME,
+                        }),
+                        fields: {
+                            transactionAccumulation() {
+                                return 0;
+                            },
+                        },
+                    });
+
+                    cache.modify({
+                        id: cache.identify({
+                            __typename: USER_TYPENAME,
+                            id: uid,
+                        }),
+                        fields: {
+                            coin(existing) {
+                                return existing + data.collectEarnings.coin;
+                            },
+                            lastCollectionTime() {
+                                return data.collectEarnings.time;
+                            },
+                        },
+                    });
+                }
+            },
+        }
+    );
+
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
     if (
         collectionLoading ||
         (!accData?.transactionAccumulation &&
-            networkStatus === NetworkStatus.loading)
+            accNetworkStatus === NetworkStatus.loading &&
+            !transData?.transactions &&
+            transNetworkStatus === NetworkStatus.loading)
     ) {
         return <LoadingWheel />;
+    }
+
+    if (!!transError) {
+        return <ErrorMessage refresh={transRefetch} />;
     }
 
     if (!!collectionError) {
@@ -114,24 +178,9 @@ const Wallet: React.FC<Props> = (props) => {
 
     let total = tierWage + accumulation;
 
-    const finalFeed: TransactionType[] = [
-        {
-            tid: "",
-            time: Date.now().toString(),
-            coin: 10000,
-            message: `dern donated to your post: "Here be the lions"`,
-            transactionType: TransactionTypesEnum.User,
-            data: "asdfa",
-        },
-        {
-            tid: "",
-            time: Date.now().toString(),
-            coin: 1,
-            message: `dern donated to your post: "Here be the lions, for they seek to destory, and shall find the meat they desire"`,
-            transactionType: TransactionTypesEnum.User,
-            data: "asdf",
-        },
-    ];
+    const finalFeed: TransactionType[] = !!transData?.transactions
+        ? transData.transactions
+        : [];
 
     return (
         <>
@@ -180,7 +229,30 @@ const Wallet: React.FC<Props> = (props) => {
                                 </View>
                                 <View style={styles.earningsFooter}>
                                     <TouchableOpacity
-                                        style={styles.collectButton}
+                                        style={[
+                                            styles.collectButton,
+                                            total === 0
+                                                ? {
+                                                      backgroundColor:
+                                                          palette.notDeepBlue,
+                                                  }
+                                                : {},
+                                        ]}
+                                        activeOpacity={total === 0 ? 1 : 0.5}
+                                        onPress={async () => {
+                                            if (total > 0) {
+                                                try {
+                                                    await collectEarnings({
+                                                        optimisticResponse: {
+                                                            collectEarnings: {
+                                                                coin: total,
+                                                                time: Date.now().toString(),
+                                                            },
+                                                        },
+                                                    });
+                                                } catch (_) {}
+                                            }
+                                        }}
                                     >
                                         <Text style={styles.collectButtonText}>
                                             Collect
@@ -194,6 +266,11 @@ const Wallet: React.FC<Props> = (props) => {
                                     Transactions
                                 </Text>
                             </View>
+                            <View style={styles.noTransactionsContainer}>
+                                <Text style={styles.noTransactionText}>
+                                    You haven't had any transactions recently
+                                </Text>
+                            </View>
                         </>
                     }
                     data={finalFeed}
@@ -205,6 +282,30 @@ const Wallet: React.FC<Props> = (props) => {
                         />
                     )}
                     keyExtractor={(item, index) => ["wallet", index].join(":")}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={
+                                transNetworkStatus === NetworkStatus.refetch ||
+                                stillSpin
+                            }
+                            onRefresh={() => {
+                                setStillSpin(true);
+                                !!transRefetch && transRefetch();
+                                !!accRefetch && accRefetch();
+                                !!collectionRefetch && collectionRefetch();
+
+                                setTimeout(() => {
+                                    setStillSpin(false);
+                                }, 1000);
+                            }}
+                            colors={[
+                                palette.deepBlue,
+                                palette.darkForestGreen,
+                                palette.oceanSurf,
+                            ]}
+                            tintColor={palette.deepBlue}
+                        />
+                    }
                     ListFooterComponent={<View style={styles.listFooter} />}
                 />
             </View>
