@@ -18,6 +18,7 @@ export default class Transaction extends React.PureComponent<Props> {
     render() {
         return (
             <TouchableOpacity
+                activeOpacity={0.5}
                 style={styles.transactionContainer}
                 onPress={() => {
                     switch (this.props.transaction.transactionType) {

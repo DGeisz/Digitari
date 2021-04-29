@@ -20,3 +20,13 @@ export interface LastCollectionTimeData {
 export interface LastCollectionTimeVariables {
     uid: string;
 }
+
+export const TRANSACTION_ACCUMULATION = gql`
+    query TransactionAccumulation {
+        transactionAccumulation
+    }
+`;
+
+export interface TransactionAccumulationData {
+    transactionAccumulation: number;
+}

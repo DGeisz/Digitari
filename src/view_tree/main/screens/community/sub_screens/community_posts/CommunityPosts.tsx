@@ -29,6 +29,7 @@ interface Props {
     routeKey: string;
     cmid: string;
     navigation: CommunityNavProp;
+    refreshHeader: () => void;
 }
 
 const CommunityPosts: React.FC<Props> = (props) => {
@@ -321,6 +322,7 @@ const CommunityPosts: React.FC<Props> = (props) => {
                         setStillSpin(true);
                         setFetchMoreLen(0);
                         refetch && refetch();
+                        !!props.refreshHeader && props.refreshHeader();
                         setTimeout(() => {
                             setStillSpin(false);
                         }, 1000);

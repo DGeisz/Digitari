@@ -194,6 +194,7 @@ const Community: React.FC<Props> = (props) => {
                                 navigation={props.navigation}
                                 routeKey={"CommunityPosts"}
                                 cmid={data?.community.id}
+                                refreshHeader={refetch}
                             />
                         )}
                     </Tab.Screen>
@@ -210,6 +211,7 @@ const Community: React.FC<Props> = (props) => {
                                 routeKey={"CommunityConvos"}
                                 cmid={data?.community.id}
                                 navigation={props.navigation}
+                                refreshHeader={refetch}
                             />
                         )}
                     </Tab.Screen>
@@ -228,6 +230,7 @@ const Community: React.FC<Props> = (props) => {
                                 onSelectUser={(uid) => {
                                     props.navigation.push("User", { uid });
                                 }}
+                                refreshHeader={refetch}
                             />
                         )}
                     </Tab.Screen>

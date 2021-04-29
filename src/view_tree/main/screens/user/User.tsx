@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Text, View } from "react-native";
 import { createMaterialCollapsibleTopTabNavigator } from "react-native-collapsible-tab-view";
 import { basicLayouts } from "../../../../global_styles/BasicLayouts";
@@ -229,6 +229,7 @@ const User: React.FC<Props> = (props) => {
                                 openUser={(uid: string) => {
                                     props.navigation.navigate("User", { uid });
                                 }}
+                                refreshHeader={refetch}
                             />
                         )}
                     </Tab.Screen>
@@ -250,6 +251,7 @@ const User: React.FC<Props> = (props) => {
                                         pid,
                                     });
                                 }}
+                                refreshHeader={refetch}
                             />
                         )}
                     </Tab.Screen>
@@ -265,6 +267,7 @@ const User: React.FC<Props> = (props) => {
                             <UserChallenges
                                 user={data.user}
                                 routeKey={"UserChallenges"}
+                                refreshHeader={refetch}
                             />
                         )}
                     </Tab.Screen>
@@ -277,7 +280,11 @@ const User: React.FC<Props> = (props) => {
                         }}
                     >
                         {() => (
-                            <UserStats routeKey="UserStats" user={data.user} />
+                            <UserStats
+                                routeKey="UserStats"
+                                user={data.user}
+                                refreshHeader={refetch}
+                            />
                         )}
                     </Tab.Screen>
                 </Tab.Navigator>

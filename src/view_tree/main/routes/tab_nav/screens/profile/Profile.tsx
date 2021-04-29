@@ -101,6 +101,7 @@ const Profile: React.FC = () => {
                                     openUser={openUser}
                                     openCommunity={openCommunity}
                                     openNewMessage={openNewMessage}
+                                    refreshHeader={refetch}
                                 />
                             )}
                         </Tab.Screen>
@@ -117,6 +118,7 @@ const Profile: React.FC = () => {
                                     routeKey={"UserConvos"}
                                     uid={uid}
                                     openConvo={openConvo}
+                                    refreshHeader={refetch}
                                 />
                             )}
                         </Tab.Screen>
@@ -135,6 +137,7 @@ const Profile: React.FC = () => {
                                 <UserChallenges
                                     user={data.user}
                                     routeKey={"UserChallenges"}
+                                    refreshHeader={refetch}
                                 />
                             )}
                         </Tab.Screen>
@@ -150,6 +153,7 @@ const Profile: React.FC = () => {
                                 <UserStats
                                     routeKey="UserStats"
                                     user={data.user}
+                                    refreshHeader={refetch}
                                 />
                             )}
                         </Tab.Screen>

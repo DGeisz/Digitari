@@ -21,6 +21,7 @@ interface Props {
     routeKey: string;
     uid: string;
     openConvo: (cvid: string, pid: string) => void;
+    refreshHeader: () => void;
 }
 
 const UserConvos: React.FC<Props> = (props) => {
@@ -85,6 +86,7 @@ const UserConvos: React.FC<Props> = (props) => {
                     onRefresh={() => {
                         setStillSpin(true);
                         refetch && refetch();
+                        !!props.refreshHeader && props.refreshHeader();
                         setTimeout(() => {
                             setStillSpin(false);
                         }, 1000);

@@ -13,13 +13,14 @@ import { palette } from "../../../global_styles/Palette";
 interface Props {
     user: UserType;
     routeKey: string;
+    refreshHeader: () => void;
 }
 
 interface QueryData {
     challenges: ChallengeType[];
 }
 
-const UserChallenges: React.FC<Props> = ({ user, routeKey }) => {
+const UserChallenges: React.FC<Props> = (props) => {
     const { data, error, networkStatus, refetch } = useQuery<QueryData>(
         GET_CHALLENGES,
         {
@@ -27,7 +28,7 @@ const UserChallenges: React.FC<Props> = ({ user, routeKey }) => {
         }
     );
 
-    const scrollPropsAndRef = useCollapsibleScene(routeKey);
+    const scrollPropsAndRef = useCollapsibleScene(props.routeKey);
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
     if (!data?.challenges && networkStatus === NetworkStatus.loading) {
@@ -43,9 +44,11 @@ const UserChallenges: React.FC<Props> = ({ user, routeKey }) => {
             {...scrollPropsAndRef}
             data={data?.challenges}
             renderItem={({ item }) => (
-                <Challenge challenge={item} user={user} />
+                <Challenge challenge={item} user={props.user} />
             )}
-            keyExtractor={(_, index) => [user.id, "chlng", index].join(":")}
+            keyExtractor={(_, index) =>
+                [props.user.id, "chlng", index].join(":")
+            }
             refreshControl={
                 <RefreshControl
                     refreshing={
@@ -54,6 +57,7 @@ const UserChallenges: React.FC<Props> = ({ user, routeKey }) => {
                     onRefresh={() => {
                         setStillSpin(true);
                         refetch && refetch();
+                        !!props.refreshHeader && props.refreshHeader();
                         setTimeout(() => {
                             setStillSpin(false);
                         }, 1000);

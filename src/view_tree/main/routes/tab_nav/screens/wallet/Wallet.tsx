@@ -12,20 +12,18 @@ import {
 } from "../../../../../../global_types/TransactionTypes";
 import Transaction from "./building_blocks/transaction/Transaction";
 import { localUid } from "../../../../../../global_state/UserState";
-import { useQuery } from "@apollo/client";
+import { NetworkStatus, useQuery } from "@apollo/client";
 import {
     LAST_COLLECTION_TIME,
     LastCollectionTimeData,
     LastCollectionTimeVariables,
+    TRANSACTION_ACCUMULATION,
+    TransactionAccumulationData,
 } from "./gql/Queries";
 import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
-import { Simulate } from "react-dom/test-utils";
 import ErrorMessage from "../../../../../../global_building_blocks/error_message/ErrorMessage";
 import { ranking2Wage } from "../../../../../../global_types/TierTypes";
-import {
-    millisInDay,
-    millisInHour,
-} from "../../../../../../global_utils/TimeRepUtils";
+import { millisInHour } from "../../../../../../global_utils/TimeRepUtils";
 
 interface Props {
     navigation: WalletNavProp;
@@ -33,6 +31,7 @@ interface Props {
 
 const Wallet: React.FC<Props> = (props) => {
     const uid = localUid();
+    const { openNew, openConvo, openUser } = useContext(TabNavContext);
 
     const {
         data: collectionData,
@@ -48,19 +47,35 @@ const Wallet: React.FC<Props> = (props) => {
         }
     );
 
-    console.log(collectionData, collectionLoading, collectionError);
+    const {
+        data: accData,
+        error: accErr,
+        networkStatus,
+        refetch: accRefetch,
+    } = useQuery<TransactionAccumulationData>(TRANSACTION_ACCUMULATION, {
+        fetchPolicy: "cache-and-network",
+        notifyOnNetworkStatusChange: true,
+    });
+
+    console.log(
+        "Acc loading",
+        collectionLoading,
+        !!accData?.transactionAccumulation
+    );
 
     useEffect(() => {
         props.navigation.addListener("focus", () => {
-            console.log("Wallet in focus");
+            accRefetch && accRefetch();
         });
     }, []);
 
-    const { openNew, openConvo, openUser } = useContext(TabNavContext);
-
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
-    if (!collectionData?.user || collectionLoading) {
+    if (
+        collectionLoading ||
+        (!accData?.transactionAccumulation &&
+            networkStatus === NetworkStatus.loading)
+    ) {
         return <LoadingWheel />;
     }
 
@@ -68,16 +83,36 @@ const Wallet: React.FC<Props> = (props) => {
         return <ErrorMessage refresh={collectionRefetch} />;
     }
 
-    const [hourly, daily] = ranking2Wage(collectionData.user.ranking);
-    const tierWage = Math.min(
-        Math.floor(
-            hourly *
-                ((Date.now() -
-                    parseInt(collectionData.user.lastCollectionTime)) /
-                    millisInHour)
-        ),
-        daily
-    );
+    if (!!accErr) {
+        return <ErrorMessage refresh={accRefetch} />;
+    }
+
+    let tierWage = 0;
+    let daily = 0;
+    let accumulation = 0;
+
+    if (!!accData?.transactionAccumulation) {
+        accumulation = accData.transactionAccumulation;
+    }
+
+    if (!!collectionData?.user) {
+        const [hourlyWage, dailyWage] = ranking2Wage(
+            collectionData.user.ranking
+        );
+        daily = dailyWage;
+
+        tierWage = Math.min(
+            Math.floor(
+                hourlyWage *
+                    ((Date.now() -
+                        parseInt(collectionData.user.lastCollectionTime)) /
+                        millisInHour)
+            ),
+            daily
+        );
+    }
+
+    let total = tierWage + accumulation;
 
     const finalFeed: TransactionType[] = [
         {
@@ -128,7 +163,7 @@ const Wallet: React.FC<Props> = (props) => {
                                         Transaction sum
                                     </Text>
                                     <CoinBox
-                                        amount={1302}
+                                        amount={accumulation}
                                         coinSize={20}
                                         fontSize={15}
                                         showAbbreviated={false}
@@ -137,7 +172,7 @@ const Wallet: React.FC<Props> = (props) => {
                                 <View style={styles.entryContainer}>
                                     <Text style={styles.totalTitle}>Total</Text>
                                     <CoinBox
-                                        amount={100}
+                                        amount={total}
                                         coinSize={30}
                                         fontSize={20}
                                         showAbbreviated={false}

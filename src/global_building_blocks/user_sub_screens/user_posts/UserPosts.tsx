@@ -21,6 +21,7 @@ interface Props {
     openNewMessage: (tname: string, pid: string, responseCost: number) => void;
     openCommunity: (cmid: string) => void;
     openUser: (uid: string) => void;
+    refreshHeader: () => void;
 }
 
 const UserPosts: React.FC<Props> = (props) => {
@@ -90,6 +91,7 @@ const UserPosts: React.FC<Props> = (props) => {
                         setStillSpin(true);
                         setFetchMoreLen(0);
                         refetch && refetch();
+                        !!props.refreshHeader && props.refreshHeader();
                         setTimeout(() => {
                             setStillSpin(false);
                         }, 1000);
