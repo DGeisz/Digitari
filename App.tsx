@@ -1,25 +1,22 @@
 import React, { useEffect } from "react";
 import { Platform, UIManager } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Linking from "expo-linking";
 import { LinkingOptions, NavigationContainer } from "@react-navigation/native";
-import { MockedProvider } from "@apollo/client/testing";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { cache } from "./src/global_state/Cache";
 import AppView from "./src/view_tree/AppView";
 import Amplify, { Auth } from "aws-amplify";
-import * as SplashScreen from "expo-splash-screen";
 import { createSubscriptionHandshakeLink } from "aws-appsync-subscription-link";
 import { AuthOptions, createAuthLink } from "aws-appsync-auth-link";
-import AWSAppSyncClient, { AUTH_TYPE } from "aws-appsync";
+import { AUTH_TYPE } from "aws-appsync";
 import {
     ApolloClient,
     ApolloLink,
     ApolloProvider,
     createHttpLink,
-    NormalizedCacheObject,
 } from "@apollo/client";
-import { persistCache, AsyncStorageWrapper } from "apollo3-cache-persist";
+import * as Notifications from "expo-notifications";
+import { PushNotificationType } from "./src/global_types/PushTypes";
 
 Amplify.configure({
     Auth: {
@@ -86,12 +83,37 @@ const linking: LinkingOptions = {
             },
             NewPost: "new-post",
             User: "user/:uid",
+            Convo: "convo/:cvid/:pid",
         },
     },
     subscribe(listener) {
-        // setTimeout(() => {
-        //     listener(prefix + "user/0faa3642-55df-45dd-962d-4be9b80ab979");
-        // }, 1000);
+        Notifications.addNotificationResponseReceivedListener((response) => {
+            const data = response.notification.request.content.data;
+
+            const notificationType = data.type as PushNotificationType;
+            const notificationContent = data.content as string;
+
+            switch (notificationType) {
+                case PushNotificationType.ConvoBlocked:
+                    listener(prefix + `convo/${notificationContent}`);
+                    break;
+                case PushNotificationType.NewConvo:
+                    listener(prefix + `convo/${notificationContent}`);
+                    break;
+                case PushNotificationType.ConvoFinished:
+                    listener(prefix + `convo/${notificationContent}`);
+                    break;
+                case PushNotificationType.ConvoDismissed:
+                    listener(prefix + `convo/${notificationContent}`);
+                    break;
+                case PushNotificationType.Message:
+                    listener(prefix + `convo/${notificationContent}`);
+                    break;
+                case PushNotificationType.UserFollowed:
+                    listener(prefix + `user/${notificationContent}`);
+                    break;
+            }
+        });
     },
 };
 
