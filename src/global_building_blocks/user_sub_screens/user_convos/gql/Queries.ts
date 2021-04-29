@@ -32,6 +32,8 @@ export const USER_CONVOS = gql`
             tviewed
 
             targetMsgCount
+            responseCost
+            convoReward
         }
     }
 `;

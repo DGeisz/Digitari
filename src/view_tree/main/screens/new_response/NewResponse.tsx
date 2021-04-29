@@ -11,14 +11,13 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { palette } from "../../../../global_styles/Palette";
 import MessageInput from "../../../../global_building_blocks/message_input/MessageInput";
 import { useMutation } from "@apollo/client";
-import { NEW_RESPONSE_CONVO } from "./gql/Fragments";
-import { QUERY_TYPENAME } from "../../../../global_gql/Schema";
 import { USER_TYPENAME } from "../../../../global_types/UserTypes";
 import {
     CREATE_CONVO,
     CreateConvoData,
     CreateConvoVariables,
 } from "./gql/Mutations";
+import LoadingWheel from "../../../../global_building_blocks/loading_wheel/LoadingWheel";
 
 interface Props {
     route: NewResponseRouteProp;
@@ -31,53 +30,53 @@ const NewResponse: React.FC<Props> = (props) => {
 
     const [anony, setAnony] = useState<boolean>(false);
 
-    const [createConvo] = useMutation<CreateConvoData, CreateConvoVariables>(
-        CREATE_CONVO,
-        {
-            update(cache, { data }) {
-                if (!!data?.createConvo) {
-                    // cache.modify({
-                    //     id: cache.identify({
-                    //         __typename: QUERY_TYPENAME,
-                    //     }),
-                    //     fields: {
-                    //         activeConvos(existing) {
-                    //             const newConvoRef = cache.writeFragment({
-                    //                 fragment: NEW_RESPONSE_CONVO,
-                    //                 data: data.newConvo,
-                    //             });
-                    //
-                    //             return [newConvoRef, ...existing];
-                    //         },
-                    //     },
-                    // });
+    const [createConvo, { loading }] = useMutation<
+        CreateConvoData,
+        CreateConvoVariables
+    >(CREATE_CONVO, {
+        update(cache, { data }) {
+            if (!!data?.createConvo) {
+                // cache.modify({
+                //     id: cache.identify({
+                //         __typename: QUERY_TYPENAME,
+                //     }),
+                //     fields: {
+                //         activeConvos(existing) {
+                //             const newConvoRef = cache.writeFragment({
+                //                 fragment: NEW_RESPONSE_CONVO,
+                //                 data: data.newConvo,
+                //             });
+                //
+                //             return [newConvoRef, ...existing];
+                //         },
+                //     },
+                // });
 
-                    cache.modify({
-                        id: cache.identify({
-                            __typename: USER_TYPENAME,
-                            id: uid,
-                        }),
-                        fields: {
-                            coin(existing) {
-                                return Math.max(
-                                    existing - props.route.params.responseCost,
-                                    0
-                                );
-                            },
+                cache.modify({
+                    id: cache.identify({
+                        __typename: USER_TYPENAME,
+                        id: uid,
+                    }),
+                    fields: {
+                        coin(existing) {
+                            return Math.max(
+                                existing - props.route.params.responseCost,
+                                0
+                            );
                         },
-                    });
+                    },
+                });
 
-                    props.navigation.pop();
-                    props.navigation.navigate("Convo", {
-                        cvid: data.createConvo.id,
-                        pid: props.route.params.pid,
-                    });
-                } else {
-                    console.log("No new data for new response");
-                }
-            },
-        }
-    );
+                props.navigation.pop();
+                props.navigation.navigate("Convo", {
+                    cvid: data.createConvo.id,
+                    pid: props.route.params.pid,
+                });
+            } else {
+                console.log("No new data for new response");
+            }
+        },
+    });
 
     const onSend = async (text: string) => {
         try {
@@ -141,7 +140,11 @@ const NewResponse: React.FC<Props> = (props) => {
                     />
                 </TouchableOpacity>
             </View>
-            <MessageInput autoFocus onSend={onSend} />
+            {loading ? (
+                <LoadingWheel />
+            ) : (
+                <MessageInput autoFocus onSend={onSend} />
+            )}
         </TouchableOpacity>
     );
 };

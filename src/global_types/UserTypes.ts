@@ -19,6 +19,8 @@ export interface UserType {
     coin: number;
     imgUrl?: string;
 
+    lastCollectionTime: string;
+
     // Challenge fields
     coinSpent: number;
     csGoal: number;
@@ -85,6 +87,8 @@ export const exampleUser: UserType = {
     level: 12,
     bio:
         "Hi my name is Danny. I bool, I vape, I joust, and I cape.  Here's to another day ba-rangling",
+
+    lastCollectionTime: "0",
 
     amFollowing: false,
     followPrice: 50,

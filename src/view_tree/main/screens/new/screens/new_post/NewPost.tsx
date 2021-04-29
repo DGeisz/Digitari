@@ -62,7 +62,7 @@ const NewPost: React.FC<Props> = (props) => {
     const contentRef = useRef<TextInput>(null);
 
     useEffect(() => {
-        // contentRef.current && contentRef.current.focus();
+        contentRef.current && contentRef.current.focus();
     }, []);
 
     /*

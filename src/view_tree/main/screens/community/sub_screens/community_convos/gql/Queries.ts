@@ -32,6 +32,8 @@ export const COMMUNITY_CONVOS = gql`
             tviewed
 
             targetMsgCount
+            responseCost
+            convoReward
         }
     }
 `;

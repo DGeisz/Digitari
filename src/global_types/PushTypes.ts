@@ -7,16 +7,6 @@ export enum PushNotificationType {
     UserFollowed,
 }
 
-export interface PushNotification {
-    data: {
-        type: PushNotificationType;
-        content: string;
-    };
-    title: string;
-    body: string;
-    sound: "default";
-}
-
 export interface NotificationData {
     type: PushNotificationType;
     content: string;

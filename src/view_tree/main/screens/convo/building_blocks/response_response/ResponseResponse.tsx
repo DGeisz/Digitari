@@ -41,7 +41,9 @@ export default class ResponseResponse extends React.PureComponent<
                     title="Block"
                     onConfirm={() => {
                         this.setState({ blockVisible: false, loading: true });
-                        this.props.onBlock();
+                        setTimeout(() => {
+                            this.props.onBlock();
+                        }, 200);
                     }}
                     confirmBackgroundColor={palette.warningLight}
                     confirmTextColor={palette.warning}
@@ -54,19 +56,19 @@ export default class ResponseResponse extends React.PureComponent<
                     title="Dismiss"
                     onConfirm={() => {
                         this.setState({ dismissVisible: false, loading: true });
-                        this.props.onDismiss();
+                        setTimeout(() => {
+                            this.props.onDismiss();
+                        }, 200);
                     }}
                     confirmMessage="Dismiss"
                     onCancel={() => this.setState({ dismissVisible: false })}
                 />
                 <CancelConfirmModal
                     visible={this.state.messageVisible}
-                    body={`Use ${toCommaRep(
+                    body={`Respond to convo and put up ${toCommaRep(
                         this.props.responseCost
-                    )} digicoin to respond?`}
+                    )} digicoin for the convo reward?`}
                     title="Respond"
-                    confirmBackgroundColor={palette.oceanSurf}
-                    confirmTextColor={palette.deepBlue}
                     onConfirm={() => {
                         this.setState({ messageVisible: false, loading: true });
                         setTimeout(() => {

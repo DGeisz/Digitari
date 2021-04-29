@@ -1,37 +1,22 @@
 import { gql } from "@apollo/client";
 
-export const GET_WALLET = gql`
-    query GetWallet($id: ID!) {
-        wallet(id: $id) {
+export const LAST_COLLECTION_TIME = gql`
+    query LastCollectionTime($uid: ID!) {
+        user(uid: $uid) {
             id
-            sum
-            expirationTime
-            entries {
-                time
-                content
-                coin
-                entryType
-                meta
-            }
+            lastCollectionTime
+            ranking
         }
     }
 `;
 
-export const GET_WALLET_TYPE = gql`
-    query GetWallet($id: ID!) {
-        wallet(id: $id) {
-            id
-            sum
-            expirationTime
-            entries {
-                time
-                content
-                coin
-                entryType
-                meta
-                __typename
-            }
-            __typename
-        }
-    }
-`;
+export interface LastCollectionTimeData {
+    user: {
+        lastCollectionTime: string;
+        ranking: number;
+    };
+}
+
+export interface LastCollectionTimeVariables {
+    uid: string;
+}

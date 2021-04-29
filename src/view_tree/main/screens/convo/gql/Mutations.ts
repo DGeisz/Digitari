@@ -31,6 +31,8 @@ export const MARK_CONVO_VIEWED = gql`
             tviewed
 
             targetMsgCount
+            responseCost
+            convoReward
         }
     }
 `;
@@ -72,6 +74,8 @@ export const DISMISS_CONVO = gql`
             tviewed
 
             targetMsgCount
+            responseCost
+            convoReward
         }
     }
 `;
@@ -114,6 +118,8 @@ export const BLOCK_CONVO = gql`
                 tviewed
 
                 targetMsgCount
+                responseCost
+                convoReward
             }
             tid
         }
@@ -157,6 +163,8 @@ export const ACTIVATE_CONVO = gql`
             tviewed
 
             targetMsgCount
+            responseCost
+            convoReward
         }
     }
 `;
@@ -222,6 +230,8 @@ export const FINISH_CONVO = gql`
                 tviewed
 
                 targetMsgCount
+                responseCost
+                convoReward
             }
             tid
         }

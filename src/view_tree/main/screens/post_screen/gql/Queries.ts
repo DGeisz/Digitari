@@ -73,6 +73,8 @@ export const POST_CONVOS = gql`
             tviewed
 
             targetMsgCount
+            responseCost
+            convoReward
         }
     }
 `;

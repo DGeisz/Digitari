@@ -34,8 +34,9 @@ export const styles = StyleSheet.create({
         padding: 10,
     },
     bodyText: {
-        fontSize: 16,
+        fontSize: 15,
         color: palette.hardGray,
+        lineHeight: 23,
     },
     modalFooter: {
         flexDirection: "row",

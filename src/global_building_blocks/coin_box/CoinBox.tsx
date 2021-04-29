@@ -16,6 +16,7 @@ interface Props {
     showAbbreviated?: boolean;
     paddingVertical?: number;
     paddingRight?: number;
+    outOfCoin?: number;
 }
 
 export default class CoinBox extends React.Component<Props> {
@@ -76,6 +77,14 @@ export default class CoinBox extends React.Component<Props> {
                             (this.props.showAbbreviated
                                 ? toRep(this.props.amount)
                                 : toCommaRep(this.props.amount))}
+                        {!!this.props.outOfCoin && (
+                            <Text>
+                                {" / "}
+                                {this.props.showAbbreviated
+                                    ? toRep(this.props.outOfCoin)
+                                    : toCommaRep(this.props.outOfCoin)}
+                            </Text>
+                        )}
                     </Text>
                 ) : (
                     <></>

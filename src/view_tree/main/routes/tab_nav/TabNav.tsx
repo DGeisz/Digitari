@@ -8,8 +8,9 @@ import Search from "./screens/search/Search";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { TabNavProp } from "../../MainEntryNavTypes";
 import { TabNavContext } from "./TabNavContext";
+import { TabNavTab } from "./TabNavTypes";
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<TabNavTab>();
 
 interface Props {
     navigation: TabNavProp;

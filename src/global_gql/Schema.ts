@@ -14,6 +14,8 @@ export const schema = gql`
         timeCreated: String
         imgUrl: String
 
+        lastCollectionTime: String
+
         # Indicates whether the person who fetched this user is following this user.
         amFollowing: Boolean
         followPrice: Int
@@ -107,6 +109,8 @@ export const schema = gql`
         tviewed: Boolean
 
         targetMsgCount: Int
+        convoReward: Int
+        responseCost: Int
     }
 
     type ConvoUpdate {
@@ -155,6 +159,15 @@ export const schema = gql`
     type PostPackage {
         post: Post
         presignedUrl: String
+    }
+
+    type Transaction {
+        tid: ID
+        time: String
+        coin: Int
+        message: String
+        transactionType: Int
+        data: String
     }
 
     type Wallet {
@@ -228,7 +241,6 @@ export const schema = gql`
 
     type Query @aws_iam @aws_cognito_user_pools {
         feed(lastTime: String): [Post]
-        wallet(id: ID!): Wallet
         user(uid: ID!): User
         hid: String
         userPosts(uid: ID!, lastTime: String): [Post]
@@ -250,6 +262,8 @@ export const schema = gql`
         followers(tid: ID!, lastTime: String): [FollowEntity]
         following(sid: ID!, lastTime: String, entityType: Int): [FollowEntity]
         postResponseCheck(pid: ID): Boolean
+        transactionAccumulation: Int
+        transactions(lastTime: String): [Transaction]
     }
 
     type Mutation {

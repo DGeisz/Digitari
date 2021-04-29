@@ -32,7 +32,7 @@ export type MainEntryStack = {
     };
 };
 
-/**
+/*
  * Nav props
  */
 export type TabNavProp = StackNavigationProp<MainEntryStack, "TabNav">;
@@ -54,7 +54,7 @@ export type FollowsNavProp = StackNavigationProp<MainEntryStack, "Follows">;
 export type CommunityNavProp = StackNavigationProp<MainEntryStack, "Community">;
 export type NewPostNavProp = StackNavigationProp<MainEntryStack, "NewPost">;
 
-/**
+/*
  * Route props
  */
 export type PostScreenRouteProp = RouteProp<MainEntryStack, "PostScreen">;

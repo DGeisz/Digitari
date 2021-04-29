@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import { createMaterialCollapsibleTopTabNavigator } from "react-native-collapsible-tab-view";
 import { basicLayouts } from "../../../../global_styles/BasicLayouts";
 import ProfileHeader from "../../../../global_building_blocks/user_sub_screens/profile_header/ProfileHeader";
@@ -8,7 +8,7 @@ import UserPosts from "../../../../global_building_blocks/user_sub_screens/user_
 import UserConvos from "../../../../global_building_blocks/user_sub_screens/user_convos/UserConvos";
 import UserChallenges from "../../../../global_building_blocks/user_sub_screens/user_challenges/UserChallenges";
 import UserStats from "../../../../global_building_blocks/user_sub_screens/user_stats/UserStats";
-import { NetworkStatus, useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import {
     GET_USER,
     GetUserQueryData,
@@ -29,6 +29,7 @@ import {
 import { USER_TYPENAME } from "../../../../global_types/UserTypes";
 import { Auth } from "aws-amplify";
 import NewButton from "../../../../global_building_blocks/new_button/NewButton";
+import { styles } from "./UserStyles";
 
 const Tab = createMaterialCollapsibleTopTabNavigator();
 
@@ -48,6 +49,8 @@ const User: React.FC<Props> = (props) => {
             uid: props.route.params.uid,
         },
     });
+
+    console.log(error);
 
     const [follow] = useMutation<FollowUserData, FollowUserVariables>(
         FOLLOW_USER,
@@ -284,7 +287,13 @@ const User: React.FC<Props> = (props) => {
             </View>
         );
     } else {
-        return <View style={basicLayouts.flexGrid1} />;
+        return (
+            <View style={styles.noUserContainer}>
+                <Text style={styles.noUserText}>
+                    This user no longer exists
+                </Text>
+            </View>
+        );
     }
 };
 
