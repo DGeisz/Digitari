@@ -1,6 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
     Animated,
+    Easing,
     FlatList,
     RefreshControl,
     Text,
@@ -129,6 +130,39 @@ const Wallet: React.FC<Props> = (props) => {
 
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
+    /*
+     * Animation playground
+     */
+    const animatedHeight = useRef(new Animated.Value(0)).current;
+    const animatedOpacity = useRef(new Animated.Value(0)).current;
+    const [animationCoinAmount, setAnimationCoinAmount] = useState<number>(0);
+
+    /*
+     * Function to send the animation up that signifies
+     * the user just made some dough
+     */
+    const shockTheNation = () => {
+        animatedHeight.setValue(0);
+        animatedOpacity.setValue(1);
+
+        const animationDuration = 600;
+
+        Animated.parallel([
+            Animated.timing(animatedHeight, {
+                toValue: -200,
+                duration: animationDuration,
+                easing: Easing.linear,
+                useNativeDriver: true,
+            }),
+            Animated.timing(animatedOpacity, {
+                toValue: 0,
+                duration: animationDuration,
+                easing: Easing.linear,
+                useNativeDriver: true,
+            }),
+        ]).start();
+    };
+
     if (
         collectionLoading ||
         (!accData?.transactionAccumulation &&
@@ -232,6 +266,25 @@ const Wallet: React.FC<Props> = (props) => {
                                     />
                                 </View>
                                 <View style={styles.earningsFooter}>
+                                    <Animated.View
+                                        style={[
+                                            {
+                                                transform: [
+                                                    {
+                                                        translateY: animatedHeight,
+                                                    },
+                                                ],
+                                                opacity: animatedOpacity,
+                                            },
+                                        ]}
+                                    >
+                                        <CoinBox
+                                            showCoinPlus
+                                            amount={animationCoinAmount}
+                                            coinSize={40}
+                                            fontSize={30}
+                                        />
+                                    </Animated.View>
                                     <TouchableOpacity
                                         style={[
                                             styles.collectButton,
@@ -245,6 +298,8 @@ const Wallet: React.FC<Props> = (props) => {
                                         activeOpacity={total === 0 ? 1 : 0.5}
                                         onPress={async () => {
                                             if (total > 0) {
+                                                setAnimationCoinAmount(total);
+                                                shockTheNation();
                                                 try {
                                                     await collectEarnings({
                                                         optimisticResponse: {
