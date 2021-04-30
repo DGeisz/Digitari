@@ -10,6 +10,7 @@ export const styles = StyleSheet.create({
         paddingVertical: 10,
         borderTopColor: palette.softGray,
         borderTopWidth: 1,
+        borderBottomColor: palette.softGray,
     },
     timeContainer: {
         paddingHorizontal: 10,

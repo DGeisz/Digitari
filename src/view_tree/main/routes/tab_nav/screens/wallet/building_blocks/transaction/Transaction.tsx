@@ -12,6 +12,8 @@ interface Props {
     transaction: TransactionType;
     openConvo: (cvid: string, pid: string) => void;
     openUser: (uid: string) => void;
+    showBottomBorder: boolean;
+    lastCollectionTime: number;
 }
 
 export default class Transaction extends React.PureComponent<Props> {
@@ -19,7 +21,10 @@ export default class Transaction extends React.PureComponent<Props> {
         return (
             <TouchableOpacity
                 activeOpacity={0.5}
-                style={styles.transactionContainer}
+                style={[
+                    styles.transactionContainer,
+                    { borderBottomWidth: this.props.showBottomBorder ? 1 : 0 },
+                ]}
                 onPress={() => {
                     switch (this.props.transaction.transactionType) {
                         case TransactionTypesEnum.User:
@@ -32,7 +37,9 @@ export default class Transaction extends React.PureComponent<Props> {
                                 pid,
                             ] = this.props.transaction.data.split(":");
 
-                            return this.props.openConvo(cvid, pid);
+                            if (!!cvid && !!pid) {
+                                return this.props.openConvo(cvid, pid);
+                            }
                     }
                 }}
             >
@@ -40,6 +47,10 @@ export default class Transaction extends React.PureComponent<Props> {
                     <CoinBox
                         coinSize={20}
                         amount={this.props.transaction.coin}
+                        active={
+                            parseInt(this.props.transaction.time) >
+                            this.props.lastCollectionTime
+                        }
                     />
                 </View>
                 <View style={styles.messageContainer}>

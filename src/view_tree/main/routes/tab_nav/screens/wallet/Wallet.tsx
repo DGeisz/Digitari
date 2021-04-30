@@ -182,6 +182,10 @@ const Wallet: React.FC<Props> = (props) => {
         ? transData.transactions
         : [];
 
+    const lastCollectionTime: number = !!collectionData?.user
+        ? parseInt(collectionData.user.lastCollectionTime)
+        : 0;
+
     return (
         <>
             <View style={basicLayouts.flexGrid1}>
@@ -266,19 +270,24 @@ const Wallet: React.FC<Props> = (props) => {
                                     Transactions
                                 </Text>
                             </View>
-                            <View style={styles.noTransactionsContainer}>
-                                <Text style={styles.noTransactionText}>
-                                    You haven't had any transactions recently
-                                </Text>
-                            </View>
+                            {finalFeed.length === 0 && (
+                                <View style={styles.noTransactionsContainer}>
+                                    <Text style={styles.noTransactionText}>
+                                        You haven't had any transactions
+                                        recently
+                                    </Text>
+                                </View>
+                            )}
                         </>
                     }
                     data={finalFeed}
-                    renderItem={({ item }) => (
+                    renderItem={({ item, index }) => (
                         <Transaction
+                            showBottomBorder={index === finalFeed.length - 1}
                             transaction={item}
                             openConvo={openConvo}
                             openUser={openUser}
+                            lastCollectionTime={lastCollectionTime}
                         />
                     )}
                     keyExtractor={(item, index) => ["wallet", index].join(":")}

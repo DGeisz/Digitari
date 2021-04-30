@@ -102,6 +102,7 @@ export default class StatsHeader extends React.PureComponent<Props, State> {
                             amount={this.props.user.coin}
                             coinSize={30}
                             fontSize={18}
+                            showAbbreviated={false}
                         />
                     </View>
                     <View style={styles.statsRightBottom}>
