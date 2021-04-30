@@ -161,6 +161,14 @@ export const schema = gql`
         presignedUrl: String
     }
 
+    type DonationRecord {
+        uid: ID
+        pid: ID
+        tuid: ID
+        amount: Int
+        name: String
+    }
+
     type Transaction {
         tid: ID
         time: String
@@ -292,6 +300,9 @@ export const schema = gql`
 
             recipients: Int
         ): PostPackage
+
+        donateToPost(pid: ID!, amount: Int!): DonationRecord
+
         updateBio(bio: String): User
         updateProfilePic(imgName: String): ImgUrl
         deleteSearchEntity(id: String): SearchEntity

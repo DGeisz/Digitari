@@ -96,7 +96,6 @@ const Wallet: React.FC<Props> = (props) => {
         COLLECT_EARNINGS,
         {
             update(cache, { data, errors }) {
-                console.log("\nhere ", data, errors);
                 if (!!data?.collectEarnings) {
                     cache.modify({
                         id: cache.identify({
@@ -109,7 +108,7 @@ const Wallet: React.FC<Props> = (props) => {
                         },
                     });
 
-                    const user = cache.modify({
+                    const _ = cache.modify({
                         id: cache.identify({
                             __typename: USER_TYPENAME,
                             id: uid,
@@ -123,20 +122,10 @@ const Wallet: React.FC<Props> = (props) => {
                             },
                         },
                     });
-
-                    console.log("\nUser: ", user);
                 }
             },
         }
     );
-
-    useEffect(() => {
-        console.log("\nCollection", collectionData?.user);
-    }, [
-        !!collectionData?.user
-            ? parseInt(collectionData.user.lastCollectionTime)
-            : 0,
-    ]);
 
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
@@ -170,7 +159,9 @@ const Wallet: React.FC<Props> = (props) => {
                 easing: Easing.linear,
                 useNativeDriver: true,
             }),
-        ]).start();
+        ]).start(() => {
+            animatedOpacity.setValue(0);
+        });
     };
 
     if (

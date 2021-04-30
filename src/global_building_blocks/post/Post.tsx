@@ -17,6 +17,9 @@ import {
     PostResponseCheckData,
     PostResponseCheckVariables,
 } from "./gql/Queries";
+import { FetchResult } from "@apollo/client/link/core";
+import { MutationFunctionOptions } from "@apollo/client/react/types/types";
+import { DonateToPostData, DonateToPostVariables } from "./gql/Mutations";
 
 const COMMUNITY_NAME_MAX_LEN = 30;
 
@@ -25,6 +28,12 @@ interface Props {
     stripped: boolean;
     openUser: (uid: string) => void;
     openCommunity: (cmid: string) => void;
+    donateToPost: (
+        options?: MutationFunctionOptions<
+            DonateToPostData,
+            DonateToPostVariables
+        >
+    ) => Promise<FetchResult<DonateToPostData>>;
     openPost?: (pid: string) => void;
     abbreviateAddOn?: boolean;
     showFooter?: boolean;
@@ -39,6 +48,7 @@ interface State {
     postModalVisible: boolean;
     postModalError?: string;
     postModalLoading: boolean;
+    donationModalVisible: boolean;
 }
 
 export default class Post extends React.PureComponent<Props, State> {
@@ -56,6 +66,7 @@ export default class Post extends React.PureComponent<Props, State> {
         postModalVisible: false,
         postModalError: undefined,
         postModalLoading: false,
+        donationModalVisible: false,
     };
 
     render() {
@@ -175,18 +186,27 @@ export default class Post extends React.PureComponent<Props, State> {
                                             />
                                         </View>
                                         <View style={styles.sideBufferBottom}>
-                                            <TouchableOpacity>
+                                            {this.props.post.coinDonated ? (
                                                 <CoinBox
-                                                    active={
-                                                        !!this.props.post
-                                                            .coinDonated
-                                                    }
+                                                    active
                                                     showAmount={false}
                                                     coinSize={30}
                                                     fontSize={14}
                                                     paddingVertical={0}
                                                 />
-                                            </TouchableOpacity>
+                                            ) : (
+                                                <TouchableOpacity
+                                                    onPress={() => {}}
+                                                >
+                                                    <CoinBox
+                                                        active={false}
+                                                        showAmount={false}
+                                                        coinSize={30}
+                                                        fontSize={14}
+                                                        paddingVertical={0}
+                                                    />
+                                                </TouchableOpacity>
+                                            )}
                                             <Text style={styles.coinText}>
                                                 {toRep(this.props.post.coin)}
                                             </Text>

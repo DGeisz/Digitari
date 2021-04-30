@@ -18,14 +18,6 @@ import LoadingWheel from "../../../../global_building_blocks/loading_wheel/Loadi
 import ErrorMessage from "../../../../global_building_blocks/error_message/ErrorMessage";
 import { UserNavProp, UserRouteProp } from "../../MainEntryNavTypes";
 import { localUid } from "../../../../global_state/UserState";
-import {
-    FOLLOW_USER,
-    FollowUserData,
-    FollowUserVariables,
-    UN_FOLLOW_USER,
-    UnFollowUserData,
-    UnFollowUserVariables,
-} from "./gql/Mutation";
 import { USER_TYPENAME } from "../../../../global_types/UserTypes";
 import { Auth } from "aws-amplify";
 import NewButton from "../../../../global_building_blocks/new_button/NewButton";
@@ -52,108 +44,6 @@ const User: React.FC<Props> = (props) => {
 
     console.log(error);
 
-    const [follow] = useMutation<FollowUserData, FollowUserVariables>(
-        FOLLOW_USER,
-        {
-            variables: {
-                tid: props.route.params.uid,
-            },
-            optimisticResponse: {
-                followUser: {
-                    tid: props.route.params.uid,
-                    sid: uid,
-                    name: "",
-                    time: "",
-                    entityType: 0,
-                },
-            },
-            update(cache, { data: followData }) {
-                if (data?.user && followData?.followUser) {
-                    cache.modify({
-                        id: cache.identify({
-                            __typename: USER_TYPENAME,
-                            id: uid,
-                        }),
-                        fields: {
-                            following(existing) {
-                                return existing + 1;
-                            },
-                            coin(existing) {
-                                return Math.max(
-                                    existing - data.user.followPrice,
-                                    0
-                                );
-                            },
-                        },
-                    });
-
-                    cache.modify({
-                        id: cache.identify({
-                            __typename: USER_TYPENAME,
-                            id: props.route.params.uid,
-                        }),
-                        fields: {
-                            amFollowing() {
-                                return true;
-                            },
-                            followers(existing) {
-                                return existing + 1;
-                            },
-                        },
-                    });
-                }
-            },
-        }
-    );
-
-    const [unFollow] = useMutation<UnFollowUserData, UnFollowUserVariables>(
-        UN_FOLLOW_USER,
-        {
-            variables: {
-                tid: props.route.params.uid,
-            },
-            optimisticResponse: {
-                unFollowUser: {
-                    tid: props.route.params.uid,
-                    sid: uid,
-                    name: "",
-                    time: "",
-                    entityType: 0,
-                },
-            },
-            update(cache, { data: unFollowData }) {
-                if (data?.user && unFollowData?.unFollowUser) {
-                    cache.modify({
-                        id: cache.identify({
-                            __typename: USER_TYPENAME,
-                            id: uid,
-                        }),
-                        fields: {
-                            following(existing) {
-                                return existing - 1;
-                            },
-                        },
-                    });
-
-                    cache.modify({
-                        id: cache.identify({
-                            __typename: USER_TYPENAME,
-                            id: props.route.params.uid,
-                        }),
-                        fields: {
-                            amFollowing() {
-                                return false;
-                            },
-                            followers(existing) {
-                                return existing - 1;
-                            },
-                        },
-                    });
-                }
-            },
-        }
-    );
-
     if (!data?.user && loading) {
         return <LoadingWheel />;
     }
@@ -177,8 +67,6 @@ const User: React.FC<Props> = (props) => {
                                 }}
                                 user={data.user}
                                 isMe={data?.user.id === uid}
-                                handleFollow={follow}
-                                handleUnFollow={unFollow}
                                 handleSettings={Auth.signOut}
                             />
                         ),

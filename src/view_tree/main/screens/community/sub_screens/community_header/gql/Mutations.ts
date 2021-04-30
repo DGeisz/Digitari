@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { FollowEntityType } from "../../../../../global_types/FollowEntityType";
+import { FollowEntityType } from "../../../../../../../global_types/FollowEntityType";
 
 export const FOLLOW_COMMUNITY = gql`
     mutation FollowCommunity($tid: ID!) {

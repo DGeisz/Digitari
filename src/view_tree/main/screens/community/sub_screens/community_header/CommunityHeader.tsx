@@ -4,30 +4,145 @@ import { styles } from "./CommunityHeaderStyles";
 import { FontAwesome } from "@expo/vector-icons";
 import { palette } from "../../../../../../global_styles/Palette";
 import {
+    COMMUNITY_TYPENAME,
     CommunityType,
     FOLLOW_COMMUNITY_PRICE,
 } from "../../../../../../global_types/CommunityTypes";
 import { toRep } from "../../../../../../global_utils/ValueRepUtils";
 import { dateFormatter } from "../../../../../../global_utils/TimeRepUtils";
 import CoinBox from "../../../../../../global_building_blocks/coin_box/CoinBox";
+import { useMutation } from "@apollo/client";
+import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
+import {
+    FOLLOW_COMMUNITY,
+    FollowCommunityData,
+    FollowCommunityVariables,
+    UN_FOLLOW_COMMUNITY,
+    UnFollowCommunityData,
+    UnFollowCommunityVariables,
+} from "./gql/Mutations";
+import { localUid } from "../../../../../../global_state/UserState";
 
 interface Props {
     community: CommunityType;
-    handleFollow: () => void;
-    handleUnFollow: () => void;
 }
 
 const CommunityHeader: React.FC<Props> = (props) => {
-    const [showError, setShowError] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>("");
     const [loading, setLoading] = useState<boolean>(false);
+
+    const { id: cmid } = props.community;
+    const uid = localUid();
+
+    const [followCommunity] = useMutation<
+        FollowCommunityData,
+        FollowCommunityVariables
+    >(FOLLOW_COMMUNITY, {
+        variables: {
+            tid: cmid,
+        },
+        optimisticResponse: {
+            followCommunity: {
+                tid: cmid,
+                sid: uid,
+                name: "",
+                time: "",
+                entityType: 0,
+            },
+        },
+        update(cache, { data: followData }) {
+            if (followData?.followCommunity) {
+                cache.modify({
+                    id: cache.identify({
+                        __typename: USER_TYPENAME,
+                        id: uid,
+                    }),
+                    fields: {
+                        following(existing) {
+                            return existing + 1;
+                        },
+                        coin(existing) {
+                            return Math.max(
+                                existing - FOLLOW_COMMUNITY_PRICE,
+                                0
+                            );
+                        },
+                    },
+                });
+
+                cache.modify({
+                    id: cache.identify({
+                        __typename: COMMUNITY_TYPENAME,
+                        id: cmid,
+                    }),
+                    fields: {
+                        amFollowing() {
+                            return true;
+                        },
+                        followers(existing) {
+                            return existing + 1;
+                        },
+                    },
+                });
+
+                setLoading(false);
+            }
+        },
+    });
+
+    const [unFollowCommunity] = useMutation<
+        UnFollowCommunityData,
+        UnFollowCommunityVariables
+    >(UN_FOLLOW_COMMUNITY, {
+        variables: {
+            tid: cmid,
+        },
+        optimisticResponse: {
+            unFollowCommunity: {
+                tid: cmid,
+                sid: uid,
+                name: "",
+                time: "",
+                entityType: 0,
+            },
+        },
+        update(cache, { data: unFollowData }) {
+            if (unFollowData?.unFollowCommunity) {
+                cache.modify({
+                    id: cache.identify({
+                        __typename: USER_TYPENAME,
+                        id: uid,
+                    }),
+                    fields: {
+                        following(existing) {
+                            return existing - 1;
+                        },
+                    },
+                });
+
+                cache.modify({
+                    id: cache.identify({
+                        __typename: COMMUNITY_TYPENAME,
+                        id: cmid,
+                    }),
+                    fields: {
+                        amFollowing() {
+                            return false;
+                        },
+                        followers(existing) {
+                            return existing - 1;
+                        },
+                    },
+                });
+
+                setLoading(false);
+            }
+        },
+    });
 
     return (
         <View style={styles.headerContainer} pointerEvents="box-none">
-            {showError && (
-                <Text style={styles.followErrorText}>
-                    {`You need ${FOLLOW_COMMUNITY_PRICE} digicoin to follow this community`}
-                </Text>
-            )}
+            {!!error && <Text style={styles.followErrorText}>{error}</Text>}
             <View style={styles.headerHeader} pointerEvents="box-none">
                 <View style={styles.headerLeft} pointerEvents="box-none">
                     <View style={styles.iconContainer}>
@@ -47,9 +162,18 @@ const CommunityHeader: React.FC<Props> = (props) => {
                     ) : props.community.amFollowing ? (
                         <TouchableOpacity
                             style={styles.followButton}
-                            onPress={() => {
-                                props.handleUnFollow();
-                                setShowError(false);
+                            onPress={async () => {
+                                setError(null);
+                                setLoading(true);
+                                try {
+                                    await unFollowCommunity();
+                                } catch (e) {
+                                    setError(
+                                        "An error occurred.  Check your connection and try again"
+                                    );
+                                } finally {
+                                    setLoading(false);
+                                }
                             }}
                         >
                             <Text style={styles.followButtonText}>
@@ -62,10 +186,11 @@ const CommunityHeader: React.FC<Props> = (props) => {
                             onPress={async () => {
                                 setLoading(true);
                                 try {
-                                    await props.handleFollow();
+                                    await followCommunity();
                                 } catch (e) {
-                                    console.log("Follow error: ", e);
-                                    setShowError(true);
+                                    setError(
+                                        `An error occurred.  Make sure your have ${FOLLOW_COMMUNITY_PRICE} digicoin and try again`
+                                    );
                                 } finally {
                                     setLoading(false);
                                 }

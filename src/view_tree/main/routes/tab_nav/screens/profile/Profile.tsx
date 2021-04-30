@@ -70,8 +70,6 @@ const Profile: React.FC = () => {
                                     user={data.user}
                                     isMe
                                     handleSettings={() => Auth.signOut()}
-                                    handleUnFollow={() => {}}
-                                    handleFollow={() => {}}
                                 />
                             ),
                             headerHeight: 250,

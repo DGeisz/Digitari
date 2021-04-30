@@ -4,11 +4,7 @@ import { createMaterialCollapsibleTopTabNavigator } from "react-native-collapsib
 import { basicLayouts } from "../../../../global_styles/BasicLayouts";
 import CommunityHeader from "./sub_screens/community_header/CommunityHeader";
 import TabLabel from "../../../../global_building_blocks/tab_label/TabLabel";
-import {
-    COMMUNITY_TYPENAME,
-    FOLLOW_COMMUNITY_PRICE,
-} from "../../../../global_types/CommunityTypes";
-import { NetworkStatus, useMutation, useQuery } from "@apollo/client";
+import { NetworkStatus, useQuery } from "@apollo/client";
 import {
     GET_COMMUNITY,
     GetCommunityQueryData,
@@ -17,16 +13,7 @@ import {
 import { CommunityNavProp, CommunityRouteProp } from "../../MainEntryNavTypes";
 import LoadingWheel from "../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import ErrorMessage from "../../../../global_building_blocks/error_message/ErrorMessage";
-import {
-    FOLLOW_COMMUNITY,
-    FollowCommunityData,
-    FollowCommunityVariables,
-    UN_FOLLOW_COMMUNITY,
-    UnFollowCommunityData,
-    UnFollowCommunityVariables,
-} from "./gql/Mutations";
 import { localUid } from "../../../../global_state/UserState";
-import { USER_TYPENAME } from "../../../../global_types/UserTypes";
 import Followers from "./sub_screens/followers/Followers";
 import CommunityPosts from "./sub_screens/community_posts/CommunityPosts";
 import NewButton from "../../../../global_building_blocks/new_button/NewButton";
@@ -52,112 +39,6 @@ const Community: React.FC<Props> = (props) => {
         notifyOnNetworkStatusChange: true,
     });
 
-    const [followCommunity] = useMutation<
-        FollowCommunityData,
-        FollowCommunityVariables
-    >(FOLLOW_COMMUNITY, {
-        variables: {
-            tid: props.route.params.cmid,
-        },
-        optimisticResponse: {
-            followCommunity: {
-                tid: props.route.params.cmid,
-                sid: uid,
-                name: "",
-                time: "",
-                entityType: 0,
-            },
-        },
-        update(cache, { data: followData }) {
-            if (data?.community && followData?.followCommunity) {
-                cache.modify({
-                    id: cache.identify({
-                        __typename: USER_TYPENAME,
-                        id: uid,
-                    }),
-                    fields: {
-                        following(existing) {
-                            return existing + 1;
-                        },
-                        coin(existing) {
-                            return Math.max(
-                                existing - FOLLOW_COMMUNITY_PRICE,
-                                0
-                            );
-                        },
-                    },
-                });
-
-                cache.modify({
-                    id: cache.identify({
-                        __typename: COMMUNITY_TYPENAME,
-                        id: props.route.params.cmid,
-                    }),
-                    fields: {
-                        amFollowing() {
-                            return true;
-                        },
-                        followers(existing) {
-                            return existing + 1;
-                        },
-                    },
-                });
-            }
-        },
-    });
-
-    const [unFollowCommunity] = useMutation<
-        UnFollowCommunityData,
-        UnFollowCommunityVariables
-    >(
-        UN_FOLLOW_COMMUNITY,
-
-        {
-            variables: {
-                tid: props.route.params.cmid,
-            },
-            optimisticResponse: {
-                unFollowCommunity: {
-                    tid: props.route.params.cmid,
-                    sid: uid,
-                    name: "",
-                    time: "",
-                    entityType: 0,
-                },
-            },
-            update(cache, { data: unFollowData }) {
-                if (data?.community && unFollowData?.unFollowCommunity) {
-                    cache.modify({
-                        id: cache.identify({
-                            __typename: USER_TYPENAME,
-                            id: uid,
-                        }),
-                        fields: {
-                            following(existing) {
-                                return existing - 1;
-                            },
-                        },
-                    });
-
-                    cache.modify({
-                        id: cache.identify({
-                            __typename: COMMUNITY_TYPENAME,
-                            id: props.route.params.cmid,
-                        }),
-                        fields: {
-                            amFollowing() {
-                                return false;
-                            },
-                            followers(existing) {
-                                return existing - 1;
-                            },
-                        },
-                    });
-                }
-            },
-        }
-    );
-
     if (!data?.community && networkStatus === NetworkStatus.loading) {
         return <LoadingWheel />;
     }
@@ -172,11 +53,7 @@ const Community: React.FC<Props> = (props) => {
                 <Tab.Navigator
                     collapsibleOptions={{
                         renderHeader: () => (
-                            <CommunityHeader
-                                community={data.community}
-                                handleFollow={followCommunity}
-                                handleUnFollow={unFollowCommunity}
-                            />
+                            <CommunityHeader community={data.community} />
                         ),
                         headerHeight: 250,
                     }}

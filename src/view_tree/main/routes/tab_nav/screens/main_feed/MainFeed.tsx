@@ -11,11 +11,16 @@ import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel
 import ErrorMessage from "../../../../../../global_building_blocks/error_message/ErrorMessage";
 import Post from "../../../../../../global_building_blocks/post/Post";
 import { palette } from "../../../../../../global_styles/Palette";
-import { NetworkStatus, useQuery } from "@apollo/client";
+import { NetworkStatus, useMutation, useQuery } from "@apollo/client";
 import { TabNavContext } from "../../TabNavContext";
 import NewButton from "../../../../../../global_building_blocks/new_button/NewButton";
 import { globalScreenStyles } from "../../../../../../global_styles/GlobalScreenStyles";
 import { styles } from "./MainFeedStyles";
+import {
+    DONATE_TO_POST,
+    DonateToPostData,
+    DonateToPostVariables,
+} from "../../../../../../global_building_blocks/post/gql/Mutations";
 
 interface Props {}
 
@@ -34,6 +39,10 @@ const MainFeed: React.FC<Props> = () => {
     >(GET_FEED, {
         notifyOnNetworkStatusChange: true,
     });
+
+    const [donateToPost] = useMutation<DonateToPostData, DonateToPostVariables>(
+        DONATE_TO_POST
+    );
 
     // console.log(data, error);
 
@@ -77,6 +86,7 @@ const MainFeed: React.FC<Props> = () => {
                             openPost={openPost}
                             onMessage={openNewMessage}
                             post={item}
+                            donateToPost={donateToPost}
                         />
                     )}
                     keyExtractor={(item, index) =>

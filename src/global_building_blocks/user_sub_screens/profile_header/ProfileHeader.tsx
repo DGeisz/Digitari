@@ -8,28 +8,148 @@ import {
     Keyboard,
 } from "react-native";
 import { styles } from "./ProfileHeaderStyles";
-import { UserType } from "../../../global_types/UserTypes";
+import {
+    FOLLOW_USER_PRICE,
+    USER_TYPENAME,
+    UserType,
+} from "../../../global_types/UserTypes";
 import Tier from "../../tier/Tier";
 import { toRep } from "../../../global_utils/ValueRepUtils";
 import CoinBox from "../../coin_box/CoinBox";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { palette } from "../../../global_styles/Palette";
 import BioModal from "./building_blocks/bio_modal/BioModal";
+import { useMutation } from "@apollo/client";
+import {
+    FOLLOW_USER,
+    FollowUserData,
+    FollowUserVariables,
+    UN_FOLLOW_USER,
+    UnFollowUserData,
+    UnFollowUserVariables,
+} from "./gql/Mutation";
+import { localUid } from "../../../global_state/UserState";
 
 interface Props {
     user: UserType;
     isMe: boolean;
     openFollows: () => void;
-    handleFollow: () => void;
-    handleUnFollow: () => void;
     handleSettings: () => void;
 }
 
 const ProfileHeader: React.FC<Props> = (props) => {
-    const [showError, setShowError] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
 
     const [editBioVisible, showEditBio] = useState<boolean>(false);
+
+    const uid = localUid();
+
+    const [follow] = useMutation<FollowUserData, FollowUserVariables>(
+        FOLLOW_USER,
+        {
+            variables: {
+                tid: props.user.id,
+            },
+            optimisticResponse: {
+                followUser: {
+                    tid: props.user.id,
+                    sid: uid,
+                    name: "",
+                    time: "",
+                    entityType: 0,
+                },
+            },
+            update(cache, { data: followData }) {
+                if (followData?.followUser) {
+                    cache.modify({
+                        id: cache.identify({
+                            __typename: USER_TYPENAME,
+                            id: uid,
+                        }),
+                        fields: {
+                            following(existing) {
+                                return existing + 1;
+                            },
+                            coin(existing) {
+                                return Math.max(
+                                    existing - FOLLOW_USER_PRICE,
+                                    0
+                                );
+                            },
+                        },
+                    });
+
+                    cache.modify({
+                        id: cache.identify({
+                            __typename: USER_TYPENAME,
+                            id: props.user.id,
+                        }),
+                        fields: {
+                            amFollowing() {
+                                return true;
+                            },
+                            followers(existing) {
+                                return existing + 1;
+                            },
+                        },
+                    });
+
+                    setLoading(false);
+                }
+            },
+        }
+    );
+
+    const [unFollow] = useMutation<UnFollowUserData, UnFollowUserVariables>(
+        UN_FOLLOW_USER,
+        {
+            variables: {
+                tid: props.user.id,
+            },
+            optimisticResponse: {
+                unFollowUser: {
+                    tid: props.user.id,
+                    sid: uid,
+                    name: "",
+                    time: "",
+                    entityType: 0,
+                },
+            },
+            update(cache, { data: unFollowData }) {
+                if (unFollowData?.unFollowUser) {
+                    cache.modify({
+                        id: cache.identify({
+                            __typename: USER_TYPENAME,
+                            id: uid,
+                        }),
+                        fields: {
+                            following(existing) {
+                                return existing - 1;
+                            },
+                        },
+                    });
+
+                    cache.modify({
+                        id: cache.identify({
+                            __typename: USER_TYPENAME,
+                            id: props.user.id,
+                        }),
+                        fields: {
+                            amFollowing() {
+                                return false;
+                            },
+                            followers(existing) {
+                                return existing - 1;
+                            },
+                        },
+                    });
+
+                    setLoading(false);
+                }
+            },
+        }
+    );
 
     return (
         <View pointerEvents="box-none">
@@ -37,11 +157,7 @@ const ProfileHeader: React.FC<Props> = (props) => {
                 style={styles.profileHeaderContainer}
                 pointerEvents="box-none"
             >
-                {showError && (
-                    <Text style={styles.followErrorText}>
-                        {`You need ${props.user.followPrice} digicoin to follow this user`}
-                    </Text>
-                )}
+                {!!error && <Text style={styles.followErrorText}>{error}</Text>}
                 <View style={styles.profileSplit0}>
                     <View style={styles.split0Left}>
                         {!!props.user.imgUrl ? (
@@ -97,8 +213,17 @@ const ProfileHeader: React.FC<Props> = (props) => {
                             <TouchableOpacity
                                 style={styles.followButton}
                                 onPress={async () => {
-                                    props.handleUnFollow();
-                                    setShowError(false);
+                                    setError(null);
+                                    setLoading(true);
+                                    try {
+                                        await unFollow();
+                                    } catch (e) {
+                                        setError(
+                                            "An error occurred.  Check your connection and try again"
+                                        );
+                                    } finally {
+                                        setLoading(false);
+                                    }
                                 }}
                             >
                                 <Text style={styles.followButtonText}>
@@ -110,11 +235,12 @@ const ProfileHeader: React.FC<Props> = (props) => {
                                 style={styles.followButton}
                                 onPress={async () => {
                                     setLoading(true);
-
                                     try {
-                                        await props.handleFollow();
-                                    } catch (_) {
-                                        setShowError(true);
+                                        await follow();
+                                    } catch (e) {
+                                        setError(
+                                            `An error occurred.  Make sure your have ${FOLLOW_USER_PRICE} digicoin and try again`
+                                        );
                                     } finally {
                                         setLoading(false);
                                     }

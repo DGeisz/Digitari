@@ -115,6 +115,9 @@ const linking: LinkingOptions = {
                 case PushNotificationType.UserFollowedCommunity:
                     listener(prefix + `user/${notificationContent}`);
                     break;
+                case PushNotificationType.CoinDonated:
+                    listener(prefix + `user/${notificationContent}`);
+                    break;
             }
         });
     },
