@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
     Animated,
     Easing,
@@ -14,10 +14,7 @@ import NewButton from "../../../../../../global_building_blocks/new_button/NewBu
 import { WalletNavProp } from "../../TabNavTypes";
 import { styles } from "./WalletStyles";
 import CoinBox from "../../../../../../global_building_blocks/coin_box/CoinBox";
-import {
-    TransactionType,
-    TransactionTypesEnum,
-} from "../../../../../../global_types/TransactionTypes";
+import { TransactionType } from "../../../../../../global_types/TransactionTypes";
 import Transaction from "./building_blocks/transaction/Transaction";
 import { localUid } from "../../../../../../global_state/UserState";
 import { NetworkStatus, useMutation, useQuery } from "@apollo/client";
@@ -53,7 +50,7 @@ const Wallet: React.FC<Props> = (props) => {
      */
     const {
         data: collectionData,
-        loading: collectionLoading,
+        networkStatus: collectionStatus,
         error: collectionError,
         refetch: collectionRefetch,
     } = useQuery<LastCollectionTimeData, LastCollectionTimeVariables>(
@@ -62,6 +59,8 @@ const Wallet: React.FC<Props> = (props) => {
             variables: {
                 uid,
             },
+            fetchPolicy: "cache-and-network",
+            notifyOnNetworkStatusChange: true,
         }
     );
 
@@ -97,6 +96,7 @@ const Wallet: React.FC<Props> = (props) => {
         COLLECT_EARNINGS,
         {
             update(cache, { data, errors }) {
+                console.log("\nhere ", data, errors);
                 if (!!data?.collectEarnings) {
                     cache.modify({
                         id: cache.identify({
@@ -109,7 +109,7 @@ const Wallet: React.FC<Props> = (props) => {
                         },
                     });
 
-                    cache.modify({
+                    const user = cache.modify({
                         id: cache.identify({
                             __typename: USER_TYPENAME,
                             id: uid,
@@ -123,10 +123,20 @@ const Wallet: React.FC<Props> = (props) => {
                             },
                         },
                     });
+
+                    console.log("\nUser: ", user);
                 }
             },
         }
     );
+
+    useEffect(() => {
+        console.log("\nCollection", collectionData?.user);
+    }, [
+        !!collectionData?.user
+            ? parseInt(collectionData.user.lastCollectionTime)
+            : 0,
+    ]);
 
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
@@ -164,7 +174,7 @@ const Wallet: React.FC<Props> = (props) => {
     };
 
     if (
-        collectionLoading ||
+        (!collectionData?.user && collectionStatus === NetworkStatus.loading) ||
         (!accData?.transactionAccumulation &&
             accNetworkStatus === NetworkStatus.loading &&
             !transData?.transactions &&
@@ -247,7 +257,7 @@ const Wallet: React.FC<Props> = (props) => {
                                 </View>
                                 <View style={styles.entryContainer}>
                                     <Text style={styles.entryTitle}>
-                                        Transaction sum
+                                        Transaction total
                                     </Text>
                                     <CoinBox
                                         amount={accumulation}
@@ -298,8 +308,8 @@ const Wallet: React.FC<Props> = (props) => {
                                         activeOpacity={total === 0 ? 1 : 0.5}
                                         onPress={async () => {
                                             if (total > 0) {
-                                                setAnimationCoinAmount(total);
                                                 shockTheNation();
+                                                setAnimationCoinAmount(total);
                                                 try {
                                                     await collectEarnings({
                                                         optimisticResponse: {
@@ -309,6 +319,8 @@ const Wallet: React.FC<Props> = (props) => {
                                                             },
                                                         },
                                                     });
+
+                                                    await collectionRefetch();
                                                 } catch (_) {}
                                             }
                                         }}

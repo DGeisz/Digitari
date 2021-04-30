@@ -112,6 +112,9 @@ const linking: LinkingOptions = {
                 case PushNotificationType.UserFollowed:
                     listener(prefix + `user/${notificationContent}`);
                     break;
+                case PushNotificationType.UserFollowedCommunity:
+                    listener(prefix + `user/${notificationContent}`);
+                    break;
             }
         });
     },

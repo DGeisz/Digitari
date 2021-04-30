@@ -6,6 +6,7 @@ export const FOLLOW_COMMUNITY = gql`
         followCommunity(tid: $tid) {
             tid
             sid
+            tuid
             time
             name
             entityType

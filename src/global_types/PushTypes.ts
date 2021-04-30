@@ -5,6 +5,7 @@ export enum PushNotificationType {
     ConvoBlocked,
     ConvoFinished,
     UserFollowed,
+    UserFollowedCommunity,
 }
 
 export interface NotificationData {

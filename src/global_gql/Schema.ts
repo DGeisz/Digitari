@@ -213,6 +213,7 @@ export const schema = gql`
     type FollowEntity @aws_iam @aws_cognito_user_pools {
         sid: ID
         tid: ID
+        tuid: ID
         time: String
         name: String
         imgUrl: String
@@ -313,6 +314,11 @@ export const schema = gql`
             @aws_subscribe(mutations: ["blockConvo"])
         convoFinished(tid: ID!): ConvoUpdate
             @aws_subscribe(mutations: ["finishConvo"])
+
+        newFollower(tid: ID!): FollowEntity
+            @aws_subscribe(mutations: ["followUser"])
+        newCommunityFollower(tuid: ID!): FollowEntity
+            @aws_subscribe(mutations: ["followCommunity"])
     }
 
     schema {

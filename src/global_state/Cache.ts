@@ -226,5 +226,8 @@ export const cache = new InMemoryCache({
         Message: {
             keyFields: ["id", "time"],
         },
+        FollowEntity: {
+            keyFields: ["tid", "sid"],
+        },
     },
 });

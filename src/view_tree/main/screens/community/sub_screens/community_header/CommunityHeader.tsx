@@ -63,7 +63,8 @@ const CommunityHeader: React.FC<Props> = (props) => {
                                 setLoading(true);
                                 try {
                                     await props.handleFollow();
-                                } catch (_) {
+                                } catch (e) {
+                                    console.log("Follow error: ", e);
                                     setShowError(true);
                                 } finally {
                                     setLoading(false);

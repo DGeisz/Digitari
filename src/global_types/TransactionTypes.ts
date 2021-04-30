@@ -10,9 +10,12 @@ export interface TransactionType {
     message: string;
     transactionType: TransactionTypesEnum;
     data: string;
+    __typename?: string;
 }
 
 export interface EarningsReceipt {
     coin: number;
     time: number;
 }
+
+export const TRANSACTION_TYPENAME = "Transaction";

@@ -4,9 +4,13 @@ import {
     CONVO_TYPENAME,
     ConvoStatus,
 } from "../../../../../../global_types/ConvoTypes";
-import { sort_active_convos } from "../utils/cache_utils";
+import { addTransaction, sort_active_convos } from "../utils/cache_utils";
 import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
 import { localUid } from "../../../../../../global_state/UserState";
+import {
+    TransactionType,
+    TransactionTypesEnum,
+} from "../../../../../../global_types/TransactionTypes";
 
 export function onConvoFinished(
     options: OnSubscriptionDataOptions<ConvoFinishedData>
@@ -20,6 +24,7 @@ export function onConvoFinished(
         const {
             convoFinished: {
                 convo: { id: cvid },
+                convo,
             },
         } = data;
 
@@ -72,5 +77,29 @@ export function onConvoFinished(
                 },
             },
         });
+
+        const uid = localUid();
+
+        /*
+         * First be sure we're the source of
+         * the convo
+         */
+        if (uid !== convo.tid) {
+            /*
+             * Now that we've established we're the source
+             * we add a transaction accordingly
+             */
+
+            const transaction: TransactionType = {
+                tid: uid,
+                time: Date.now().toString(),
+                coin: convo.convoReward,
+                message: `Reward for your successful convo with ${convo.tname}`,
+                transactionType: TransactionTypesEnum.Convo,
+                data: `${cvid}:${convo.pid}`,
+            };
+
+            addTransaction(transaction, cache);
+        }
     }
 }

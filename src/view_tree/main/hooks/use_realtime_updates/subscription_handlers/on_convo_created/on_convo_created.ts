@@ -6,6 +6,12 @@ import {
     NewConvosVariables,
 } from "../../../../routes/tab_nav/screens/convos/sub_screens/new_convos/gql/Queries";
 import { ConvoOrder } from "../../../../../../global_types/ConvoTypes";
+import {
+    TransactionType,
+    TransactionTypesEnum,
+} from "../../../../../../global_types/TransactionTypes";
+import { localUid } from "../../../../../../global_state/UserState";
+import { addTransaction } from "../utils/cache_utils";
 
 export function onConvoCreated(
     options: OnSubscriptionDataOptions<ConvoCreatedData>
@@ -17,6 +23,8 @@ export function onConvoCreated(
     } = options;
 
     if (!!data?.convoCreated) {
+        const convo = data.convoCreated;
+
         /*
          * Basically, we just want to chuck
          * this convo into the user's new convos.
@@ -76,5 +84,16 @@ export function onConvoCreated(
                 },
             });
         }
+
+        const transaction: TransactionType = {
+            tid: localUid(),
+            time: Date.now().toString(),
+            coin: convo.responseCost,
+            message: `Your post received a new response: "${convo.initialMsg}"`,
+            transactionType: TransactionTypesEnum.Convo,
+            data: `${convo.id}:${convo.pid}`,
+        };
+
+        addTransaction(transaction, cache);
     }
 }

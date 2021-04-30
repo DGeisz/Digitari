@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client";
 import { MessageType } from "../../../../../global_types/MessageTypes";
 import { ConvoType, ConvoUpdate } from "../../../../../global_types/ConvoTypes";
+import { FollowEntityType } from "../../../../../global_types/FollowEntityType";
 
 /*
  * New message
@@ -261,4 +262,53 @@ export interface ConvoFinishedData {
 
 export interface ConvoFinishedVariables {
     tid: string;
+}
+
+/*
+ * New follower
+ */
+export const NEW_FOLLOWER = gql`
+    subscription NewFollower($tid: ID!) {
+        newFollower(tid: $tid) {
+            sid
+            tid
+            time
+            name
+            imgUrl
+            entityType
+        }
+    }
+`;
+
+export interface NewFollowerData {
+    newFollower: FollowEntityType;
+}
+
+export interface NewFollowerVariables {
+    tid: string;
+}
+
+/*
+ * New community follower
+ */
+export const NEW_COMMUNITY_FOLLOWER = gql`
+    subscription NewCommunityFollower($tuid: ID!) {
+        newCommunityFollower(tuid: $tuid) {
+            sid
+            tid
+            tuid
+            time
+            name
+            imgUrl
+            entityType
+        }
+    }
+`;
+
+export interface NewCommunityFollowerData {
+    newCommunityFollower: FollowEntityType;
+}
+
+export interface NewCommunityFollowerVariables {
+    tuid: string;
 }

@@ -1,15 +1,4 @@
-import { OnSubscriptionDataOptions, useSubscription } from "@apollo/client";
-import {
-    CONVO_MESSAGES,
-    ConvoMessagesData,
-    ConvoMessagesVariables,
-} from "../../screens/convo/gql/Queries";
-import { CONVO_TYPENAME } from "../../../../global_types/ConvoTypes";
-import {
-    ACTIVE_CONVOS,
-    ActiveConvosData,
-    ActiveConvosVariables,
-} from "../../routes/tab_nav/screens/convos/sub_screens/active_convos/gql/Queries";
+import { useSubscription } from "@apollo/client";
 import { localHid, localUid } from "../../../../global_state/UserState";
 import {
     CONVO_ACTIVATED,
@@ -27,7 +16,13 @@ import {
     ConvoDismissedVariables,
     ConvoFinishedData,
     ConvoFinishedVariables,
+    NEW_COMMUNITY_FOLLOWER,
+    NEW_FOLLOWER,
     NEW_MESSAGE_ADDED,
+    NewCommunityFollowerData,
+    NewCommunityFollowerVariables,
+    NewFollowerData,
+    NewFollowerVariables,
     NewMessageAddedData,
     NewMessageAddedVariables,
 } from "./gql/Subscriptions";
@@ -37,6 +32,8 @@ import { onConvoBlocked } from "./subscription_handlers/on_convo_blocked/on_conv
 import { onConvoActivated } from "./subscription_handlers/on_convo_activated/on_convo_activated";
 import { onConvoFinished } from "./subscription_handlers/on_convo_finished/on_convo_finished";
 import { onConvoCreated } from "./subscription_handlers/on_convo_created/on_convo_created";
+import { onNewFollower } from "./subscription_handlers/on_new_follower/on_new_follower";
+import { onNewCommunityFollower } from "./subscription_handlers/on_new_community_follower/on_new_community_follower";
 
 export function useRealtimeUpdates() {
     const uid = localUid();
@@ -154,4 +151,27 @@ export function useRealtimeUpdates() {
         },
         onSubscriptionData: onConvoCreated,
     });
+
+    /*
+     * New follower
+     */
+    useSubscription<NewFollowerData, NewFollowerVariables>(NEW_FOLLOWER, {
+        variables: {
+            tid: uid,
+        },
+        onSubscriptionData: onNewFollower,
+    });
+
+    /*
+     * New community follower
+     */
+    useSubscription<NewCommunityFollowerData, NewCommunityFollowerVariables>(
+        NEW_COMMUNITY_FOLLOWER,
+        {
+            variables: {
+                tuid: uid,
+            },
+            onSubscriptionData: onNewCommunityFollower,
+        }
+    );
 }

@@ -3,14 +3,21 @@ import {
     CONVO_TYPENAME,
     ConvoStatus,
 } from "../../../../../../global_types/ConvoTypes";
-import { sort_active_convos } from "../utils/cache_utils";
+import { addTransaction, sort_active_convos } from "../utils/cache_utils";
 import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
 import { localUid } from "../../../../../../global_state/UserState";
 import { ConvoBlockedData } from "../../gql/Subscriptions";
+import {
+    TRANSACTION_TYPENAME,
+    TransactionType,
+    TransactionTypesEnum,
+} from "../../../../../../global_types/TransactionTypes";
 
 export function onConvoBlocked(
     options: OnSubscriptionDataOptions<ConvoBlockedData>
 ) {
+    console.log("Getting convo blocked sub");
+
     const {
         client: { cache },
         subscriptionData: { data },
@@ -20,6 +27,7 @@ export function onConvoBlocked(
         const {
             convoBlocked: {
                 convo: { id: cvid },
+                convo,
             },
         } = data;
 
@@ -72,5 +80,26 @@ export function onConvoBlocked(
                 },
             },
         });
+
+        const uid = localUid();
+
+        const message =
+            convo.tid === uid
+                ? `${convo.tname} blocked your message: "${convo.lastMsg}"`
+                : convo.sanony
+                ? `Your message was blocked: "${convo.lastMsg}"`
+                : `${convo.sname} blocked your message: "${convo.lastMsg}"`;
+
+        const newTransaction: TransactionType = {
+            tid: uid,
+            time: Date.now().toString(),
+            coin: 0,
+            message,
+            transactionType: TransactionTypesEnum.Convo,
+            data: `${cvid}:${convo.pid}`,
+            __typename: TRANSACTION_TYPENAME,
+        };
+
+        addTransaction(newTransaction, cache);
     }
 }
