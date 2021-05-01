@@ -597,6 +597,14 @@ const Convo: React.FC<Props> = (props) => {
         MAX_CONVO_MESSAGES_PER_PAGE - 5
     );
 
+    const [animateMessages, setAnimateMessages] = useState<boolean>(false);
+
+    useEffect(() => {
+        setTimeout(() => {
+            setAnimateMessages(true);
+        }, 1000);
+    }, []);
+
     if (
         postLoading ||
         convoLoading ||
@@ -775,6 +783,7 @@ const Convo: React.FC<Props> = (props) => {
             data={messagesData.convoMessages}
             renderItem={({ item, index }) => (
                 <ConvoMsg
+                    animateMsg={animateMessages}
                     showBlockMsg={
                         participant &&
                         isActive &&

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Animated, Easing } from "react-native";
 import { styles } from "./LeftConvoMsgStyles";
 import { millisToRep } from "../../../../global_utils/TimeRepUtils";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -13,20 +13,39 @@ interface Props {
     showBlockMsg: boolean;
     blockMessage: string;
     onBlock: () => void;
+    animateMsg: boolean;
 }
 
 interface State {
     blockModalVisible: boolean;
+    opacity: Animated.Value;
 }
 
 export default class LeftConvoMsg extends React.PureComponent<Props, State> {
     state = {
         blockModalVisible: false,
+        opacity: new Animated.Value(this.props.animateMsg ? 0 : 1),
     };
+
+    componentDidMount() {
+        if (this.props.animateMsg) {
+            Animated.timing(this.state.opacity, {
+                toValue: 1,
+                duration: 100,
+                easing: Easing.ease,
+                useNativeDriver: true,
+            }).start();
+        }
+    }
 
     render() {
         return (
-            <View style={styles.leftMsgContainer}>
+            <Animated.View
+                style={[
+                    styles.leftMsgContainer,
+                    { opacity: this.state.opacity },
+                ]}
+            >
                 <View style={styles.leftMsgMain}>
                     <View style={styles.msgBodyContainer}>
                         <View style={styles.leftMainBody}>
@@ -61,7 +80,8 @@ export default class LeftConvoMsg extends React.PureComponent<Props, State> {
                                 )}
                                 <Text style={styles.leftTimeText}>
                                     {millisToRep(
-                                        Date.now() - this.props.msg.time
+                                        Date.now() -
+                                            parseInt(this.props.msg.time)
                                     )}
                                 </Text>
                             </View>
@@ -102,7 +122,7 @@ export default class LeftConvoMsg extends React.PureComponent<Props, State> {
                         </View>
                     </>
                 )}
-            </View>
+            </Animated.View>
         );
     }
 }

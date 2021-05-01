@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { Animated, Easing, View } from "react-native";
 import { Text } from "react-native";
 import { styles } from "./RightConvoMsgStyles";
 import { millisToRep } from "../../../../global_utils/TimeRepUtils";
@@ -10,12 +10,37 @@ import { palette } from "../../../../global_styles/Palette";
 interface Props {
     msg: MessageType;
     showUser: boolean;
+    animateMsg: boolean;
 }
 
-export default class RightConvoMsg extends React.PureComponent<Props> {
+interface State {
+    opacity: Animated.Value;
+}
+
+export default class RightConvoMsg extends React.PureComponent<Props, State> {
+    state = {
+        opacity: new Animated.Value(this.props.animateMsg ? 0 : 1),
+    };
+
+    componentDidMount() {
+        if (this.props.animateMsg) {
+            Animated.timing(this.state.opacity, {
+                toValue: 1,
+                duration: 100,
+                easing: Easing.ease,
+                useNativeDriver: true,
+            }).start();
+        }
+    }
+
     render() {
         return (
-            <View style={styles.rightMsgContainer}>
+            <Animated.View
+                style={[
+                    styles.rightMsgContainer,
+                    { opacity: this.state.opacity },
+                ]}
+            >
                 <View style={styles.rightMsgBuffer} />
                 <View style={styles.rightMsgMain}>
                     <View style={styles.msgBodyContainer}>
@@ -56,7 +81,7 @@ export default class RightConvoMsg extends React.PureComponent<Props> {
                         </View>
                     </View>
                 </View>
-            </View>
+            </Animated.View>
         );
     }
 }

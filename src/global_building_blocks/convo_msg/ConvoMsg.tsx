@@ -10,6 +10,7 @@ interface Props {
     showBlockMsg: boolean;
     onBlock: () => void;
     blockMessage: string;
+    animateMsg: boolean;
 }
 
 export default class ConvoMsg extends React.PureComponent<Props> {
@@ -22,6 +23,7 @@ export default class ConvoMsg extends React.PureComponent<Props> {
         if (this.props.left) {
             return (
                 <LeftConvoMsg
+                    animateMsg={this.props.animateMsg}
                     msg={this.props.msg}
                     showBlockMsg={this.props.showBlockMsg}
                     showUser={this.props.showUser}
@@ -32,6 +34,7 @@ export default class ConvoMsg extends React.PureComponent<Props> {
         } else {
             return (
                 <RightConvoMsg
+                    animateMsg={this.props.animateMsg}
                     msg={this.props.msg}
                     showUser={this.props.showUser}
                 />
