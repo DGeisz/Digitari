@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Animated, RefreshControl, Text, View } from "react-native";
-import { NetworkStatus, useQuery } from "@apollo/client";
+import { NetworkStatus, useMutation, useQuery } from "@apollo/client";
 import {
     GET_USER_POSTS,
     GetUserPostsData,
@@ -13,6 +13,17 @@ import Post from "../../post/Post";
 import { palette } from "../../../global_styles/Palette";
 import { globalScreenStyles } from "../../../global_styles/GlobalScreenStyles";
 import { styles } from "./UserPostsStyles";
+import {
+    DONATE_TO_POST,
+    DonateToPostData,
+    DonateToPostVariables,
+} from "../../post/gql/Mutations";
+import {
+    GET_USER,
+    GetUserQueryData,
+    GetUserQueryVariables,
+} from "../../../view_tree/main/routes/tab_nav/screens/profile/gql/Queries";
+import { localUid } from "../../../global_state/UserState";
 
 interface Props {
     routeKey: string;
@@ -33,6 +44,19 @@ const UserPosts: React.FC<Props> = (props) => {
         notifyOnNetworkStatusChange: true,
     });
 
+    const { data: selfData } = useQuery<
+        GetUserQueryData,
+        GetUserQueryVariables
+    >(GET_USER, {
+        variables: {
+            uid: localUid(),
+        },
+    });
+
+    const [donateToPost] = useMutation<DonateToPostData, DonateToPostVariables>(
+        DONATE_TO_POST
+    );
+
     const scrollPropsAndRef = useCollapsibleScene(props.routeKey);
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
@@ -41,6 +65,9 @@ const UserPosts: React.FC<Props> = (props) => {
     const finalFeed = !!data?.userPosts
         ? data.userPosts.filter((post) => !!post)
         : [];
+
+    const userCoin = !!selfData?.user ? selfData.user.coin : 0;
+    const userFirstName = !!selfData?.user ? selfData.user.firstName : "";
 
     return (
         <Animated.FlatList
@@ -72,6 +99,9 @@ const UserPosts: React.FC<Props> = (props) => {
             data={finalFeed}
             renderItem={({ item }) => (
                 <Post
+                    donateToPost={donateToPost}
+                    userCoin={userCoin}
+                    userFirstName={userFirstName}
                     openUser={props.openUser}
                     openCommunity={props.openCommunity}
                     openPost={props.openPost}

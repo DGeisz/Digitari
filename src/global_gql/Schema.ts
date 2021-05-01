@@ -330,6 +330,9 @@ export const schema = gql`
             @aws_subscribe(mutations: ["followUser"])
         newCommunityFollower(tuid: ID!): FollowEntity
             @aws_subscribe(mutations: ["followCommunity"])
+
+        donationReceived(tuid: ID!): DonationRecord
+            @aws_subscribe(mutations: ["donateToPost"])
     }
 
     schema {

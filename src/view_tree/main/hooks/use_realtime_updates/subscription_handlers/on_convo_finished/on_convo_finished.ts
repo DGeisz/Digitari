@@ -89,7 +89,6 @@ export function onConvoFinished(
              * Now that we've established we're the source
              * we add a transaction accordingly
              */
-
             const transaction: TransactionType = {
                 tid: uid,
                 time: Date.now().toString(),

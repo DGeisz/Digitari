@@ -7,7 +7,7 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
-import { NetworkStatus, useQuery } from "@apollo/client";
+import { NetworkStatus, useMutation, useQuery } from "@apollo/client";
 import {
     GET_COMMUNITY_POSTS,
     GetCommunityPostsData,
@@ -24,6 +24,17 @@ import { TierEmoji, TierEnum } from "../../../../../../global_types/TierTypes";
 import { styles } from "./CommunityPostStyles";
 import { CommunityNavProp } from "../../../../MainEntryNavTypes";
 import { tierBarStyles } from "../styles/tierBarStyles";
+import {
+    GET_USER,
+    GetUserQueryData,
+    GetUserQueryVariables,
+} from "../../../../routes/tab_nav/screens/profile/gql/Queries";
+import {
+    DONATE_TO_POST,
+    DonateToPostData,
+    DonateToPostVariables,
+} from "../../../../../../global_building_blocks/post/gql/Mutations";
+import { localUid } from "../../../../../../global_state/UserState";
 
 interface Props {
     routeKey: string;
@@ -45,6 +56,22 @@ const CommunityPosts: React.FC<Props> = (props) => {
         },
         notifyOnNetworkStatusChange: true,
     });
+
+    const { data: selfData } = useQuery<
+        GetUserQueryData,
+        GetUserQueryVariables
+    >(GET_USER, {
+        variables: {
+            uid: localUid(),
+        },
+    });
+
+    const userCoin = !!selfData?.user ? selfData.user.coin : 0;
+    const userFirstName = !!selfData?.user ? selfData.user.firstName : "";
+
+    const [donateToPost] = useMutation<DonateToPostData, DonateToPostVariables>(
+        DONATE_TO_POST
+    );
 
     const scrollPropsAndRef = useCollapsibleScene(props.routeKey);
     const [stillSpin, setStillSpin] = useState<boolean>(false);
@@ -287,6 +314,9 @@ const CommunityPosts: React.FC<Props> = (props) => {
             data={finalFeed}
             renderItem={({ item }) => (
                 <Post
+                    donateToPost={donateToPost}
+                    userFirstName={userFirstName}
+                    userCoin={userCoin}
                     openUser={(uid: string) => {
                         props.navigation.navigate("User", { uid });
                     }}

@@ -10,7 +10,7 @@ import {
     PostScreenNavProp,
     PostScreenRouteProp,
 } from "../../MainEntryNavTypes";
-import { NetworkStatus, useQuery } from "@apollo/client";
+import { NetworkStatus, useMutation, useQuery } from "@apollo/client";
 import {
     POST,
     POST_CONVOS,
@@ -29,6 +29,17 @@ import Post from "../../../../global_building_blocks/post/Post";
 import { palette } from "../../../../global_styles/Palette";
 import { globalScreenStyles } from "../../../../global_styles/GlobalScreenStyles";
 import { NEW_CONVOS_PER_PAGE } from "../../routes/tab_nav/screens/convos/sub_screens/new_convos/gql/Queries";
+import {
+    DONATE_TO_POST,
+    DonateToPostData,
+    DonateToPostVariables,
+} from "../../../../global_building_blocks/post/gql/Mutations";
+import {
+    GET_USER,
+    GetUserQueryData,
+    GetUserQueryVariables,
+} from "../../routes/tab_nav/screens/profile/gql/Queries";
+import { localUid } from "../../../../global_state/UserState";
 
 interface Props {
     route: PostScreenRouteProp;
@@ -65,17 +76,36 @@ const PostScreen: React.FC<Props> = (props) => {
         notifyOnNetworkStatusChange: true,
     });
 
+    const {
+        data: selfData,
+        loading: selfLoading,
+        error: selfError,
+        refetch: selfRefetch,
+    } = useQuery<GetUserQueryData, GetUserQueryVariables>(GET_USER, {
+        variables: {
+            uid: localUid(),
+        },
+    });
+
+    const [donateToPost] = useMutation<DonateToPostData, DonateToPostVariables>(
+        DONATE_TO_POST
+    );
+
     const [fetchMoreLen, setFetchMoreLen] = useState<number>(
         POST_CONVOS_PER_PAGE - 5
     );
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
-    if (postLoading || !postData?.post) {
+    if ((postLoading && !postData?.post) || (!selfData?.user && selfLoading)) {
         return <LoadingWheel />;
     }
 
     if (postLoading || !postData?.post) {
         return <LoadingWheel />;
+    }
+
+    if (selfError) {
+        return <ErrorMessage refresh={selfRefetch} />;
     }
 
     if (postError) {
@@ -88,6 +118,8 @@ const PostScreen: React.FC<Props> = (props) => {
 
     const finalFeed = !!convosData?.postConvos ? convosData.postConvos : [];
     const post = postData.post;
+    const userCoin = !!selfData?.user ? selfData.user.coin : 0;
+    const userFirstName = !!selfData?.user ? selfData.user.firstName : "";
 
     return (
         <FlatList
@@ -96,6 +128,9 @@ const PostScreen: React.FC<Props> = (props) => {
                 <>
                     <View style={styles.headerContainer}>
                         <Post
+                            userFirstName={userFirstName}
+                            userCoin={userCoin}
+                            donateToPost={donateToPost}
                             postIsLink={false}
                             abbreviateAddOn={false}
                             post={post}
@@ -104,6 +139,13 @@ const PostScreen: React.FC<Props> = (props) => {
                             }
                             openCommunity={(cmid: string) =>
                                 props.navigation.navigate("Community", { cmid })
+                            }
+                            onMessage={(tname, pid1, responseCost) =>
+                                props.navigation.navigate("NewResponse", {
+                                    tname,
+                                    responseCost,
+                                    pid: pid1,
+                                })
                             }
                             noBottomMargin
                         />

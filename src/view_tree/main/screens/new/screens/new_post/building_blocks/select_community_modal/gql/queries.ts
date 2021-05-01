@@ -4,6 +4,7 @@ export const GET_MY_COMMUNITIES = gql`
     query GetMyCommunities($uid: ID!, $lastTime: String) {
         following(sid: $uid, entityType: 1, lastTime: $lastTime) {
             tid
+            sid
             name
             time
         }

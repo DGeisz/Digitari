@@ -4,11 +4,11 @@ import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { styles } from "./DonationModalStyles";
 import CoinBox from "../../../coin_box/CoinBox";
 import { toCommaRep } from "../../../../global_utils/ValueRepUtils";
-import { Simulate } from "react-dom/test-utils";
 
 interface Props {
     visible: boolean;
     hide: () => void;
+    donateCoin: (amount: number) => void;
     userCoin: number;
 }
 
@@ -28,6 +28,9 @@ export default class DonationModal extends React.PureComponent<Props, State> {
             this.setState({ error: "Please set amount" });
         } else if (this.state.amount <= 0) {
             this.setState({ error: "Donate at least one coin" });
+        } else {
+            this.props.donateCoin(this.state.amount);
+            this.props.hide();
         }
     };
 

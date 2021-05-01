@@ -36,6 +36,12 @@ export const styles = StyleSheet.create({
     sideBufferBottom: {
         ...basicLayouts.flexGrid2,
     },
+    animatedContainer: {
+        position: "absolute",
+        overflow: "visible",
+        left: 5,
+        zIndex: 100,
+    },
     coinText: {
         color: palette.mediumGray,
         fontWeight: "bold",

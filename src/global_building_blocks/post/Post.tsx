@@ -1,5 +1,13 @@
 import React from "react";
-import { Image, Text, TouchableOpacity, Vibration, View } from "react-native";
+import {
+    Animated,
+    Easing,
+    Image,
+    Text,
+    TouchableOpacity,
+    Vibration,
+    View,
+} from "react-native";
 import { styles } from "./PostStyles";
 import Tier from "../tier/Tier";
 import CoinBox from "../coin_box/CoinBox";
@@ -26,6 +34,7 @@ import { FetchResult } from "@apollo/client/link/core";
 import { MutationFunctionOptions } from "@apollo/client/react/types/types";
 import { DonateToPostData, DonateToPostVariables } from "./gql/Mutations";
 import DonationModal from "./building_blocks/donation_modal/DonationModal";
+import { USER_TYPENAME } from "../../global_types/UserTypes";
 
 const COMMUNITY_NAME_MAX_LEN = 30;
 
@@ -58,6 +67,9 @@ interface State {
     postModalLoading: boolean;
     donationModalVisible: boolean;
     error: string;
+    animatedHeight: Animated.Value;
+    animatedOpacity: Animated.Value;
+    animatedCoinAmount: number;
 }
 
 export default class Post extends React.PureComponent<Props, State> {
@@ -77,6 +89,9 @@ export default class Post extends React.PureComponent<Props, State> {
         postModalLoading: false,
         donationModalVisible: false,
         error: "",
+        animatedHeight: new Animated.Value(0),
+        animatedOpacity: new Animated.Value(0),
+        animatedCoinAmount: 0,
     };
 
     setError = (error: string) => {
@@ -84,53 +99,93 @@ export default class Post extends React.PureComponent<Props, State> {
 
         setTimeout(() => {
             this.setState({ error: "" });
-        }, 4000);
+        }, 5000);
     };
 
-    /*
-     * TODO: Finish coin donation
-     */
     donateCoin = async (amount: number) => {
-        const { id: pid } = this.props.post;
+        /*
+         * Make sure we aren't donating to our own post
+         */
+        if (this.props.post.uid === localUid()) {
+            this.setError("You can't donate to your own post");
+        } else {
+            const { id: pid } = this.props.post;
 
-        try {
-            await this.props.donateToPost({
-                variables: {
-                    pid: this.props.post.id,
-                    amount,
-                },
-                optimisticResponse: {
-                    donateToPost: {
-                        uid: localUid(),
-                        pid,
-                        tuid: this.props.post.uid,
-                        amount,
-                        name: this.props.userFirstName,
-                    },
-                },
-                update(cache, { data }) {
-                    if (!!data?.donateToPost) {
-                        cache.modify({
-                            id: cache.identify({
-                                __typename: POST_TYPENAME,
-                                id: pid,
-                            }),
-                            fields: {
-                                coinDonated() {
-                                    return true;
-                                },
-                                coin(existing) {
-                                    return existing + amount;
-                                },
-                            },
-                        });
-                    }
-                },
+            this.setState({ animatedCoinAmount: amount });
+            this.state.animatedHeight.setValue(0);
+            this.state.animatedOpacity.setValue(1);
+
+            const animationDuration = 500;
+
+            Animated.parallel([
+                Animated.timing(this.state.animatedHeight, {
+                    toValue: -80,
+                    duration: animationDuration,
+                    easing: Easing.linear,
+                    useNativeDriver: true,
+                }),
+                Animated.timing(this.state.animatedOpacity, {
+                    toValue: 0,
+                    duration: animationDuration,
+                    easing: Easing.linear,
+                    useNativeDriver: true,
+                }),
+            ]).start(() => {
+                this.state.animatedOpacity.setValue(0);
             });
-        } catch (e) {
-            this.setError(
-                "An error occurred.  Make sure you have enough coin and try again"
-            );
+
+            try {
+                await this.props.donateToPost({
+                    variables: {
+                        pid: this.props.post.id,
+                        amount,
+                    },
+                    optimisticResponse: {
+                        donateToPost: {
+                            uid: localUid(),
+                            pid,
+                            tuid: this.props.post.uid,
+                            amount,
+                            name: this.props.userFirstName,
+                        },
+                    },
+                    update(cache, { data }) {
+                        if (!!data?.donateToPost) {
+                            cache.modify({
+                                id: cache.identify({
+                                    __typename: POST_TYPENAME,
+                                    id: pid,
+                                }),
+                                fields: {
+                                    coinDonated() {
+                                        return true;
+                                    },
+                                    coin(existing) {
+                                        return existing + amount;
+                                    },
+                                },
+                            });
+
+                            cache.modify({
+                                id: cache.identify({
+                                    __typename: USER_TYPENAME,
+                                    id: localUid(),
+                                }),
+                                fields: {
+                                    coin(existing) {
+                                        return existing - amount;
+                                    },
+                                },
+                            });
+                        }
+                    },
+                });
+            } catch (e) {
+                console.log("This is error: ", e);
+                this.setError(
+                    "An error occurred.  Make sure you have enough coin and try again"
+                );
+            }
         }
     };
 
@@ -226,6 +281,7 @@ export default class Post extends React.PureComponent<Props, State> {
                                 }
                             />
                             <DonationModal
+                                donateCoin={this.donateCoin}
                                 userCoin={this.props.userCoin}
                                 visible={this.state.donationModalVisible}
                                 hide={() =>
@@ -260,6 +316,33 @@ export default class Post extends React.PureComponent<Props, State> {
                                             />
                                         </View>
                                         <View style={styles.sideBufferBottom}>
+                                            <Animated.View
+                                                pointerEvents="none"
+                                                style={[
+                                                    styles.animatedContainer,
+                                                    {
+                                                        transform: [
+                                                            {
+                                                                translateY: this
+                                                                    .state
+                                                                    .animatedHeight,
+                                                            },
+                                                        ],
+                                                        opacity: this.state
+                                                            .animatedOpacity,
+                                                    },
+                                                ]}
+                                            >
+                                                <CoinBox
+                                                    showCoinPlus
+                                                    amount={
+                                                        this.state
+                                                            .animatedCoinAmount
+                                                    }
+                                                    coinSize={30}
+                                                    fontSize={14}
+                                                />
+                                            </Animated.View>
                                             {this.props.post.coinDonated ? (
                                                 <CoinBox
                                                     active
@@ -270,7 +353,11 @@ export default class Post extends React.PureComponent<Props, State> {
                                                 />
                                             ) : (
                                                 <TouchableOpacity
-                                                    onPress={() => {}}
+                                                    onPress={() => {
+                                                        this.donateCoin(
+                                                            1
+                                                        ).then();
+                                                    }}
                                                     onLongPress={() => {
                                                         this.setState({
                                                             donationModalVisible: true,

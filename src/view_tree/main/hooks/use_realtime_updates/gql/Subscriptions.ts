@@ -2,6 +2,7 @@ import { gql } from "@apollo/client";
 import { MessageType } from "../../../../../global_types/MessageTypes";
 import { ConvoType, ConvoUpdate } from "../../../../../global_types/ConvoTypes";
 import { FollowEntityType } from "../../../../../global_types/FollowEntityType";
+import { DonationRecordType } from "../../../../../global_types/DonationRecordTypes";
 
 /*
  * New message
@@ -310,5 +311,28 @@ export interface NewCommunityFollowerData {
 }
 
 export interface NewCommunityFollowerVariables {
+    tuid: string;
+}
+
+/*
+ * New donation received
+ */
+export const DONATION_RECEIVED = gql`
+    subscription DonationReceived($tuid: ID!) {
+        donationReceived(tuid: $tuid) {
+            uid
+            pid
+            tuid
+            amount
+            name
+        }
+    }
+`;
+
+export interface DonationReceivedData {
+    donationReceived: DonationRecordType;
+}
+
+export interface DonationReceivedVariables {
     tuid: string;
 }

@@ -41,7 +41,7 @@ export async function onNewCommunityFollower(
                 },
             });
 
-            if (!!comData.community) {
+            if (!!comData?.community) {
                 message = `${follower.name} followed your community: "${comData.community.name}"`;
             }
         } catch (e) {}

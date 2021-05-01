@@ -16,6 +16,9 @@ import {
     ConvoDismissedVariables,
     ConvoFinishedData,
     ConvoFinishedVariables,
+    DONATION_RECEIVED,
+    DonationReceivedData,
+    DonationReceivedVariables,
     NEW_COMMUNITY_FOLLOWER,
     NEW_FOLLOWER,
     NEW_MESSAGE_ADDED,
@@ -34,6 +37,7 @@ import { onConvoFinished } from "./subscription_handlers/on_convo_finished/on_co
 import { onConvoCreated } from "./subscription_handlers/on_convo_created/on_convo_created";
 import { onNewFollower } from "./subscription_handlers/on_new_follower/on_new_follower";
 import { onNewCommunityFollower } from "./subscription_handlers/on_new_community_follower/on_new_community_follower";
+import { onDonationReceived } from "./subscription_handlers/on_donation_received/on_donation_received";
 
 export function useRealtimeUpdates() {
     const uid = localUid();
@@ -172,6 +176,19 @@ export function useRealtimeUpdates() {
                 tuid: uid,
             },
             onSubscriptionData: onNewCommunityFollower,
+        }
+    );
+
+    /*
+     * Donation received
+     */
+    useSubscription<DonationReceivedData, DonationReceivedVariables>(
+        DONATION_RECEIVED,
+        {
+            variables: {
+                tuid: uid,
+            },
+            onSubscriptionData: onDonationReceived,
         }
     );
 }

@@ -72,6 +72,16 @@ import {
     ActiveConvosData,
     ActiveConvosVariables,
 } from "../../routes/tab_nav/screens/convos/sub_screens/active_convos/gql/Queries";
+import {
+    DONATE_TO_POST,
+    DonateToPostData,
+    DonateToPostVariables,
+} from "../../../../global_building_blocks/post/gql/Mutations";
+import {
+    TransactionType,
+    TransactionTypesEnum,
+} from "../../../../global_types/TransactionTypes";
+import { addTransaction } from "../../hooks/use_realtime_updates/subscription_handlers/utils/cache_utils";
 
 function getCheckLeft(uid: string, tid: string): (id: string) => boolean {
     if (uid === tid) {
@@ -452,6 +462,28 @@ const Convo: React.FC<Props> = (props) => {
                         },
                     },
                 });
+
+                /*
+                 * If this user is the convo source, then
+                 * add a transaction indicating this user
+                 * just made some dough
+                 */
+                if (!!convoData?.convo && uid !== convoData.convo.tid) {
+                    /*
+                     * Now that we've established we're the source
+                     * we add a transaction accordingly
+                     */
+                    const transaction: TransactionType = {
+                        tid: uid,
+                        time: Date.now().toString(),
+                        coin: convoData.convo.convoReward,
+                        message: `Reward for your successful convo with ${convoData.convo.tname}`,
+                        transactionType: TransactionTypesEnum.Convo,
+                        data: `${cvid}:${convoData.convo.pid}`,
+                    };
+
+                    addTransaction(transaction, cache);
+                }
             },
         }
     );
@@ -522,6 +554,10 @@ const Convo: React.FC<Props> = (props) => {
             }
         },
     });
+
+    const [donateToPost] = useMutation<DonateToPostData, DonateToPostVariables>(
+        DONATE_TO_POST
+    );
 
     let participant = false;
 
@@ -645,6 +681,9 @@ const Convo: React.FC<Props> = (props) => {
                             }
                         >
                             <Post
+                                donateToPost={donateToPost}
+                                userCoin={0}
+                                userFirstName={""}
                                 stripped
                                 openUser={(uid) =>
                                     props.navigation.navigate("User", { uid })

@@ -36,7 +36,8 @@ export const styles = StyleSheet.create({
         borderBottomColor: palette.semiSoftGray,
         marginBottom: 30,
         marginTop: 20,
-        fontSize: 15,
+        fontSize: 16,
+        paddingBottom: 2,
     },
     donateFooter: {
         // flexDirection: "row",
