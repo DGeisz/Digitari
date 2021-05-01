@@ -1,10 +1,15 @@
 import React from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Image, Text, TouchableOpacity, Vibration, View } from "react-native";
 import { styles } from "./PostStyles";
 import Tier from "../tier/Tier";
 import CoinBox from "../coin_box/CoinBox";
 import { Entypo, Ionicons } from "@expo/vector-icons";
-import { PostAddOn, PostTarget, PostType } from "../../global_types/PostTypes";
+import {
+    POST_TYPENAME,
+    PostAddOn,
+    PostTarget,
+    PostType,
+} from "../../global_types/PostTypes";
 import { millisToRep } from "../../global_utils/TimeRepUtils";
 import { palette } from "../../global_styles/Palette";
 import CancelConfirmModal from "../cancel_confirm_modal/CancelConfirmModal";
@@ -20,11 +25,14 @@ import {
 import { FetchResult } from "@apollo/client/link/core";
 import { MutationFunctionOptions } from "@apollo/client/react/types/types";
 import { DonateToPostData, DonateToPostVariables } from "./gql/Mutations";
+import DonationModal from "./building_blocks/donation_modal/DonationModal";
 
 const COMMUNITY_NAME_MAX_LEN = 30;
 
 interface Props {
     post: PostType;
+    userCoin: number;
+    userFirstName: string;
     stripped: boolean;
     openUser: (uid: string) => void;
     openCommunity: (cmid: string) => void;
@@ -49,6 +57,7 @@ interface State {
     postModalError?: string;
     postModalLoading: boolean;
     donationModalVisible: boolean;
+    error: string;
 }
 
 export default class Post extends React.PureComponent<Props, State> {
@@ -67,6 +76,62 @@ export default class Post extends React.PureComponent<Props, State> {
         postModalError: undefined,
         postModalLoading: false,
         donationModalVisible: false,
+        error: "",
+    };
+
+    setError = (error: string) => {
+        this.setState({ error });
+
+        setTimeout(() => {
+            this.setState({ error: "" });
+        }, 4000);
+    };
+
+    /*
+     * TODO: Finish coin donation
+     */
+    donateCoin = async (amount: number) => {
+        const { id: pid } = this.props.post;
+
+        try {
+            await this.props.donateToPost({
+                variables: {
+                    pid: this.props.post.id,
+                    amount,
+                },
+                optimisticResponse: {
+                    donateToPost: {
+                        uid: localUid(),
+                        pid,
+                        tuid: this.props.post.uid,
+                        amount,
+                        name: this.props.userFirstName,
+                    },
+                },
+                update(cache, { data }) {
+                    if (!!data?.donateToPost) {
+                        cache.modify({
+                            id: cache.identify({
+                                __typename: POST_TYPENAME,
+                                id: pid,
+                            }),
+                            fields: {
+                                coinDonated() {
+                                    return true;
+                                },
+                                coin(existing) {
+                                    return existing + amount;
+                                },
+                            },
+                        });
+                    }
+                },
+            });
+        } catch (e) {
+            this.setError(
+                "An error occurred.  Make sure you have enough coin and try again"
+            );
+        }
     };
 
     render() {
@@ -160,6 +225,15 @@ export default class Post extends React.PureComponent<Props, State> {
                                     this.setState({ postModalVisible: false })
                                 }
                             />
+                            <DonationModal
+                                userCoin={this.props.userCoin}
+                                visible={this.state.donationModalVisible}
+                                hide={() =>
+                                    this.setState({
+                                        donationModalVisible: false,
+                                    })
+                                }
+                            />
                             <TouchableOpacity
                                 style={[
                                     styles.postContentContainer,
@@ -197,6 +271,11 @@ export default class Post extends React.PureComponent<Props, State> {
                                             ) : (
                                                 <TouchableOpacity
                                                     onPress={() => {}}
+                                                    onLongPress={() => {
+                                                        this.setState({
+                                                            donationModalVisible: true,
+                                                        });
+                                                    }}
                                                 >
                                                     <CoinBox
                                                         active={false}
@@ -214,6 +293,11 @@ export default class Post extends React.PureComponent<Props, State> {
                                     </View>
                                 )}
                                 <View style={styles.postMain}>
+                                    {!!this.state.error && (
+                                        <Text style={styles.errorText}>
+                                            {this.state.error}
+                                        </Text>
+                                    )}
                                     <View style={styles.postHeader}>
                                         <TouchableOpacity
                                             style={styles.postHeaderTop}
@@ -417,9 +501,16 @@ export default class Post extends React.PureComponent<Props, State> {
                                                     }
                                                 >
                                                     <View
-                                                        style={
-                                                            styles.costContainer
-                                                        }
+                                                        style={[
+                                                            styles.costContainer,
+                                                            uid ===
+                                                            this.props.post.uid
+                                                                ? {
+                                                                      borderRightColor:
+                                                                          palette.semiSoftGray,
+                                                                  }
+                                                                : {},
+                                                        ]}
                                                     >
                                                         <Entypo
                                                             name="pencil"

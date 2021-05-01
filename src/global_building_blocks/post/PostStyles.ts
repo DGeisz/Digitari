@@ -47,6 +47,11 @@ export const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingBottom: 5,
     },
+    errorText: {
+        fontWeight: "bold",
+        color: palette.danger,
+        marginBottom: 5,
+    },
     postHeader: {
         // flexDirection: "row",
         // ...basicLayouts.grid3,

@@ -21,10 +21,18 @@ import {
     DonateToPostData,
     DonateToPostVariables,
 } from "../../../../../../global_building_blocks/post/gql/Mutations";
+import { localUid } from "../../../../../../global_state/UserState";
+import {
+    GET_USER,
+    GetUserQueryData,
+    GetUserQueryVariables,
+} from "../profile/gql/Queries";
 
 interface Props {}
 
 const MainFeed: React.FC<Props> = () => {
+    const uid = localUid();
+
     const {
         openPost,
         openNew,
@@ -40,6 +48,17 @@ const MainFeed: React.FC<Props> = () => {
         notifyOnNetworkStatusChange: true,
     });
 
+    const {
+        data: selfData,
+        loading: selfLoading,
+        error: selfError,
+        refetch: selfRefetch,
+    } = useQuery<GetUserQueryData, GetUserQueryVariables>(GET_USER, {
+        variables: {
+            uid,
+        },
+    });
+
     const [donateToPost] = useMutation<DonateToPostData, DonateToPostVariables>(
         DONATE_TO_POST
     );
@@ -50,7 +69,10 @@ const MainFeed: React.FC<Props> = () => {
 
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
-    if (!data?.feed && networkStatus === NetworkStatus.loading) {
+    if (
+        (!data?.feed && networkStatus === NetworkStatus.loading) ||
+        (!selfData?.user && selfLoading)
+    ) {
         return <LoadingWheel />;
     }
 
@@ -58,7 +80,13 @@ const MainFeed: React.FC<Props> = () => {
         return <ErrorMessage refresh={refetch} />;
     }
 
+    if (selfError) {
+        return <ErrorMessage refresh={selfRefetch} />;
+    }
+
     const finalFeed = !!data?.feed ? data.feed.filter((post) => !!post) : [];
+    const userCoin = !!selfData?.user ? selfData.user.coin : 0;
+    const userFirstName = !!selfData?.user ? selfData.user.firstName : "";
 
     return (
         <>
@@ -81,6 +109,8 @@ const MainFeed: React.FC<Props> = () => {
                     data={finalFeed}
                     renderItem={({ item }) => (
                         <Post
+                            userCoin={userCoin}
+                            userFirstName={userFirstName}
                             openUser={openUser}
                             openCommunity={openCommunity}
                             openPost={openPost}
