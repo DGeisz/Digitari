@@ -9,6 +9,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { TabNavProp } from "../../MainEntryNavTypes";
 import { TabNavContext } from "./TabNavContext";
 import { TabNavTab } from "./TabNavTypes";
+import { View } from "react-native";
+import { styles } from "./TabNavStyles";
+import UpdateIndicator from "./building_blocks/update_indicator/UpdateIndicator";
 
 const Tab = createBottomTabNavigator<TabNavTab>();
 
@@ -83,11 +86,15 @@ const TabNav: React.FC<Props> = (props) => {
                         component={Convos}
                         options={{
                             tabBarIcon: ({ color, size }) => (
-                                <Ionicons
-                                    name={"ios-chatbubbles"}
-                                    size={size}
-                                    color={color}
-                                />
+                                <View style={styles.iconContainer}>
+                                    <Ionicons
+                                        name={"ios-chatbubbles"}
+                                        size={size}
+                                        color={color}
+                                    />
+                                    <UpdateIndicator />
+                                    {/*<View style={styles.newUpdateDot} />*/}
+                                </View>
                             ),
                         }}
                     />
@@ -109,11 +116,14 @@ const TabNav: React.FC<Props> = (props) => {
                         component={Wallet}
                         options={{
                             tabBarIcon: ({ color, size }) => (
-                                <Entypo
-                                    name="wallet"
-                                    size={size}
-                                    color={color}
-                                />
+                                <View>
+                                    <Entypo
+                                        name="wallet"
+                                        size={size}
+                                        color={color}
+                                    />
+                                    <UpdateIndicator />
+                                </View>
                             ),
                         }}
                     />
