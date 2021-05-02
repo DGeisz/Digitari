@@ -19,3 +19,8 @@ export interface EarningsReceipt {
 }
 
 export const TRANSACTION_TYPENAME = "Transaction";
+
+export interface TransactionReceipt {
+    id: string;
+    amount: number;
+}

@@ -15,11 +15,10 @@ const UpdateIndicator: React.FC = () => {
                     Animated.timing(opacityAnim, {
                         toValue: 0,
                         useNativeDriver: true,
-                        easing: Easing.ease,
                         duration: animationDuration,
                     }),
                     Animated.timing(dotSize, {
-                        toValue: 1.5,
+                        toValue: 3,
                         useNativeDriver: true,
                         duration: animationDuration,
                     }),

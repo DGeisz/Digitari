@@ -11,6 +11,7 @@ import {
     FOLLOW_USER_PRICE,
     USER_TYPENAME,
 } from "../../../../../../global_types/UserTypes";
+import { addNewReceipt } from "../../../../../../global_state/CoinUpdates";
 
 export function onNewFollower(
     options: OnSubscriptionDataOptions<NewFollowerData>
@@ -27,7 +28,8 @@ export function onNewFollower(
         const uid = localUid();
 
         /*
-         * Update follower count
+         * Update follower count, and flag
+         * the new transaction update flag
          */
         cache.modify({
             id: cache.identify({
@@ -37,6 +39,9 @@ export function onNewFollower(
             fields: {
                 followers(existing) {
                     return existing + 1;
+                },
+                newTransactionUpdate() {
+                    return true;
                 },
             },
         });
@@ -53,6 +58,11 @@ export function onNewFollower(
             data: follower.sid,
             __typename: TRANSACTION_TYPENAME,
         };
+
+        /*
+         * Add receipt for animation
+         */
+        addNewReceipt(FOLLOW_USER_PRICE);
 
         addTransaction(newTransaction, cache);
     }

@@ -15,3 +15,13 @@ export interface CollectEarningsData {
         time: string;
     };
 }
+
+export const VIEWED_TRANSACTION = gql`
+    mutation ViewedTransaction {
+        viewedTransactionUpdate
+    }
+`;
+
+export interface ViewedTransactionData {
+    viewedTransactionUpdate: boolean;
+}

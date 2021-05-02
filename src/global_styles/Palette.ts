@@ -18,6 +18,7 @@ export const palette = {
     deepBlue: "#32afdd",
     brightBlue: "#edf9fc",
     beneathTheWaves: "#283f52",
+    navigationBlue: "#007bff",
 
     // Grays
     soapStone: "#fafafa",

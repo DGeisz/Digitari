@@ -5,7 +5,10 @@ import {
     TransactionType,
     TransactionTypesEnum,
 } from "../../../../../../global_types/TransactionTypes";
-import { FOLLOW_USER_PRICE } from "../../../../../../global_types/UserTypes";
+import {
+    FOLLOW_USER_PRICE,
+    USER_TYPENAME,
+} from "../../../../../../global_types/UserTypes";
 import { addTransaction } from "../utils/cache_utils";
 import { localUid } from "../../../../../../global_state/UserState";
 import {
@@ -14,6 +17,7 @@ import {
     GetCommunityQueryVariables,
 } from "../../../../screens/community/gql/Queries";
 import { FOLLOW_COMMUNITY_PRICE } from "../../../../../../global_types/CommunityTypes";
+import { addNewReceipt } from "../../../../../../global_state/CoinUpdates";
 
 export async function onNewCommunityFollower(
     options: OnSubscriptionDataOptions<NewCommunityFollowerData>
@@ -58,6 +62,26 @@ export async function onNewCommunityFollower(
             data: follower.sid,
             __typename: TRANSACTION_TYPENAME,
         };
+
+        /*
+         * Add receipt for animation
+         */
+        addNewReceipt(FOLLOW_COMMUNITY_PRICE);
+
+        /*
+         * Notify user of new transaction update
+         */
+        cache.modify({
+            id: cache.identify({
+                __typename: USER_TYPENAME,
+                id: uid,
+            }),
+            fields: {
+                newTransactionUpdate() {
+                    return true;
+                },
+            },
+        });
 
         addTransaction(newTransaction, cache);
     }

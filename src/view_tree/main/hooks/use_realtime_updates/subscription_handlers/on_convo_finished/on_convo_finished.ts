@@ -11,6 +11,7 @@ import {
     TransactionType,
     TransactionTypesEnum,
 } from "../../../../../../global_types/TransactionTypes";
+import { addNewReceipt } from "../../../../../../global_state/CoinUpdates";
 
 export function onConvoFinished(
     options: OnSubscriptionDataOptions<ConvoFinishedData>
@@ -97,6 +98,26 @@ export function onConvoFinished(
                 transactionType: TransactionTypesEnum.Convo,
                 data: `${cvid}:${convo.pid}`,
             };
+
+            /*
+             * Add receipt for animation
+             */
+            addNewReceipt(convo.convoReward);
+
+            /*
+             * Notify user of new transaction update
+             */
+            cache.modify({
+                id: cache.identify({
+                    __typename: USER_TYPENAME,
+                    id: uid,
+                }),
+                fields: {
+                    newTransactionUpdate() {
+                        return true;
+                    },
+                },
+            });
 
             addTransaction(transaction, cache);
         }

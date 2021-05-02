@@ -3,10 +3,10 @@ import { palette } from "../../../../../../global_styles/Palette";
 
 export const styles = StyleSheet.create({
     indicatorDot: {
-        right: -5,
-        top: -5,
+        left: 3,
+        top: 4,
         position: "absolute",
-        backgroundColor: palette.deepBlue,
+        backgroundColor: palette.deepBlue, //palette.deepBlue,
         borderRadius: 50,
         height: 20,
         width: 20,

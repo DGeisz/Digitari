@@ -14,6 +14,8 @@ import {
     PostVariables,
 } from "../../../../screens/post_screen/gql/Queries";
 import { addTransaction } from "../utils/cache_utils";
+import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
+import { addNewReceipt } from "../../../../../../global_state/CoinUpdates";
 
 export async function onDonationReceived(
     options: OnSubscriptionDataOptions<DonationReceivedData>
@@ -23,6 +25,8 @@ export async function onDonationReceived(
         client,
         subscriptionData: { data },
     } = options;
+
+    console.log("Donation received", data);
 
     if (!!data?.donationReceived) {
         const { pid, amount, name, uid } = data.donationReceived;
@@ -84,6 +88,26 @@ export async function onDonationReceived(
             data: uid,
             __typename: TRANSACTION_TYPENAME,
         };
+
+        /*
+         * Add receipt for animation
+         */
+        addNewReceipt(amount);
+
+        /*
+         * Notify user of new transaction update
+         */
+        cache.modify({
+            id: cache.identify({
+                __typename: USER_TYPENAME,
+                id: localUid(),
+            }),
+            fields: {
+                newTransactionUpdate() {
+                    return true;
+                },
+            },
+        });
 
         addTransaction(transaction, cache);
     }

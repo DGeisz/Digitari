@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Entypo, FontAwesome, Ionicons } from "@expo/vector-icons";
 import MainFeed from "./screens/main_feed/MainFeed";
 import Wallet from "./screens/wallet/Wallet";
@@ -9,9 +9,23 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { TabNavProp } from "../../MainEntryNavTypes";
 import { TabNavContext } from "./TabNavContext";
 import { TabNavTab } from "./TabNavTypes";
-import { View } from "react-native";
+import { Animated, Easing, View } from "react-native";
 import { styles } from "./TabNavStyles";
 import UpdateIndicator from "./building_blocks/update_indicator/UpdateIndicator";
+import { useQuery } from "@apollo/client";
+import { localUid } from "../../../../global_state/UserState";
+import {
+    GET_UPDATE_FLAGS,
+    GetUpdateFlagsData,
+    GetUpdateFlagsVariables,
+} from "./gql/Queries";
+import { getTierWage } from "../../../../global_types/TierTypes";
+import CoinBox from "../../../../global_building_blocks/coin_box/CoinBox";
+import CoinIndicator from "./building_blocks/coin_indicator/CoinIndicator";
+import {
+    addNewReceipt,
+    transactionReceipts,
+} from "../../../../global_state/CoinUpdates";
 
 const Tab = createBottomTabNavigator<TabNavTab>();
 
@@ -52,6 +66,38 @@ const TabNav: React.FC<Props> = (props) => {
         props.navigation.navigate("Follows", { uid, name });
     };
 
+    const { data } = useQuery<GetUpdateFlagsData, GetUpdateFlagsVariables>(
+        GET_UPDATE_FLAGS,
+        {
+            variables: {
+                uid: localUid(),
+            },
+        }
+    );
+
+    let newConvoUpdate = false;
+    let newTransactionUpdate = false;
+
+    if (!!data?.user) {
+        newConvoUpdate = data.user.newConvoUpdate;
+        newTransactionUpdate = data.user.newTransactionUpdate;
+
+        if (
+            getTierWage(data.user.ranking, data.user.lastCollectionTime)[0] >=
+            10
+        ) {
+            newTransactionUpdate = true;
+        }
+    }
+    //
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         setInterval(() => {
+    //             addNewReceipt(1);
+    //         }, 200);
+    //     }, 4000);
+    // }, []);
+
     return (
         <>
             <TabNavContext.Provider
@@ -87,13 +133,12 @@ const TabNav: React.FC<Props> = (props) => {
                         options={{
                             tabBarIcon: ({ color, size }) => (
                                 <View style={styles.iconContainer}>
+                                    {newConvoUpdate && <UpdateIndicator />}
                                     <Ionicons
                                         name={"ios-chatbubbles"}
                                         size={size}
                                         color={color}
                                     />
-                                    <UpdateIndicator />
-                                    {/*<View style={styles.newUpdateDot} />*/}
                                 </View>
                             ),
                         }}
@@ -115,16 +160,21 @@ const TabNav: React.FC<Props> = (props) => {
                         name="Wallet"
                         component={Wallet}
                         options={{
-                            tabBarIcon: ({ color, size }) => (
-                                <View>
-                                    <Entypo
-                                        name="wallet"
-                                        size={size}
-                                        color={color}
-                                    />
-                                    <UpdateIndicator />
-                                </View>
-                            ),
+                            tabBarIcon: ({ color, size }) => {
+                                return (
+                                    <View>
+                                        {newTransactionUpdate && (
+                                            <UpdateIndicator />
+                                        )}
+                                        <Entypo
+                                            name="wallet"
+                                            size={size}
+                                            color={color}
+                                        />
+                                        <CoinIndicator />
+                                    </View>
+                                );
+                            },
                         }}
                     />
                     <Tab.Screen

@@ -78,6 +78,9 @@ export function onConvoBlocked(
                 ranking(existing) {
                     return existing - 1;
                 },
+                newTransactionUpdate() {
+                    return true;
+                },
             },
         });
 

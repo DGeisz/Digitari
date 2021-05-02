@@ -12,6 +12,9 @@ import {
 } from "../../../../../../global_types/TransactionTypes";
 import { localUid } from "../../../../../../global_state/UserState";
 import { addTransaction } from "../utils/cache_utils";
+import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
+import { fieldNameFromStoreName } from "@apollo/client/cache/inmemory/helpers";
+import { addNewReceipt } from "../../../../../../global_state/CoinUpdates";
 
 export function onConvoCreated(
     options: OnSubscriptionDataOptions<ConvoCreatedData>
@@ -93,6 +96,29 @@ export function onConvoCreated(
             transactionType: TransactionTypesEnum.Convo,
             data: `${convo.id}:${convo.pid}`,
         };
+
+        /*
+         * Add receipt for animation
+         */
+        addNewReceipt(convo.responseCost);
+
+        /*
+         * Notify user of new convo and transaction updates
+         */
+        cache.modify({
+            id: cache.identify({
+                __typename: USER_TYPENAME,
+                id: localUid(),
+            }),
+            fields: {
+                newConvoUpdate() {
+                    return true;
+                },
+                newTransactionUpdate() {
+                    return true;
+                },
+            },
+        });
 
         addTransaction(transaction, cache);
     }

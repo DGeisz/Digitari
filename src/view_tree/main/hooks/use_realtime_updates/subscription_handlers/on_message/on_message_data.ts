@@ -6,12 +6,9 @@ import {
     ConvoMessagesVariables,
 } from "../../../../screens/convo/gql/Queries";
 import { CONVO_TYPENAME } from "../../../../../../global_types/ConvoTypes";
-import {
-    ACTIVE_CONVOS,
-    ActiveConvosData,
-    ActiveConvosVariables,
-} from "../../../../routes/tab_nav/screens/convos/sub_screens/active_convos/gql/Queries";
 import { sort_active_convos } from "../utils/cache_utils";
+import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
+import { localUid } from "../../../../../../global_state/UserState";
 
 export function onMessageData(
     options: OnSubscriptionDataOptions<NewMessageAddedData>
@@ -66,6 +63,21 @@ export function onMessageData(
                 },
                 sviewed() {
                     return false;
+                },
+            },
+        });
+
+        /*
+         * Notify user of new transaction update
+         */
+        cache.modify({
+            id: cache.identify({
+                __typename: USER_TYPENAME,
+                id: localUid(),
+            }),
+            fields: {
+                newConvoUpdate() {
+                    return true;
                 },
             },
         });

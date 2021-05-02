@@ -22,6 +22,9 @@ export const schema = gql`
 
         newUser: Boolean
 
+        newConvoUpdate: Boolean
+        newTransactionUpdate: Boolean
+
         level: Int
         bio: String
         ranking: Int
@@ -275,6 +278,9 @@ export const schema = gql`
         registerPush(token: String!): Boolean
 
         createConvo(pid: ID, message: String, anonymous: Boolean): Convo
+
+        viewedConvoUpdate: Boolean
+        viewedTransactionUpdate: Boolean
 
         markConvoViewed(cvid: ID!): Convo
         dismissConvo(cvid: ID!): Convo

@@ -1,3 +1,5 @@
+import { millisInHour } from "../global_utils/TimeRepUtils";
+
 export enum TierEnum {
     AngryHorns = -3,
     Steam,
@@ -116,4 +118,26 @@ export function ranking2Wage(ranking: number): [number, number] {
     }
 
     return [dailyWage / 24, dailyWage];
+}
+
+/**
+ * First return is the amount of coin generated, second is the daily
+ * total
+ */
+export function getTierWage(
+    ranking: number,
+    lastCollectionTime: string
+): [number, number] {
+    const [hourlyWage, dailyWage] = ranking2Wage(ranking);
+
+    return [
+        Math.min(
+            Math.floor(
+                hourlyWage *
+                    ((Date.now() - parseInt(lastCollectionTime)) / millisInHour)
+            ),
+            dailyWage
+        ),
+        dailyWage,
+    ];
 }

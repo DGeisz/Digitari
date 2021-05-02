@@ -10,6 +10,7 @@ import {
     TransactionTypesEnum,
 } from "../../../../../../global_types/TransactionTypes";
 import { localUid } from "../../../../../../global_state/UserState";
+import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
 
 export function onConvoDismissedData(
     options: OnSubscriptionDataOptions<ConvoDismissedData>
@@ -68,6 +69,21 @@ export function onConvoDismissedData(
             transactionType: TransactionTypesEnum.Convo,
             data: `${cvid}:${convo.pid}`,
         };
+
+        /*
+         * Notify user of new transaction update
+         */
+        cache.modify({
+            id: cache.identify({
+                __typename: USER_TYPENAME,
+                id: localUid(),
+            }),
+            fields: {
+                newTransactionUpdate() {
+                    return true;
+                },
+            },
+        });
 
         addTransaction(transaction, cache);
     }

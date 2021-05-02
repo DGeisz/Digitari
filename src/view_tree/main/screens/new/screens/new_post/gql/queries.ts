@@ -3,6 +3,7 @@ import { gql } from "@apollo/client";
 export const GET_SELF = gql`
     query GetSelf($uid: ID!) {
         user(uid: $uid) {
+            id
             followers
             coin
         }

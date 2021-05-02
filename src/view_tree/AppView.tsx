@@ -11,7 +11,6 @@ import {
     CreateOrFetchUserMutationVariables,
 } from "./gql/Mutations";
 import {
-    localUid,
     setLocalFirstName,
     setLocalHid,
     setLocalUid,

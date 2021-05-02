@@ -30,12 +30,22 @@ import {
 } from "./gql/Queries";
 import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import ErrorMessage from "../../../../../../global_building_blocks/error_message/ErrorMessage";
-import { ranking2Wage } from "../../../../../../global_types/TierTypes";
-import { millisInHour } from "../../../../../../global_utils/TimeRepUtils";
+import { getTierWage } from "../../../../../../global_types/TierTypes";
 import { palette } from "../../../../../../global_styles/Palette";
-import { COLLECT_EARNINGS, CollectEarningsData } from "./gql/Mutations";
+import {
+    COLLECT_EARNINGS,
+    CollectEarningsData,
+    VIEWED_TRANSACTION,
+    ViewedTransactionData,
+} from "./gql/Mutations";
 import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
 import { QUERY_TYPENAME } from "../../../../../../global_gql/Schema";
+import {
+    GET_UPDATE_FLAGS,
+    GetUpdateFlagsData,
+    GetUpdateFlagsVariables,
+} from "../../gql/Queries";
+import { useIsFocused } from "@react-navigation/native";
 
 interface Props {
     navigation: WalletNavProp;
@@ -127,6 +137,60 @@ const Wallet: React.FC<Props> = (props) => {
         }
     );
 
+    /*
+     * Handle viewing the transaction page
+     */
+    const [viewTransactionsScreen] = useMutation<ViewedTransactionData>(
+        VIEWED_TRANSACTION,
+        {
+            optimisticResponse: {
+                viewedTransactionUpdate: true,
+            },
+            update(cache) {
+                cache.modify({
+                    id: cache.identify({
+                        __typename: USER_TYPENAME,
+                        id: uid,
+                    }),
+                    fields: {
+                        newTransactionUpdate() {
+                            return false;
+                        },
+                    },
+                });
+            },
+        }
+    );
+
+    const { data: updateData } = useQuery<
+        GetUpdateFlagsData,
+        GetUpdateFlagsVariables
+    >(GET_UPDATE_FLAGS, {
+        variables: {
+            uid,
+        },
+    });
+
+    let newTransactionUpdate = false;
+
+    if (!!updateData) {
+        newTransactionUpdate = updateData.user.newTransactionUpdate;
+    }
+
+    const pageFocused = useIsFocused();
+
+    useEffect(() => {
+        return props.navigation.addListener("focus", () => {
+            viewTransactionsScreen().then();
+        });
+    }, [props.navigation, viewTransactionsScreen]);
+
+    useEffect(() => {
+        if (pageFocused && newTransactionUpdate) {
+            viewTransactionsScreen().then();
+        }
+    }, [pageFocused, newTransactionUpdate, viewTransactionsScreen]);
+
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
     /*
@@ -164,6 +228,35 @@ const Wallet: React.FC<Props> = (props) => {
         });
     };
 
+    /*
+     * Tier wage pulse
+     */
+    const tierWageOpacity = useRef(new Animated.Value(1)).current;
+
+    useEffect(() => {
+        Animated.loop(
+            Animated.sequence([
+                Animated.timing(tierWageOpacity, {
+                    toValue: 0,
+                    easing: Easing.sin,
+                    useNativeDriver: true,
+                    duration: 800,
+                }),
+                Animated.timing(tierWageOpacity, {
+                    toValue: 1,
+                    easing: Easing.sin,
+                    useNativeDriver: true,
+                    duration: 800,
+                }),
+                Animated.timing(tierWageOpacity, {
+                    toValue: 1,
+                    useNativeDriver: true,
+                    duration: 2000,
+                }),
+            ])
+        ).start();
+    }, []);
+
     if (
         (!collectionData?.user && collectionStatus === NetworkStatus.loading) ||
         (!accData?.transactionAccumulation &&
@@ -195,20 +288,14 @@ const Wallet: React.FC<Props> = (props) => {
     }
 
     if (!!collectionData?.user) {
-        const [hourlyWage, dailyWage] = ranking2Wage(
-            collectionData.user.ranking
+        const [finalWage, dailyWage] = getTierWage(
+            collectionData.user.ranking,
+            collectionData.user.lastCollectionTime
         );
+
         daily = dailyWage;
 
-        tierWage = Math.min(
-            Math.floor(
-                hourlyWage *
-                    ((Date.now() -
-                        parseInt(collectionData.user.lastCollectionTime)) /
-                        millisInHour)
-            ),
-            daily
-        );
+        tierWage = finalWage;
     }
 
     let total = tierWage + accumulation;
@@ -238,13 +325,17 @@ const Wallet: React.FC<Props> = (props) => {
                                     <Text style={styles.entryTitle}>
                                         Tier wage
                                     </Text>
-                                    <CoinBox
-                                        amount={tierWage}
-                                        coinSize={20}
-                                        fontSize={15}
-                                        outOfCoin={daily}
-                                        showAbbreviated={false}
-                                    />
+                                    <Animated.View
+                                        style={{ opacity: tierWageOpacity }}
+                                    >
+                                        <CoinBox
+                                            amount={tierWage}
+                                            coinSize={20}
+                                            fontSize={15}
+                                            outOfCoin={daily}
+                                            showAbbreviated={false}
+                                        />
+                                    </Animated.View>
                                 </View>
                                 <View style={styles.entryContainer}>
                                     <Text style={styles.entryTitle}>
@@ -268,16 +359,16 @@ const Wallet: React.FC<Props> = (props) => {
                                 </View>
                                 <View style={styles.earningsFooter}>
                                     <Animated.View
-                                        style={[
-                                            {
-                                                transform: [
-                                                    {
-                                                        translateY: animatedHeight,
-                                                    },
-                                                ],
-                                                opacity: animatedOpacity,
-                                            },
-                                        ]}
+                                        pointerEvents="none"
+                                        style={{
+                                            transform: [
+                                                {
+                                                    translateY: animatedHeight,
+                                                },
+                                            ],
+                                            opacity: animatedOpacity,
+                                            position: "absolute",
+                                        }}
                                     >
                                         <CoinBox
                                             showCoinPlus

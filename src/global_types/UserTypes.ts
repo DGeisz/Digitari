@@ -23,6 +23,9 @@ export interface UserType {
 
     lastCollectionTime: string;
 
+    newConvoUpdate: boolean;
+    newTransactionUpdate: boolean;
+
     // Challenge fields
     coinSpent: number;
     csGoal: number;
@@ -91,6 +94,9 @@ export const exampleUser: UserType = {
         "Hi my name is Danny. I bool, I vape, I joust, and I cape.  Here's to another day ba-rangling",
 
     lastCollectionTime: "0",
+
+    newConvoUpdate: true,
+    newTransactionUpdate: true,
 
     amFollowing: false,
     followPrice: 50,

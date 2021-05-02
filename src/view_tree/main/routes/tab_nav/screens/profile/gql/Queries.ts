@@ -15,6 +15,10 @@ export const GET_USER = gql`
             coin
             imgUrl
 
+            lastCollectionTime
+            newConvoUpdate
+            newTransactionUpdate
+
             amFollowing
             followPrice
 
