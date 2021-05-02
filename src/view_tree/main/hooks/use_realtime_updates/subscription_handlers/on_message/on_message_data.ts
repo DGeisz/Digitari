@@ -15,8 +15,10 @@ export function onMessageData(
 ) {
     const {
         client: { cache },
-        subscriptionData: { data },
+        subscriptionData: { data, error },
     } = options;
+
+    console.log("On message options: ", data, error);
 
     if (!!data?.messageAdded) {
         const convoData = cache.readQuery<

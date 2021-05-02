@@ -89,14 +89,6 @@ const TabNav: React.FC<Props> = (props) => {
             newTransactionUpdate = true;
         }
     }
-    //
-    // useEffect(() => {
-    //     setTimeout(() => {
-    //         setInterval(() => {
-    //             addNewReceipt(1);
-    //         }, 200);
-    //     }, 4000);
-    // }, []);
 
     return (
         <>

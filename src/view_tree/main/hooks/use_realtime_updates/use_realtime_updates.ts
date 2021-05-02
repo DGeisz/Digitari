@@ -46,6 +46,7 @@ export function useRealtimeUpdates() {
     /*
      * Subs for receiving a new message
      */
+    // const { data: uMessage, loading, variables, error } =
     useSubscription<NewMessageAddedData, NewMessageAddedVariables>(
         NEW_MESSAGE_ADDED,
         {
@@ -56,15 +57,19 @@ export function useRealtimeUpdates() {
         }
     );
 
-    useSubscription<NewMessageAddedData, NewMessageAddedVariables>(
-        NEW_MESSAGE_ADDED,
-        {
-            variables: {
-                tid: hid,
-            },
-            onSubscriptionData: onMessageData,
-        }
-    );
+    // console.log("Here's error: ", error, loading, variables, uMessage);
+
+    const { data: hMessage } = useSubscription<
+        NewMessageAddedData,
+        NewMessageAddedVariables
+    >(NEW_MESSAGE_ADDED, {
+        variables: {
+            tid: hid,
+        },
+        onSubscriptionData: onMessageData,
+    });
+
+    // console.log("This is message data:", uMessage, hMessage);
 
     /*
      * Subs for handling dismissed convos
@@ -182,13 +187,15 @@ export function useRealtimeUpdates() {
     /*
      * Donation received
      */
-    useSubscription<DonationReceivedData, DonationReceivedVariables>(
-        DONATION_RECEIVED,
-        {
-            variables: {
-                tuid: uid,
-            },
-            onSubscriptionData: onDonationReceived,
-        }
-    );
+    const { data, loading, error, variables } = useSubscription<
+        DonationReceivedData,
+        DonationReceivedVariables
+    >(DONATION_RECEIVED, {
+        variables: {
+            tuid: uid,
+        },
+        onSubscriptionData: onDonationReceived,
+    });
+    //
+    // console.log("Upp, ", data, loading, error, variables);
 }

@@ -13,7 +13,6 @@ import {
 import { localUid } from "../../../../../../global_state/UserState";
 import { addTransaction } from "../utils/cache_utils";
 import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
-import { fieldNameFromStoreName } from "@apollo/client/cache/inmemory/helpers";
 import { addNewReceipt } from "../../../../../../global_state/CoinUpdates";
 
 export function onConvoCreated(
