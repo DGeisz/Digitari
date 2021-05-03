@@ -43,7 +43,7 @@ export default class DonationModal extends React.PureComponent<Props, State> {
             >
                 <View style={styles.donateContainer}>
                     <View style={styles.donateHeader}>
-                        <Text style={styles.donateTitle}>Custom donation</Text>
+                        <Text style={styles.donateTitle}>Custom</Text>
                     </View>
                     <Text style={styles.errorText}>{this.state.error}</Text>
                     <TextInput
@@ -79,7 +79,7 @@ export default class DonationModal extends React.PureComponent<Props, State> {
                         >
                             <View style={styles.donateButtonTextContainer}>
                                 <Text style={styles.donateButtonText}>
-                                    Donate
+                                    Like
                                 </Text>
                             </View>
                             <CoinBox

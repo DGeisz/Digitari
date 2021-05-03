@@ -3,6 +3,7 @@ import {
     Animated,
     Easing,
     Image,
+    LayoutAnimation,
     Text,
     TouchableOpacity,
     Vibration,
@@ -95,9 +96,11 @@ export default class Post extends React.PureComponent<Props, State> {
     };
 
     setError = (error: string) => {
+        LayoutAnimation.easeInEaseOut();
         this.setState({ error });
 
         setTimeout(() => {
+            LayoutAnimation.easeInEaseOut();
             this.setState({ error: "" });
         }, 5000);
     };

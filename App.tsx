@@ -51,11 +51,10 @@ const auth: AuthOptions = {
     },
 };
 
-const httpLink = createHttpLink({ uri: url });
+// const httpLink = createHttpLink({ uri: url });
 
 const link = ApolloLink.from([
     createAuthLink({ url, region, auth }),
-    // httpLink,
     createSubscriptionHandshakeLink({ url, region, auth }),
 ]);
 

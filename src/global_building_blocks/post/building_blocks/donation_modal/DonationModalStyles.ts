@@ -9,7 +9,8 @@ export const styles = StyleSheet.create({
     donateContainer: {
         backgroundColor: palette.white,
         paddingVertical: 10,
-        paddingHorizontal: 20,
+        width: 250,
+        paddingHorizontal: 40,
         borderRadius: 20,
     },
     preHeader: {
