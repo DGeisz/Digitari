@@ -9,7 +9,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { TabNavProp } from "../../MainEntryNavTypes";
 import { TabNavContext } from "./TabNavContext";
 import { TabNavTab } from "./TabNavTypes";
-import { Animated, Easing, View } from "react-native";
+import { View } from "react-native";
 import { styles } from "./TabNavStyles";
 import UpdateIndicator from "./building_blocks/update_indicator/UpdateIndicator";
 import { useQuery } from "@apollo/client";
@@ -20,12 +20,8 @@ import {
     GetUpdateFlagsVariables,
 } from "./gql/Queries";
 import { getTierWage } from "../../../../global_types/TierTypes";
-import CoinBox from "../../../../global_building_blocks/coin_box/CoinBox";
 import CoinIndicator from "./building_blocks/coin_indicator/CoinIndicator";
-import {
-    addNewReceipt,
-    transactionReceipts,
-} from "../../../../global_state/CoinUpdates";
+import ChallengeCompleteModal from "./building_blocks/challenge_complete_modal/ChallengeCompleteModal";
 
 const Tab = createBottomTabNavigator<TabNavTab>();
 
@@ -103,6 +99,13 @@ const TabNav: React.FC<Props> = (props) => {
                     openFollows,
                 }}
             >
+                <ChallengeCompleteModal
+                    openWallet={() => {
+                        props.navigation.navigate("TabNav", {
+                            screen: "Wallet",
+                        });
+                    }}
+                />
                 <Tab.Navigator
                     initialRouteName="MainFeed"
                     tabBarOptions={{

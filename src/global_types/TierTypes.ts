@@ -50,6 +50,30 @@ export function ranking2Tier(ranking: number): TierEnum {
     }
 }
 
+export function tier2MinRanking(tier: TierEnum): number {
+    switch (tier) {
+        case TierEnum.AngryHorns:
+            return NaN;
+        case TierEnum.Steam:
+            return -20;
+        case TierEnum.Frowning:
+            return -10;
+        case TierEnum.SlightlySmiling:
+            return -5;
+        case TierEnum.Smiling:
+            return 5;
+        case TierEnum.Grinning:
+            return 20;
+        case TierEnum.Hugging:
+            return 35;
+        case TierEnum.Sunglasses:
+            return 50;
+        case TierEnum.HeartEyes:
+            return 70;
+        case TierEnum.Angel:
+            return 100;
+    }
+}
 export function tier2Emoji(tier: TierEnum): string {
     switch (tier) {
         case TierEnum.AngryHorns:
@@ -75,13 +99,7 @@ export function tier2Emoji(tier: TierEnum): string {
     }
 }
 
-/*
- * First return is the hourly wage, second return
- * is the daily wage (max wage)
- */
-export function ranking2Wage(ranking: number): [number, number] {
-    const tier = ranking2Tier(ranking);
-
+export function tier2Wage(tier: TierEnum): [number, number] {
     let dailyWage: number;
 
     switch (tier) {
@@ -120,6 +138,16 @@ export function ranking2Wage(ranking: number): [number, number] {
     return [dailyWage / 24, dailyWage];
 }
 
+/*
+ * First return is the hourly wage, second return
+ * is the daily wage (max wage)
+ */
+export function ranking2Wage(ranking: number): [number, number] {
+    const tier = ranking2Tier(ranking);
+
+    return tier2Wage(tier);
+}
+
 /**
  * First return is the amount of coin generated, second is the daily
  * total
@@ -140,4 +168,54 @@ export function getTierWage(
         ),
         dailyWage,
     ];
+}
+
+export function tier2convoReward(tier: TierEnum): number {
+    switch (tier) {
+        case TierEnum.AngryHorns:
+            return 2;
+        case TierEnum.Steam:
+            return 4;
+        case TierEnum.Frowning:
+            return 15;
+        case TierEnum.SlightlySmiling:
+            return 30;
+        case TierEnum.Smiling:
+            return 45;
+        case TierEnum.Grinning:
+            return 75;
+        case TierEnum.Hugging:
+            return 100;
+        case TierEnum.Sunglasses:
+            return 250;
+        case TierEnum.HeartEyes:
+            return 600;
+        case TierEnum.Angel:
+            return 1500;
+    }
+}
+
+export function tier2responseCost(tier: TierEnum): number {
+    switch (tier) {
+        case TierEnum.AngryHorns:
+            return 1;
+        case TierEnum.Steam:
+            return 2;
+        case TierEnum.Frowning:
+            return 5;
+        case TierEnum.SlightlySmiling:
+            return 10;
+        case TierEnum.Smiling:
+            return 15;
+        case TierEnum.Grinning:
+            return 25;
+        case TierEnum.Hugging:
+            return 35;
+        case TierEnum.Sunglasses:
+            return 85;
+        case TierEnum.HeartEyes:
+            return 200;
+        case TierEnum.Angel:
+            return 500;
+    }
 }

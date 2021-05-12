@@ -32,6 +32,8 @@ export const schema = gql`
         beenBlocked: Int
         coin: Int
 
+        challengeReceipts: [String]
+
         coinSpent: Int
 
         # Fields for challenges
@@ -285,6 +287,8 @@ export const schema = gql`
         deleteSearchEntity(id: String): SearchEntity
 
         collectEarnings: EarningsReceipt
+
+        viewChallengeReceipt(receipt: String!): String
     }
 
     type Subscription {

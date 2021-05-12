@@ -2,7 +2,11 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RouteProp } from "@react-navigation/native";
 
 export type MainEntryStack = {
-    TabNav: undefined;
+    TabNav:
+        | {
+              screen?: string;
+          }
+        | undefined;
     Convo: {
         cvid: string;
         pid: string;

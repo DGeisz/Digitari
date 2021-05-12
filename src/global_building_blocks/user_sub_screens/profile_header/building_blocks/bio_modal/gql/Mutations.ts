@@ -3,6 +3,7 @@ import { gql } from "@apollo/client";
 export const UPDATE_BIO = gql`
     mutation UpdateBio($bio: String) {
         updateBio(bio: $bio) {
+            id
             bio
         }
     }

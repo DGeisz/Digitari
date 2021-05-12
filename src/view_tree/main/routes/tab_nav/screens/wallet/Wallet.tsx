@@ -94,10 +94,16 @@ const Wallet: React.FC<Props> = (props) => {
     });
 
     useEffect(() => {
-        props.navigation.addListener("focus", () => {
-            accRefetch && accRefetch();
+        return props.navigation.addListener("focus", () => {
+            if (typeof accData !== "undefined") {
+                !!accRefetch && accRefetch();
+            }
+
+            if (typeof transData !== "undefined") {
+                !!transRefetch && transRefetch();
+            }
         });
-    }, []);
+    }, [accData, transData]);
 
     /*
      * Mutations
@@ -422,8 +428,7 @@ const Wallet: React.FC<Props> = (props) => {
                             {finalFeed.length === 0 && (
                                 <View style={styles.noTransactionsContainer}>
                                     <Text style={styles.noTransactionText}>
-                                        You haven't had any transactions
-                                        recently
+                                        You don't have any recent transactions
                                     </Text>
                                 </View>
                             )}

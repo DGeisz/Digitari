@@ -26,6 +26,8 @@ export interface UserType {
     newConvoUpdate: boolean;
     newTransactionUpdate: boolean;
 
+    challengeReceipts: string[];
+
     coinSpent: number;
 
     // Challenge fields

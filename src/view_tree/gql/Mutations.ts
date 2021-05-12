@@ -17,8 +17,19 @@ export const CREATE_OR_FETCH_USER = gql`
             lastName
             userName
             email
+            timeCreated
+            imgUrl
+
+            lastCollectionTime
+
+            # Indicates whether the person who fetched this user is following this user.
+            amFollowing
+            followPrice
 
             newUser
+
+            newConvoUpdate
+            newTransactionUpdate
 
             level
             bio
@@ -27,57 +38,25 @@ export const CREATE_OR_FETCH_USER = gql`
             beenBlocked
             coin
 
+            challengeReceipts
+
             coinSpent
-            csGoal
-            nextCsIndex
 
-            postCount
-            pcGoal
-            nextPcIndex
+            # Fields for challenges
+            receivedFromConvos
+            rfcChallengeIndex
 
-            donated2Other
-            d2OGoal
-            nextD2OIndex
-
-            donated2User
-            d2UGoal
-            nextD2UIndex
-
-            responses2Other
-            r2OGoal
-            nextR2OIndex
-
-            responses2User
-            r2UGoal
-            nextR2UIndex
-
+            spentOnConvos
+            socChallengeIndex
             successfulConvos
-            scGoal
-            nextScIndex
-
-            following
-            fgGoal
-            nextFgIndex
-
+            scChallengeIndex
+            postCount
+            pcChallengeIndex
             followers
-            fsGoal
-            nextFsIndex
-
-            followersViaLink
-            fvlGoal
-            nextFvlIndex
-
-            comsCreated
-            ccGoal
-            nextCcIndex
-
-            welcomeCount
-            wcGoal
-            nextWcIndex
-
-            invite2ComViaLink
-            i2cGoal
-            nextI2CIndex
+            followersChallengeIndex
+            following
+            followingChallengeIndex
+            communityFollowersChallengeIndex
         }
     }
 `;

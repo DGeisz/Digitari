@@ -80,20 +80,20 @@ const Convos: React.FC<Props> = (props) => {
         <>
             <Tab.Navigator>
                 <Tab.Screen
-                    name="ActiveConvos"
-                    component={ActiveConvos}
-                    options={{
-                        tabBarLabel: ({ color }) => (
-                            <TabLabel title={"Active"} color={color} />
-                        ),
-                    }}
-                />
-                <Tab.Screen
                     name="NewConvos"
                     component={NewConvos}
                     options={{
                         tabBarLabel: ({ color }) => (
                             <TabLabel title={"New"} color={color} />
+                        ),
+                    }}
+                />
+                <Tab.Screen
+                    name="ActiveConvos"
+                    component={ActiveConvos}
+                    options={{
+                        tabBarLabel: ({ color }) => (
+                            <TabLabel title={"Active"} color={color} />
                         ),
                     }}
                 />

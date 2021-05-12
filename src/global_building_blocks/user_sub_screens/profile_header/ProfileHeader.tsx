@@ -29,6 +29,7 @@ import {
     UnFollowUserVariables,
 } from "./gql/Mutation";
 import { localUid } from "../../../global_state/UserState";
+import TierModal from "./building_blocks/tier_modal/TierModal";
 
 interface Props {
     user: UserType;
@@ -42,6 +43,7 @@ const ProfileHeader: React.FC<Props> = (props) => {
     const [loading, setLoading] = useState<boolean>(false);
 
     const [editBioVisible, showEditBio] = useState<boolean>(false);
+    const [tierModalVisible, showTierModal] = useState<boolean>(false);
 
     const uid = localUid();
 
@@ -261,9 +263,21 @@ const ProfileHeader: React.FC<Props> = (props) => {
                     </View>
                 </View>
                 <View style={styles.profileSplit1} pointerEvents="box-none">
-                    <View style={styles.split1Left} pointerEvents="none">
-                        <Tier size={40} ranking={props.user.ranking} />
-                        <View style={styles.userLevelContainer}>
+                    <View style={styles.split1Left} pointerEvents="box-none">
+                        <TierModal
+                            visible={tierModalVisible}
+                            hide={() => showTierModal(false)}
+                        />
+                        <TouchableOpacity
+                            activeOpacity={0.5}
+                            onPress={() => showTierModal(true)}
+                        >
+                            <Tier size={40} ranking={props.user.ranking} />
+                        </TouchableOpacity>
+                        <View
+                            style={styles.userLevelContainer}
+                            pointerEvents="none"
+                        >
                             <Text style={styles.profileUserText}>
                                 {`${props.user.firstName} ${props.user.lastName}`}
                             </Text>

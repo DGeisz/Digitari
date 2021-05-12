@@ -13,7 +13,7 @@ import User from "./screens/user/User";
 import Follows from "./screens/follows/Follows";
 import NewPost from "./screens/new/screens/new_post/NewPost";
 import { useRealtimeUpdates } from "./hooks/use_realtime_updates/use_realtime_updates";
-import { useMutation, useSubscription } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import {
     REGISTER_PUSH,
     RegisterPushData,
@@ -21,14 +21,7 @@ import {
 } from "./gql/Mutations";
 import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
-import { Platform, View } from "react-native";
-import {
-    NEW_MESSAGE_ADDED,
-    NewMessageAddedData,
-    NewMessageAddedVariables,
-} from "./hooks/use_realtime_updates/gql/Subscriptions";
-import { localUid } from "../../global_state/UserState";
-import { onMessageData } from "./hooks/use_realtime_updates/subscription_handlers/on_message/on_message_data";
+import { Platform } from "react-native";
 
 const RootStack = createStackNavigator<MainEntryStack>();
 
