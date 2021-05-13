@@ -4,11 +4,7 @@ import {
     ActiveConvosVariables,
 } from "../../../../routes/tab_nav/screens/convos/sub_screens/active_convos/gql/Queries";
 import { ApolloCache } from "@apollo/client";
-import {
-    TRANSACTION_TYPENAME,
-    TransactionType,
-    TransactionTypesEnum,
-} from "../../../../../../global_types/TransactionTypes";
+import { TransactionType } from "../../../../../../global_types/TransactionTypes";
 import {
     TRANSACTIONS,
     TransactionsData,

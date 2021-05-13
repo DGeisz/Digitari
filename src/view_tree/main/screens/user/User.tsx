@@ -8,7 +8,7 @@ import UserPosts from "../../../../global_building_blocks/user_sub_screens/user_
 import UserConvos from "../../../../global_building_blocks/user_sub_screens/user_convos/UserConvos";
 import UserChallenges from "../../../../global_building_blocks/user_sub_screens/user_challenges/UserChallenges";
 import UserStats from "../../../../global_building_blocks/user_sub_screens/user_stats/UserStats";
-import { useMutation, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import {
     GET_USER,
     GetUserQueryData,
@@ -18,7 +18,6 @@ import LoadingWheel from "../../../../global_building_blocks/loading_wheel/Loadi
 import ErrorMessage from "../../../../global_building_blocks/error_message/ErrorMessage";
 import { UserNavProp, UserRouteProp } from "../../MainEntryNavTypes";
 import { localUid } from "../../../../global_state/UserState";
-import { USER_TYPENAME } from "../../../../global_types/UserTypes";
 import { Auth } from "aws-amplify";
 import NewButton from "../../../../global_building_blocks/new_button/NewButton";
 import { styles } from "./UserStyles";

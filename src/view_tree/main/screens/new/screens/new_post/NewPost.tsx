@@ -46,6 +46,7 @@ import { cache } from "../../../../../../global_state/Cache";
 import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
 import InfoModal from "./building_blocks/info_modal/InfoModal";
 import LinkPreview from "../../../../../../global_building_blocks/link_preview/LinkPreview";
+import { challengeCheck } from "../../../../../../global_gql/challenge_check/challenge_check";
 
 interface Props {
     navigation: NewPostNavProp;
@@ -170,6 +171,8 @@ const NewPost: React.FC<Props> = (props) => {
                     },
                 },
             });
+
+            challengeCheck(cache);
         },
     });
 

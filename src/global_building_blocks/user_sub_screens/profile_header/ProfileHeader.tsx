@@ -30,6 +30,7 @@ import {
 } from "./gql/Mutation";
 import { localUid } from "../../../global_state/UserState";
 import TierModal from "./building_blocks/tier_modal/TierModal";
+import { challengeCheck } from "../../../global_gql/challenge_check/challenge_check";
 
 interface Props {
     user: UserType;
@@ -98,6 +99,8 @@ const ProfileHeader: React.FC<Props> = (props) => {
                     });
 
                     setLoading(false);
+
+                    challengeCheck(cache);
                 }
             },
         }

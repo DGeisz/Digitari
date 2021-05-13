@@ -22,6 +22,7 @@ import {
     COLLECT_EARNINGS,
     CollectEarningsData,
 } from "../../routes/tab_nav/screens/wallet/gql/Mutations";
+import { challengeCheck } from "../../../../global_gql/challenge_check/challenge_check";
 
 interface Props {
     route: NewResponseRouteProp;
@@ -40,22 +41,6 @@ const NewResponse: React.FC<Props> = (props) => {
     >(CREATE_CONVO, {
         update(cache, { data }) {
             if (!!data?.createConvo) {
-                // cache.modify({
-                //     id: cache.identify({
-                //         __typename: QUERY_TYPENAME,
-                //     }),
-                //     fields: {
-                //         activeConvos(existing) {
-                //             const newConvoRef = cache.writeFragment({
-                //                 fragment: NEW_RESPONSE_CONVO,
-                //                 data: data.newConvo,
-                //             });
-                //
-                //             return [newConvoRef, ...existing];
-                //         },
-                //     },
-                // });
-
                 cache.modify({
                     id: cache.identify({
                         __typename: USER_TYPENAME,
@@ -70,6 +55,11 @@ const NewResponse: React.FC<Props> = (props) => {
                         },
                     },
                 });
+
+                /*
+                 * Do a quick challenge check
+                 */
+                challengeCheck(cache);
 
                 props.navigation.pop();
                 props.navigation.navigate("Convo", {

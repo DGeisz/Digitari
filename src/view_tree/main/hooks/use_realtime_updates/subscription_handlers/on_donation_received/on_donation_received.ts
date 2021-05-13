@@ -16,6 +16,7 @@ import {
 import { addTransaction } from "../utils/cache_utils";
 import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
 import { addNewReceipt } from "../../../../../../global_state/CoinUpdates";
+import { challengeCheck } from "../../../../../../global_gql/challenge_check/challenge_check";
 
 export async function onDonationReceived(
     options: OnSubscriptionDataOptions<DonationReceivedData>
@@ -106,9 +107,14 @@ export async function onDonationReceived(
                 newTransactionUpdate() {
                     return true;
                 },
+                receivedFromConvos(existing) {
+                    return existing + amount;
+                },
             },
         });
 
         addTransaction(transaction, cache);
+
+        challengeCheck(cache);
     }
 }

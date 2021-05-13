@@ -6,7 +6,6 @@ import {
     LayoutAnimation,
     Text,
     TouchableOpacity,
-    Vibration,
     View,
 } from "react-native";
 import { styles } from "./PostStyles";
@@ -36,6 +35,7 @@ import { MutationFunctionOptions } from "@apollo/client/react/types/types";
 import { DonateToPostData, DonateToPostVariables } from "./gql/Mutations";
 import DonationModal from "./building_blocks/donation_modal/DonationModal";
 import { USER_TYPENAME } from "../../global_types/UserTypes";
+import { challengeCheck } from "../../global_gql/challenge_check/challenge_check";
 
 const COMMUNITY_NAME_MAX_LEN = 30;
 
@@ -180,6 +180,8 @@ export default class Post extends React.PureComponent<Props, State> {
                                     },
                                 },
                             });
+
+                            challengeCheck(cache);
                         }
                     },
                 });

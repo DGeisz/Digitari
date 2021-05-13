@@ -14,11 +14,11 @@ import { localUid } from "../../../../../../global_state/UserState";
 import { addTransaction } from "../utils/cache_utils";
 import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
 import { addNewReceipt } from "../../../../../../global_state/CoinUpdates";
+import { challengeCheck } from "../../../../../../global_gql/challenge_check/challenge_check";
 
 export function onConvoCreated(
     options: OnSubscriptionDataOptions<ConvoCreatedData>
 ) {
-    console.log("Well, it fired", options.subscriptionData.data);
     const {
         client: { cache },
         subscriptionData: { data },
@@ -116,9 +116,17 @@ export function onConvoCreated(
                 newTransactionUpdate() {
                     return true;
                 },
+                receivedFromConvos(existing) {
+                    return existing + convo.responseCost;
+                },
             },
         });
 
         addTransaction(transaction, cache);
+
+        /*
+         * Quick challenge check
+         */
+        challengeCheck(cache);
     }
 }

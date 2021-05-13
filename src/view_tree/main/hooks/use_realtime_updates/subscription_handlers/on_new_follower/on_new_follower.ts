@@ -12,6 +12,7 @@ import {
     USER_TYPENAME,
 } from "../../../../../../global_types/UserTypes";
 import { addNewReceipt } from "../../../../../../global_state/CoinUpdates";
+import { challengeCheck } from "../../../../../../global_gql/challenge_check/challenge_check";
 
 export function onNewFollower(
     options: OnSubscriptionDataOptions<NewFollowerData>
@@ -65,5 +66,7 @@ export function onNewFollower(
         addNewReceipt(FOLLOW_USER_PRICE);
 
         addTransaction(newTransaction, cache);
+
+        challengeCheck(cache);
     }
 }

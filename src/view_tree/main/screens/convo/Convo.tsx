@@ -82,6 +82,7 @@ import {
     TransactionTypesEnum,
 } from "../../../../global_types/TransactionTypes";
 import { addTransaction } from "../../hooks/use_realtime_updates/subscription_handlers/utils/cache_utils";
+import { challengeCheck } from "../../../../global_gql/challenge_check/challenge_check";
 
 function getCheckLeft(uid: string, tid: string): (id: string) => boolean {
     if (uid === tid) {
@@ -484,6 +485,11 @@ const Convo: React.FC<Props> = (props) => {
 
                     addTransaction(transaction, cache);
                 }
+
+                /*
+                 * Do a quick challenge check
+                 */
+                challengeCheck(cache);
             },
         }
     );
