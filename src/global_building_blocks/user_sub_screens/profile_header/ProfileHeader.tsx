@@ -14,7 +14,7 @@ import {
     UserType,
 } from "../../../global_types/UserTypes";
 import Tier from "../../tier/Tier";
-import { toRep } from "../../../global_utils/ValueRepUtils";
+import { toCommaRep, toRep } from "../../../global_utils/ValueRepUtils";
 import CoinBox from "../../coin_box/CoinBox";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { palette } from "../../../global_styles/Palette";
@@ -284,9 +284,16 @@ const ProfileHeader: React.FC<Props> = (props) => {
                             <Text style={styles.profileUserText}>
                                 {`${props.user.firstName} ${props.user.lastName}`}
                             </Text>
-                            <Text style={styles.profileLevelText}>
-                                {["Level:", props.user.level].join(" ")}
-                            </Text>
+                            <View style={styles.statsContainer}>
+                                <Text style={styles.profileRankingText}>
+                                    {`Ranking: ${toCommaRep(
+                                        props.user.ranking
+                                    )}`}
+                                </Text>
+                                <Text style={styles.profileLevelText}>
+                                    {`Level: ${toCommaRep(props.user.level)}`}
+                                </Text>
+                            </View>
                         </View>
                     </View>
                 </View>

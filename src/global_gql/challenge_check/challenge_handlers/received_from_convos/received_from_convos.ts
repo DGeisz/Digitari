@@ -1,12 +1,21 @@
 import { USER_TYPENAME, UserType } from "../../../../global_types/UserTypes";
 import { ApolloCache } from "@apollo/client";
-import { ChallengeTypes } from "../../../../global_types/ChallengeTypes";
+import {
+    ChallengeClass,
+    ChallengeType,
+    ChallengeTypes,
+} from "../../../../global_types/ChallengeTypes";
 import { localUid } from "../../../../global_state/UserState";
 
 const bronzeCount = 10;
 const silverCount = 100;
 const goldCount = 1000;
 const supremeCount = 10000;
+
+const bronzeCoin = 500;
+const silverCoin = 5000;
+const goldCoin = 50000;
+const supremeCoin = 500000;
 
 export function receivedFromConvosHandler(
     user: UserType,
@@ -79,5 +88,42 @@ export function receivedFromConvosHandler(
                 },
             },
         });
+    }
+}
+
+export function generateRfcChallenge(
+    challengeClass: ChallengeClass
+): ChallengeType {
+    const stat = ChallengeTypes.ReceivedFromConvos;
+
+    switch (challengeClass) {
+        case ChallengeClass.Bronze:
+            return {
+                class: challengeClass,
+                stat,
+                reward: bronzeCoin,
+                goal: bronzeCount,
+            };
+        case ChallengeClass.Silver:
+            return {
+                class: challengeClass,
+                stat,
+                reward: silverCoin,
+                goal: silverCount,
+            };
+        case ChallengeClass.Gold:
+            return {
+                class: challengeClass,
+                stat,
+                reward: goldCoin,
+                goal: goldCount,
+            };
+        case ChallengeClass.Supreme:
+            return {
+                class: challengeClass,
+                stat,
+                reward: supremeCoin,
+                goal: supremeCount,
+            };
     }
 }

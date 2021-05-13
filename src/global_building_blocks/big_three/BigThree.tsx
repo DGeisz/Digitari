@@ -7,6 +7,7 @@ import {
     Foundation,
 } from "@expo/vector-icons";
 import { palette } from "../../global_styles/Palette";
+import { toCommaRep, toRep } from "../../global_utils/ValueRepUtils";
 
 const bigFontSize = 16;
 
@@ -15,10 +16,15 @@ const bigFontSize = 16;
  * blocked this number of people
  */
 interface BlockedProps {
-    blocked: string | number;
+    blocked: number;
+    showAbbreviated: boolean;
 }
 
 export class Blocked extends React.PureComponent<BlockedProps> {
+    static defaultProps = {
+        showAbbreviated: true,
+    };
+
     render() {
         return (
             <View style={styles.blocked}>
@@ -27,7 +33,11 @@ export class Blocked extends React.PureComponent<BlockedProps> {
                     color={palette.warning}
                     size={15}
                 />
-                <Text style={styles.blockedCount}>{this.props.blocked}</Text>
+                <Text style={styles.blockedCount}>
+                    {this.props.showAbbreviated
+                        ? toRep(this.props.blocked)
+                        : toCommaRep(this.props.blocked)}
+                </Text>
             </View>
         );
     }
@@ -50,14 +60,18 @@ export class BlockedBig extends React.PureComponent<BlockedProps> {
     }
 }
 
-export class BlockedSymbol extends React.PureComponent {
+interface SymProps {
+    size: number;
+}
+
+export class BlockedSymbol extends React.PureComponent<SymProps> {
     render() {
         return (
             <View style={styles.blocked}>
                 <MaterialCommunityIcons
                     name="hand-left"
                     color={palette.warning}
-                    size={20}
+                    size={this.props.size}
                 />
             </View>
         );
@@ -69,10 +83,15 @@ export class BlockedSymbol extends React.PureComponent {
  * blocked by this number of people
  */
 interface BeenBlockedProps {
-    beenBlocked: string | number;
+    beenBlocked: number;
+    showAbbreviated: boolean;
 }
 
 export class BeenBlocked extends React.PureComponent<BeenBlockedProps> {
+    static defaultProps = {
+        showAbbreviated: true,
+    };
+
     render() {
         return (
             <View style={styles.beenBlocked}>
@@ -83,7 +102,9 @@ export class BeenBlocked extends React.PureComponent<BeenBlockedProps> {
                     style={{ transform: [{ translateY: 1 }] }}
                 />
                 <Text style={styles.beenBlockedCount}>
-                    {this.props.beenBlocked}
+                    {this.props.showAbbreviated
+                        ? toRep(this.props.beenBlocked)
+                        : toCommaRep(this.props.beenBlocked)}
                 </Text>
             </View>
         );
@@ -110,14 +131,14 @@ export class BeenBlockedBig extends React.PureComponent<BeenBlockedProps> {
     }
 }
 
-export class BeenBlockedSymbol extends React.PureComponent {
+export class BeenBlockedSymbol extends React.PureComponent<SymProps> {
     render() {
         return (
             <View style={styles.beenBlocked}>
                 <Foundation
                     name="x"
                     color={palette.danger}
-                    size={20}
+                    size={this.props.size}
                     style={{ transform: [{ translateY: 1 }] }}
                 />
             </View>
@@ -129,10 +150,15 @@ export class BeenBlockedSymbol extends React.PureComponent {
  * Symbol indicating you've had this many successful conversations
  */
 interface SuccessfulConversationsProps {
-    conversations: string | number;
+    conversations: number;
+    showAbbreviated: boolean;
 }
 
 export class SuccessfulConvos extends React.PureComponent<SuccessfulConversationsProps> {
+    static defaultProps = {
+        showAbbreviated: true,
+    };
+
     render() {
         return (
             <View style={styles.successfulConversations}>
@@ -142,7 +168,9 @@ export class SuccessfulConvos extends React.PureComponent<SuccessfulConversation
                     size={15}
                 />
                 <Text style={styles.successCount}>
-                    {this.props.conversations}
+                    {this.props.showAbbreviated
+                        ? toRep(this.props.conversations)
+                        : toCommaRep(this.props.conversations)}
                 </Text>
             </View>
         );
@@ -166,14 +194,14 @@ export class SuccessfulConversationsBig extends React.PureComponent<SuccessfulCo
     }
 }
 
-export class SuccessfulConversationsSymbol extends React.PureComponent {
+export class SuccessfulConversationsSymbol extends React.PureComponent<SymProps> {
     render() {
         return (
             <View style={styles.successfulConversations}>
                 <FontAwesome
                     name="handshake-o"
                     color={palette.primary}
-                    size={20}
+                    size={this.props.size}
                 />
             </View>
         );

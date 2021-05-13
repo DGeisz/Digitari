@@ -1,15 +1,15 @@
 import React from "react";
-import { View, Text, Dimensions, TouchableOpacity } from "react-native";
+import { View, Text, Dimensions } from "react-native";
 import { styles } from "./ChallengeStyles";
 import CoinBox from "../coin_box/CoinBox";
 import { palette } from "../../global_styles/Palette";
 import {
-    challengeClasses,
     ChallengeType,
+    ChallengeTypes,
+    generateChallengeMessage,
 } from "../../global_types/ChallengeTypes";
 import { toRep } from "../../global_utils/ValueRepUtils";
 import { UserType } from "../../global_types/UserTypes";
-import { FontAwesome } from "@expo/vector-icons";
 import ChallengeTier from "./tier/ChallengeTier";
 
 const { width } = Dimensions.get("window");
@@ -31,45 +31,27 @@ export default class Challenge extends React.PureComponent<Props, State> {
     render() {
         let progress: number;
 
-        switch (this.props.challenge.class) {
-            case challengeClasses.coinSpent:
-                progress = this.props.user.coinSpent;
+        switch (this.props.challenge.stat) {
+            case ChallengeTypes.ReceivedFromConvos:
+                progress = this.props.user.receivedFromConvos;
                 break;
-            case challengeClasses.postCount:
+            case ChallengeTypes.SpentOnConvos:
+                progress = this.props.user.spentOnConvos;
+                break;
+            case ChallengeTypes.PostCount:
                 progress = this.props.user.postCount;
                 break;
-            case challengeClasses.donated2Other:
-                progress = this.props.user.donated2Other;
-                break;
-            case challengeClasses.donated2User:
-                progress = this.props.user.donated2User;
-                break;
-            case challengeClasses.responses2Other:
-                progress = this.props.user.responses2Other;
-                break;
-            case challengeClasses.responses2User:
-                progress = this.props.user.responses2User;
-                break;
-            case challengeClasses.successfulConvos:
+            case ChallengeTypes.SuccessfulConvos:
                 progress = this.props.user.successfulConvos;
                 break;
-            case challengeClasses.following:
-                progress = this.props.user.following;
-                break;
-            case challengeClasses.followers:
+            case ChallengeTypes.Followers:
                 progress = this.props.user.followers;
                 break;
-            case challengeClasses.followersViaLink:
-                progress = this.props.user.followersViaLink;
+            case ChallengeTypes.Following:
+                progress = this.props.user.following;
                 break;
-            case challengeClasses.comsCreated:
-                progress = this.props.user.comsCreated;
-                break;
-            case challengeClasses.welcomeCount:
-                progress = this.props.user.welcomeCount;
-                break;
-            case challengeClasses.invite2ComViaLink:
-                progress = this.props.user.invite2ComViaLink;
+            case ChallengeTypes.CommunityFollowers:
+                progress = this.props.user.maxCommunityFollowers;
                 break;
             default:
                 progress = 0;
@@ -79,8 +61,8 @@ export default class Challenge extends React.PureComponent<Props, State> {
             <View style={styles.challengeContainer}>
                 <View style={styles.challengeSideCoin}>
                     <ChallengeTier
-                        tier={this.props.challenge.tier}
-                        coinSize={30}
+                        tier={this.props.challenge.class}
+                        coinSize={35}
                     />
                 </View>
                 <View style={styles.challengeMain}>
@@ -88,21 +70,18 @@ export default class Challenge extends React.PureComponent<Props, State> {
                         <View style={styles.challengeTopLeft}>
                             <View style={styles.challengeTextContainer}>
                                 <Text style={styles.challengeText}>
-                                    {this.props.challenge.description}
+                                    {generateChallengeMessage(
+                                        this.props.challenge.stat,
+                                        this.props.challenge.goal
+                                    )}
                                 </Text>
                             </View>
-                            <TouchableOpacity style={styles.infoButton}>
-                                <FontAwesome
-                                    name="info"
-                                    size={20}
-                                    color={palette.deepBlue}
-                                />
-                            </TouchableOpacity>
                         </View>
                         <View style={styles.challengeTopRight}>
+                            <Text style={styles.rewardTitle}>Reward</Text>
                             <CoinBox
                                 coinSize={20}
-                                amount={this.props.challenge.coinReward}
+                                amount={this.props.challenge.reward}
                                 boxColor={palette.lightForestGreen}
                                 showCoinPlus
                             />
@@ -111,7 +90,16 @@ export default class Challenge extends React.PureComponent<Props, State> {
                     <View style={styles.challengeMainBottom}>
                         <View style={styles.challengeBottomLeft}>
                             <View
-                                style={styles.challengeProgressBar}
+                                style={[
+                                    styles.challengeProgressBar,
+                                    {
+                                        borderColor:
+                                            progress >=
+                                            this.props.challenge.goal
+                                                ? palette.quasiLightForestGreen
+                                                : palette.deepBlue,
+                                    },
+                                ]}
                                 onLayout={({
                                     nativeEvent: {
                                         layout: { width: pbWidth },
@@ -128,16 +116,26 @@ export default class Challenge extends React.PureComponent<Props, State> {
                                 <View
                                     style={[
                                         styles.challengeProgressFill,
-                                        { width: this.state.fillWidth },
+                                        {
+                                            width: this.state.fillWidth,
+                                            backgroundColor:
+                                                progress >=
+                                                this.props.challenge.goal
+                                                    ? palette.quasiLightForestGreen
+                                                    : palette.deepBlue,
+                                        },
                                     ]}
                                 />
                             </View>
                         </View>
                         <View style={styles.challengeBottomRight}>
                             <Text style={styles.challengeCompletionText}>
-                                {`${toRep(progress)} / ${toRep(
-                                    this.props.challenge.goal
-                                )}`}
+                                {`${toRep(
+                                    Math.min(
+                                        progress,
+                                        this.props.challenge.goal
+                                    )
+                                )} / ${toRep(this.props.challenge.goal)}`}
                             </Text>
                         </View>
                     </View>

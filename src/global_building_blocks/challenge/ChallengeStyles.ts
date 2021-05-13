@@ -5,11 +5,11 @@ import { basicLayouts } from "../../global_styles/BasicLayouts";
 export const styles = StyleSheet.create({
     challengeContainer: {
         backgroundColor: palette.white,
-        padding: 15,
-        paddingLeft: 0,
-        borderBottomWidth: 1,
-        borderColor: palette.softGray,
+        paddingRight: 15,
+        paddingBottom: 15,
+        paddingTop: 10,
         flexDirection: "row",
+        marginBottom: 15,
     },
     challengeSideCoin: {
         ...basicLayouts.grid5,
@@ -20,13 +20,14 @@ export const styles = StyleSheet.create({
     },
     challengeMainTop: {
         flexDirection: "row",
+        marginBottom: 10,
     },
     challengeTopLeft: {
-        ...basicLayouts.flexGrid1,
+        ...basicLayouts.flexGrid4,
         flexDirection: "row",
     },
     challengeTextContainer: {
-        ...basicLayouts.flexGrid1,
+        ...basicLayouts.flexGrid4,
     },
     challengeText: {
         color: palette.hardGray,
@@ -40,24 +41,27 @@ export const styles = StyleSheet.create({
         borderLeftWidth: 1,
         borderColor: palette.softGray,
         paddingLeft: 10,
+        marginLeft: 10,
+    },
+    rewardTitle: {
+        fontWeight: "bold",
+        fontSize: 12,
+        color: palette.deepBlue,
     },
     challengeMainBottom: {
+        ...basicLayouts.grid2,
         flexDirection: "row",
-        marginTop: 20,
     },
     challengeBottomLeft: {
         ...basicLayouts.flexGrid1,
     },
     challengeProgressBar: {
-        ...basicLayouts.flexGrid1,
-        borderWidth: 2,
-        borderColor: palette.hardGray,
+        borderWidth: 1,
         borderRadius: 10,
         overflow: "hidden",
     },
     challengeProgressFill: {
-        backgroundColor: palette.oceanSurf,
-        height: 20,
+        height: 10,
     },
     challengeBottomRight: {
         marginLeft: 10,

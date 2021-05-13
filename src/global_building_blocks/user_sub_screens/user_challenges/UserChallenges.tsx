@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { Animated, RefreshControl, View } from "react-native";
-import { NetworkStatus, useQuery } from "@apollo/client";
 import { useCollapsibleScene } from "react-native-collapsible-tab-view";
-import { GET_CHALLENGES } from "./gql/Queries";
 import { UserType } from "../../../global_types/UserTypes";
-import { ChallengeType } from "../../../global_types/ChallengeTypes";
-import LoadingWheel from "../../loading_wheel/LoadingWheel";
-import ErrorMessage from "../../error_message/ErrorMessage";
 import Challenge from "../../challenge/Challenge";
 import { palette } from "../../../global_styles/Palette";
+import {
+    ChallengeClass,
+    ChallengeType,
+    ChallengeTypes,
+} from "../../../global_types/ChallengeTypes";
+import { challenges } from "./data/challenges/challenges";
+import { globalScreenStyles } from "../../../global_styles/GlobalScreenStyles";
 
 interface Props {
     user: UserType;
@@ -16,33 +18,14 @@ interface Props {
     refreshHeader: () => void;
 }
 
-interface QueryData {
-    challenges: ChallengeType[];
-}
-
 const UserChallenges: React.FC<Props> = (props) => {
-    const { data, error, networkStatus, refetch } = useQuery<QueryData>(
-        GET_CHALLENGES,
-        {
-            notifyOnNetworkStatusChange: true,
-        }
-    );
-
     const scrollPropsAndRef = useCollapsibleScene(props.routeKey);
     const [stillSpin, setStillSpin] = useState<boolean>(false);
-
-    if (!data?.challenges && networkStatus === NetworkStatus.loading) {
-        return <LoadingWheel />;
-    }
-
-    if (error) {
-        return <ErrorMessage refresh={refetch} />;
-    }
 
     return (
         <Animated.FlatList
             {...scrollPropsAndRef}
-            data={data?.challenges}
+            data={challenges}
             renderItem={({ item }) => (
                 <Challenge challenge={item} user={props.user} />
             )}
@@ -51,12 +34,9 @@ const UserChallenges: React.FC<Props> = (props) => {
             }
             refreshControl={
                 <RefreshControl
-                    refreshing={
-                        networkStatus === NetworkStatus.refetch || stillSpin
-                    }
+                    refreshing={stillSpin}
                     onRefresh={() => {
                         setStillSpin(true);
-                        refetch && refetch();
                         !!props.refreshHeader && props.refreshHeader();
                         setTimeout(() => {
                             setStillSpin(false);
@@ -69,6 +49,9 @@ const UserChallenges: React.FC<Props> = (props) => {
                     ]}
                     tintColor={palette.deepBlue}
                 />
+            }
+            ListFooterComponent={
+                <View style={globalScreenStyles.listFooterBuffer} />
             }
         />
     );

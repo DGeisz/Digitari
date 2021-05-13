@@ -5,7 +5,7 @@ export type TabNavTab = {
     Convos: undefined;
     Search: undefined;
     Wallet: undefined;
-    Profile: undefined;
+    Profile: undefined | { screen: string };
 };
 
 /*

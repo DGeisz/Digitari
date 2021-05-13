@@ -1,12 +1,21 @@
 import { USER_TYPENAME, UserType } from "../../../../global_types/UserTypes";
 import { ApolloCache } from "@apollo/client";
-import { ChallengeTypes } from "../../../../global_types/ChallengeTypes";
+import {
+    ChallengeClass,
+    ChallengeType,
+    ChallengeTypes,
+} from "../../../../global_types/ChallengeTypes";
 import { localUid } from "../../../../global_state/UserState";
 
 const bronzeCount = 1;
 const silverCount = 10;
 const goldCount = 50;
 const supremeCount = 500;
+
+const bronzeCoin = 100;
+const silverCoin = 1000;
+const goldCoin = 10000;
+const supremeCoin = 100000;
 
 export function successfulConvosHandler(
     user: UserType,
@@ -79,5 +88,42 @@ export function successfulConvosHandler(
                 },
             },
         });
+    }
+}
+
+export function generateScChallenge(
+    challengeClass: ChallengeClass
+): ChallengeType {
+    const stat = ChallengeTypes.SuccessfulConvos;
+
+    switch (challengeClass) {
+        case ChallengeClass.Bronze:
+            return {
+                class: challengeClass,
+                stat,
+                reward: bronzeCoin,
+                goal: bronzeCount,
+            };
+        case ChallengeClass.Silver:
+            return {
+                class: challengeClass,
+                stat,
+                reward: silverCoin,
+                goal: silverCount,
+            };
+        case ChallengeClass.Gold:
+            return {
+                class: challengeClass,
+                stat,
+                reward: goldCoin,
+                goal: goldCount,
+            };
+        case ChallengeClass.Supreme:
+            return {
+                class: challengeClass,
+                stat,
+                reward: supremeCoin,
+                goal: supremeCount,
+            };
     }
 }

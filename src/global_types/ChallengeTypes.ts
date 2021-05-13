@@ -79,6 +79,9 @@ export enum ChallengeClass {
 
 export interface ChallengeType {
     class: ChallengeClass; // IE Bronze,
+    stat: string; // Which stat this challenge measures
+    reward: number;
+    goal: number;
 }
 
 // export interface ChallengeType {

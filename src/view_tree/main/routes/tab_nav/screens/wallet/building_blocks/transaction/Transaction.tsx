@@ -12,6 +12,7 @@ interface Props {
     transaction: TransactionType;
     openConvo: (cvid: string, pid: string) => void;
     openUser: (uid: string) => void;
+    openChallenges: () => void;
     showBottomBorder: boolean;
     lastCollectionTime: number;
 }
@@ -40,6 +41,10 @@ export default class Transaction extends React.PureComponent<Props> {
                             if (!!cvid && !!pid) {
                                 return this.props.openConvo(cvid, pid);
                             }
+
+                            break;
+                        case TransactionTypesEnum.Challenge:
+                            return this.props.openChallenges();
                     }
                 }}
             >

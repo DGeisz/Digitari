@@ -3,7 +3,7 @@ import { styles } from "./StatsHeaderStyles";
 import { Text, View } from "react-native";
 import { UserType } from "../../../../../global_types/UserTypes";
 import Tier from "../../../../tier/Tier";
-import { toRep } from "../../../../../global_utils/ValueRepUtils";
+import { toCommaRep, toRep } from "../../../../../global_utils/ValueRepUtils";
 import {
     BeenBlocked,
     Blocked,
@@ -11,6 +11,7 @@ import {
 } from "../../../../big_three/BigThree";
 import { getNextLevelCoinThreshold } from "../../../../../global_utils/LevelRepUtils";
 import CoinBox from "../../../../coin_box/CoinBox";
+import TierInfoModal from "./building_blocks/tier_info_modal/TierInfoModal";
 
 interface Props {
     user: UserType;
@@ -31,12 +32,20 @@ export default class StatsHeader extends React.PureComponent<Props, State> {
         return (
             <View style={styles.statsContainer}>
                 <View style={styles.statsLeft}>
-                    <Text style={styles.statsTitleText}>Tier Breakdown</Text>
-                    <View style={styles.leftSplit1}>
-                        <Tier size={30} ranking={this.props.user.ranking} />
-                        <Text style={styles.statsRankingText}>
-                            {toRep(this.props.user.ranking)}
+                    <View style={styles.statsTitleContainer}>
+                        <Text style={styles.statsTitleText}>
+                            Tier Breakdown
                         </Text>
+                        <TierInfoModal user={this.props.user} />
+                    </View>
+                    <View style={styles.leftSplit1}>
+                        <Tier size={38} ranking={this.props.user.ranking} />
+                        <View style={styles.rankingContainer}>
+                            <Text style={styles.rankingTitle}>Ranking</Text>
+                            <Text style={styles.statsRankingText}>
+                                {toCommaRep(this.props.user.ranking)}
+                            </Text>
+                        </View>
                     </View>
                     <View style={styles.leftSplit2}>
                         <SuccessfulConvos

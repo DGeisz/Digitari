@@ -13,6 +13,10 @@ export const styles = StyleSheet.create({
         borderRightWidth: 1,
         borderRightColor: palette.softGray,
     },
+    statsTitleContainer: {
+        ...basicLayouts.grid2,
+        flexDirection: "row",
+    },
     statsTitleText: {
         fontWeight: "500",
         color: palette.hardGray,
@@ -20,7 +24,16 @@ export const styles = StyleSheet.create({
     leftSplit1: {
         flexDirection: "row",
         ...basicLayouts.grid2,
-        marginBottom: 5,
+        marginTop: 5,
+        marginBottom: 10,
+    },
+    rankingContainer: {
+        marginLeft: 3,
+    },
+    rankingTitle: {
+        fontWeight: "bold",
+        fontSize: 12,
+        color: palette.deepBlue,
     },
     statsRankingText: {
         fontSize: 22,

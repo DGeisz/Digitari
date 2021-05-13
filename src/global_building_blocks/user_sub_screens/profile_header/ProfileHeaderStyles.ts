@@ -83,13 +83,22 @@ export const styles = StyleSheet.create({
         fontWeight: "bold",
         paddingVertical: 5,
     },
+    statsContainer: {
+        flexDirection: "row",
+    },
+    profileRankingText: {
+        fontWeight: "bold",
+        color: palette.deepBlue,
+        marginRight: 8,
+    },
     profileLevelText: {
-        fontWeight: "600",
+        fontWeight: "bold",
         color: palette.lightGray,
     },
     profileSplit3: {
-        paddingTop: 10,
+        paddingTop: 15,
         paddingBottom: 20,
+        paddingRight: 20,
     },
     profileBioText: {
         color: palette.hardGray,

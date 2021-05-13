@@ -441,6 +441,11 @@ const Wallet: React.FC<Props> = (props) => {
                             transaction={item}
                             openConvo={openConvo}
                             openUser={openUser}
+                            openChallenges={() => {
+                                props.navigation.navigate("Profile", {
+                                    screen: "UserChallenges",
+                                });
+                            }}
                             lastCollectionTime={lastCollectionTime}
                         />
                     )}

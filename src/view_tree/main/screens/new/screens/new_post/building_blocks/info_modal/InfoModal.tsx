@@ -26,7 +26,11 @@ const InfoModal: React.FC<Props> = (props) => {
                     size={20}
                 />
             </TouchableOpacity>
-            <Modal isVisible={visible}>
+            <Modal
+                isVisible={visible}
+                onSwipeComplete={() => setVisible(false)}
+                swipeDirection="down"
+            >
                 <TouchableOpacity
                     style={styles.modalContainer}
                     onPress={() => setVisible(false)}
