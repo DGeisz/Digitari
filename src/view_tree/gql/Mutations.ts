@@ -57,6 +57,7 @@ export const CREATE_OR_FETCH_USER = gql`
             following
             followingChallengeIndex
             communityFollowersChallengeIndex
+            maxCommunityFollowers
         }
     }
 `;

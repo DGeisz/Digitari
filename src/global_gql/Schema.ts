@@ -56,6 +56,7 @@ export const schema = gql`
         followingChallengeIndex: Int
 
         communityFollowersChallengeIndex: Int
+        maxCommunityFollowers: Int
     }
 
     type Convo {

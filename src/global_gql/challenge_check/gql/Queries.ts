@@ -28,6 +28,7 @@ export const CHALLENGE_USER = gql`
             followingChallengeIndex
 
             communityFollowersChallengeIndex
+            maxCommunityFollowers
         }
     }
 `;

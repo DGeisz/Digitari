@@ -50,4 +50,5 @@ export interface UserType {
     followingChallengeIndex: number;
 
     communityFollowersChallengeIndex: number;
+    maxCommunityFollowers: number;
 }

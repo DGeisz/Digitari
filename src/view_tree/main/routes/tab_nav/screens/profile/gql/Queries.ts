@@ -16,20 +16,35 @@ export const GET_USER = gql`
             imgUrl
 
             lastCollectionTime
-            newConvoUpdate
-            newTransactionUpdate
 
             amFollowing
             followPrice
-
+            newUser
+            newConvoUpdate
+            newTransactionUpdate
+            level
+            bio
+            ranking
+            blocked
+            beenBlocked
+            coin
+            challengeReceipts
             coinSpent
 
-            postCount
+            receivedFromConvos
+            rfcChallengeIndex
+            spentOnConvos
+            socChallengeIndex
             successfulConvos
-
-            following
-
+            scChallengeIndex
+            postCount
+            pcChallengeIndex
             followers
+            followersChallengeIndex
+            following
+            followingChallengeIndex
+            communityFollowersChallengeIndex
+            maxCommunityFollowers
         }
     }
 `;
