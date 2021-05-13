@@ -67,15 +67,14 @@ export const styles = StyleSheet.create({
         marginTop: 2,
     },
     statsProgressBar: {
-        ...basicLayouts.flexGrid1,
-        borderWidth: 2,
-        borderColor: palette.hardGray,
+        borderWidth: 1,
+        borderColor: palette.deepBlue,
         borderRadius: 10,
         overflow: "hidden",
     },
     statsProgressFill: {
-        backgroundColor: palette.oceanSurf,
-        height: 30,
+        backgroundColor: palette.deepBlue,
+        height: 10,
     },
     statsRight: {
         ...basicLayouts.flexGrid1,

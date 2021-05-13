@@ -24,7 +24,7 @@ export default class UserStat extends React.PureComponent<Props> {
                         amount={this.props.quantity}
                         fontSize={18}
                         coinSize={30}
-                        showAbbreviated
+                        showAbbreviated={false}
                     />
                 ) : (
                     <Text style={styles.statContent}>
