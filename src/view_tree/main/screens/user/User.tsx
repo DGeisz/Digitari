@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Text, View } from "react-native";
 import { createMaterialCollapsibleTopTabNavigator } from "react-native-collapsible-tab-view";
 import { basicLayouts } from "../../../../global_styles/BasicLayouts";
@@ -40,6 +40,14 @@ const User: React.FC<Props> = (props) => {
             uid: props.route.params.uid,
         },
     });
+
+    useEffect(() => {
+        if (!!data?.user) {
+            props.navigation.setOptions({
+                title: `${data.user.firstName} ${data.user.lastName}`,
+            });
+        }
+    }, [!!data?.user ? data.user.firstName + data.user.lastName : ""]);
 
     console.log(error);
 
@@ -171,6 +179,12 @@ const User: React.FC<Props> = (props) => {
                                 routeKey="UserStats"
                                 user={data.user}
                                 refreshHeader={refetch}
+                                openFollows={() => {
+                                    props.navigation.push("Follows", {
+                                        name: `${data.user.firstName} ${data.user.lastName}`,
+                                        uid: data?.user.id,
+                                    });
+                                }}
                             />
                         )}
                     </Tab.Screen>

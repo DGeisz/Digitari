@@ -594,7 +594,7 @@ const NewPost: React.FC<Props> = (props) => {
                 </View>
                 <TextInput
                     style={styles.recipientsInput}
-                    placeholder="0"
+                    placeholder="Recipients..."
                     onFocus={() =>
                         setTimeout(() => {
                             !!scrollRef?.current &&
@@ -603,7 +603,8 @@ const NewPost: React.FC<Props> = (props) => {
                     }
                     keyboardType="numeric"
                     onChangeText={(raw) => {
-                        const num = parseInt(raw);
+                        const noCommas = raw.replace(/,/g, "");
+                        const num = parseInt(noCommas);
 
                         if (isNaN(num)) {
                             setRecipients(0);
@@ -611,7 +612,7 @@ const NewPost: React.FC<Props> = (props) => {
                             setRecipients(num);
                         }
                     }}
-                    value={recipients.toString()}
+                    value={!!recipients ? toCommaRep(recipients) : ""}
                 />
             </View>
             <View style={styles.postFooter}>

@@ -17,6 +17,7 @@ import {
 } from "@apollo/client";
 import * as Notifications from "expo-notifications";
 import { PushNotificationType } from "./src/global_types/PushTypes";
+import * as ScreenOrientation from "expo-screen-orientation";
 
 Amplify.configure({
     Auth: {
@@ -123,27 +124,6 @@ const linking: LinkingOptions = {
 };
 
 export default function App() {
-    // const [client, setClient] = React.useState<ApolloClient<NormalizedCacheObject>>(new ApolloClient({ link, cache }));
-
-    // React.useEffect(() => {
-    //     (async () => {
-    //         await SplashScreen.preventAutoHideAsync();
-    //
-    //         await persistCache({
-    //             cache,
-    //             storage: new AsyncStorageWrapper(AsyncStorage)
-    //         });
-    //
-    //         setClient(new ApolloClient({
-    //             link,
-    //             cache
-    //         }));
-    //     })();
-    // }, []);
-    useEffect(() => {
-        console.log("Here's the prefix!:", prefix);
-    }, []);
-
     return (
         <NavigationContainer linking={linking}>
             <ApolloProvider client={client}>

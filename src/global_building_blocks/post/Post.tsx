@@ -36,6 +36,7 @@ import { DonateToPostData, DonateToPostVariables } from "./gql/Mutations";
 import DonationModal from "./building_blocks/donation_modal/DonationModal";
 import { USER_TYPENAME } from "../../global_types/UserTypes";
 import { challengeCheck } from "../../global_gql/challenge_check/challenge_check";
+import PicModal from "./building_blocks/pic_modal/PicModal";
 
 const COMMUNITY_NAME_MAX_LEN = 30;
 
@@ -71,6 +72,7 @@ interface State {
     animatedHeight: Animated.Value;
     animatedOpacity: Animated.Value;
     animatedCoinAmount: number;
+    picModalVisible: boolean;
 }
 
 export default class Post extends React.PureComponent<Props, State> {
@@ -93,6 +95,7 @@ export default class Post extends React.PureComponent<Props, State> {
         animatedHeight: new Animated.Value(0),
         animatedOpacity: new Animated.Value(0),
         animatedCoinAmount: 0,
+        picModalVisible: false,
     };
 
     setError = (error: string) => {
@@ -192,6 +195,14 @@ export default class Post extends React.PureComponent<Props, State> {
                 );
             }
         }
+    };
+
+    hidePicModal = () => {
+        this.setState({ picModalVisible: false });
+    };
+
+    showPicModal = () => {
+        this.setState({ picModalVisible: true });
     };
 
     render() {
@@ -494,13 +505,27 @@ export default class Post extends React.PureComponent<Props, State> {
                                         <View
                                             style={styles.addOnImageContainer}
                                         >
-                                            <Image
-                                                style={styles.addOnImage}
-                                                source={{
-                                                    uri: this.props.post
-                                                        .addOnContent,
-                                                }}
+                                            <PicModal
+                                                url={
+                                                    this.props.post.addOnContent
+                                                }
+                                                visible={
+                                                    this.state.picModalVisible
+                                                }
+                                                hide={this.hidePicModal}
                                             />
+                                            <TouchableOpacity
+                                                onPress={this.showPicModal}
+                                                activeOpacity={1}
+                                            >
+                                                <Image
+                                                    style={styles.addOnImage}
+                                                    source={{
+                                                        uri: this.props.post
+                                                            .addOnContent,
+                                                    }}
+                                                />
+                                            </TouchableOpacity>
                                         </View>
                                     ) : this.props.post.addOn ===
                                       PostAddOn.Link ? (

@@ -152,6 +152,12 @@ const Profile: React.FC = () => {
                                     routeKey="UserStats"
                                     user={data.user}
                                     refreshHeader={refetch}
+                                    openFollows={() =>
+                                        openFollows(
+                                            `${data.user.firstName} ${data.user.lastName}`,
+                                            data.user.id
+                                        )
+                                    }
                                 />
                             )}
                         </Tab.Screen>

@@ -26,8 +26,6 @@ const Followers: React.FC<Props> = (props) => {
         },
     });
 
-    console.log(data);
-
     if (loading || !data?.followers) {
         return <LoadingWheel />;
     }

@@ -9,7 +9,6 @@ import {
     Blocked,
     SuccessfulConvos,
 } from "../../../../big_three/BigThree";
-import { getNextLevelCoinThreshold } from "../../../../../global_utils/LevelRepUtils";
 import CoinBox from "../../../../coin_box/CoinBox";
 import TierInfoModal from "./building_blocks/tier_info_modal/TierInfoModal";
 import { calculateLevelInfo } from "../../../../../global_utils/LevelUtils";
@@ -18,6 +17,7 @@ import LevelInfoModal from "./building_blocks/level_info_modal/LevelInfoModal";
 
 interface Props {
     user: UserType;
+    openFollows: () => void;
 }
 
 interface State {
@@ -130,18 +130,20 @@ export default class StatsHeader extends React.PureComponent<Props, State> {
                         />
                     </View>
                     <View style={styles.statsRightBottom}>
-                        <Text style={styles.followsCountText}>
-                            {this.props.user.followers}
-                            <Text style={styles.statsFollowsText}>
-                                {" Followers"}
+                        <TouchableOpacity onPress={this.props.openFollows}>
+                            <Text style={styles.followsCountText}>
+                                {toCommaRep(this.props.user.followers)}
+                                <Text style={styles.statsFollowsText}>
+                                    {" Followers"}
+                                </Text>
                             </Text>
-                        </Text>
-                        <Text style={styles.followsCountText}>
-                            {this.props.user.following}
-                            <Text style={styles.statsFollowsText}>
-                                {" Following"}
+                            <Text style={styles.followsCountText}>
+                                {toCommaRep(this.props.user.following)}
+                                <Text style={styles.statsFollowsText}>
+                                    {" Following"}
+                                </Text>
                             </Text>
-                        </Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>

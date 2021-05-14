@@ -314,13 +314,13 @@ const ProfileHeader: React.FC<Props> = (props) => {
                             onPress={props.openFollows}
                         >
                             <Text style={styles.followNumeralText}>
-                                {[toRep(props.user.followers)]}
+                                {toRep(props.user.followers)}
                                 <Text style={styles.followsText}>
                                     {" Followers"}
                                 </Text>
                             </Text>
                             <Text style={styles.followNumeralText}>
-                                {[toRep(props.user.following)]}
+                                {toRep(props.user.following)}
                                 <Text style={styles.followingText}>
                                     {" Following"}
                                 </Text>

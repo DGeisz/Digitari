@@ -12,6 +12,7 @@ interface Props {
     user: UserType;
     routeKey: string;
     refreshHeader: () => void;
+    openFollows: () => void;
 }
 
 const UserStats: React.FC<Props> = (props) => {
@@ -40,7 +41,7 @@ const UserStats: React.FC<Props> = (props) => {
                 />
             }
         >
-            <StatsHeader user={props.user} />
+            <StatsHeader user={props.user} openFollows={props.openFollows} />
             <Divider />
             <View style={styles.statsContainer}>
                 <UserStat

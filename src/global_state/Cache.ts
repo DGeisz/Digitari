@@ -227,7 +227,7 @@ export const cache = new InMemoryCache({
             keyFields: ["id", "time"],
         },
         FollowEntity: {
-            keyFields: ["tid", "sid"],
+            keyFields: ["tid", "sid", "name"],
         },
         DonationRecord: {
             keyFields: ["uid", "pid"],
