@@ -110,7 +110,7 @@ export const styles = StyleSheet.create({
         width: 55,
     },
     symColonContainer: {
-        ...basicLayouts.grid2,
+        ...basicLayouts.grid8,
         flexDirection: "row",
     },
     colon: {

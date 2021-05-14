@@ -611,21 +611,6 @@ const Convo: React.FC<Props> = (props) => {
         }, 1000);
     }, []);
 
-    if (
-        postLoading ||
-        convoLoading ||
-        networkStatus === NetworkStatus.loading ||
-        networkStatus === NetworkStatus.setVariables ||
-        networkStatus === NetworkStatus.fetchMore ||
-        !postData?.post ||
-        !convoData?.convo ||
-        !messagesData?.convoMessages
-    ) {
-        return <LoadingWheel />;
-    }
-
-    // console.log(messagesData);
-
     if (!!postError) {
         return <ErrorMessage refresh={postRefetch} />;
     }
@@ -637,6 +622,28 @@ const Convo: React.FC<Props> = (props) => {
     if (!!messagesError) {
         return <ErrorMessage refresh={messagesRefetch} />;
     }
+
+    if (
+        (!postData?.post && postLoading) ||
+        (!convoData?.convo && convoLoading) ||
+        networkStatus === NetworkStatus.loading ||
+        networkStatus === NetworkStatus.setVariables ||
+        networkStatus === NetworkStatus.fetchMore
+    ) {
+        return <LoadingWheel />;
+    }
+
+    if (!messagesData?.convoMessages || !postData?.post || !convoData?.convo) {
+        return (
+            <View style={styles.noConvoContainer}>
+                <Text style={styles.noConvoText}>
+                    This convo no longer exists
+                </Text>
+            </View>
+        );
+    }
+
+    // console.log(messagesData);
 
     /*
      * Get fields necessary to render the conversation

@@ -59,4 +59,14 @@ export const styles = StyleSheet.create({
         fontSize: 18,
         color: palette.semiSoftGray,
     },
+    noConvoContainer: {
+        ...basicLayouts.grid2,
+        paddingTop: 20,
+        paddingHorizontal: 20,
+    },
+    noConvoText: {
+        fontWeight: "bold",
+        fontSize: 20,
+        color: palette.lightGray,
+    },
 });

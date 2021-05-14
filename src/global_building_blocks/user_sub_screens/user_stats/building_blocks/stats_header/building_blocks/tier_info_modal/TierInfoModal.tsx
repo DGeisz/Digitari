@@ -40,10 +40,7 @@ const TierInfoModal: React.FC<Props> = (props) => {
                     size={18}
                 />
             </TouchableOpacity>
-            <Modal
-                isVisible={visible}
-                onBackdropPress={() => setVisible(false)}
-            >
+            <Modal isVisible={visible}>
                 <View style={styles.modalOuterContainer}>
                     <View style={styles.modalContainer}>
                         <View style={styles.modalHeader}>

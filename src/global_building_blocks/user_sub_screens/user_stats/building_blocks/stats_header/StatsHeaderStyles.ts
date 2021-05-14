@@ -47,17 +47,21 @@ export const styles = StyleSheet.create({
         paddingBottom: 10,
     },
     leftSplit3: {
+        ...basicLayouts.flexGrid1,
         marginTop: 10,
         flexDirection: "row",
     },
     split3Left: {
-        ...basicLayouts.flexGrid1,
+        // ...basicLayouts.flexGrid1,
+        marginRight: 10,
     },
     statsLevelText: {
         fontWeight: "700",
         color: palette.hardGray,
     },
-    split3Right: {},
+    split3Right: {
+        // ...basicLayouts.flexGrid1,
+    },
     statsProgressText: {
         fontWeight: "500",
         color: palette.hardGray,

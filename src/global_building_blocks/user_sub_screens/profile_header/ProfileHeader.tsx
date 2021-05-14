@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
     View,
     Image,
@@ -31,6 +31,7 @@ import {
 import { localUid } from "../../../global_state/UserState";
 import TierModal from "./building_blocks/tier_modal/TierModal";
 import { challengeCheck } from "../../../global_gql/challenge_check/challenge_check";
+import { calculateLevelInfo } from "../../../global_utils/LevelUtils";
 
 interface Props {
     user: UserType;
@@ -47,6 +48,11 @@ const ProfileHeader: React.FC<Props> = (props) => {
     const [tierModalVisible, showTierModal] = useState<boolean>(false);
 
     const uid = localUid();
+
+    const [level] = useMemo<[number, number, number]>(
+        () => calculateLevelInfo(props.user.coinSpent),
+        [props.user.coinSpent]
+    );
 
     const [follow] = useMutation<FollowUserData, FollowUserVariables>(
         FOLLOW_USER,
@@ -291,7 +297,7 @@ const ProfileHeader: React.FC<Props> = (props) => {
                                     )}`}
                                 </Text>
                                 <Text style={styles.profileLevelText}>
-                                    {`Level: ${toCommaRep(props.user.level)}`}
+                                    {`Level: ${toCommaRep(level)}`}
                                 </Text>
                             </View>
                         </View>
