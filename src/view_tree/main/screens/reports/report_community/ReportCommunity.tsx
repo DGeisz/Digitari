@@ -8,9 +8,42 @@ import {
 } from "react-native";
 import { styles } from "../ReportStyles";
 import { palette } from "../../../../../global_styles/Palette";
+import { useMutation } from "@apollo/client";
+import {
+    REPORT_COMMUNITY,
+    ReportCommunityData,
+    ReportCommunityVariables,
+} from "./gql/Mutations";
+import {
+    ReportCommunityNavProp,
+    ReportCommunityRouteProp,
+} from "../../../MainEntryNavTypes";
 
-const ReportCommunity: React.FC = () => {
+interface Props {
+    navigation: ReportCommunityNavProp;
+    route: ReportCommunityRouteProp;
+}
+
+const ReportCommunity: React.FC<Props> = (props) => {
     const [report, setReport] = useState<string>("");
+    const { cmid } = props.route.params;
+
+    const [reportCommunityMutation] = useMutation<
+        ReportCommunityData,
+        ReportCommunityVariables
+    >(REPORT_COMMUNITY, {
+        variables: {
+            cmid,
+            report,
+        },
+    });
+
+    const reportCommunity = () => {
+        if (!!report) {
+            props.navigation.goBack();
+            reportCommunityMutation().then();
+        }
+    };
 
     return (
         <TouchableOpacity
@@ -40,6 +73,7 @@ const ReportCommunity: React.FC = () => {
                             : { backgroundColor: palette.notDeepBlue },
                     ]}
                     activeOpacity={!!report ? 0.5 : 1}
+                    onPress={reportCommunity}
                 >
                     <Text style={styles.submitButtonText}>Submit</Text>
                 </TouchableOpacity>
