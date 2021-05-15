@@ -24,6 +24,8 @@ import * as Notifications from "expo-notifications";
 import { Platform } from "react-native";
 import ReportPost from "./screens/reports/report_post/ReportPost";
 import ReportConvo from "./screens/reports/report_convo/ReportConvo";
+import ReportUser from "./screens/reports/report_user/ReportUser";
+import ReportCommunity from "./screens/reports/report_community/ReportCommunity";
 
 const RootStack = createStackNavigator<MainEntryStack>();
 
@@ -154,6 +156,9 @@ const MainEntry: React.FC = () => {
                 component={NewPost}
                 options={{ title: "New Post" }}
             />
+            {/*
+             * Reporting
+             */}
             <RootStack.Screen
                 name="ReportPost"
                 component={ReportPost}
@@ -163,6 +168,16 @@ const MainEntry: React.FC = () => {
                 name="ReportConvo"
                 component={ReportConvo}
                 options={{ title: "Report convo" }}
+            />
+            <RootStack.Screen
+                name="ReportUser"
+                component={ReportUser}
+                options={{ title: "Report user" }}
+            />
+            <RootStack.Screen
+                name="ReportCommunity"
+                component={ReportCommunity}
+                options={{ title: "Report community" }}
             />
         </RootStack.Navigator>
     );

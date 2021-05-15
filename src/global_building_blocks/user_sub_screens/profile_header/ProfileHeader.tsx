@@ -32,12 +32,14 @@ import { localUid } from "../../../global_state/UserState";
 import TierModal from "./building_blocks/tier_modal/TierModal";
 import { challengeCheck } from "../../../global_gql/challenge_check/challenge_check";
 import { calculateLevelInfo } from "../../../global_utils/LevelUtils";
+import UserOptionsModal from "./building_blocks/user_options_modal/UserOptionsModal";
 
 interface Props {
     user: UserType;
     isMe: boolean;
     openFollows: () => void;
     handleSettings: () => void;
+    openReportUser: () => void;
 }
 
 const ProfileHeader: React.FC<Props> = (props) => {
@@ -169,8 +171,8 @@ const ProfileHeader: React.FC<Props> = (props) => {
                 pointerEvents="box-none"
             >
                 {!!error && <Text style={styles.followErrorText}>{error}</Text>}
-                <View style={styles.profileSplit0}>
-                    <View style={styles.split0Left}>
+                <View style={styles.profileSplit0} pointerEvents="box-none">
+                    <View style={styles.split0Left} pointerEvents="box-none">
                         {!!props.user.imgUrl ? (
                             <Image
                                 style={styles.userImage}
@@ -283,13 +285,15 @@ const ProfileHeader: React.FC<Props> = (props) => {
                         >
                             <Tier size={40} ranking={props.user.ranking} />
                         </TouchableOpacity>
-                        <View
-                            style={styles.userLevelContainer}
-                            pointerEvents="none"
-                        >
-                            <Text style={styles.profileUserText}>
-                                {`${props.user.firstName} ${props.user.lastName}`}
-                            </Text>
+                        <View style={styles.userLevelContainer}>
+                            <View style={styles.profileUserBar}>
+                                <Text style={styles.profileUserText}>
+                                    {`${props.user.firstName} ${props.user.lastName}`}
+                                </Text>
+                                <UserOptionsModal
+                                    openReportUser={props.openReportUser}
+                                />
+                            </View>
                             <View style={styles.statsContainer}>
                                 <Text style={styles.profileRankingText}>
                                     {`Ranking: ${toCommaRep(

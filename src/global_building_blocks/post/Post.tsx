@@ -117,7 +117,7 @@ export default class Post extends React.PureComponent<Props, State> {
          * Make sure we aren't donating to our own post
          */
         if (this.props.post.uid === localUid()) {
-            this.setError("You can't donate to your own post");
+            this.setError("You can't like your own post");
         } else {
             const { id: pid } = this.props.post;
 

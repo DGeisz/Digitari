@@ -55,6 +55,10 @@ export const styles = StyleSheet.create({
     userLevelContainer: {
         paddingLeft: 5,
     },
+    profileUserBar: {
+        ...basicLayouts.grid2,
+        flexDirection: "row",
+    },
     profileUserText: {
         fontSize: 22,
         fontWeight: "700",
@@ -96,13 +100,14 @@ export const styles = StyleSheet.create({
         color: palette.lightGray,
     },
     profileSplit3: {
-        paddingTop: 15,
+        paddingTop: 20,
         paddingBottom: 20,
         paddingRight: 20,
     },
     profileBioText: {
         color: palette.hardGray,
         fontSize: 18,
+        lineHeight: 24,
     },
     profileSplit4: {
         flexDirection: "row",

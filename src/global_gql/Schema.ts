@@ -294,8 +294,12 @@ export const schema = gql`
         blockPost(pid: ID!): Post
 
         deletePost(pid: ID!): Boolean
+
         reportPost(pid: ID!, report: String!): String
         reportConvo(cvid: ID!, report: String!): String
+
+        reportUser(uid: ID!, report: String!): String
+        reportCommunity(cmid: ID!, report: String!): String
     }
 
     type Subscription {

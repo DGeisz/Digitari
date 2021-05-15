@@ -7,6 +7,10 @@ export const optionsStyles = StyleSheet.create({
         paddingLeft: 20,
         paddingBottom: 10,
     },
+    userIconContainer: {
+        paddingVertical: 3,
+        paddingLeft: 5,
+    },
     modalOuterContainer: {
         ...basicLayouts.flexGrid4,
     },

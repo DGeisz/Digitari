@@ -27,14 +27,14 @@ interface Props {
 const Tab = createMaterialCollapsibleTopTabNavigator();
 
 const Community: React.FC<Props> = (props) => {
-    const uid = localUid();
+    const { cmid } = props.route.params;
 
     const { data, error, networkStatus, refetch } = useQuery<
         GetCommunityQueryData,
         GetCommunityQueryVariables
     >(GET_COMMUNITY, {
         variables: {
-            cmid: props.route.params.cmid,
+            cmid,
         },
         notifyOnNetworkStatusChange: true,
     });
@@ -53,7 +53,15 @@ const Community: React.FC<Props> = (props) => {
                 <Tab.Navigator
                     collapsibleOptions={{
                         renderHeader: () => (
-                            <CommunityHeader community={data.community} />
+                            <CommunityHeader
+                                community={data.community}
+                                openReportCommunity={() => {
+                                    props.navigation.navigate(
+                                        "ReportCommunity",
+                                        { cmid }
+                                    );
+                                }}
+                            />
                         ),
                         headerHeight: 250,
                     }}

@@ -22,9 +22,11 @@ import {
     UnFollowCommunityVariables,
 } from "./gql/Mutations";
 import { localUid } from "../../../../../../global_state/UserState";
+import CommunityOptionsModal from "./building_blocks/community_options_modal/CommunityOptionsModal";
 
 interface Props {
     community: CommunityType;
+    openReportCommunity: () => void;
 }
 
 const CommunityHeader: React.FC<Props> = (props) => {
@@ -152,6 +154,9 @@ const CommunityHeader: React.FC<Props> = (props) => {
                             color={palette.deepBlue}
                         />
                     </View>
+                    <CommunityOptionsModal
+                        openReportCommunity={props.openReportCommunity}
+                    />
                 </View>
                 <View style={styles.headerRight}>
                     {loading ? (

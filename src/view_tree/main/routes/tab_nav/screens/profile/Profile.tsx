@@ -33,6 +33,7 @@ const Profile: React.FC = () => {
         openNewMessage,
         openConvo,
         openReport,
+        openReportUser,
     } = useContext(TabNavContext);
     const uid = localUid();
 
@@ -71,6 +72,9 @@ const Profile: React.FC = () => {
                                     user={data.user}
                                     isMe
                                     handleSettings={() => Auth.signOut()}
+                                    openReportUser={() => {
+                                        openReportUser(data?.user.id);
+                                    }}
                                 />
                             ),
                             headerHeight: 250,

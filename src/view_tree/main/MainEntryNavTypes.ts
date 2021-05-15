@@ -40,6 +40,12 @@ export type MainEntryStack = {
     ReportConvo: {
         cvid: string;
     };
+    ReportUser: {
+        uid: string;
+    };
+    ReportCommunity: {
+        cmid: string;
+    };
 };
 
 /*
@@ -71,6 +77,14 @@ export type ReportConvoNavProp = StackNavigationProp<
     MainEntryStack,
     "ReportConvo"
 >;
+export type ReportUserNavProp = StackNavigationProp<
+    MainEntryStack,
+    "ReportUser"
+>;
+export type ReportCommunityNavProp = StackNavigationProp<
+    MainEntryStack,
+    "ReportCommunity"
+>;
 
 /*
  * Route props
@@ -84,3 +98,8 @@ export type FollowsRouteProp = RouteProp<MainEntryStack, "Follows">;
 export type NewPostRouteProp = RouteProp<MainEntryStack, "NewPost">;
 export type ReportPostRouteProp = RouteProp<MainEntryStack, "ReportPost">;
 export type ReportConvoRouteProp = RouteProp<MainEntryStack, "ReportConvo">;
+export type ReportUserRouteProp = RouteProp<MainEntryStack, "ReportUser">;
+export type ReportCommunityRouteProp = RouteProp<
+    MainEntryStack,
+    "ReportCommunity"
+>;

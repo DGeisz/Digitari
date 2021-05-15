@@ -31,6 +31,7 @@ export const styles = StyleSheet.create({
         borderRadius: 30,
         borderWidth: 2,
         borderColor: palette.deepBlue,
+        marginRight: 3,
     },
     headerRight: {
         ...basicLayouts.grid5,

@@ -75,6 +75,11 @@ const User: React.FC<Props> = (props) => {
                                 user={data.user}
                                 isMe={data?.user.id === uid}
                                 handleSettings={Auth.signOut}
+                                openReportUser={() => {
+                                    props.navigation.push("ReportUser", {
+                                        uid: data?.user.id,
+                                    });
+                                }}
                             />
                         ),
                         headerHeight: 250,

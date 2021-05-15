@@ -59,11 +59,15 @@ const TabNav: React.FC<Props> = (props) => {
     };
 
     const openFollows = (name: string, uid: string) => {
-        props.navigation.navigate("Follows", { uid, name });
+        props.navigation.push("Follows", { uid, name });
     };
 
     const openReport = (pid: string) => {
-        props.navigation.navigate("ReportPost", { pid });
+        props.navigation.push("ReportPost", { pid });
+    };
+
+    const openReportUser = (uid: string) => {
+        props.navigation.push("ReportUser", { uid });
     };
 
     const { data } = useQuery<GetUpdateFlagsData, GetUpdateFlagsVariables>(
@@ -102,6 +106,7 @@ const TabNav: React.FC<Props> = (props) => {
                     openUser,
                     openFollows,
                     openReport,
+                    openReportUser,
                 }}
             >
                 <ChallengeCompleteModal
