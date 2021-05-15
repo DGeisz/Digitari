@@ -43,7 +43,7 @@ export default class ResponseResponse extends React.PureComponent<
                         this.setState({ blockVisible: false, loading: true });
                         setTimeout(() => {
                             this.props.onBlock();
-                        }, 200);
+                        }, 500);
                     }}
                     confirmBackgroundColor={palette.warningLight}
                     confirmTextColor={palette.warning}
@@ -58,7 +58,7 @@ export default class ResponseResponse extends React.PureComponent<
                         this.setState({ dismissVisible: false, loading: true });
                         setTimeout(() => {
                             this.props.onDismiss();
-                        }, 200);
+                        }, 500);
                     }}
                     confirmMessage="Dismiss"
                     onCancel={() => this.setState({ dismissVisible: false })}
@@ -73,7 +73,7 @@ export default class ResponseResponse extends React.PureComponent<
                         this.setState({ messageVisible: false, loading: true });
                         setTimeout(() => {
                             this.props.onRespond();
-                        }, 200);
+                        }, 500);
                     }}
                     confirmMessage="Respond"
                     onCancel={() => this.setState({ messageVisible: false })}

@@ -49,7 +49,7 @@ interface Props {
     stripped: boolean;
     openUser: (uid: string) => void;
     openCommunity: (cmid: string) => void;
-    donateToPost: (
+    donateToPost?: (
         options?: MutationFunctionOptions<
             DonateToPostData,
             DonateToPostVariables
@@ -63,6 +63,7 @@ interface Props {
     postIsLink?: boolean;
     noBottomMargin?: boolean;
     onMessage?: (tname: string, pid: string, responseCost: number) => void;
+    openReport: (pid: string) => void;
 }
 
 interface State {
@@ -143,59 +144,61 @@ export default class Post extends React.PureComponent<Props, State> {
                 this.state.animatedOpacity.setValue(0);
             });
 
-            try {
-                await this.props.donateToPost({
-                    variables: {
-                        pid: this.props.post.id,
-                        amount,
-                    },
-                    optimisticResponse: {
-                        donateToPost: {
-                            uid: localUid(),
-                            pid,
-                            tuid: this.props.post.uid,
+            if (!!this.props.donateToPost) {
+                try {
+                    await this.props.donateToPost({
+                        variables: {
+                            pid: this.props.post.id,
                             amount,
-                            name: this.props.userFirstName,
                         },
-                    },
-                    update(cache, { data }) {
-                        if (!!data?.donateToPost) {
-                            cache.modify({
-                                id: cache.identify({
-                                    __typename: POST_TYPENAME,
-                                    id: pid,
-                                }),
-                                fields: {
-                                    coinDonated() {
-                                        return true;
+                        optimisticResponse: {
+                            donateToPost: {
+                                uid: localUid(),
+                                pid,
+                                tuid: this.props.post.uid,
+                                amount,
+                                name: this.props.userFirstName,
+                            },
+                        },
+                        update(cache, { data }) {
+                            if (!!data?.donateToPost) {
+                                cache.modify({
+                                    id: cache.identify({
+                                        __typename: POST_TYPENAME,
+                                        id: pid,
+                                    }),
+                                    fields: {
+                                        coinDonated() {
+                                            return true;
+                                        },
+                                        coin(existing) {
+                                            return existing + amount;
+                                        },
                                     },
-                                    coin(existing) {
-                                        return existing + amount;
-                                    },
-                                },
-                            });
+                                });
 
-                            cache.modify({
-                                id: cache.identify({
-                                    __typename: USER_TYPENAME,
-                                    id: localUid(),
-                                }),
-                                fields: {
-                                    coin(existing) {
-                                        return existing - amount;
+                                cache.modify({
+                                    id: cache.identify({
+                                        __typename: USER_TYPENAME,
+                                        id: localUid(),
+                                    }),
+                                    fields: {
+                                        coin(existing) {
+                                            return existing - amount;
+                                        },
                                     },
-                                },
-                            });
+                                });
 
-                            challengeCheck(cache);
-                        }
-                    },
-                });
-            } catch (e) {
-                console.log("This is error: ", e);
-                this.setError(
-                    "An error occurred.  Make sure you have enough coin and try again"
-                );
+                                challengeCheck(cache);
+                            }
+                        },
+                    });
+                } catch (e) {
+                    console.log("This is error: ", e);
+                    this.setError(
+                        "An error occurred.  Make sure you have enough coin and try again"
+                    );
+                }
             }
         }
     };
@@ -504,6 +507,9 @@ export default class Post extends React.PureComponent<Props, State> {
                                             <OptionsModal
                                                 post={this.props.post}
                                                 canBlock={this.props.feedPost}
+                                                openReport={
+                                                    this.props.openReport
+                                                }
                                             />
                                         </View>
                                     </View>

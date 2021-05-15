@@ -137,6 +137,11 @@ const PostScreen: React.FC<Props> = (props) => {
                             openUser={(uid: string) =>
                                 props.navigation.navigate("User", { uid })
                             }
+                            openReport={(pid) => {
+                                props.navigation.navigate("ReportPost", {
+                                    pid,
+                                });
+                            }}
                             openCommunity={(cmid: string) =>
                                 props.navigation.navigate("Community", { cmid })
                             }

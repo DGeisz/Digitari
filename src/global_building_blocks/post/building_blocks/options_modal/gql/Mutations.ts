@@ -36,3 +36,17 @@ export interface BlockPostData {
 export interface BlockPostVariables {
     pid: string;
 }
+
+export const DELETE_POST = gql`
+    mutation DeletePost($pid: ID!) {
+        deletePost(pid: $pid)
+    }
+`;
+
+export interface DeletePostData {
+    deletePost: boolean;
+}
+
+export interface DeletePostVariables {
+    pid: string;
+}

@@ -27,6 +27,18 @@ export class BlockedFooter extends React.PureComponent {
     }
 }
 
+export class DeletedFooter extends React.PureComponent {
+    render() {
+        return (
+            <View style={styles.statusContainer}>
+                <View style={styles.dismissedContainer}>
+                    <Text style={styles.dismissedText}>Convo deleted</Text>
+                </View>
+            </View>
+        );
+    }
+}
+
 export class SuccessFooter extends React.PureComponent {
     render() {
         return (

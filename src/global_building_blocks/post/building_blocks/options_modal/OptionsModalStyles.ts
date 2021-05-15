@@ -55,7 +55,7 @@ export const styles = StyleSheet.create({
     },
     reportText: {
         fontSize: 18,
-        color: palette.danger,
+        color: palette.hardGray,
         fontWeight: "bold",
     },
     deleteText: {
@@ -66,6 +66,9 @@ export const styles = StyleSheet.create({
     modalFooter: {
         ...basicLayouts.grid5,
         paddingTop: 10,
+    },
+    footerBar: {
+        flexDirection: "row",
     },
     closeButton: {
         backgroundColor: palette.softGray,
@@ -98,5 +101,17 @@ export const styles = StyleSheet.create({
         fontSize: 15,
         color: palette.hardGray,
         fontWeight: "bold",
+    },
+    deleteButton: {
+        backgroundColor: palette.dangerLight,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        borderRadius: 10,
+        marginLeft: 3,
+    },
+    deleteButtonText: {
+        color: palette.danger,
+        fontWeight: "bold",
+        fontSize: 18,
     },
 });

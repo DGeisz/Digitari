@@ -326,6 +326,9 @@ const CommunityPosts: React.FC<Props> = (props) => {
                     openPost={(pid: string) => {
                         props.navigation.navigate("PostScreen", { pid });
                     }}
+                    openReport={(pid: string) => {
+                        props.navigation.navigate("ReportPost", { pid });
+                    }}
                     onMessage={(
                         tname: string,
                         pid: string,

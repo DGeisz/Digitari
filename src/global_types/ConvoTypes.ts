@@ -8,6 +8,7 @@ export const CONVO_TYPENAME = "Convo";
 export const TARGET_MESSAGE_COUNT_THRESHOLD = 2;
 
 export enum ConvoStatus {
+    Deleted = -3,
     Dismissed = -2,
     Blocked,
     New,

@@ -39,6 +39,7 @@ const MainFeed: React.FC<Props> = () => {
         openCommunity,
         openUser,
         openNewMessage,
+        openReport,
     } = useContext(TabNavContext);
 
     const { data, error, networkStatus, refetch, fetchMore } = useQuery<
@@ -118,6 +119,7 @@ const MainFeed: React.FC<Props> = () => {
                             post={item}
                             feedPost={true}
                             donateToPost={donateToPost}
+                            openReport={openReport}
                         />
                     )}
                     keyExtractor={(item, index) =>

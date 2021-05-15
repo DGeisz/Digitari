@@ -22,6 +22,7 @@ import {
 import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
 import { Platform } from "react-native";
+import ReportPost from "./screens/report_post/ReportPost";
 
 const RootStack = createStackNavigator<MainEntryStack>();
 
@@ -151,6 +152,11 @@ const MainEntry: React.FC = () => {
                 name="NewPost"
                 component={NewPost}
                 options={{ title: "New Post" }}
+            />
+            <RootStack.Screen
+                name="ReportPost"
+                component={ReportPost}
+                options={{ title: "Report post" }}
             />
         </RootStack.Navigator>
     );

@@ -32,6 +32,7 @@ const Profile: React.FC = () => {
         openUser,
         openNewMessage,
         openConvo,
+        openReport,
     } = useContext(TabNavContext);
     const uid = localUid();
 
@@ -100,6 +101,7 @@ const Profile: React.FC = () => {
                                     openCommunity={openCommunity}
                                     openNewMessage={openNewMessage}
                                     refreshHeader={refetch}
+                                    openReport={openReport}
                                 />
                             )}
                         </Tab.Screen>

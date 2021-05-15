@@ -292,6 +292,9 @@ export const schema = gql`
         viewChallengeReceipt(receipt: String!): String
 
         blockPost(pid: ID!): Post
+
+        deletePost(pid: ID!): Boolean
+        reportPost(pid: ID!, report: String!): String
     }
 
     type Subscription {

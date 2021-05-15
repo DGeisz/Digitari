@@ -124,6 +124,11 @@ const User: React.FC<Props> = (props) => {
                                 openUser={(uid: string) => {
                                     props.navigation.navigate("User", { uid });
                                 }}
+                                openReport={(pid: string) => {
+                                    props.navigation.navigate("ReportPost", {
+                                        pid,
+                                    });
+                                }}
                                 refreshHeader={refetch}
                             />
                         )}

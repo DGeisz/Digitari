@@ -33,6 +33,7 @@ interface Props {
     openCommunity: (cmid: string) => void;
     openUser: (uid: string) => void;
     refreshHeader: () => void;
+    openReport: (pid: string) => void;
 }
 
 const UserPosts: React.FC<Props> = (props) => {
@@ -107,6 +108,7 @@ const UserPosts: React.FC<Props> = (props) => {
                     openPost={props.openPost}
                     onMessage={props.openNewMessage}
                     post={item}
+                    openReport={props.openReport}
                 />
             )}
             keyExtractor={(item, index) =>

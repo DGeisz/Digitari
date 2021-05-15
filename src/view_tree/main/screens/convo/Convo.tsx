@@ -39,6 +39,7 @@ import {
 } from "../../../../global_types/ConvoTypes";
 import {
     BlockedFooter,
+    DeletedFooter,
     DismissedFooter,
     PendingFinishFooter,
     SuccessFooter,
@@ -679,6 +680,9 @@ const Convo: React.FC<Props> = (props) => {
                     onRefresh={() => {
                         setStillSpin(true);
                         !!messagesRefetch && messagesRefetch();
+                        !!convoRefetch && convoRefetch();
+                        !!postRefetch && postRefetch();
+
                         setTimeout(() => {
                             setStillSpin(false);
                         }, 1000);
@@ -709,6 +713,11 @@ const Convo: React.FC<Props> = (props) => {
                                 openUser={(uid) =>
                                     props.navigation.navigate("User", { uid })
                                 }
+                                openReport={(pid) => {
+                                    props.navigation.navigate("ReportPost", {
+                                        pid,
+                                    });
+                                }}
                                 post={postData.post}
                                 openPost={(pid) =>
                                     props.navigation.navigate("PostScreen", {
@@ -825,6 +834,8 @@ const Convo: React.FC<Props> = (props) => {
                         return <DismissedFooter />;
                     case ConvoStatus.Finished:
                         return <SuccessFooter />;
+                    case ConvoStatus.Deleted:
+                        return <DeletedFooter />;
                     case ConvoStatus.Active:
                         if (participant) {
                             if (uid === tid) {

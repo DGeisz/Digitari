@@ -34,6 +34,9 @@ export type MainEntryStack = {
         uid: string;
         name: string;
     };
+    ReportPost: {
+        pid: string;
+    };
 };
 
 /*
@@ -57,6 +60,10 @@ export type UserNavProp = StackNavigationProp<MainEntryStack, "User">;
 export type FollowsNavProp = StackNavigationProp<MainEntryStack, "Follows">;
 export type CommunityNavProp = StackNavigationProp<MainEntryStack, "Community">;
 export type NewPostNavProp = StackNavigationProp<MainEntryStack, "NewPost">;
+export type ReportPostNavProp = StackNavigationProp<
+    MainEntryStack,
+    "ReportPost"
+>;
 
 /*
  * Route props
@@ -68,3 +75,4 @@ export type CommunityRouteProp = RouteProp<MainEntryStack, "Community">;
 export type UserRouteProp = RouteProp<MainEntryStack, "User">;
 export type FollowsRouteProp = RouteProp<MainEntryStack, "Follows">;
 export type NewPostRouteProp = RouteProp<MainEntryStack, "NewPost">;
+export type ReportPostRouteProp = RouteProp<MainEntryStack, "ReportPost">;

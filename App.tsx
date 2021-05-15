@@ -2,7 +2,10 @@ import React, { useEffect } from "react";
 import { Platform, UIManager } from "react-native";
 import * as Linking from "expo-linking";
 import { LinkingOptions, NavigationContainer } from "@react-navigation/native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import {
+    SafeAreaProvider,
+    initialWindowMetrics,
+} from "react-native-safe-area-context";
 import { cache } from "./src/global_state/Cache";
 import AppView from "./src/view_tree/AppView";
 import Amplify, { Auth } from "aws-amplify";
@@ -17,7 +20,6 @@ import {
 } from "@apollo/client";
 import * as Notifications from "expo-notifications";
 import { PushNotificationType } from "./src/global_types/PushTypes";
-import * as ScreenOrientation from "expo-screen-orientation";
 
 Amplify.configure({
     Auth: {
@@ -128,7 +130,7 @@ export default function App() {
         <NavigationContainer linking={linking}>
             <ApolloProvider client={client}>
                 {/*<MockedProvider cache={cache} mocks={allMocks} addTypename={false}>*/}
-                <SafeAreaProvider>
+                <SafeAreaProvider initialMetrics={initialWindowMetrics}>
                     <AppView />
                 </SafeAreaProvider>
                 {/*</MockedProvider>*/}
