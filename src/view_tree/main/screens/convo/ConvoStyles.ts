@@ -14,13 +14,19 @@ export const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingBottom: 10,
     },
-    convoUserMapContainer: {
-        ...basicLayouts.grid3,
+    convoTop: {
         flexDirection: "row",
-        flexWrap: "wrap",
         borderTopColor: palette.softGray,
         borderTopWidth: 1,
+    },
+    convoUserMapContainer: {
+        ...basicLayouts.flexGrid3,
+        flexDirection: "row",
+        flexWrap: "wrap",
         paddingTop: 10,
+    },
+    convoOptionsContainer: {
+        paddingTop: 5,
     },
     arrowText: {
         color: palette.deepBlue,

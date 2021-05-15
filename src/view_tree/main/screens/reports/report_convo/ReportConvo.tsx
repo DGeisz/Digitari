@@ -1,50 +1,50 @@
 import React, { useState } from "react";
 import {
-    ReportPostNavProp,
-    ReportPostRouteProp,
-} from "../../MainEntryNavTypes";
-import {
     Keyboard,
     Text,
     TextInput,
     TouchableOpacity,
     View,
 } from "react-native";
-import { styles } from "./ReportPostStyles";
-import { palette } from "../../../../global_styles/Palette";
+import { styles } from "../ReportStyles";
+import { palette } from "../../../../../global_styles/Palette";
+import {
+    ReportConvoNavProp,
+    ReportConvoRouteProp,
+} from "../../../MainEntryNavTypes";
 import { useMutation } from "@apollo/client";
 import {
-    REPORT_POST,
-    ReportPostData,
-    ReportPostVariables,
-} from "./gql/Mutations";
+    REPORT_CONVO,
+    ReportConvoData,
+    ReportConvoVariables,
+} from "./gql/Queries";
 
 interface Props {
-    navigation: ReportPostNavProp;
-    route: ReportPostRouteProp;
+    navigation: ReportConvoNavProp;
+    route: ReportConvoRouteProp;
 }
 
-const ReportPost: React.FC<Props> = (props) => {
+const ReportConvo: React.FC<Props> = (props) => {
     const [report, setReport] = useState<string>("");
-    const { pid } = props.route.params;
+    const { cvid } = props.route.params;
 
-    const [reportPostMutation] = useMutation<
-        ReportPostData,
-        ReportPostVariables
-    >(REPORT_POST, {
+    const [reportConvoMutation] = useMutation<
+        ReportConvoData,
+        ReportConvoVariables
+    >(REPORT_CONVO, {
         variables: {
-            pid,
+            cvid,
             report,
         },
         optimisticResponse: {
-            reportPost: report,
+            reportConvo: report,
         },
     });
 
-    const reportPost = () => {
+    const reportConvo = () => {
         if (!!report) {
             props.navigation.goBack();
-            reportPostMutation().then();
+            reportConvoMutation().then();
         }
     };
 
@@ -55,7 +55,7 @@ const ReportPost: React.FC<Props> = (props) => {
             activeOpacity={1}
         >
             <Text style={styles.reportTitle}>
-                Please explain why you're reporting this post.
+                Please explain why you're reporting this convo.
             </Text>
             <TextInput
                 style={styles.reportInput}
@@ -76,7 +76,7 @@ const ReportPost: React.FC<Props> = (props) => {
                             : { backgroundColor: palette.notDeepBlue },
                     ]}
                     activeOpacity={!!report ? 0.5 : 1}
-                    onPress={reportPost}
+                    onPress={reportConvo}
                 >
                     <Text style={styles.submitButtonText}>Submit</Text>
                 </TouchableOpacity>
@@ -85,4 +85,4 @@ const ReportPost: React.FC<Props> = (props) => {
     );
 };
 
-export default ReportPost;
+export default ReportConvo;

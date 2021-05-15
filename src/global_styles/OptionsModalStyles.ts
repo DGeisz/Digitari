@@ -1,11 +1,11 @@
 import { StyleSheet } from "react-native";
-import { basicLayouts } from "../../../../global_styles/BasicLayouts";
-import { palette } from "../../../../global_styles/Palette";
+import { palette } from "./Palette";
+import { basicLayouts } from "./BasicLayouts";
 
-export const styles = StyleSheet.create({
+export const optionsStyles = StyleSheet.create({
     iconContainer: {
         paddingLeft: 20,
-        paddingBottom: 20,
+        paddingBottom: 10,
     },
     modalOuterContainer: {
         ...basicLayouts.flexGrid4,
@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
     },
     modalHeaderText: {
         fontWeight: "bold",
-        color: palette.hardGray,
+        color: palette.deepBlue,
         fontSize: 23,
     },
     modalErrorText: {
@@ -50,18 +50,18 @@ export const styles = StyleSheet.create({
     blockText: {
         fontSize: 18,
         color: palette.warning,
-        fontWeight: "bold",
+        fontWeight: "500",
         marginLeft: 5,
     },
     reportText: {
         fontSize: 18,
         color: palette.hardGray,
-        fontWeight: "bold",
+        fontWeight: "500",
     },
     deleteText: {
         fontSize: 18,
         color: palette.danger,
-        fontWeight: "bold",
+        fontWeight: "500",
     },
     modalFooter: {
         ...basicLayouts.grid5,

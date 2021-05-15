@@ -295,6 +295,7 @@ export const schema = gql`
 
         deletePost(pid: ID!): Boolean
         reportPost(pid: ID!, report: String!): String
+        reportConvo(cvid: ID!, report: String!): String
     }
 
     type Subscription {

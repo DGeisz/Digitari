@@ -84,6 +84,7 @@ import {
 } from "../../../../global_types/TransactionTypes";
 import { addTransaction } from "../../hooks/use_realtime_updates/subscription_handlers/utils/cache_utils";
 import { challengeCheck } from "../../../../global_gql/challenge_check/challenge_check";
+import ConvoOptionsModal from "./building_blocks/convo_options_modal/ConvoOptionsModal";
 
 function getCheckLeft(uid: string, tid: string): (id: string) => boolean {
     if (uid === tid) {
@@ -732,51 +733,70 @@ const Convo: React.FC<Props> = (props) => {
                             />
                         </TouchableOpacity>
                         <View style={styles.coverContainer}>
-                            <View style={styles.convoUserMapContainer}>
-                                {/*<View style={styles.headerTop}>*/}
-                                <Tier
-                                    ranking={convoData.convo.sranking}
-                                    size={14}
-                                />
-                                <TouchableOpacity
-                                    onPress={() => {
-                                        if (!sanony) {
+                            <View style={styles.convoTop}>
+                                <View style={styles.convoUserMapContainer}>
+                                    {/*<View style={styles.headerTop}>*/}
+                                    <Tier
+                                        ranking={convoData.convo.sranking}
+                                        size={14}
+                                    />
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            if (!sanony) {
+                                                props.navigation.navigate(
+                                                    "User",
+                                                    {
+                                                        uid: sid,
+                                                    }
+                                                );
+                                            }
+                                        }}
+                                        activeOpacity={sanony ? 1 : 0.5}
+                                    >
+                                        <UserLabel
+                                            name={convoData.convo.sname}
+                                            anonymous={convoData.convo.sanony}
+                                        />
+                                    </TouchableOpacity>
+                                    <Text style={styles.arrowText}>
+                                        {"  ➤  "}
+                                    </Text>
+                                    <Tier
+                                        ranking={convoData.convo.tranking}
+                                        size={14}
+                                    />
+                                    <TouchableOpacity
+                                        onPress={() => {
                                             props.navigation.navigate("User", {
-                                                uid: sid,
+                                                uid: tid,
                                             });
-                                        }
-                                    }}
-                                    activeOpacity={sanony ? 1 : 0.5}
-                                >
-                                    <UserLabel
-                                        name={convoData.convo.sname}
-                                        anonymous={convoData.convo.sanony}
+                                        }}
+                                        activeOpacity={0.5}
+                                    >
+                                        <UserLabel
+                                            name={convoData.convo.tname}
+                                            anonymous={false}
+                                        />
+                                    </TouchableOpacity>
+                                    <Text style={styles.mainHeaderDotText}>
+                                        ·
+                                    </Text>
+                                    <Text style={styles.coverTimeText}>
+                                        {millisToRep(
+                                            Date.now() - parseInt(convoTime)
+                                        )}
+                                    </Text>
+                                </View>
+                                <View style={styles.convoOptionsContainer}>
+                                    <ConvoOptionsModal
+                                        openReportConvo={() => {
+                                            props.navigation.navigate(
+                                                "ReportConvo",
+                                                { cvid }
+                                            );
+                                        }}
                                     />
-                                </TouchableOpacity>
-                                <Text style={styles.arrowText}>{"  ➤  "}</Text>
-                                <Tier
-                                    ranking={convoData.convo.tranking}
-                                    size={14}
-                                />
-                                <TouchableOpacity
-                                    onPress={() => {
-                                        props.navigation.navigate("User", {
-                                            uid: tid,
-                                        });
-                                    }}
-                                    activeOpacity={0.5}
-                                >
-                                    <UserLabel
-                                        name={convoData.convo.tname}
-                                        anonymous={false}
-                                    />
-                                </TouchableOpacity>
-                                <Text style={styles.mainHeaderDotText}>·</Text>
-                                <Text style={styles.coverTimeText}>
-                                    {millisToRep(
-                                        Date.now() - parseInt(convoTime)
-                                    )}
-                                </Text>
+                                </View>
                             </View>
                             <View style={styles.rewardContainer}>
                                 <Text style={styles.rewardText}>Reward</Text>

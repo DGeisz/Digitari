@@ -22,7 +22,8 @@ import {
 import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
 import { Platform } from "react-native";
-import ReportPost from "./screens/report_post/ReportPost";
+import ReportPost from "./screens/reports/report_post/ReportPost";
+import ReportConvo from "./screens/reports/report_convo/ReportConvo";
 
 const RootStack = createStackNavigator<MainEntryStack>();
 
@@ -157,6 +158,11 @@ const MainEntry: React.FC = () => {
                 name="ReportPost"
                 component={ReportPost}
                 options={{ title: "Report post" }}
+            />
+            <RootStack.Screen
+                name="ReportConvo"
+                component={ReportConvo}
+                options={{ title: "Report convo" }}
             />
         </RootStack.Navigator>
     );

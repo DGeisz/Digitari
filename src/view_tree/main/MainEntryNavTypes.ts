@@ -37,6 +37,9 @@ export type MainEntryStack = {
     ReportPost: {
         pid: string;
     };
+    ReportConvo: {
+        cvid: string;
+    };
 };
 
 /*
@@ -64,6 +67,10 @@ export type ReportPostNavProp = StackNavigationProp<
     MainEntryStack,
     "ReportPost"
 >;
+export type ReportConvoNavProp = StackNavigationProp<
+    MainEntryStack,
+    "ReportConvo"
+>;
 
 /*
  * Route props
@@ -76,3 +83,4 @@ export type UserRouteProp = RouteProp<MainEntryStack, "User">;
 export type FollowsRouteProp = RouteProp<MainEntryStack, "Follows">;
 export type NewPostRouteProp = RouteProp<MainEntryStack, "NewPost">;
 export type ReportPostRouteProp = RouteProp<MainEntryStack, "ReportPost">;
+export type ReportConvoRouteProp = RouteProp<MainEntryStack, "ReportConvo">;
