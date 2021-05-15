@@ -59,8 +59,11 @@ export const styles = StyleSheet.create({
         marginBottom: 5,
     },
     postHeader: {
-        // flexDirection: "row",
+        flexDirection: "row",
         // ...basicLayouts.grid3,
+    },
+    postHeaderLeft: {
+        ...basicLayouts.flexGrid1,
     },
     postHeaderTop: {
         flexDirection: "row",
@@ -91,6 +94,7 @@ export const styles = StyleSheet.create({
         ...basicLayouts.grid2,
         flexDirection: "row",
     },
+    postHeaderRight: {},
     communityTargetText: {
         fontWeight: "bold",
         color: palette.deepBlue,

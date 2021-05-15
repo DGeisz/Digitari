@@ -88,7 +88,7 @@ export default class DonationModal extends React.PureComponent<Props, State> {
                                         ? 0
                                         : this.state.amount
                                 }
-                                showAbbreviated={false}
+                                showAbbreviated
                                 coinSize={23}
                                 fontSize={15}
                             />

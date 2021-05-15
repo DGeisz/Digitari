@@ -290,6 +290,8 @@ export const schema = gql`
         collectEarnings: EarningsReceipt
 
         viewChallengeReceipt(receipt: String!): String
+
+        blockPost(pid: ID!): Post
     }
 
     type Subscription {

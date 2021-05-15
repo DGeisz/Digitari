@@ -37,11 +37,13 @@ import DonationModal from "./building_blocks/donation_modal/DonationModal";
 import { USER_TYPENAME } from "../../global_types/UserTypes";
 import { challengeCheck } from "../../global_gql/challenge_check/challenge_check";
 import PicModal from "./building_blocks/pic_modal/PicModal";
+import OptionsModal from "./building_blocks/options_modal/OptionsModal";
 
 const COMMUNITY_NAME_MAX_LEN = 30;
 
 interface Props {
     post: PostType;
+    feedPost: boolean;
     userCoin: number;
     userFirstName: string;
     stripped: boolean;
@@ -77,6 +79,7 @@ interface State {
 
 export default class Post extends React.PureComponent<Props, State> {
     static defaultProps = {
+        feedPost: false,
         stripped: false,
         showFullRespond: false,
         standAlone: false,
@@ -402,83 +405,106 @@ export default class Post extends React.PureComponent<Props, State> {
                                         </Text>
                                     )}
                                     <View style={styles.postHeader}>
-                                        <TouchableOpacity
-                                            style={styles.postHeaderTop}
-                                            onPress={() =>
-                                                this.props.openUser(
-                                                    this.props.post.uid
-                                                )
-                                            }
-                                            activeOpacity={0.5}
-                                        >
-                                            <Text style={styles.postUserText}>
-                                                {this.props.post.user}
-                                            </Text>
-                                            <Text style={styles.postDotText}>
-                                                ·
-                                            </Text>
-                                            <Text style={styles.postTimeText}>
-                                                {millisToRep(
-                                                    Date.now() -
-                                                        parseInt(
-                                                            this.props.post.time
-                                                        )
-                                                )}
-                                            </Text>
-                                        </TouchableOpacity>
-                                        <View style={styles.postHeaderBottom}>
-                                            {this.props.post.target ===
-                                            PostTarget.MyFollowers ? (
-                                                <>
-                                                    <Entypo
-                                                        name="arrow-right"
-                                                        style={
-                                                            styles.targetIcon
-                                                        }
-                                                        size={18}
-                                                        color={
-                                                            palette.semiSoftGray
-                                                        }
-                                                    />
-                                                    <Text
-                                                        style={
-                                                            styles.followersTargetText
-                                                        }
-                                                    >
-                                                        Followers
-                                                    </Text>
-                                                </>
-                                            ) : (
+                                        <View style={styles.postHeaderLeft}>
+                                            <View style={styles.postHeaderTop}>
                                                 <TouchableOpacity
-                                                    style={
-                                                        styles.communityTargetButton
+                                                    onPress={() =>
+                                                        this.props.openUser(
+                                                            this.props.post.uid
+                                                        )
                                                     }
                                                     activeOpacity={0.5}
-                                                    onPress={() =>
-                                                        !!this.props.post
-                                                            .cmid &&
-                                                        this.props.openCommunity(
-                                                            this.props.post.cmid
-                                                        )
-                                                    }
                                                 >
-                                                    <Entypo
-                                                        name="arrow-right"
-                                                        style={
-                                                            styles.targetIcon
-                                                        }
-                                                        size={18}
-                                                        color={palette.deepBlue}
-                                                    />
                                                     <Text
                                                         style={
-                                                            styles.communityTargetText
+                                                            styles.postUserText
                                                         }
                                                     >
-                                                        {communityName}
+                                                        {this.props.post.user}
                                                     </Text>
                                                 </TouchableOpacity>
-                                            )}
+                                                <Text
+                                                    style={styles.postDotText}
+                                                >
+                                                    ·
+                                                </Text>
+                                                <Text
+                                                    style={styles.postTimeText}
+                                                >
+                                                    {millisToRep(
+                                                        Date.now() -
+                                                            parseInt(
+                                                                this.props.post
+                                                                    .time
+                                                            )
+                                                    )}
+                                                </Text>
+                                            </View>
+                                            <View
+                                                style={styles.postHeaderBottom}
+                                            >
+                                                {this.props.post.target ===
+                                                PostTarget.MyFollowers ? (
+                                                    <>
+                                                        <Entypo
+                                                            name="arrow-right"
+                                                            style={
+                                                                styles.targetIcon
+                                                            }
+                                                            size={18}
+                                                            color={
+                                                                palette.semiSoftGray
+                                                            }
+                                                        />
+                                                        <Text
+                                                            style={
+                                                                styles.followersTargetText
+                                                            }
+                                                        >
+                                                            Followers
+                                                        </Text>
+                                                    </>
+                                                ) : (
+                                                    <TouchableOpacity
+                                                        style={
+                                                            styles.communityTargetButton
+                                                        }
+                                                        activeOpacity={0.5}
+                                                        onPress={() =>
+                                                            !!this.props.post
+                                                                .cmid &&
+                                                            this.props.openCommunity(
+                                                                this.props.post
+                                                                    .cmid
+                                                            )
+                                                        }
+                                                    >
+                                                        <Entypo
+                                                            name="arrow-right"
+                                                            style={
+                                                                styles.targetIcon
+                                                            }
+                                                            size={18}
+                                                            color={
+                                                                palette.deepBlue
+                                                            }
+                                                        />
+                                                        <Text
+                                                            style={
+                                                                styles.communityTargetText
+                                                            }
+                                                        >
+                                                            {communityName}
+                                                        </Text>
+                                                    </TouchableOpacity>
+                                                )}
+                                            </View>
+                                        </View>
+                                        <View style={styles.postHeaderRight}>
+                                            <OptionsModal
+                                                post={this.props.post}
+                                                canBlock={this.props.feedPost}
+                                            />
                                         </View>
                                     </View>
                                     <View style={styles.postMainBody}>
