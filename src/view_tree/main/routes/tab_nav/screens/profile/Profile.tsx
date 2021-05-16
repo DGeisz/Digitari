@@ -19,7 +19,6 @@ import UserConvos from "../../../../../../global_building_blocks/user_sub_screen
 import UserChallenges from "../../../../../../global_building_blocks/user_sub_screens/user_challenges/UserChallenges";
 import UserStats from "../../../../../../global_building_blocks/user_sub_screens/user_stats/UserStats";
 import { localUid } from "../../../../../../global_state/UserState";
-import { Auth } from "aws-amplify";
 
 const Tab = createMaterialCollapsibleTopTabNavigator();
 
@@ -34,6 +33,7 @@ const Profile: React.FC = () => {
         openConvo,
         openReport,
         openReportUser,
+        openSettings,
     } = useContext(TabNavContext);
     const uid = localUid();
 
@@ -71,7 +71,7 @@ const Profile: React.FC = () => {
                                     }
                                     user={data.user}
                                     isMe
-                                    handleSettings={() => Auth.signOut()}
+                                    openSettings={openSettings}
                                     openReportUser={() => {
                                         openReportUser(data?.user.id);
                                     }}

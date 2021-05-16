@@ -46,6 +46,7 @@ export type MainEntryStack = {
     ReportCommunity: {
         cmid: string;
     };
+    Settings: undefined;
 };
 
 /*

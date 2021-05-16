@@ -10,6 +10,7 @@ interface TabNavActions {
     openFollows: (name: string, uid: string) => void;
     openReport: (pid: string) => void;
     openReportUser: (uid: string) => void;
+    openSettings: () => void;
 }
 
 export const TabNavContext = React.createContext<TabNavActions>({
@@ -22,4 +23,5 @@ export const TabNavContext = React.createContext<TabNavActions>({
     openFollows: () => {},
     openReport: () => {},
     openReportUser: () => {},
+    openSettings: () => {},
 });

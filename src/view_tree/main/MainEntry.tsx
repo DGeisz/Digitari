@@ -26,6 +26,7 @@ import ReportPost from "./screens/reports/report_post/ReportPost";
 import ReportConvo from "./screens/reports/report_convo/ReportConvo";
 import ReportUser from "./screens/reports/report_user/ReportUser";
 import ReportCommunity from "./screens/reports/report_community/ReportCommunity";
+import Settings from "./screens/settings/Settings";
 
 const RootStack = createStackNavigator<MainEntryStack>();
 
@@ -156,6 +157,8 @@ const MainEntry: React.FC = () => {
                 component={NewPost}
                 options={{ title: "New Post" }}
             />
+            <RootStack.Screen name="Settings" component={Settings} />
+
             {/*
              * Reporting
              */}

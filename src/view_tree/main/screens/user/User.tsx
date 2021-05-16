@@ -74,7 +74,9 @@ const User: React.FC<Props> = (props) => {
                                 }}
                                 user={data.user}
                                 isMe={data?.user.id === uid}
-                                handleSettings={Auth.signOut}
+                                openSettings={() =>
+                                    props.navigation.navigate("Settings")
+                                }
                                 openReportUser={() => {
                                     props.navigation.push("ReportUser", {
                                         uid: data?.user.id,

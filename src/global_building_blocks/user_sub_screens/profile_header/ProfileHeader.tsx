@@ -38,8 +38,8 @@ interface Props {
     user: UserType;
     isMe: boolean;
     openFollows: () => void;
-    handleSettings: () => void;
     openReportUser: () => void;
+    openSettings: () => void;
 }
 
 const ProfileHeader: React.FC<Props> = (props) => {
@@ -210,7 +210,7 @@ const ProfileHeader: React.FC<Props> = (props) => {
                     </View>
                     <View style={styles.split0Right}>
                         {props.isMe ? (
-                            <TouchableOpacity onPress={props.handleSettings}>
+                            <TouchableOpacity onPress={props.openSettings}>
                                 <Ionicons
                                     name="settings"
                                     size={24}

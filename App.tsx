@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Platform, UIManager } from "react-native";
 import * as Linking from "expo-linking";
 import { LinkingOptions, NavigationContainer } from "@react-navigation/native";
@@ -12,12 +12,7 @@ import Amplify, { Auth } from "aws-amplify";
 import { createSubscriptionHandshakeLink } from "aws-appsync-subscription-link";
 import { AuthOptions, createAuthLink } from "aws-appsync-auth-link";
 import { AUTH_TYPE } from "aws-appsync";
-import {
-    ApolloClient,
-    ApolloLink,
-    ApolloProvider,
-    createHttpLink,
-} from "@apollo/client";
+import { ApolloClient, ApolloLink, ApolloProvider } from "@apollo/client";
 import * as Notifications from "expo-notifications";
 import { PushNotificationType } from "./src/global_types/PushTypes";
 
