@@ -88,6 +88,12 @@ export type ReportCommunityNavProp = StackNavigationProp<
     MainEntryStack,
     "ReportCommunity"
 >;
+export type SettingsNavProp = StackNavigationProp<MainEntryStack, "Settings">;
+export type PasswordNavProp = StackNavigationProp<MainEntryStack, "Password">;
+export type PasswordChangedNavProp = StackNavigationProp<
+    MainEntryStack,
+    "PasswordChanged"
+>;
 
 /*
  * Route props

@@ -250,6 +250,7 @@ export const schema = gql`
         ): User
 
         registerPush(token: String!): Boolean
+        deletePush(token: String!): Boolean
 
         createConvo(pid: ID, message: String, anonymous: Boolean): Convo
 

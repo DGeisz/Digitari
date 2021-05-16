@@ -83,6 +83,7 @@ const NewAccountEmailPwd: React.FC<Props> = (props) => {
                     }}
                     onFocus={() => setErrorActive(false)}
                     onChangeText={setEmail}
+                    value={email}
                 />
                 <Input
                     placeholder={"Password..."}
@@ -100,6 +101,7 @@ const NewAccountEmailPwd: React.FC<Props> = (props) => {
                         setErrorActive(false);
                     }}
                     onChangeText={setPassword}
+                    value={password}
                 />
                 <PwdCheck active={pwdActive} pwd={password} />
                 <AuthButton

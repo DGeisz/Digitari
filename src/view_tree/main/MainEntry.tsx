@@ -187,9 +187,14 @@ const MainEntry: React.FC = () => {
             Settings
             */}
             <RootStack.Screen name="Settings" component={Settings} />
-            <RootStack.Screen name="Password" component={Password} />
+            <RootStack.Screen
+                name="Password"
+                options={{ title: "Change password" }}
+                component={Password}
+            />
             <RootStack.Screen
                 name="PasswordChanged"
+                options={{ title: "Success!" }}
                 component={PasswordChanged}
             />
         </RootStack.Navigator>

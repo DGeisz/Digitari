@@ -17,41 +17,39 @@ const UserChallenges: React.FC<Props> = (props) => {
     const scrollPropsAndRef = useCollapsibleScene(props.routeKey);
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
-    return useMemo(() => {
-        return (
-            <Animated.FlatList
-                {...scrollPropsAndRef}
-                data={challenges}
-                renderItem={({ item }) => (
-                    <Challenge challenge={item} user={props.user} />
-                )}
-                keyExtractor={(_, index) =>
-                    [props.user.id, "chlng", index].join(":")
-                }
-                refreshControl={
-                    <RefreshControl
-                        refreshing={stillSpin}
-                        onRefresh={() => {
-                            setStillSpin(true);
-                            !!props.refreshHeader && props.refreshHeader();
-                            setTimeout(() => {
-                                setStillSpin(false);
-                            }, 1000);
-                        }}
-                        colors={[
-                            palette.deepBlue,
-                            palette.darkForestGreen,
-                            palette.oceanSurf,
-                        ]}
-                        tintColor={palette.deepBlue}
-                    />
-                }
-                ListFooterComponent={
-                    <View style={globalScreenStyles.listFooterBuffer} />
-                }
-            />
-        );
-    }, [props.user]);
+    return (
+        <Animated.FlatList
+            {...scrollPropsAndRef}
+            data={challenges}
+            renderItem={({ item }) => (
+                <Challenge challenge={item} user={props.user} />
+            )}
+            keyExtractor={(_, index) =>
+                [props.user.id, "chlng", index].join(":")
+            }
+            refreshControl={
+                <RefreshControl
+                    refreshing={stillSpin}
+                    onRefresh={() => {
+                        setStillSpin(true);
+                        !!props.refreshHeader && props.refreshHeader();
+                        setTimeout(() => {
+                            setStillSpin(false);
+                        }, 1000);
+                    }}
+                    colors={[
+                        palette.deepBlue,
+                        palette.darkForestGreen,
+                        palette.oceanSurf,
+                    ]}
+                    tintColor={palette.deepBlue}
+                />
+            }
+            ListFooterComponent={
+                <View style={globalScreenStyles.listFooterBuffer} />
+            }
+        />
+    );
 };
 
 export default UserChallenges;
