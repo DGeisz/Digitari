@@ -18,11 +18,34 @@ interface Props {
     showBottomBorder?: boolean;
 }
 
-export default class ConvoCover extends React.PureComponent<Props> {
+export default class ConvoCover extends React.Component<Props> {
     static defaultProps = {
         showUnViewedDot: true,
         showBottomBorder: true,
     };
+
+    shouldComponentUpdate(
+        nextProps: Readonly<Props>,
+        nextState: Readonly<{}>,
+        nextContext: any
+    ): boolean {
+        return (
+            this.props.convo !== nextProps.convo ||
+            this.props.showUnViewedDot !== nextProps.showUnViewedDot ||
+            this.props.showBottomBorder !== nextProps.showBottomBorder
+        );
+    }
+
+    componentDidUpdate(
+        prevProps: Readonly<Props>,
+        prevState: Readonly<{}>,
+        snapshot?: any
+    ) {
+        console.log(
+            prevProps.convo === this.props.convo,
+            prevProps.openConvo === this.props.openConvo
+        );
+    }
 
     render() {
         const uid = localUid();

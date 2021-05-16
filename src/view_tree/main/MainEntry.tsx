@@ -27,6 +27,8 @@ import ReportConvo from "./screens/reports/report_convo/ReportConvo";
 import ReportUser from "./screens/reports/report_user/ReportUser";
 import ReportCommunity from "./screens/reports/report_community/ReportCommunity";
 import Settings from "./screens/settings/Settings";
+import Password from "./screens/settings/screens/password/Password";
+import PasswordChanged from "./screens/settings/screens/password_changed/PasswordChanged";
 
 const RootStack = createStackNavigator<MainEntryStack>();
 
@@ -157,7 +159,6 @@ const MainEntry: React.FC = () => {
                 component={NewPost}
                 options={{ title: "New Post" }}
             />
-            <RootStack.Screen name="Settings" component={Settings} />
 
             {/*
              * Reporting
@@ -181,6 +182,15 @@ const MainEntry: React.FC = () => {
                 name="ReportCommunity"
                 component={ReportCommunity}
                 options={{ title: "Report community" }}
+            />
+            {/*
+            Settings
+            */}
+            <RootStack.Screen name="Settings" component={Settings} />
+            <RootStack.Screen name="Password" component={Password} />
+            <RootStack.Screen
+                name="PasswordChanged"
+                component={PasswordChanged}
             />
         </RootStack.Navigator>
     );

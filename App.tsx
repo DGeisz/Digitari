@@ -15,6 +15,9 @@ import { AUTH_TYPE } from "aws-appsync";
 import { ApolloClient, ApolloLink, ApolloProvider } from "@apollo/client";
 import * as Notifications from "expo-notifications";
 import { PushNotificationType } from "./src/global_types/PushTypes";
+import { enableScreens } from "react-native-screens";
+
+enableScreens();
 
 Amplify.configure({
     Auth: {

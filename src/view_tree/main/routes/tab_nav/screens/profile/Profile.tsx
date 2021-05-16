@@ -137,13 +137,15 @@ const Profile: React.FC = () => {
                                 ),
                             }}
                         >
-                            {() => (
-                                <UserChallenges
-                                    user={data.user}
-                                    routeKey={"UserChallenges"}
-                                    refreshHeader={refetch}
-                                />
-                            )}
+                            {() => {
+                                return (
+                                    <UserChallenges
+                                        user={data.user}
+                                        routeKey={"UserChallenges"}
+                                        refreshHeader={refetch}
+                                    />
+                                );
+                            }}
                         </Tab.Screen>
                         <Tab.Screen
                             name="UserStats"

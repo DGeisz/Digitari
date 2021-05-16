@@ -47,6 +47,8 @@ export type MainEntryStack = {
         cmid: string;
     };
     Settings: undefined;
+    Password: undefined;
+    PasswordChanged: undefined;
 };
 
 /*

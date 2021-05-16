@@ -78,7 +78,7 @@ interface State {
     picModalVisible: boolean;
 }
 
-export default class Post extends React.PureComponent<Props, State> {
+export default class Post extends React.Component<Props, State> {
     static defaultProps = {
         feedPost: false,
         stripped: false,
@@ -101,6 +101,20 @@ export default class Post extends React.PureComponent<Props, State> {
         animatedCoinAmount: 0,
         picModalVisible: false,
     };
+
+    shouldComponentUpdate(
+        nextProps: Readonly<Props>,
+        nextState: Readonly<State>,
+        nextContext: any
+    ): boolean {
+        return (
+            !(
+                this.props.post === nextProps.post &&
+                this.props.userCoin === nextProps.userCoin &&
+                this.props.userFirstName === nextProps.userFirstName
+            ) || nextState !== this.state
+        );
+    }
 
     setError = (error: string) => {
         LayoutAnimation.easeInEaseOut();
