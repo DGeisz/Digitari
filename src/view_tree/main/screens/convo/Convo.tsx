@@ -795,6 +795,8 @@ const Convo: React.FC<Props> = (props) => {
                                                 { cvid }
                                             );
                                         }}
+                                        convo={convoData.convo}
+                                        goBack={props.navigation.goBack}
                                     />
                                 </View>
                             </View>
