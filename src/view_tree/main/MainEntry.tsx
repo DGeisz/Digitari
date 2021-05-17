@@ -29,6 +29,7 @@ import ReportCommunity from "./screens/reports/report_community/ReportCommunity"
 import Settings from "./screens/settings/Settings";
 import Password from "./screens/settings/screens/password/Password";
 import PasswordChanged from "./screens/settings/screens/password_changed/PasswordChanged";
+import DeleteAccount from "./screens/settings/screens/delete_account/DeleteAccount";
 
 const RootStack = createStackNavigator<MainEntryStack>();
 
@@ -196,6 +197,11 @@ const MainEntry: React.FC = () => {
                 name="PasswordChanged"
                 options={{ title: "Success!" }}
                 component={PasswordChanged}
+            />
+            <RootStack.Screen
+                name="DeleteAccount"
+                options={{ title: "Delete account" }}
+                component={DeleteAccount}
             />
         </RootStack.Navigator>
     );

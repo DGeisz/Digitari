@@ -133,7 +133,11 @@ const Settings: React.FC<Props> = (props) => {
                 </View>
                 <View style={styles.settingsBubble}>
                     <View style={styles.settingsFirstRow}>
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() =>
+                                props.navigation.navigate("DeleteAccount")
+                            }
+                        >
                             <Text style={styles.deleteAccountText}>
                                 Delete account
                             </Text>

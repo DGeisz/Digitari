@@ -49,6 +49,7 @@ export type MainEntryStack = {
     Settings: undefined;
     Password: undefined;
     PasswordChanged: undefined;
+    DeleteAccount: undefined;
 };
 
 /*
@@ -90,10 +91,6 @@ export type ReportCommunityNavProp = StackNavigationProp<
 >;
 export type SettingsNavProp = StackNavigationProp<MainEntryStack, "Settings">;
 export type PasswordNavProp = StackNavigationProp<MainEntryStack, "Password">;
-export type PasswordChangedNavProp = StackNavigationProp<
-    MainEntryStack,
-    "PasswordChanged"
->;
 
 /*
  * Route props
