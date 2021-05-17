@@ -19,7 +19,7 @@ const SingleCoin: React.FC<Props> = (props) => {
 
         Animated.parallel([
             Animated.timing(animatedHeight, {
-                toValue: -150,
+                toValue: -250,
                 easing: Easing.linear,
                 duration,
                 useNativeDriver: true,
@@ -64,7 +64,12 @@ const SingleCoin: React.FC<Props> = (props) => {
                 ],
             }}
         >
-            <CoinBox amount={props.receipt.amount} showCoinPlus />
+            <CoinBox
+                amount={props.receipt.amount}
+                showCoinPlus
+                fontSize={16}
+                coinSize={20}
+            />
         </Animated.View>
     );
 };

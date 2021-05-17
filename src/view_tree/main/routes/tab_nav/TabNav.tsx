@@ -22,6 +22,7 @@ import {
 import { getTierWage } from "../../../../global_types/TierTypes";
 import CoinIndicator from "./building_blocks/coin_indicator/CoinIndicator";
 import ChallengeCompleteModal from "./building_blocks/challenge_complete_modal/ChallengeCompleteModal";
+import { addNewReceipt } from "../../../../global_state/CoinUpdates";
 
 const Tab = createBottomTabNavigator<TabNavTab>();
 

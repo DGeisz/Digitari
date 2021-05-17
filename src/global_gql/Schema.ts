@@ -301,6 +301,8 @@ export const schema = gql`
 
         reportUser(uid: ID!, report: String!): String
         reportCommunity(cmid: ID!, report: String!): String
+
+        deleteUser: Boolean
     }
 
     type Subscription {
