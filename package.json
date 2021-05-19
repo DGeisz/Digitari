@@ -31,6 +31,7 @@
         "aws-appsync-subscription-link": "^3.0.6",
         "expo": "^40.0.1",
         "expo-constants": "~9.3.3",
+        "expo-contacts": "~8.6.0",
         "expo-image-picker": "~9.2.0",
         "expo-linking": "~2.0.1",
         "expo-notifications": "~0.8.2",

@@ -21,7 +21,7 @@ import {
 } from "./gql/Mutations";
 import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
-import { Platform } from "react-native";
+import { Platform, Text, TouchableOpacity, View } from "react-native";
 import ReportPost from "./screens/reports/report_post/ReportPost";
 import ReportConvo from "./screens/reports/report_convo/ReportConvo";
 import ReportUser from "./screens/reports/report_user/ReportUser";
@@ -30,6 +30,8 @@ import Settings from "./screens/settings/Settings";
 import Password from "./screens/settings/screens/password/Password";
 import PasswordChanged from "./screens/settings/screens/password_changed/PasswordChanged";
 import DeleteAccount from "./screens/settings/screens/delete_account/DeleteAccount";
+import Invites from "./screens/invites/Invites";
+import { palette } from "../../global_styles/Palette";
 
 const RootStack = createStackNavigator<MainEntryStack>();
 
@@ -112,9 +114,26 @@ const MainEntry: React.FC = () => {
             <RootStack.Screen
                 name="TabNav"
                 component={TabNav}
-                options={({ route }) => {
+                options={({ route, navigation }) => {
                     return {
                         headerTitle: getTabNavHeaderTitle(route),
+                        headerLeft: () => (
+                            <TouchableOpacity
+                                onPress={() => {
+                                    navigation.navigate("Invite");
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        fontWeight: "bold",
+                                        marginHorizontal: 10,
+                                        color: palette.deepBlue,
+                                    }}
+                                >
+                                    + Invite
+                                </Text>
+                            </TouchableOpacity>
+                        ),
                     };
                 }}
             />
@@ -160,7 +179,11 @@ const MainEntry: React.FC = () => {
                 component={NewPost}
                 options={{ title: "New Post" }}
             />
-
+            <RootStack.Screen
+                name="Invite"
+                options={{ title: "Invite your friends" }}
+                component={Invites}
+            />
             {/*
              * Reporting
              */}
