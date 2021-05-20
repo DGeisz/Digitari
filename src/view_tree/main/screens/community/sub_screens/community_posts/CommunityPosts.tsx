@@ -318,23 +318,23 @@ const CommunityPosts: React.FC<Props> = (props) => {
                     userFirstName={userFirstName}
                     userCoin={userCoin}
                     openUser={(uid: string) => {
-                        props.navigation.navigate("User", { uid });
+                        props.navigation.push("User", { uid });
                     }}
                     openCommunity={(cmid: string) => {
-                        props.navigation.navigate("Community", { cmid });
+                        props.navigation.push("Community", { cmid });
                     }}
                     openPost={(pid: string) => {
-                        props.navigation.navigate("PostScreen", { pid });
+                        props.navigation.push("PostScreen", { pid });
                     }}
                     openReport={(pid: string) => {
-                        props.navigation.navigate("ReportPost", { pid });
+                        props.navigation.push("ReportPost", { pid });
                     }}
                     onMessage={(
                         tname: string,
                         pid: string,
                         responseCost: number
                     ) => {
-                        props.navigation.navigate("NewResponse", {
+                        props.navigation.push("NewResponse", {
                             tname,
                             pid,
                             responseCost,

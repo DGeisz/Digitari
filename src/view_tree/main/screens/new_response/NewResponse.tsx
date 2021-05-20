@@ -101,7 +101,7 @@ const NewResponse: React.FC<Props> = (props) => {
                 </Text>
             </View>
             <View style={styles.postAsChoiceContainer}>
-                <Text style={styles.postAsText}>{"Post as: "}</Text>
+                <Text style={styles.postAsText}>{"Message as: "}</Text>
                 <TouchableOpacity
                     style={[
                         styles.postAsChoice,

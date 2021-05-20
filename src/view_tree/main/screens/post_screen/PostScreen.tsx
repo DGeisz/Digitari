@@ -135,18 +135,18 @@ const PostScreen: React.FC<Props> = (props) => {
                             abbreviateAddOn={false}
                             post={post}
                             openUser={(uid: string) =>
-                                props.navigation.navigate("User", { uid })
+                                props.navigation.push("User", { uid })
                             }
                             openReport={(pid) => {
-                                props.navigation.navigate("ReportPost", {
+                                props.navigation.push("ReportPost", {
                                     pid,
                                 });
                             }}
                             openCommunity={(cmid: string) =>
-                                props.navigation.navigate("Community", { cmid })
+                                props.navigation.push("Community", { cmid })
                             }
                             onMessage={(tname, pid1, responseCost) =>
-                                props.navigation.navigate("NewResponse", {
+                                props.navigation.push("NewResponse", {
                                     tname,
                                     responseCost,
                                     pid: pid1,

@@ -13,7 +13,6 @@ import {
 import { CommunityNavProp, CommunityRouteProp } from "../../MainEntryNavTypes";
 import LoadingWheel from "../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import ErrorMessage from "../../../../global_building_blocks/error_message/ErrorMessage";
-import { localUid } from "../../../../global_state/UserState";
 import Followers from "./sub_screens/followers/Followers";
 import CommunityPosts from "./sub_screens/community_posts/CommunityPosts";
 import NewButton from "../../../../global_building_blocks/new_button/NewButton";

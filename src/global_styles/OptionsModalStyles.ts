@@ -118,4 +118,16 @@ export const optionsStyles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 18,
     },
+    submitButton: {
+        backgroundColor: palette.deepBlue,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        borderRadius: 10,
+        marginLeft: 3,
+    },
+    submitButtonText: {
+        color: palette.white,
+        fontWeight: "bold",
+        fontSize: 18,
+    },
 });

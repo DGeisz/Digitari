@@ -7,17 +7,17 @@ export const styles = StyleSheet.create({
         ...basicLayouts.flexGrid1,
     },
     invitesHeader: {
-        padding: 20,
+        padding: 15,
         backgroundColor: palette.white,
     },
     invitesHeaderText: {
         color: palette.deepBlue,
         fontWeight: "500",
         fontSize: 18,
-        textAlign: "center",
+        // textAlign: "center",
     },
     promptContainer: {
-        ...basicLayouts.flexGrid2,
+        ...basicLayouts.grid2,
         padding: 20,
     },
     promptText: {
@@ -36,5 +36,16 @@ export const styles = StyleSheet.create({
         color: palette.white,
         fontSize: 20,
         fontWeight: "bold",
+    },
+    searchContainer: {
+        backgroundColor: palette.white,
+        borderBottomColor: palette.transparent,
+        borderTopColor: palette.transparent,
+        paddingTop: 0,
+    },
+    searchInputContainer: {
+        backgroundColor: palette.softGray,
+        borderRadius: 30,
+        paddingHorizontal: 7,
     },
 });

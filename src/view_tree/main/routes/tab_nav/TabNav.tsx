@@ -32,11 +32,11 @@ interface Props {
 
 const TabNav: React.FC<Props> = (props) => {
     const openPost = (pid: string) => {
-        props.navigation.navigate("PostScreen", { pid });
+        props.navigation.push("PostScreen", { pid });
     };
 
     const openConvo = (cvid: string, pid: string) => {
-        props.navigation.navigate("Convo", { cvid, pid });
+        props.navigation.push("Convo", { cvid, pid });
     };
 
     const openNewMessage = (
@@ -44,19 +44,19 @@ const TabNav: React.FC<Props> = (props) => {
         pid: string,
         responseCost: number
     ) => {
-        props.navigation.navigate("NewResponse", { tname, pid, responseCost });
+        props.navigation.push("NewResponse", { tname, pid, responseCost });
     };
 
     const openNew = () => {
-        props.navigation.navigate("NewPost", {});
+        props.navigation.push("NewPost", {});
     };
 
     const openCommunity = (cmid: string) => {
-        props.navigation.navigate("Community", { cmid });
+        props.navigation.push("Community", { cmid });
     };
 
     const openUser = (uid: string) => {
-        props.navigation.navigate("User", { uid });
+        props.navigation.push("User", { uid });
     };
 
     const openFollows = (name: string, uid: string) => {
@@ -72,7 +72,7 @@ const TabNav: React.FC<Props> = (props) => {
     };
 
     const openSettings = () => {
-        props.navigation.navigate("Settings");
+        props.navigation.push("Settings");
     };
 
     const { data } = useQuery<GetUpdateFlagsData, GetUpdateFlagsVariables>(
