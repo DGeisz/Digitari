@@ -13,6 +13,15 @@ import { InvitesNavProp } from "../../MainEntryNavTypes";
 import { Contact } from "expo-contacts";
 import InviteUser from "./building_blocks/invite_user/InviteUser";
 import { SearchBar } from "react-native-elements";
+import { useQuery } from "@apollo/client";
+import {
+    GET_REMAINING_INVITES,
+    GetRemainingInvitesData,
+    GetRemainingInvitesVariables,
+} from "./gql/Queries";
+import { localUid } from "../../../../global_state/UserState";
+import LoadingWheel from "../../../../global_building_blocks/loading_wheel/LoadingWheel";
+import ErrorMessage from "../../../../global_building_blocks/error_message/ErrorMessage";
 
 const pageSize = 30;
 
@@ -68,6 +77,25 @@ const Invites: React.FC<Props> = (props) => {
         getContacts().then();
     }, [search]);
 
+    const { data, loading, error, refetch } = useQuery<
+        GetRemainingInvitesData,
+        GetRemainingInvitesVariables
+    >(GET_REMAINING_INVITES, {
+        variables: {
+            uid: localUid(),
+        },
+    });
+
+    if (loading) {
+        return <LoadingWheel />;
+    }
+
+    if (error) {
+        return <ErrorMessage refresh={refetch} />;
+    }
+
+    const remainingInvites = !!data?.user ? data.user.remainingInvites : 0;
+
     return (
         <View style={styles.invitesContainer}>
             <TouchableOpacity
@@ -78,6 +106,9 @@ const Invites: React.FC<Props> = (props) => {
                 <Text style={styles.invitesHeaderText}>
                     Invite your friends to join Digitari and earn 100 digicoin
                     every time someone you invite creates an account!
+                </Text>
+                <Text style={styles.invitesRemaining}>
+                    Remaining invites: {remainingInvites}
                 </Text>
             </TouchableOpacity>
             {hasAccess ? (

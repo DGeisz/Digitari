@@ -13,6 +13,7 @@ export const schema = gql`
         email: String
         timeCreated: String
         imgUrl: String
+        remainingInvites: Int
 
         lastCollectionTime: String
 
@@ -304,6 +305,8 @@ export const schema = gql`
         reportCommunity(cmid: ID!, report: String!): String
 
         deleteUser: Boolean
+
+        genInviteCode: String
     }
 
     type Subscription {

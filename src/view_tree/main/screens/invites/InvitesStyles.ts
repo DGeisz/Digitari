@@ -16,6 +16,7 @@ export const styles = StyleSheet.create({
         fontSize: 18,
         // textAlign: "center",
     },
+    invitesRemaining: {},
     promptContainer: {
         ...basicLayouts.grid2,
         padding: 20,
