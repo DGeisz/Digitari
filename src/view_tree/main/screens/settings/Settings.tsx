@@ -6,7 +6,7 @@ import { SettingsNavProp } from "../../MainEntryNavTypes";
 import CancelConfirmModal from "../../../../global_building_blocks/cancel_confirm_modal/CancelConfirmModal";
 import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
-import { useMutation } from "@apollo/client";
+import { useApolloClient, useMutation } from "@apollo/client";
 import {
     DELETE_PUSH,
     DeletePushData,
@@ -23,6 +23,8 @@ const Settings: React.FC<Props> = (props) => {
     const [deletePush] = useMutation<DeletePushData, DeletePushVariables>(
         DELETE_PUSH
     );
+
+    const client = useApolloClient();
 
     const signOut = async () => {
         setSignOutVisible(false);
@@ -76,6 +78,11 @@ const Settings: React.FC<Props> = (props) => {
              */
             try {
                 await Auth.signOut();
+
+                /*
+                 * Also totally clear out the cache
+                 */
+                await client.clearStore();
             } catch (e) {
                 console.log("Error signing out: ", e);
             }

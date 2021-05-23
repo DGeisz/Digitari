@@ -18,6 +18,7 @@ import * as ScreenOrientation from "expo-screen-orientation";
 import { OrientationLock } from "expo-screen-orientation";
 import { PushNotificationType } from "./src/global_types/PushTypes";
 import { enableScreens } from "react-native-screens";
+import { useApollo } from "./src/global_gql/hooks/use_apollo/use_apollo";
 
 enableScreens();
 
@@ -36,34 +37,6 @@ Amplify.configure({
             responseType: "code",
         },
     },
-});
-
-const url =
-    "https://yvetqqqrlbgklmrodh6dx5ix6a.appsync-api.us-east-2.amazonaws.com/graphql";
-const region = "us-east-2";
-const auth: AuthOptions = {
-    type: AUTH_TYPE.AMAZON_COGNITO_USER_POOLS,
-    jwtToken: async () => {
-        try {
-            const session = await Auth.currentSession();
-
-            return session.getIdToken().getJwtToken();
-        } catch (e) {
-            return "";
-        }
-    },
-};
-
-// const httpLink = createHttpLink({ uri: url });
-
-const link = ApolloLink.from([
-    createAuthLink({ url, region, auth }),
-    createSubscriptionHandshakeLink({ url, region, auth }),
-]);
-
-const client = new ApolloClient({
-    link,
-    cache,
 });
 
 if (Platform.OS === "android") {
@@ -130,14 +103,14 @@ export default function App() {
         ScreenOrientation.lockAsync(OrientationLock.PORTRAIT).then();
     }, []);
 
+    const client = useApollo();
+
     return (
         <NavigationContainer linking={linking}>
             <ApolloProvider client={client}>
-                {/*<MockedProvider cache={cache} mocks={allMocks} addTypename={false}>*/}
                 <SafeAreaProvider initialMetrics={initialWindowMetrics}>
                     <AppView />
                 </SafeAreaProvider>
-                {/*</MockedProvider>*/}
             </ApolloProvider>
         </NavigationContainer>
     );

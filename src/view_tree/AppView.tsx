@@ -4,7 +4,7 @@ import AuthEntry from "./auth/AuthEntry";
 import * as SplashScreen from "expo-splash-screen";
 import { Auth, Hub } from "aws-amplify";
 import { HubCapsule } from "aws-amplify-react-native/types";
-import { useApolloClient } from "@apollo/client";
+import { useApolloClient, useReactiveVar } from "@apollo/client";
 import {
     CREATE_OR_FETCH_USER,
     CreateOrFetchUserMutationData,
@@ -16,44 +16,34 @@ import {
     setLocalUid,
 } from "../global_state/UserState";
 import { HID, HidData } from "./gql/Queries";
+import { userAuthenticated } from "../global_state/AuthState";
 
 const AppView: React.FC = () => {
     const [checkedAuth, setCheckAuth] = useState<boolean>(false);
     const [fetchedUser, setFetchedUser] = useState<boolean>(false);
 
-    const [authenticated, setAuthenticated] = useState<boolean>(true);
     const [newUser, setNewUser] = useState<boolean>(false);
     const client = useApolloClient();
 
+    const authenticated = useReactiveVar(userAuthenticated);
+
+    const authenticate = async () => {
+        try {
+            const { sub, given_name } = (
+                await Auth.currentSession()
+            ).getIdToken().payload;
+
+            !!sub && setLocalUid(sub);
+            !!given_name && setLocalFirstName(given_name);
+            userAuthenticated(true);
+        } catch (_) {
+            userAuthenticated(false);
+        }
+    };
+
     useEffect(() => {
-        Hub.listen("auth", async ({ payload: { event } }: HubCapsule) => {
-            try {
-                const { sub, given_name } = (
-                    await Auth.currentSession()
-                ).getIdToken().payload;
-
-                !!sub && setLocalUid(sub);
-                !!given_name && setLocalFirstName(given_name);
-                setAuthenticated(true);
-            } catch (_) {
-                setAuthenticated(false);
-            }
-        });
-
-        (async () => {
-            try {
-                const { sub, given_name } = (
-                    await Auth.currentSession()
-                ).getIdToken().payload;
-
-                !!sub && setLocalUid(sub);
-                !!given_name && setLocalFirstName(given_name);
-                setAuthenticated(true);
-            } catch (_) {
-                setAuthenticated(false);
-            }
-            setCheckAuth(true);
-        })();
+        Hub.listen("auth", authenticate);
+        authenticate().then(() => setCheckAuth(true));
     }, []);
 
     useEffect(() => {
@@ -108,8 +98,7 @@ const AppView: React.FC = () => {
                         setLocalHid(hidData.hid);
                     }
                 }
-            } finally {
-            }
+            } catch (_) {}
         })();
     }, [authenticated, checkedAuth]);
 
