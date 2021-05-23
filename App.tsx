@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Platform, UIManager } from "react-native";
 import * as Linking from "expo-linking";
 import { LinkingOptions, NavigationContainer } from "@react-navigation/native";
 import {
-    SafeAreaProvider,
     initialWindowMetrics,
+    SafeAreaProvider,
 } from "react-native-safe-area-context";
 import { cache } from "./src/global_state/Cache";
 import AppView from "./src/view_tree/AppView";
@@ -14,6 +14,8 @@ import { AuthOptions, createAuthLink } from "aws-appsync-auth-link";
 import { AUTH_TYPE } from "aws-appsync";
 import { ApolloClient, ApolloLink, ApolloProvider } from "@apollo/client";
 import * as Notifications from "expo-notifications";
+import * as ScreenOrientation from "expo-screen-orientation";
+import { OrientationLock } from "expo-screen-orientation";
 import { PushNotificationType } from "./src/global_types/PushTypes";
 import { enableScreens } from "react-native-screens";
 
@@ -124,6 +126,10 @@ const linking: LinkingOptions = {
 };
 
 export default function App() {
+    useEffect(() => {
+        ScreenOrientation.lockAsync(OrientationLock.PORTRAIT).then();
+    }, []);
+
     return (
         <NavigationContainer linking={linking}>
             <ApolloProvider client={client}>

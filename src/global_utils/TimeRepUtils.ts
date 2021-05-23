@@ -4,6 +4,7 @@ const millisInMinute = millisInSecond * 60;
 export const millisIn10Minutes = 10 * millisInMinute;
 export const millisInHour = millisInMinute * 60;
 export const millisInDay = millisInHour * 24;
+const millisInWeek = millisInDay * 7;
 const millisInMonth = millisInDay * 30;
 const millisInYear = millisInDay * 365;
 
@@ -12,6 +13,8 @@ export function millisToRep(millis: number): string {
         return Math.floor(millis / millisInYear) + "y";
     } else if (millis > millisInMonth) {
         return Math.floor(millis / millisInMonth) + "mo";
+    } else if (millis > millisInWeek) {
+        return Math.floor(millis / millisInWeek) + "w";
     } else if (millis > millisInDay) {
         return Math.floor(millis / millisInDay) + "d";
     } else if (millis > millisInHour) {

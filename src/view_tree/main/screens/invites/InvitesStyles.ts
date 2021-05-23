@@ -14,9 +14,21 @@ export const styles = StyleSheet.create({
         color: palette.deepBlue,
         fontWeight: "500",
         fontSize: 18,
-        // textAlign: "center",
+        marginBottom: 8,
     },
-    invitesRemaining: {},
+    invitesRemaining: {
+        fontWeight: "bold",
+        color: palette.lightGray,
+    },
+    noInvitesContainer: {
+        ...basicLayouts.grid2,
+        padding: 20,
+    },
+    noInvitesText: {
+        fontSize: 20,
+        fontWeight: "bold",
+        color: palette.hardGray,
+    },
     promptContainer: {
         ...basicLayouts.grid2,
         padding: 20,
@@ -43,6 +55,7 @@ export const styles = StyleSheet.create({
         borderBottomColor: palette.transparent,
         borderTopColor: palette.transparent,
         paddingTop: 0,
+        borderTopWidth: 2,
     },
     searchInputContainer: {
         backgroundColor: palette.softGray,

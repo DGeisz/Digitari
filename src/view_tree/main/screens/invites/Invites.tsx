@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
     Linking,
+    AppState,
     FlatList,
     Text,
     TouchableOpacity,
@@ -13,7 +14,7 @@ import { InvitesNavProp } from "../../MainEntryNavTypes";
 import { Contact } from "expo-contacts";
 import InviteUser from "./building_blocks/invite_user/InviteUser";
 import { SearchBar } from "react-native-elements";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import {
     GET_REMAINING_INVITES,
     GetRemainingInvitesData,
@@ -22,6 +23,12 @@ import {
 import { localUid } from "../../../../global_state/UserState";
 import LoadingWheel from "../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import ErrorMessage from "../../../../global_building_blocks/error_message/ErrorMessage";
+import {
+    GEN_INVITE_CODE,
+    GenInviteCodeData,
+    GenInviteCodeVariables,
+} from "./gql/Mutations";
+import { USER_TYPENAME } from "../../../../global_types/UserTypes";
 
 const pageSize = 30;
 
@@ -30,6 +37,8 @@ interface Props {
 }
 
 const Invites: React.FC<Props> = (props) => {
+    const uid = localUid();
+
     const [hasAccess, setHasAccess] = useState<boolean>(false);
     const [contacts, setContacts] = useState<Contact[]>([]);
     const [search, setSearch] = useState<string>("");
@@ -37,6 +46,7 @@ const Invites: React.FC<Props> = (props) => {
     const [offset, setOffset] = useState<number>(0);
 
     const getContacts = async () => {
+        console.log("Getting contacts");
         const { status } = await Contacts.requestPermissionsAsync();
 
         if (status === "granted") {
@@ -69,8 +79,23 @@ const Invites: React.FC<Props> = (props) => {
         }
     };
 
+    /*
+     * Handle any permission changes when this screen comes
+     * back into view
+     */
     useEffect(() => {
         return props.navigation.addListener("focus", getContacts);
+    }, []);
+
+    /*
+     * Handle scenario where user returns from settings
+     */
+    useEffect(() => {
+        AppState.addEventListener("change", getContacts);
+
+        return () => {
+            AppState.removeEventListener("change", getContacts);
+        };
     }, []);
 
     useEffect(() => {
@@ -82,7 +107,28 @@ const Invites: React.FC<Props> = (props) => {
         GetRemainingInvitesVariables
     >(GET_REMAINING_INVITES, {
         variables: {
-            uid: localUid(),
+            uid,
+        },
+    });
+
+    const [genInviteCode] = useMutation<
+        GenInviteCodeData,
+        GenInviteCodeVariables
+    >(GEN_INVITE_CODE, {
+        update(cache, { data }) {
+            if (!!data?.genInviteCode) {
+                cache.modify({
+                    id: cache.identify({
+                        __typename: USER_TYPENAME,
+                        id: uid,
+                    }),
+                    fields: {
+                        remainingInvites(existing) {
+                            return existing - 1;
+                        },
+                    },
+                });
+            }
         },
     });
 
@@ -111,17 +157,66 @@ const Invites: React.FC<Props> = (props) => {
                     Remaining invites: {remainingInvites}
                 </Text>
             </TouchableOpacity>
-            {hasAccess ? (
-                <SearchBar
-                    placeholder="Search contacts..."
-                    onChangeText={(text) => {
-                        setSearch(text);
-                    }}
-                    value={search}
-                    containerStyle={styles.searchContainer}
-                    inputContainerStyle={styles.searchInputContainer}
-                    lightTheme
-                />
+            {remainingInvites < 1 ? (
+                <View style={styles.noInvitesContainer}>
+                    <Text style={styles.noInvitesText}>
+                        🎉 You used all your invites! 🎉
+                    </Text>
+                </View>
+            ) : hasAccess ? (
+                <>
+                    <SearchBar
+                        placeholder="Search contacts..."
+                        onChangeText={(text) => {
+                            setSearch(text);
+                        }}
+                        value={search}
+                        containerStyle={styles.searchContainer}
+                        inputContainerStyle={styles.searchInputContainer}
+                        lightTheme
+                    />
+                    <FlatList
+                        data={contacts}
+                        renderItem={({ item }) => (
+                            <InviteUser
+                                contact={item}
+                                genInviteCode={genInviteCode}
+                            />
+                        )}
+                        keyExtractor={(item) => item.id}
+                        onScroll={Keyboard.dismiss}
+                        onEndReached={async () => {
+                            if (hasAccess) {
+                                const {
+                                    data,
+                                } = await Contacts.getContactsAsync({
+                                    fields: [
+                                        Contacts.Fields.Name,
+                                        Contacts.Fields.FirstName,
+                                        Contacts.Fields.PhoneNumbers,
+                                        Contacts.Fields.Image,
+                                        Contacts.Fields.ImageAvailable,
+                                    ],
+                                    name: !!search ? search : undefined,
+                                    pageSize,
+                                    pageOffset: offset,
+                                });
+
+                                const newContacts = data.filter(
+                                    (contact) => !!contact.name
+                                );
+
+                                setOffset(
+                                    (lastOffset) => lastOffset + data.length
+                                );
+                                setContacts((lastContacts) => [
+                                    ...lastContacts,
+                                    ...newContacts,
+                                ]);
+                            }
+                        }}
+                    />
+                </>
             ) : (
                 <View style={styles.promptContainer}>
                     <Text style={styles.promptText}>
@@ -140,40 +235,6 @@ const Invites: React.FC<Props> = (props) => {
                     </TouchableOpacity>
                 </View>
             )}
-            <FlatList
-                data={contacts}
-                renderItem={({ item }) => <InviteUser contact={item} />}
-                keyExtractor={(item) =>
-                    !!item.id ? item.id : Math.random().toString()
-                }
-                onScroll={Keyboard.dismiss}
-                onEndReached={async () => {
-                    if (hasAccess) {
-                        const { data } = await Contacts.getContactsAsync({
-                            fields: [
-                                Contacts.Fields.Name,
-                                Contacts.Fields.FirstName,
-                                Contacts.Fields.PhoneNumbers,
-                                Contacts.Fields.Image,
-                                Contacts.Fields.ImageAvailable,
-                            ],
-                            name: !!search ? search : undefined,
-                            pageSize,
-                            pageOffset: offset,
-                        });
-
-                        const newContacts = data.filter(
-                            (contact) => !!contact.name
-                        );
-
-                        setOffset((lastOffset) => lastOffset + data.length);
-                        setContacts((lastContacts) => [
-                            ...lastContacts,
-                            ...newContacts,
-                        ]);
-                    }
-                }}
-            />
         </View>
     );
 };
