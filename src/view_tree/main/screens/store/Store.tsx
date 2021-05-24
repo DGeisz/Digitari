@@ -3,6 +3,9 @@ import { ScrollView, View } from "react-native";
 import StoreItem from "./building_blocks/store_item/StoreItem";
 import { globalScreenStyles } from "../../../../global_styles/GlobalScreenStyles";
 
+/*
+ * The ejection culprit
+ */
 const Store: React.FC = () => {
     return (
         <ScrollView>
