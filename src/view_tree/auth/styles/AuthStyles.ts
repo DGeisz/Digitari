@@ -30,4 +30,8 @@ export const authStyles = StyleSheet.create({
         color: palette.danger,
         fontSize: 15,
     },
+    subText: {
+        fontWeight: "bold",
+        color: palette.lightGray,
+    },
 });

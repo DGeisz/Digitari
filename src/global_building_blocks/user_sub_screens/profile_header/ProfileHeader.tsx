@@ -265,7 +265,7 @@ const ProfileHeader: React.FC<Props> = (props) => {
                                     </Text>
                                 </View>
                                 <CoinBox
-                                    amount={props.user.followPrice}
+                                    amount={FOLLOW_USER_PRICE}
                                     fontSize={15}
                                     coinSize={23}
                                 />

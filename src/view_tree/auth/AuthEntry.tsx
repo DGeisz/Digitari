@@ -15,6 +15,7 @@ import NewAccountEmailPwd from "./screens/new_account_email_pwd/NewAccountEmailP
 import VerifyEmail from "./screens/verify_email/VerifyEmail";
 import { palette } from "../../global_styles/Palette";
 import { AuthStackType } from "./AuthEntryNavTypes";
+import InviteCode from "./screens/invite_code/InviteCode";
 
 const AuthStack = createStackNavigator<AuthStackType>();
 
@@ -89,6 +90,11 @@ const AuthEntry: React.FC = () => {
                 name="SignUp"
                 component={SignUp}
                 options={{ title: "Sign up" }}
+            />
+            <AuthStack.Screen
+                name={"InviteCode"}
+                component={InviteCode}
+                options={{ title: "Validate invite" }}
             />
             <AuthStack.Screen
                 name="NewAccountName"

@@ -2,6 +2,7 @@ import { StyleSheet, Platform } from "react-native";
 import { palette } from "../../../../global_styles/Palette";
 
 export const styles = StyleSheet.create({
+    authButtonContainer: {},
     authButton: {
         paddingVertical: 10,
         paddingHorizontal: 20,

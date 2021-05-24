@@ -51,6 +51,7 @@ export type MainEntryStack = {
     PasswordChanged: undefined;
     DeleteAccount: undefined;
     Invite: undefined;
+    Store: undefined;
 };
 
 /*

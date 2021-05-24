@@ -6,19 +6,17 @@ import {
     initialWindowMetrics,
     SafeAreaProvider,
 } from "react-native-safe-area-context";
-import { cache } from "./src/global_state/Cache";
 import AppView from "./src/view_tree/AppView";
-import Amplify, { Auth } from "aws-amplify";
-import { createSubscriptionHandshakeLink } from "aws-appsync-subscription-link";
-import { AuthOptions, createAuthLink } from "aws-appsync-auth-link";
-import { AUTH_TYPE } from "aws-appsync";
-import { ApolloClient, ApolloLink, ApolloProvider } from "@apollo/client";
+import Amplify from "aws-amplify";
+import { ApolloProvider } from "@apollo/client";
+import * as SplashScreen from "expo-splash-screen";
 import * as Notifications from "expo-notifications";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { OrientationLock } from "expo-screen-orientation";
 import { PushNotificationType } from "./src/global_types/PushTypes";
 import { enableScreens } from "react-native-screens";
 import { useApollo } from "./src/global_gql/hooks/use_apollo/use_apollo";
+import { Auth } from "aws-amplify";
 
 enableScreens();
 
@@ -100,6 +98,7 @@ const linking: LinkingOptions = {
 
 export default function App() {
     useEffect(() => {
+        SplashScreen.preventAutoHideAsync().then();
         ScreenOrientation.lockAsync(OrientationLock.PORTRAIT).then();
     }, []);
 

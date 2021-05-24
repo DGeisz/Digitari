@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import { basicLayouts } from "../../../../../../global_styles/BasicLayouts";
 import TabLabel from "../../../../../../global_building_blocks/tab_label/TabLabel";
 import { createMaterialCollapsibleTopTabNavigator } from "react-native-collapsible-tab-view";
@@ -19,6 +19,7 @@ import UserConvos from "../../../../../../global_building_blocks/user_sub_screen
 import UserChallenges from "../../../../../../global_building_blocks/user_sub_screens/user_challenges/UserChallenges";
 import UserStats from "../../../../../../global_building_blocks/user_sub_screens/user_stats/UserStats";
 import { localUid } from "../../../../../../global_state/UserState";
+import { styles } from "./ProfileStyles";
 
 const Tab = createMaterialCollapsibleTopTabNavigator();
 
@@ -175,7 +176,13 @@ const Profile: React.FC = () => {
             </>
         );
     } else {
-        return <View style={basicLayouts.flexGrid1} />;
+        return (
+            <View style={styles.noUserContainer}>
+                <Text style={styles.noUserText}>
+                    Your profile isn't set up yet
+                </Text>
+            </View>
+        );
     }
 };
 

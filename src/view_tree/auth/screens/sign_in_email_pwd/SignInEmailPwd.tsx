@@ -69,6 +69,12 @@ const SignInEmailPwd: React.FC<Props> = (props) => {
                     <Text style={authStyles.authErrorText}>{error}</Text>
                 )}
                 <Input
+                    autoFocus
+                    keyboardType="twitter"
+                    autoCapitalize={"none"}
+                    autoCompleteType={"email"}
+                    autoCorrect={false}
+                    spellCheck={false}
                     placeholder={"Email..."}
                     leftIcon={{
                         type: "MaterialIcons",
@@ -76,9 +82,16 @@ const SignInEmailPwd: React.FC<Props> = (props) => {
                         color: palette.lightGray,
                     }}
                     onFocus={() => setErrorActive(false)}
-                    onChangeText={setEmail}
+                    onChangeText={(text) =>
+                        setEmail(text.replace(/\r?\n|\r/g, ""))
+                    }
+                    value={email}
                 />
                 <Input
+                    keyboardType="twitter"
+                    autoCapitalize={"none"}
+                    autoCorrect={false}
+                    spellCheck={false}
                     placeholder={"Password..."}
                     leftIcon={{
                         type: "MaterialIcons",
@@ -87,7 +100,10 @@ const SignInEmailPwd: React.FC<Props> = (props) => {
                     }}
                     secureTextEntry
                     onFocus={() => setErrorActive(false)}
-                    onChangeText={setPassword}
+                    onChangeText={(text) =>
+                        setPassword(text.replace(/\r?\n|\r/g, ""))
+                    }
+                    value={password}
                 />
                 <TouchableOpacity
                     style={authStyles.authInputFooter}
@@ -103,9 +119,10 @@ const SignInEmailPwd: React.FC<Props> = (props) => {
                     onPress={signIn}
                     text={"Sign in"}
                     active={!!(email && password)}
+                    height={bufferHeight}
                 />
             </View>
-            <View style={{ height: bufferHeight }} />
+            {/*<View style={{ height: bufferHeight }} />*/}
         </TouchableOpacity>
     );
 };

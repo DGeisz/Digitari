@@ -1,5 +1,5 @@
 import React from "react";
-import { ActivityIndicator, Text, TouchableOpacity } from "react-native";
+import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./AuthButtonStyles";
 import { palette } from "../../../../global_styles/Palette";
 
@@ -9,6 +9,7 @@ interface Props {
     onPress: () => void;
     loading: boolean;
     marginTop: number;
+    height?: number;
 }
 
 export default class AuthButton extends React.PureComponent<Props> {
@@ -29,21 +30,32 @@ export default class AuthButton extends React.PureComponent<Props> {
             );
         } else {
             return (
-                <TouchableOpacity
+                <View
                     style={[
-                        styles.authButton,
-                        {
-                            marginTop: this.props.marginTop,
-                            backgroundColor: this.props.active
-                                ? palette.deepBlue
-                                : palette.notDeepBlue,
-                        },
+                        styles.authButtonContainer,
+                        { minHeight: this.props.height },
                     ]}
-                    onPress={() => this.props.active && this.props.onPress()}
-                    activeOpacity={this.props.active ? 0.5 : 1}
                 >
-                    <Text style={styles.authButtonText}>{this.props.text}</Text>
-                </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[
+                            styles.authButton,
+                            {
+                                marginTop: this.props.marginTop,
+                                backgroundColor: this.props.active
+                                    ? palette.deepBlue
+                                    : palette.notDeepBlue,
+                            },
+                        ]}
+                        onPress={() =>
+                            this.props.active && this.props.onPress()
+                        }
+                        activeOpacity={this.props.active ? 0.5 : 1}
+                    >
+                        <Text style={styles.authButtonText}>
+                            {this.props.text}
+                        </Text>
+                    </TouchableOpacity>
+                </View>
             );
         }
     }

@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import { createMaterialCollapsibleTopTabNavigator } from "react-native-collapsible-tab-view";
 import { basicLayouts } from "../../../../global_styles/BasicLayouts";
 import CommunityHeader from "./sub_screens/community_header/CommunityHeader";
@@ -17,6 +17,7 @@ import Followers from "./sub_screens/followers/Followers";
 import CommunityPosts from "./sub_screens/community_posts/CommunityPosts";
 import NewButton from "../../../../global_building_blocks/new_button/NewButton";
 import CommunityConvos from "./sub_screens/community_convos/CommunityConvos";
+import { styles } from "./sub_screens/CommunityStyles";
 
 interface Props {
     route: CommunityRouteProp;
@@ -129,7 +130,13 @@ const Community: React.FC<Props> = (props) => {
             </View>
         );
     } else {
-        return <LoadingWheel />;
+        return (
+            <View style={styles.noCommunityContainer}>
+                <Text style={styles.noCommunityText}>
+                    This community no longer exists
+                </Text>
+            </View>
+        );
     }
 };
 

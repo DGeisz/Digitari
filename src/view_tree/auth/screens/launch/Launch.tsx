@@ -23,15 +23,14 @@ const Launch: React.FC<Props> = ({ navigation }) => {
                         width: logoWidth,
                     }}
                 />
-                {/*<Text style={styles.launchTitleText}>digitari</Text>*/}
             </View>
             <AuthButton
-                onPress={() => navigation.navigate("SignIn")}
+                onPress={() => navigation.navigate("SignInEmailPwd")}
                 text="Sign in"
                 marginTop={70}
             />
             <AuthButton
-                onPress={() => navigation.navigate("SignUp")}
+                onPress={() => navigation.navigate("InviteCode")}
                 text="Sign up"
                 marginTop={20}
             />

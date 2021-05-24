@@ -6,15 +6,12 @@ export interface UserType {
     id: string;
     firstName: string;
     lastName: string;
-    userName: string;
     remainingInvites: number;
 
     newUser?: boolean;
 
     amFollowing: boolean;
-    followPrice: number;
 
-    level: number;
     bio: string;
     ranking: number;
     blocked: number;

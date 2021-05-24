@@ -7,7 +7,6 @@ export const GET_USER = gql`
             id
             firstName
             lastName
-            level
             bio
             ranking
             blocked
@@ -18,11 +17,8 @@ export const GET_USER = gql`
             lastCollectionTime
 
             amFollowing
-            followPrice
-            newUser
             newConvoUpdate
             newTransactionUpdate
-            level
             bio
             ranking
             blocked
@@ -51,6 +47,14 @@ export const GET_USER = gql`
 
 export interface GetUserQueryData {
     user: UserType;
+}
+
+/*
+ * This interface includes the possibility that the
+ * user doesn't exist
+ */
+export interface GetUserDataAlt {
+    user?: UserType;
 }
 
 export interface GetUserQueryVariables {

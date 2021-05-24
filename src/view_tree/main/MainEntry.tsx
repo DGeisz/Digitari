@@ -21,7 +21,7 @@ import {
 } from "./gql/Mutations";
 import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
-import { Platform, Text, TouchableOpacity, View } from "react-native";
+import { Image, Platform, Text, TouchableOpacity, View } from "react-native";
 import ReportPost from "./screens/reports/report_post/ReportPost";
 import ReportConvo from "./screens/reports/report_convo/ReportConvo";
 import ReportUser from "./screens/reports/report_user/ReportUser";
@@ -32,6 +32,8 @@ import PasswordChanged from "./screens/settings/screens/password_changed/Passwor
 import DeleteAccount from "./screens/settings/screens/delete_account/DeleteAccount";
 import Invites from "./screens/invites/Invites";
 import { palette } from "../../global_styles/Palette";
+import { styles } from "./MainEntryStyles";
+import Store from "./screens/store/Store";
 
 const RootStack = createStackNavigator<MainEntryStack>();
 
@@ -106,10 +108,24 @@ const MainEntry: React.FC = () => {
     return (
         <RootStack.Navigator
             initialRouteName="TabNav"
-            screenOptions={{
+            screenOptions={({ navigation }) => ({
                 headerTruncatedBackTitle: "",
                 headerBackTitle: "",
-            }}
+                headerRight: () => (
+                    <TouchableOpacity
+                        style={styles.coinContainer}
+                        onPress={() => {
+                            navigation.navigate("Store");
+                        }}
+                    >
+                        <Text style={styles.coinText}>+</Text>
+                        <Image
+                            source={require("../../../assets/coin.png")}
+                            style={styles.coin}
+                        />
+                    </TouchableOpacity>
+                ),
+            })}
         >
             <RootStack.Screen
                 name="TabNav"
@@ -123,15 +139,7 @@ const MainEntry: React.FC = () => {
                                     navigation.navigate("Invite");
                                 }}
                             >
-                                <Text
-                                    style={{
-                                        fontWeight: "bold",
-                                        marginHorizontal: 10,
-                                        color: palette.deepBlue,
-                                    }}
-                                >
-                                    + Invite
-                                </Text>
+                                <Text style={styles.inviteText}>+ Invite</Text>
                             </TouchableOpacity>
                         ),
                     };
@@ -184,46 +192,55 @@ const MainEntry: React.FC = () => {
                 options={{ title: "Invite your friends" }}
                 component={Invites}
             />
+            <RootStack.Screen
+                name="Store"
+                component={Store}
+                options={{ headerRight: () => null }}
+            />
             {/*
              * Reporting
              */}
             <RootStack.Screen
                 name="ReportPost"
                 component={ReportPost}
-                options={{ title: "Report post" }}
+                options={{ title: "Report post", headerRight: () => null }}
             />
             <RootStack.Screen
                 name="ReportConvo"
                 component={ReportConvo}
-                options={{ title: "Report convo" }}
+                options={{ title: "Report convo", headerRight: () => null }}
             />
             <RootStack.Screen
                 name="ReportUser"
                 component={ReportUser}
-                options={{ title: "Report user" }}
+                options={{ title: "Report user", headerRight: () => null }}
             />
             <RootStack.Screen
                 name="ReportCommunity"
                 component={ReportCommunity}
-                options={{ title: "Report community" }}
+                options={{ title: "Report community", headerRight: () => null }}
             />
             {/*
             Settings
             */}
-            <RootStack.Screen name="Settings" component={Settings} />
+            <RootStack.Screen
+                name="Settings"
+                component={Settings}
+                options={{ headerRight: () => null }}
+            />
             <RootStack.Screen
                 name="Password"
-                options={{ title: "Change password" }}
+                options={{ title: "Change password", headerRight: () => null }}
                 component={Password}
             />
             <RootStack.Screen
                 name="PasswordChanged"
-                options={{ title: "Success!" }}
+                options={{ title: "Success!", headerRight: () => null }}
                 component={PasswordChanged}
             />
             <RootStack.Screen
                 name="DeleteAccount"
-                options={{ title: "Delete account" }}
+                options={{ title: "Delete account", headerRight: () => null }}
                 component={DeleteAccount}
             />
         </RootStack.Navigator>

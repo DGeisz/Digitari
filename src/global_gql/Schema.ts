@@ -9,7 +9,6 @@ export const schema = gql`
         id: ID
         firstName: String
         lastName: String
-        userName: String
         email: String
         timeCreated: String
         imgUrl: String
@@ -19,14 +18,10 @@ export const schema = gql`
 
         # Indicates whether the person who fetched this user is following this user.
         amFollowing: Boolean
-        followPrice: Int
-
-        newUser: Boolean
 
         newConvoUpdate: Boolean
         newTransactionUpdate: Boolean
 
-        level: Int
         bio: String
         ranking: Int
         blocked: Int
@@ -216,7 +211,7 @@ export const schema = gql`
         presignedUrl: String
     }
 
-    type Query @aws_iam @aws_cognito_user_pools {
+    type Query @aws_cognito_user_pools @aws_iam {
         feed(lastTime: String): [Post]
         user(uid: ID!): User
         hid: String
@@ -241,14 +236,25 @@ export const schema = gql`
         postResponseCheck(pid: ID): Boolean
         transactionAccumulation: Int
         transactions(lastTime: String): [Transaction]
+
+        validInviteCode(code: String): Boolean
     }
 
     type Mutation {
+        createUser(
+            firstName: String!
+            lastName: String!
+            email: String!
+            code: String!
+        ): User
+
         createOrFetchUser(
             firstName: String!
             lastName: String!
             email: String!
         ): User
+
+        checkInUser: User
 
         registerPush(token: String!): Boolean
         deletePush(token: String!): Boolean

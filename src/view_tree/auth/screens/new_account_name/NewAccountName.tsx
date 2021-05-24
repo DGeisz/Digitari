@@ -1,17 +1,10 @@
 import React, { useState } from "react";
-import {
-    EmitterSubscription,
-    Keyboard,
-    Platform,
-    TouchableOpacity,
-    View,
-} from "react-native";
+import { Keyboard, Text, TouchableOpacity, View } from "react-native";
 import { authStyles } from "../../styles/AuthStyles";
 import { basicLayouts } from "../../../../global_styles/BasicLayouts";
 import { Input } from "react-native-elements";
 import AuthButton from "../../building_blocks/auth_button/AuthButton";
 import { NewAccountNameNavProp } from "../../AuthEntryNavTypes";
-import { scheduleLayoutAnimation } from "../../../../global_animations/KeyboardAnimation";
 import { useAuthKeyboardBuffer } from "../../building_blocks/use_auth_keyboard_buffer/UseAuthKeyboardBuffer";
 
 interface Props {
@@ -33,9 +26,13 @@ const NewAccountName: React.FC<Props> = (props) => {
         >
             <View style={basicLayouts.grid5}>
                 <Input
+                    autoFocus
+                    keyboardType="twitter"
+                    autoCorrect={false}
+                    spellCheck={false}
                     placeholder={"First name..."}
                     onChangeText={(text) => {
-                        setFirstName(text);
+                        setFirstName(text.replace(/\r?\n|\r/g, ""));
 
                         if (firstName && lastName) {
                             setActive(true);
@@ -45,9 +42,12 @@ const NewAccountName: React.FC<Props> = (props) => {
                     }}
                 />
                 <Input
+                    keyboardType="twitter"
+                    autoCorrect={false}
+                    spellCheck={false}
                     placeholder={"Last name..."}
                     onChangeText={(text) => {
-                        setLastName(text);
+                        setLastName(text.replace(/\r?\n|\r/g, ""));
 
                         if (firstName && lastName) {
                             setActive(true);
@@ -56,6 +56,9 @@ const NewAccountName: React.FC<Props> = (props) => {
                         }
                     }}
                 />
+                <Text style={authStyles.subText}>
+                    We use real names on Digitari 😊
+                </Text>
                 <AuthButton
                     marginTop={20}
                     onPress={() => {

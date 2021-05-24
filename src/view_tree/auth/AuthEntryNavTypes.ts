@@ -1,10 +1,10 @@
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { NewResponseRouteProp } from "../main/MainEntryNavTypes";
 
 export type AuthStackType = {
     ForgotPwd: undefined;
     Launch: undefined;
+    InviteCode: undefined;
     NewAccountEmailPwd: {
         firstName: string;
         lastName: string;
@@ -46,6 +46,10 @@ export type ResetPwdNavProp = StackNavigationProp<AuthStackType, "ResetPwd">;
 export type ResetPwdSuccessNavProp = StackNavigationProp<
     AuthStackType,
     "ResetPwdSuccess"
+>;
+export type InviteCodeNavProp = StackNavigationProp<
+    AuthStackType,
+    "InviteCode"
 >;
 
 /**

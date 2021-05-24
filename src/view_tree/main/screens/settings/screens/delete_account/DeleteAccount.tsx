@@ -3,7 +3,7 @@ import { Keyboard, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./DeleteAccountStyles";
 import { Input } from "react-native-elements";
 import AuthButton from "../../../../../auth/building_blocks/auth_button/AuthButton";
-import { useMutation } from "@apollo/client";
+import { useApolloClient, useMutation } from "@apollo/client";
 import {
     DELETE_ACCOUNT,
     DeleteAccountData,
@@ -20,11 +20,20 @@ const DeleteAccount: React.FC = () => {
         DeleteAccountVariables
     >(DELETE_ACCOUNT);
 
+    const client = useApolloClient();
+
     const deleteAccount = () => {
         setLoading(true);
         if (text === "Delete") {
             deleteAccountMutation().then();
+
             Auth.signOut({ global: true });
+
+            /*
+             * Clear out the cache so we don't store of this user's
+             * past queries
+             */
+            client.clearStore().then();
         }
         setLoading(false);
     };

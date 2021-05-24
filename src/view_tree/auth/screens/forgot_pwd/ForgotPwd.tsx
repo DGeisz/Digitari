@@ -55,6 +55,10 @@ const ForgotPwd: React.FC<Props> = (props) => {
                     password
                 </Text>
                 <Input
+                    keyboardType="twitter"
+                    autoCapitalize={"none"}
+                    autoCorrect={false}
+                    spellCheck={false}
                     placeholder={"Email..."}
                     leftIcon={{
                         type: "MaterialIcons",
@@ -63,7 +67,7 @@ const ForgotPwd: React.FC<Props> = (props) => {
                     }}
                     onFocus={() => setErrorActive(false)}
                     onChangeText={(text) => {
-                        setEmail(text);
+                        setEmail(text.replace(/\r?\n|\r/g, ""));
 
                         if (email) {
                             setActive(true);
@@ -78,9 +82,9 @@ const ForgotPwd: React.FC<Props> = (props) => {
                     onPress={sendEmail}
                     text={"Submit"}
                     active={active}
+                    height={bufferHeight}
                 />
             </View>
-            <View style={{ height: bufferHeight }} />
         </TouchableOpacity>
     );
 };
