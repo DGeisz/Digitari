@@ -160,7 +160,7 @@ const AppView: React.FC = () => {
         return (
             <View style={styles.setupContainer}>
                 <Text style={styles.setupText}>
-                    Hang on a sec while we set up your account...
+                    Getting everything ready...
                 </Text>
                 <ActivityIndicator color={palette.deepBlue} size="large" />
             </View>
