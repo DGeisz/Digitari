@@ -11,12 +11,9 @@ import Amplify from "aws-amplify";
 import { ApolloProvider } from "@apollo/client";
 import * as SplashScreen from "expo-splash-screen";
 import * as Notifications from "expo-notifications";
-import * as ScreenOrientation from "expo-screen-orientation";
-import { OrientationLock } from "expo-screen-orientation";
 import { PushNotificationType } from "./src/global_types/PushTypes";
 import { enableScreens } from "react-native-screens";
 import { useApollo } from "./src/global_gql/hooks/use_apollo/use_apollo";
-import { Auth } from "aws-amplify";
 
 enableScreens();
 
@@ -99,7 +96,6 @@ const linking: LinkingOptions = {
 export default function App() {
     useEffect(() => {
         SplashScreen.preventAutoHideAsync().then();
-        ScreenOrientation.lockAsync(OrientationLock.PORTRAIT).then();
     }, []);
 
     const client = useApollo();

@@ -21,10 +21,51 @@ import { HID, HidData } from "./gql/Queries";
 import { inviteCode, userAuthenticated } from "../global_state/AuthState";
 import { styles } from "./AppViewStyles";
 import { ActivityIndicator, Text, View } from "react-native";
-import LoadingWheel from "../global_building_blocks/loading_wheel/LoadingWheel";
 import { palette } from "../global_styles/Palette";
+import Constants from "expo-constants";
+import { InAppPurchase, IAPQueryResponse } from "expo-in-app-purchases";
 
 const AppView: React.FC = () => {
+    /* 
+    First we set up initialize in-app-purchases 
+     */
+    useEffect(() => {
+        if (Constants.appOwnership !== "expo") {
+            (async () => {
+                const {
+                    connectAsync,
+                    setPurchaseListener,
+                    finishTransactionAsync,
+                } = await import("expo-in-app-purchases");
+
+                await connectAsync();
+
+                setPurchaseListener((result: IAPQueryResponse) => {
+                    const { responseCode, results, errorCode } = result;
+
+                    if (!!results) {
+                        results.forEach((rawPurchase) => {
+                            const purchase = rawPurchase as InAppPurchase;
+
+                            if (!purchase.acknowledged) {
+                                /* 
+                                Ok, first we want to process this on the backend
+                                TODO: Actually implement backend processing
+                                 */
+
+                                /* 
+                                Then after we've accepted the transaction on the backend,
+                                we want to mark the transaction as complete
+                                 */
+                                finishTransactionAsync(purchase, true);
+                            }
+                        });
+                    }
+                });
+            })();
+        }
+    }, []);
+
     const [checkedAuth, setCheckAuth] = useState<boolean>(false);
     const [fetchedUser, setFetchedUser] = useState<boolean>(false);
 
