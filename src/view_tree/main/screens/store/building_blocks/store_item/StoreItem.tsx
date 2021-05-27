@@ -7,6 +7,7 @@ interface Props {
     title: string;
     coinAmount: number;
     price: string;
+    onSelect: () => void;
 }
 
 const StoreItem: React.FC<Props> = (props) => {
@@ -22,8 +23,11 @@ const StoreItem: React.FC<Props> = (props) => {
                     showAbbreviated={false}
                 />
             </View>
-            <TouchableOpacity style={styles.priceContainer}>
-                <Text style={styles.priceText}>${props.price}</Text>
+            <TouchableOpacity
+                style={styles.priceContainer}
+                onPress={props.onSelect}
+            >
+                <Text style={styles.priceText}>{props.price}</Text>
             </TouchableOpacity>
         </View>
     );

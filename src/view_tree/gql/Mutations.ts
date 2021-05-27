@@ -130,6 +130,26 @@ export interface CreateUserVariables {
     code: string;
 }
 
+export const PROCESS_IAP = gql`
+    mutation ProcessIap(
+        $productId: String!
+        $receipt: String!
+        $ios: Boolean!
+    ) {
+        processIap(productId: $productId, receipt: $receipt, ios: $ios)
+    }
+`;
+
+export interface ProcessIapData {
+    processIap: boolean;
+}
+
+export interface ProcessIapVariables {
+    productId: string;
+    receipt: string;
+    ios: boolean;
+}
+
 /*
  * DEPRECATED -- Create or fetch user
  */

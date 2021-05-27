@@ -3,7 +3,7 @@ import MainEntry from "./main/MainEntry";
 import AuthEntry from "./auth/AuthEntry";
 import * as SplashScreen from "expo-splash-screen";
 import { Auth, Hub } from "aws-amplify";
-import { useApolloClient, useReactiveVar } from "@apollo/client";
+import { useApolloClient, useMutation, useReactiveVar } from "@apollo/client";
 import {
     CHECK_IN_USER,
     CheckInUserData,
@@ -11,6 +11,9 @@ import {
     CREATE_USER,
     CreateUserData,
     CreateUserVariables,
+    ProcessIapData,
+    ProcessIapVariables,
+    PROCESS_IAP,
 } from "./gql/Mutations";
 import {
     setLocalFirstName,
@@ -20,12 +23,14 @@ import {
 import { HID, HidData } from "./gql/Queries";
 import { inviteCode, userAuthenticated } from "../global_state/AuthState";
 import { styles } from "./AppViewStyles";
-import { ActivityIndicator, Text, View } from "react-native";
+import { ActivityIndicator, Platform, Text, View } from "react-native";
 import { palette } from "../global_styles/Palette";
 import Constants from "expo-constants";
 import { InAppPurchase, IAPQueryResponse } from "expo-in-app-purchases";
 
 const AppView: React.FC = () => {
+    const client = useApolloClient();
+
     /* 
     First we set up initialize in-app-purchases 
      */
@@ -44,7 +49,7 @@ const AppView: React.FC = () => {
                     const { responseCode, results, errorCode } = result;
 
                     if (!!results) {
-                        results.forEach((rawPurchase) => {
+                        results.forEach(async (rawPurchase) => {
                             const purchase = rawPurchase as InAppPurchase;
 
                             if (!purchase.acknowledged) {
@@ -52,12 +57,41 @@ const AppView: React.FC = () => {
                                 Ok, first we want to process this on the backend
                                 TODO: Actually implement backend processing
                                  */
+                                let receipt: string;
+                                let ios: boolean;
+
+                                if (Platform.OS === "ios") {
+                                    ios = true;
+                                    receipt = purchase.transactionReceipt as string;
+                                } else {
+                                    ios = false;
+                                    receipt = purchase.purchaseToken as string;
+                                }
+
+                                const {
+                                    data: processData,
+                                } = await client.mutate<
+                                    ProcessIapData,
+                                    ProcessIapVariables
+                                >({
+                                    mutation: PROCESS_IAP,
+
+                                    variables: {
+                                        productId: purchase.productId,
+                                        ios,
+                                        receipt,
+                                    },
+                                });
 
                                 /* 
                                 Then after we've accepted the transaction on the backend,
-                                we want to mark the transaction as complete
+                                we want to mark the transaction as complete.
+
+                                The mutation will return true if the iap was accepted
                                  */
-                                finishTransactionAsync(purchase, true);
+                                if (!!processData?.processIap) {
+                                    finishTransactionAsync(purchase, true);
+                                }
                             }
                         });
                     }
@@ -74,7 +108,6 @@ const AppView: React.FC = () => {
     const [splashHidden, setSplashHidden] = useState<boolean>(false);
 
     const [newUser, setNewUser] = useState<boolean>(false);
-    const client = useApolloClient();
 
     const authenticated = useReactiveVar(userAuthenticated);
 
@@ -130,6 +163,10 @@ const AppView: React.FC = () => {
         })();
     }, [fetchedUser, checkedAuth]);
 
+    const [createUser] = useMutation<CreateUserData, CreateUserVariables>(
+        CREATE_USER
+    );
+
     useEffect(() => {
         (async () => {
             try {
@@ -150,6 +187,15 @@ const AppView: React.FC = () => {
                         CheckInUserVariables
                     >({
                         mutation: CHECK_IN_USER,
+                    });
+
+                    const { data } = await createUser({
+                        variables: {
+                            email,
+                            firstName: given_name,
+                            lastName: family_name,
+                            code: inviteCode(),
+                        },
                     });
 
                     if (!checkInData?.checkInUser) {

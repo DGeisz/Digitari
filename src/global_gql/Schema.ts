@@ -313,6 +313,8 @@ export const schema = gql`
         deleteUser: Boolean
 
         genInviteCode: String
+
+        processIap(productId: String!, receipt: String!, ios: Boolean): Boolean
     }
 
     type Subscription {
