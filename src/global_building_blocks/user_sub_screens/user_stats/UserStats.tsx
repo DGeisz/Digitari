@@ -7,6 +7,8 @@ import { palette } from "../../../global_styles/Palette";
 import Divider from "../../divider/Divider";
 import { styles } from "./UserStatsStyles";
 import UserStat from "./building_blocks/user_stat/UserStat";
+import { GENERAL_CONTENT_WIDTH } from "../../../global_constants/screen_constants";
+import { basicLayouts } from "../../../global_styles/BasicLayouts";
 
 interface Props {
     user: UserType;
@@ -20,8 +22,13 @@ const UserStats: React.FC<Props> = (props) => {
     const [stillSpin, setStillSpin] = useState<boolean>(false);
     return (
         <Animated.ScrollView
-            style={{ backgroundColor: palette.white }}
             {...scrollPropsAndRef}
+            contentContainerStyle={{
+                ...scrollPropsAndRef.contentContainerStyle,
+                alignSelf: "center",
+                width: GENERAL_CONTENT_WIDTH,
+                backgroundColor: palette.white,
+            }}
             refreshControl={
                 <RefreshControl
                     refreshing={stillSpin}

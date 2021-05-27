@@ -308,7 +308,13 @@ const ProfileHeader: React.FC<Props> = (props) => {
                     </View>
                 </View>
                 <View style={styles.profileSplit3} pointerEvents="none">
-                    <Text style={styles.profileBioText}>{props.user.bio}</Text>
+                    {!!props.user.bio ? (
+                        <Text style={styles.profileBioText}>
+                            {props.user.bio}
+                        </Text>
+                    ) : (
+                        <Text style={styles.noBioText}>No bio</Text>
+                    )}
                 </View>
                 <View style={styles.profileSplit4} pointerEvents="box-none">
                     <View style={styles.split4Left}>

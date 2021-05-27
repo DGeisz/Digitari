@@ -24,6 +24,8 @@ import {
     GetUserQueryVariables,
 } from "../../../view_tree/main/routes/tab_nav/screens/profile/gql/Queries";
 import { localUid } from "../../../global_state/UserState";
+import { basicLayouts } from "../../../global_styles/BasicLayouts";
+import { SCREEN_LARGER_THAN_CONTENT } from "../../../global_constants/screen_constants";
 
 interface Props {
     routeKey: string;
@@ -93,6 +95,8 @@ const UserPosts: React.FC<Props> = (props) => {
                             </Text>
                         </View>
                     );
+                } else if (SCREEN_LARGER_THAN_CONTENT) {
+                    return <View style={globalScreenStyles.headerBuffer}/>;
                 } else {
                     return null;
                 }

@@ -8,4 +8,7 @@ export const globalScreenStyles = StyleSheet.create({
     listFooterBuffer: {
         height: 60,
     },
+    headerBuffer: {
+        height: 20,
+    },
 });

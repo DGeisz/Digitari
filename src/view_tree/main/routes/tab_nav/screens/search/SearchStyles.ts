@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     resultsTitle: {
-        marginTop: 5,
+        marginVertical: 5,
         fontWeight: "bold",
         color: palette.deepBlue,
         marginLeft: 10,

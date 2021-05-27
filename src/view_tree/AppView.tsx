@@ -53,8 +53,6 @@ const AppView: React.FC = () => {
                 setPurchaseListener((result: IAPQueryResponse) => {
                     const { responseCode, results, errorCode } = result;
 
-                    console.log("Here's stuff: ", responseCode, results);
-
                     if (responseCode === IAPResponseCode.OK && !!results) {
                         results.forEach(async (rawPurchase) => {
                             const purchase = rawPurchase as InAppPurchase;

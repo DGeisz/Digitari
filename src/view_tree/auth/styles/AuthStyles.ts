@@ -1,12 +1,18 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
+import { basicLayouts } from "../../../global_styles/BasicLayouts";
 import { palette } from "../../../global_styles/Palette";
+
+const { width } = Dimensions.get("window");
+const minWidth = 600;
 
 export const authStyles = StyleSheet.create({
     paddedAuthContainer: {
         flex: 1,
         justifyContent: "center",
         alignItems: "stretch",
+        alignSelf: "center",
         paddingHorizontal: 30,
+        width: width > minWidth ? minWidth : width,
     },
     paddedInput: {
         marginTop: 100,

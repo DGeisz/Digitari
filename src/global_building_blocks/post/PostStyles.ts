@@ -1,16 +1,21 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet } from "react-native";
 import { basicLayouts } from "../../global_styles/BasicLayouts";
 import { palette } from "../../global_styles/Palette";
 import { globalTextStyles } from "../../global_styles/GlobalTextStyles";
+import {
+    GENERAL_CONTENT_WIDTH,
+    SCREEN_LARGER_THAN_CONTENT,
+} from "../../global_constants/screen_constants";
 
-const { width } = Dimensions.get("window");
-
-const imageSize = width * 0.7;
+const imageSize = GENERAL_CONTENT_WIDTH * 0.7;
 
 export const styles = StyleSheet.create({
     postContainer: {
+        width: GENERAL_CONTENT_WIDTH,
+        borderRadius: SCREEN_LARGER_THAN_CONTENT ? 5 : 0,
         paddingTop: 10,
         backgroundColor: palette.white,
+        alignSelf: "center"
     },
     postContentContainer: {
         flexDirection: "row",

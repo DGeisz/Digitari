@@ -57,8 +57,6 @@ const Store: React.FC = () => {
 
     const finalItems = items.sort();
 
-    console.log(items);
-
     if (error) {
         return (
             <ErrorMessage

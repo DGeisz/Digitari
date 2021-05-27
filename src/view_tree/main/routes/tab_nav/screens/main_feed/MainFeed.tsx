@@ -27,6 +27,8 @@ import {
     GetUserQueryData,
     GetUserQueryVariables,
 } from "../profile/gql/Queries";
+import { basicLayouts } from "../../../../../../global_styles/BasicLayouts";
+import { SCREEN_LARGER_THAN_CONTENT } from "../../../../../../global_constants/screen_constants";
 
 interface Props {}
 
@@ -107,6 +109,7 @@ const MainFeed: React.FC<Props> = () => {
                 </View>
             ) : (
                 <FlatList
+                ListHeaderComponent={SCREEN_LARGER_THAN_CONTENT ? <View style={globalScreenStyles.headerBuffer}/> : null}
                     data={finalFeed}
                     renderItem={({ item }) => (
                         <Post

@@ -1,10 +1,9 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet } from "react-native";
 import { palette } from "../../global_styles/Palette";
 import { basicLayouts } from "../../global_styles/BasicLayouts";
+import { GENERAL_CONTENT_WIDTH } from "../../global_constants/screen_constants";
 
-const { width } = Dimensions.get("window");
-
-const imageSize = width * 0.7;
+const imageSize = GENERAL_CONTENT_WIDTH * 0.7;
 
 export const styles = StyleSheet.create({
     linkPreviewContainer: {
@@ -17,7 +16,7 @@ export const styles = StyleSheet.create({
         borderColor: palette.softGray,
     },
     linkPreviewImage: {
-        height: 0.5 * imageSize,
+        height: 0.7 * imageSize,
         width: imageSize,
     },
     previewFooter: {

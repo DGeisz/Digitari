@@ -1,4 +1,5 @@
 import { Dimensions, StyleSheet } from "react-native";
+import { MAX_FEED_WIDTH } from "../../../../../../../global_constants/screen_constants";
 import { basicLayouts } from "../../../../../../../global_styles/BasicLayouts";
 import { palette } from "../../../../../../../global_styles/Palette";
 
@@ -16,13 +17,14 @@ export const styles = StyleSheet.create({
         ],
     },
     modalOuterContainer: {
-        ...basicLayouts.flexGrid4,
+        ...basicLayouts.flexGrid5,
     },
     modalContainer: {
         backgroundColor: palette.white,
         padding: 20,
         borderRadius: 30,
         maxHeight: height - 80,
+        maxWidth: MAX_FEED_WIDTH,
     },
     modalHeader: {
         ...basicLayouts.grid2,

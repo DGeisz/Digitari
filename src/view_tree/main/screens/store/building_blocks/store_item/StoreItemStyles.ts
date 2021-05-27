@@ -1,10 +1,13 @@
 import { StyleSheet } from "react-native";
 import { palette } from "../../../../../../global_styles/Palette";
 import { basicLayouts } from "../../../../../../global_styles/BasicLayouts";
+import { GENERAL_CONTENT_WIDTH } from "../../../../../../global_constants/screen_constants";
 
 export const styles = StyleSheet.create({
     itemContainer: {
         ...basicLayouts.grid2,
+        width: GENERAL_CONTENT_WIDTH,
+        alignSelf: "center",
         backgroundColor: palette.white,
         marginHorizontal: 10,
         marginTop: 20,

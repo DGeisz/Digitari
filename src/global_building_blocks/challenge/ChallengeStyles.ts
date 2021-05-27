@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { palette } from "../../global_styles/Palette";
 import { basicLayouts } from "../../global_styles/BasicLayouts";
+import { GENERAL_CONTENT_WIDTH } from "../../global_constants/screen_constants";
 
 export const styles = StyleSheet.create({
     challengeContainer: {
@@ -10,6 +11,8 @@ export const styles = StyleSheet.create({
         paddingTop: 10,
         flexDirection: "row",
         marginBottom: 15,
+        width: GENERAL_CONTENT_WIDTH,
+        alignSelf: "center",
     },
     challengeSideCoin: {
         ...basicLayouts.grid5,

@@ -109,6 +109,13 @@ export const styles = StyleSheet.create({
         fontSize: 18,
         lineHeight: 24,
     },
+    noBioText: {
+        color: palette.semiSoftGray,
+        fontSize: 18,
+        lineHeight: 24,
+        textAlign: "center",
+        // fontWeight: "bold"
+    },
     profileSplit4: {
         flexDirection: "row",
     },

@@ -35,6 +35,7 @@ import {
     DonateToPostVariables,
 } from "../../../../../../global_building_blocks/post/gql/Mutations";
 import { localUid } from "../../../../../../global_state/UserState";
+import { basicLayouts } from "../../../../../../global_styles/BasicLayouts";
 
 interface Props {
     routeKey: string;

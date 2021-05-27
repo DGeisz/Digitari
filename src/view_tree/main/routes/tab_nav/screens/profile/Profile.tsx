@@ -20,6 +20,7 @@ import UserChallenges from "../../../../../../global_building_blocks/user_sub_sc
 import UserStats from "../../../../../../global_building_blocks/user_sub_screens/user_stats/UserStats";
 import { localUid } from "../../../../../../global_state/UserState";
 import { styles } from "./ProfileStyles";
+import { SCREEN_LARGER_THAN_CONTENT } from "../../../../../../global_constants/screen_constants";
 
 const Tab = createMaterialCollapsibleTopTabNavigator();
 
@@ -80,14 +81,18 @@ const Profile: React.FC = () => {
                             ),
                             headerHeight: 250,
                         }}
-                        tabBarOptions={{
-                            scrollEnabled: true,
-                            tabStyle: {
-                                flex: 0,
-                                width: 100,
-                                padding: 0,
-                            },
-                        }}
+                        tabBarOptions={
+                            SCREEN_LARGER_THAN_CONTENT
+                                ? {}
+                                : {
+                                      scrollEnabled: true,
+                                      tabStyle: {
+                                          flex: 0,
+                                          width: 100,
+                                          padding: 0,
+                                      },
+                                  }
+                        }
                     >
                         <Tab.Screen
                             name="UserPosts"
