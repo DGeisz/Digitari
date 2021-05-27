@@ -5,9 +5,7 @@ import Constants from "expo-constants";
 import LoadingWheel from "../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import { FlatList } from "react-native-gesture-handler";
 import { purchaseItems } from "./data/purchase_items";
-import {
-    extractCoinAmount,
-} from "./utils/iap_item_utils";
+import { extractCoinAmount } from "./utils/iap_item_utils";
 import { globalScreenStyles } from "../../../../global_styles/GlobalScreenStyles";
 import { View } from "react-native";
 
@@ -57,7 +55,6 @@ const Store: React.FC = () => {
     const finalItems = items.sort();
 
     console.log(items);
-    
 
     if (loading) {
         return <LoadingWheel />;
