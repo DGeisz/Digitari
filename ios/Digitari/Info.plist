@@ -72,5 +72,7 @@
     <string>Give $(PRODUCT_NAME) permission to access your camera</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>Give $(PRODUCT_NAME) permission to use your microphone</string>
+    <key>NSContactsUsageDescription</key>
+    <string>Allow $(PRODUCT_NAME) to access your contacts</string>
   </dict>
 </plist>

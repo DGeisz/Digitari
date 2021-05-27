@@ -14,7 +14,9 @@ import * as Notifications from "expo-notifications";
 import { PushNotificationType } from "./src/global_types/PushTypes";
 import { enableScreens } from "react-native-screens";
 import { useApollo } from "./src/global_gql/hooks/use_apollo/use_apollo";
+import { setStatusBarStyle } from "expo-status-bar";
 
+setStatusBarStyle("dark");
 enableScreens();
 
 Amplify.configure({

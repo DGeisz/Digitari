@@ -16,6 +16,7 @@ import {
     PROCESS_IAP,
 } from "./gql/Mutations";
 import {
+    localUid,
     setLocalFirstName,
     setLocalHid,
     setLocalUid,
@@ -26,7 +27,10 @@ import { styles } from "./AppViewStyles";
 import { ActivityIndicator, Platform, Text, View } from "react-native";
 import { palette } from "../global_styles/Palette";
 import Constants from "expo-constants";
-import { InAppPurchase, IAPQueryResponse } from "expo-in-app-purchases";
+import type { InAppPurchase, IAPQueryResponse } from "expo-in-app-purchases";
+import { USER_TYPENAME } from "../global_types/UserTypes";
+import { updateId } from "expo-updates";
+import { ProductId, products } from "../global_types/IapTypes";
 
 const AppView: React.FC = () => {
     const client = useApolloClient();
@@ -41,6 +45,7 @@ const AppView: React.FC = () => {
                     connectAsync,
                     setPurchaseListener,
                     finishTransactionAsync,
+                    IAPResponseCode,
                 } = await import("expo-in-app-purchases");
 
                 await connectAsync();
@@ -48,7 +53,9 @@ const AppView: React.FC = () => {
                 setPurchaseListener((result: IAPQueryResponse) => {
                     const { responseCode, results, errorCode } = result;
 
-                    if (!!results) {
+                    console.log("Here's stuff: ", responseCode, results);
+
+                    if (responseCode === IAPResponseCode.OK && !!results) {
                         results.forEach(async (rawPurchase) => {
                             const purchase = rawPurchase as InAppPurchase;
 
@@ -91,12 +98,45 @@ const AppView: React.FC = () => {
                                  */
                                 if (!!processData?.processIap) {
                                     finishTransactionAsync(purchase, true);
+
+                                    client.cache.modify({
+                                        id: client.cache.identify({
+                                            __typename: USER_TYPENAME,
+                                            id: localUid(),
+                                        }),
+                                        fields: {
+                                            coin(existing) {
+                                                const amount =
+                                                    products[
+                                                        purchase.productId as ProductId
+                                                    ];
+
+                                                if (!!amount) {
+                                                    return existing + amount;
+                                                } else {
+                                                    return existing;
+                                                }
+                                            },
+                                        },
+                                    });
                                 }
                             }
                         });
                     }
                 });
             })();
+
+            return () => {
+                if (Constants.appOwnership !== "expo") {
+                    (async () => {
+                        const { disconnectAsync } = await import(
+                            "expo-in-app-purchases"
+                        );
+
+                        await disconnectAsync();
+                    })();
+                }
+            };
         }
     }, []);
 
@@ -170,16 +210,12 @@ const AppView: React.FC = () => {
     useEffect(() => {
         (async () => {
             try {
-                console.log("Here we're starting auth!");
-
                 const { sub, email, given_name, family_name } = (
                     await Auth.currentSession()
                 ).getIdToken().payload;
 
                 !!sub && setLocalUid(sub);
                 !!given_name && setLocalFirstName(given_name);
-
-                // console.log("Here's auth info", email, given_name, family_name);
 
                 if (authenticated && email && given_name && family_name) {
                     const { data: checkInData } = await client.mutate<

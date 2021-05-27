@@ -1,7 +1,10 @@
 {
+    "name": "Digitari",
+    "displayName": "Digitari",
     "expo": {
         "name": "Digitari",
         "slug": "Digitari",
+        "sdkVersion": "40.0.0",
         "scheme": "digitari",
         "version": "1.0.0",
         "orientation": "portrait",

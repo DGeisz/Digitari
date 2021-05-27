@@ -7,8 +7,9 @@ import { FlatList } from "react-native-gesture-handler";
 import { purchaseItems } from "./data/purchase_items";
 import {
     extractCoinAmount,
-    storeTitleTranslation,
 } from "./utils/iap_item_utils";
+import { globalScreenStyles } from "../../../../global_styles/GlobalScreenStyles";
+import { View } from "react-native";
 
 /*
  * The ejection culprit
@@ -53,7 +54,10 @@ const Store: React.FC = () => {
         }
     }, []);
 
-    const finalItems = purchaseItems.sort();
+    const finalItems = items.sort();
+
+    console.log(items);
+    
 
     if (loading) {
         return <LoadingWheel />;
@@ -62,10 +66,13 @@ const Store: React.FC = () => {
     return (
         <FlatList
             data={finalItems}
+            ListFooterComponent={
+                <View style={globalScreenStyles.listFooterBuffer} />
+            }
             renderItem={({ item }) => {
                 return (
                     <StoreItem
-                        title={storeTitleTranslation(item.title)}
+                        title={item.title}
                         coinAmount={extractCoinAmount(item.description)}
                         price={item.price}
                         onSelect={async () => {

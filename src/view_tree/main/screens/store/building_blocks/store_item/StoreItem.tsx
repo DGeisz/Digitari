@@ -1,16 +1,20 @@
-import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import React, { useState } from "react";
+import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./StoreItemStyles";
 import CoinBox from "../../../../../../global_building_blocks/coin_box/CoinBox";
+import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
+import { palette } from "../../../../../../global_styles/Palette";
 
 interface Props {
     title: string;
     coinAmount: number;
     price: string;
-    onSelect: () => void;
+    onSelect: () => Promise<void>;
 }
 
 const StoreItem: React.FC<Props> = (props) => {
+    const [loading, setLoading] = useState<boolean>(false);
+
     return (
         <View style={styles.itemContainer}>
             <Text style={styles.itemTitle}>{props.title}</Text>
@@ -23,12 +27,25 @@ const StoreItem: React.FC<Props> = (props) => {
                     showAbbreviated={false}
                 />
             </View>
-            <TouchableOpacity
-                style={styles.priceContainer}
-                onPress={props.onSelect}
-            >
-                <Text style={styles.priceText}>{props.price}</Text>
-            </TouchableOpacity>
+            {loading ? (
+                <ActivityIndicator color={palette.deepBlue} size="large" />
+            ) : (
+                <TouchableOpacity
+                    style={styles.priceContainer}
+                    onPress={async () => {
+                        setLoading(true);
+
+                        try {
+                            await props.onSelect();
+                        } finally {
+                        }
+
+                        setLoading(false);
+                    }}
+                >
+                    <Text style={styles.priceText}>{props.price}</Text>
+                </TouchableOpacity>
+            )}
         </View>
     );
 };
