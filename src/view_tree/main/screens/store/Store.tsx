@@ -8,6 +8,7 @@ import { purchaseItems } from "./data/purchase_items";
 import { extractCoinAmount } from "./utils/iap_item_utils";
 import { globalScreenStyles } from "../../../../global_styles/GlobalScreenStyles";
 import { View } from "react-native";
+import ErrorMessage from "../../../../global_building_blocks/error_message/ErrorMessage";
 
 /*
  * The ejection culprit
@@ -16,6 +17,8 @@ const Store: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [items, setItems] = useState<IAPItemDetails[]>([]);
     const [error, setError] = useState<boolean>(false);
+
+    const [retryCount, setRetryCount] = useState<number>(0);
 
     useEffect(() => {
         setLoading(true);
@@ -50,11 +53,23 @@ const Store: React.FC = () => {
 
             setLoading(false);
         }
-    }, []);
+    }, [retryCount]);
 
     const finalItems = items.sort();
 
     console.log(items);
+
+    if (error) {
+        return (
+            <ErrorMessage
+                refresh={() => {
+                    setRetryCount((count) => count + 1);
+                    setLoading(true);
+                    setError(false);
+                }}
+            />
+        );
+    }
 
     if (loading) {
         return <LoadingWheel />;

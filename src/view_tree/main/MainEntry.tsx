@@ -79,8 +79,11 @@ const MainEntry: React.FC = () => {
                         return;
                     }
 
-                    const token = (await Notifications.getExpoPushTokenAsync())
-                        .data;
+                    const token = (
+                        await Notifications.getExpoPushTokenAsync({
+                            experienceId: "@dannygeisz/Digitari",
+                        })
+                    ).data;
 
                     try {
                         await registerPush({
@@ -92,7 +95,7 @@ const MainEntry: React.FC = () => {
                         console.log("Already registered, or perhaps error");
                     }
                 } catch (e) {
-                    console.log("Error in push registration flow");
+                    console.log("Error in push registration flow: ", e);
                 }
             })();
         }
