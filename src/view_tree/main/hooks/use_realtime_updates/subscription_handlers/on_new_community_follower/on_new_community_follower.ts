@@ -5,10 +5,7 @@ import {
     TransactionType,
     TransactionTypesEnum,
 } from "../../../../../../global_types/TransactionTypes";
-import {
-    FOLLOW_USER_PRICE,
-    USER_TYPENAME,
-} from "../../../../../../global_types/UserTypes";
+import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
 import { addTransaction } from "../utils/cache_utils";
 import { localUid } from "../../../../../../global_state/UserState";
 import {

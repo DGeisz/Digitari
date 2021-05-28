@@ -10,9 +10,9 @@ const goldCount = 1000;
 const supremeCount = 10000;
 
 const bronzeCoin = 1000;
-const silverCoin = 10000;
-const goldCoin = 100000;
-const supremeCoin = 1000000;
+const silverCoin = 5000;
+const goldCoin = 20000;
+const supremeCoin = 50000;
 
 export function generateCommunityFollowersChallenge(
     challengeClass: ChallengeClass

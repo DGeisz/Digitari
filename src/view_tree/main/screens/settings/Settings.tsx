@@ -100,56 +100,45 @@ const Settings: React.FC<Props> = (props) => {
             />
             <View style={styles.outerContainer}>
                 <View style={styles.settingsBubble}>
-                    <View style={styles.settingsFirstRow}>
-                        <TouchableOpacity
-                            onPress={() =>
-                                props.navigation.navigate("Password")
-                            }
-                        >
-                            <Text style={styles.settingsRowText}>Password</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.settingsRow}>
-                        <TouchableOpacity>
-                            <Text style={styles.settingsRowText}>
-                                Terms & Conditions
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.settingsRow}>
-                        <TouchableOpacity>
-                            <Text style={styles.settingsRowText}>
-                                Privacy Policy
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.settingsRow}>
-                        <TouchableOpacity>
-                            <Text style={styles.settingsRowText}>
-                                Content Policy
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.settingsRow}>
-                        <TouchableOpacity
-                            onPress={() => setSignOutVisible(true)}
-                        >
-                            <Text style={styles.settingsRowText}>Sign out</Text>
-                        </TouchableOpacity>
-                    </View>
+                    <TouchableOpacity
+                        style={styles.settingsFirstRow}
+                        onPress={() => props.navigation.navigate("Password")}
+                    >
+                        <Text style={styles.settingsRowText}>Password</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.settingsRow}>
+                        <Text style={styles.settingsRowText}>
+                            Terms & Conditions
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.settingsRow}>
+                        <Text style={styles.settingsRowText}>
+                            Privacy Policy
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.settingsRow}>
+                        <Text style={styles.settingsRowText}>
+                            Content Policy
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => setSignOutVisible(true)}
+                        style={styles.settingsRow}
+                    >
+                        <Text style={styles.settingsRowText}>Sign out</Text>
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.settingsBubble}>
-                    <View style={styles.settingsFirstRow}>
-                        <TouchableOpacity
-                            onPress={() =>
-                                props.navigation.navigate("DeleteAccount")
-                            }
-                        >
-                            <Text style={styles.deleteAccountText}>
-                                Delete account
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
+                    <TouchableOpacity
+                        style={styles.settingsFirstRow}
+                        onPress={() =>
+                            props.navigation.navigate("DeleteAccount")
+                        }
+                    >
+                        <Text style={styles.deleteAccountText}>
+                            Delete account
+                        </Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         </>

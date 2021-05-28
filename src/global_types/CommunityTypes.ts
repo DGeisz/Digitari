@@ -1,6 +1,6 @@
 export const COMMUNITY_TYPENAME = "Community";
 
-export const FOLLOW_COMMUNITY_PRICE = 50;
+export const FOLLOW_COMMUNITY_PRICE = 20;
 
 export const COMMUNITY_NAME_MAX_LEN = 50;
 export const COMMUNITY_DESCRIPTION_MAX_LEN = 400;

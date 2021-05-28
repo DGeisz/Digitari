@@ -4,6 +4,7 @@ import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { styles } from "./DonationModalStyles";
 import CoinBox from "../../../coin_box/CoinBox";
 import { toCommaRep } from "../../../../global_utils/ValueRepUtils";
+import { palette } from "../../../../global_styles/Palette";
 
 interface Props {
     visible: boolean;
@@ -50,6 +51,7 @@ export default class DonationModal extends React.PureComponent<Props, State> {
                         style={styles.donateInput}
                         keyboardType="numeric"
                         placeholder="Amount..."
+                        placeholderTextColor={palette.semiSoftGray}
                         value={
                             isNaN(this.state.amount)
                                 ? ""
