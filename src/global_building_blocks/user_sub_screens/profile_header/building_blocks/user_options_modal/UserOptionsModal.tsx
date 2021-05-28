@@ -1,12 +1,16 @@
 import React, { useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import * as Linking from "expo-linking";
+import { Text, TouchableOpacity, View, Share } from "react-native";
 import { optionsStyles } from "../../../../../global_styles/OptionsModalStyles";
 import { Entypo } from "@expo/vector-icons";
 import { palette } from "../../../../../global_styles/Palette";
 import Modal from "react-native-modal";
 
+const prefix = Linking.createURL("/");
+
 interface Props {
     openReportUser: () => void;
+    uid: string;
 }
 
 const UserOptionsModal: React.FC<Props> = (props) => {
@@ -42,6 +46,18 @@ const UserOptionsModal: React.FC<Props> = (props) => {
                             >
                                 <Text style={optionsStyles.reportText}>
                                     Report user
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={optionsStyles.optionContainer}
+                                onPress={async () => {
+                                    await Share.share({
+                                        message: `${prefix}user/${props.uid}`,
+                                    });
+                                }}
+                            >
+                                <Text style={optionsStyles.shareText}>
+                                    Share profile
                                 </Text>
                             </TouchableOpacity>
                         </View>

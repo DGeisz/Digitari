@@ -15,6 +15,7 @@ import { PushNotificationType } from "./src/global_types/PushTypes";
 import { enableScreens } from "react-native-screens";
 import { useApollo } from "./src/global_gql/hooks/use_apollo/use_apollo";
 import { setStatusBarStyle } from "expo-status-bar";
+import { EventType } from "expo-linking";
 
 setStatusBarStyle("dark");
 enableScreens();
@@ -55,43 +56,67 @@ const linking: LinkingOptions = {
             },
             NewPost: "new-post",
             User: "user/:uid",
+            Community: "community/:cmid",
             Convo: "convo/:cvid/:pid",
+            PostScreen: "post/:pid",
         },
     },
     subscribe(listener) {
-        Notifications.addNotificationResponseReceivedListener((response) => {
-            const data = response.notification.request.content.data;
+        const eventHandler = (event: EventType) => {
+            listener(event.url);
+        };
 
-            const notificationType = data.type as PushNotificationType;
-            const notificationContent = data.content as string;
+        Linking.addEventListener("url", eventHandler);
 
-            switch (notificationType) {
-                case PushNotificationType.ConvoBlocked:
-                    listener(prefix + `convo/${notificationContent}`);
-                    break;
-                case PushNotificationType.NewConvo:
-                    listener(prefix + `convo/${notificationContent}`);
-                    break;
-                case PushNotificationType.ConvoFinished:
-                    listener(prefix + `convo/${notificationContent}`);
-                    break;
-                case PushNotificationType.ConvoDismissed:
-                    listener(prefix + `convo/${notificationContent}`);
-                    break;
-                case PushNotificationType.Message:
-                    listener(prefix + `convo/${notificationContent}`);
-                    break;
-                case PushNotificationType.UserFollowed:
-                    listener(prefix + `user/${notificationContent}`);
-                    break;
-                case PushNotificationType.UserFollowedCommunity:
-                    listener(prefix + `user/${notificationContent}`);
-                    break;
-                case PushNotificationType.CoinDonated:
-                    listener(prefix + `user/${notificationContent}`);
-                    break;
+        const subscription = Notifications.addNotificationResponseReceivedListener(
+            (response) => {
+                const data = response.notification.request.content.data;
+
+                const notificationType = data.type as PushNotificationType;
+                const notificationContent = data.content as string;
+
+                switch (notificationType) {
+                    case PushNotificationType.ConvoBlocked:
+                        listener(prefix + `convo/${notificationContent}`);
+                        break;
+                    case PushNotificationType.NewConvo:
+                        listener(prefix + `convo/${notificationContent}`);
+                        break;
+                    case PushNotificationType.ConvoFinished:
+                        listener(prefix + `convo/${notificationContent}`);
+                        break;
+                    case PushNotificationType.ConvoDismissed:
+                        listener(prefix + `convo/${notificationContent}`);
+                        break;
+                    case PushNotificationType.Message:
+                        listener(prefix + `convo/${notificationContent}`);
+                        break;
+                    case PushNotificationType.UserFollowed:
+                        listener(prefix + "wallet");
+                        break;
+                    case PushNotificationType.UserFollowedCommunity:
+                        listener(prefix + "wallet");
+                        break;
+                    case PushNotificationType.CoinDonated:
+                        listener(prefix + "wallet");
+                        break;
+                    case PushNotificationType.ChallengeComplete:
+                        listener(prefix + "wallet");
+                        break;
+                    case PushNotificationType.PostBlocked:
+                        listener(prefix + `user/${notificationContent}`);
+                        break;
+                    case PushNotificationType.UserJoined:
+                        listener(prefix + "wallet");
+                        break;
+                }
             }
-        });
+        );
+
+        return () => {
+            Linking.removeEventListener("url", eventHandler);
+            subscription.remove();
+        };
     },
 };
 

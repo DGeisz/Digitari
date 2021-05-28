@@ -292,6 +292,7 @@ const ProfileHeader: React.FC<Props> = (props) => {
                                 </Text>
                                 <UserOptionsModal
                                     openReportUser={props.openReportUser}
+                                    uid={props.user.id}
                                 />
                             </View>
                             <View style={styles.statsContainer}>

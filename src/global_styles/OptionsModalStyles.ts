@@ -57,6 +57,11 @@ export const optionsStyles = StyleSheet.create({
         fontWeight: "500",
         marginLeft: 5,
     },
+    shareText: {
+        fontSize: 18,
+        color: palette.deepBlue,
+        fontWeight: "500",
+    },
     reportText: {
         fontSize: 18,
         color: palette.hardGray,

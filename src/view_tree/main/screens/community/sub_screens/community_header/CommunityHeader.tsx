@@ -156,6 +156,7 @@ const CommunityHeader: React.FC<Props> = (props) => {
                     </View>
                     <CommunityOptionsModal
                         openReportCommunity={props.openReportCommunity}
+                        cmid={cmid}
                     />
                 </View>
                 <View style={styles.headerRight}>

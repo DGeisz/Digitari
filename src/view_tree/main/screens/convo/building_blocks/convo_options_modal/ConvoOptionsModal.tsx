@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View, Share } from "react-native";
 import Modal from "react-native-modal";
 import { optionsStyles } from "../../../../../../global_styles/OptionsModalStyles";
 import { Entypo } from "@expo/vector-icons";
@@ -16,12 +16,16 @@ import {
     DeleteConvoData,
     DeleteConvoVariables,
 } from "./gql/Mutations";
-import { cache } from "../../../../../../global_state/Cache";
+import * as Linking from "expo-linking";
+
+const prefix = Linking.createURL("/");
 
 interface Props {
     openReportConvo: () => void;
     convo: ConvoType;
     goBack: () => void;
+    cvid: string;
+    pid: string;
 }
 
 const ConvoOptionsModal: React.FC<Props> = (props) => {
@@ -102,6 +106,18 @@ const ConvoOptionsModal: React.FC<Props> = (props) => {
                             >
                                 <Text style={optionsStyles.reportText}>
                                     Report convo
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={optionsStyles.optionContainer}
+                                onPress={async () => {
+                                    await Share.share({
+                                        message: `${prefix}convo/${props.cvid}/${props.pid}`,
+                                    });
+                                }}
+                            >
+                                <Text style={optionsStyles.shareText}>
+                                    Share convo
                                 </Text>
                             </TouchableOpacity>
                             {isParticipant && (

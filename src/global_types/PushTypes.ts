@@ -7,6 +7,9 @@ export enum PushNotificationType {
     UserFollowed,
     UserFollowedCommunity,
     CoinDonated,
+    ChallengeComplete,
+    PostBlocked,
+    UserJoined,
 }
 
 export interface NotificationData {

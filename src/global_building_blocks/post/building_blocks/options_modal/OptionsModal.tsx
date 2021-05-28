@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Entypo } from "@expo/vector-icons";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View, Share } from "react-native";
 import Modal from "react-native-modal";
 import { BlockedSymbol } from "../../../big_three/BigThree";
 import { localUid } from "../../../../global_state/UserState";
@@ -25,6 +25,9 @@ import LoadingWheel from "../../../loading_wheel/LoadingWheel";
 import { USER_TYPENAME } from "../../../../global_types/UserTypes";
 import { optionsStyles } from "../../../../global_styles/OptionsModalStyles";
 import { palette } from "../../../../global_styles/Palette";
+import * as Linking from "expo-linking";
+
+const prefix = Linking.createURL("/");
 
 interface Props {
     post: PostType;
@@ -192,6 +195,18 @@ const OptionsModal: React.FC<Props> = (props) => {
                             >
                                 <Text style={optionsStyles.reportText}>
                                     Report post
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={optionsStyles.optionContainer}
+                                onPress={async () => {
+                                    await Share.share({
+                                        message: `${prefix}post/${props.post.id}`,
+                                    });
+                                }}
+                            >
+                                <Text style={optionsStyles.shareText}>
+                                    Share post
                                 </Text>
                             </TouchableOpacity>
                             {canDelete && (

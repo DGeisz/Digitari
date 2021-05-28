@@ -180,9 +180,12 @@ const AppView: React.FC = () => {
                     if (fetchedUser) {
                         if (!splashHidden) {
                             setTimeout(async () => {
-                                await SplashScreen.hideAsync();
-                                setSplashHidden(true);
-                            }, 500);
+                                try {
+                                    await SplashScreen.hideAsync();
+                                } finally {
+                                    setSplashHidden(true);
+                                }
+                            }, 200);
                         }
                     }
                 } else {
@@ -190,9 +193,12 @@ const AppView: React.FC = () => {
 
                     if (!splashHidden) {
                         setTimeout(async () => {
-                            await SplashScreen.hideAsync();
-                            setSplashHidden(true);
-                        }, 500);
+                            try {
+                                await SplashScreen.hideAsync();
+                            } finally {
+                                setSplashHidden(true);
+                            }
+                        }, 200);
                     }
                 }
             }

@@ -85,7 +85,6 @@ import {
 import { addTransaction } from "../../hooks/use_realtime_updates/subscription_handlers/utils/cache_utils";
 import { challengeCheck } from "../../../../global_gql/challenge_check/challenge_check";
 import ConvoOptionsModal from "./building_blocks/convo_options_modal/ConvoOptionsModal";
-import { GENERAL_CONTENT_WIDTH } from "../../../../global_constants/screen_constants";
 
 function getCheckLeft(uid: string, tid: string): (id: string) => boolean {
     if (uid === tid) {
@@ -104,7 +103,7 @@ const Convo: React.FC<Props> = (props) => {
     const uid = localUid();
     const hid = localHid();
 
-    const { cvid } = props.route.params;
+    const { cvid, pid } = props.route.params;
 
     const [error, setError] = useState<string>("");
 
@@ -799,6 +798,8 @@ const Convo: React.FC<Props> = (props) => {
                                         }}
                                         convo={convoData.convo}
                                         goBack={props.navigation.goBack}
+                                        cvid={cvid}
+                                        pid={pid}
                                     />
                                 </View>
                             </View>

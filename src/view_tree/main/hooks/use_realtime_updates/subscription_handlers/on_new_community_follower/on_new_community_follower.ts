@@ -29,6 +29,17 @@ export async function onNewCommunityFollower(
         const follower = data.newCommunityFollower;
         const uid = localUid();
 
+        /*
+         * If I am the follower, then
+         * the next time I go to my transactions,
+         * this transaction will appear there,
+         * so we don't need to do any special cache
+         * manipulations or creations, thus return early
+         */
+        if (uid === follower.sid) {
+            return;
+        }
+
         let message = `${follower.name} followed your community!`;
 
         try {

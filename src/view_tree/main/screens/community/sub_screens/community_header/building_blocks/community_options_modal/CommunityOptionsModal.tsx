@@ -1,12 +1,16 @@
 import React, { useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View, Share } from "react-native";
 import { optionsStyles } from "../../../../../../../../global_styles/OptionsModalStyles";
 import { Entypo } from "@expo/vector-icons";
 import { palette } from "../../../../../../../../global_styles/Palette";
 import Modal from "react-native-modal";
+import * as Linking from "expo-linking";
+
+const prefix = Linking.createURL("/");
 
 interface Props {
     openReportCommunity: () => void;
+    cmid: string;
 }
 
 const CommunityOptionsModal: React.FC<Props> = (props) => {
@@ -43,6 +47,18 @@ const CommunityOptionsModal: React.FC<Props> = (props) => {
                             >
                                 <Text style={optionsStyles.reportText}>
                                     Report community
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={optionsStyles.optionContainer}
+                                onPress={async () => {
+                                    await Share.share({
+                                        message: `${prefix}community/${props.cmid}`,
+                                    });
+                                }}
+                            >
+                                <Text style={optionsStyles.shareText}>
+                                    Share community
                                 </Text>
                             </TouchableOpacity>
                         </View>
