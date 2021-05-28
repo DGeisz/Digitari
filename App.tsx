@@ -48,8 +48,10 @@ const prefix = Linking.createURL("/");
 const linking: LinkingOptions = {
     prefixes: [prefix],
     config: {
+        initialRouteName: "TabNav",
         screens: {
             TabNav: {
+                path: "tabs",
                 screens: {
                     Wallet: "wallet",
                 },
@@ -63,6 +65,7 @@ const linking: LinkingOptions = {
     },
     subscribe(listener) {
         const eventHandler = (event: EventType) => {
+            listener(prefix + "tabs");
             listener(event.url);
         };
 
