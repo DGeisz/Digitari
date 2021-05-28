@@ -8,7 +8,7 @@ const iconSideLength = 45;
 export const styles = StyleSheet.create({
     entityContainer: {
         width: GENERAL_CONTENT_WIDTH,
-    alignSelf: "center",
+        alignSelf: "center",
         flexDirection: "row",
         flex: 1,
         backgroundColor: palette.white,

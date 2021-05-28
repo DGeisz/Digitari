@@ -87,14 +87,18 @@ const User: React.FC<Props> = (props) => {
                         ),
                         headerHeight: 250,
                     }}
-                    tabBarOptions={SCREEN_LARGER_THAN_CONTENT ? {} : {
-                        scrollEnabled: true,
-                        tabStyle: {
-                            flex: 0,
-                            width: 100,
-                            padding: 0,
-                        },
-                    }}
+                    tabBarOptions={
+                        SCREEN_LARGER_THAN_CONTENT
+                            ? {}
+                            : {
+                                  scrollEnabled: true,
+                                  tabStyle: {
+                                      flex: 0,
+                                      width: 100,
+                                      padding: 0,
+                                  },
+                              }
+                    }
                 >
                     <Tab.Screen
                         name="UserPosts"

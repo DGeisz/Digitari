@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     listContainer: {
         backgroundColor: palette.white,
         width: GENERAL_CONTENT_WIDTH,
-        alignSelf: "center"
+        alignSelf: "center",
     },
     headerContainer: {},
     postConvosBuffer: {

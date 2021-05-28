@@ -1,4 +1,4 @@
-import { StyleSheet, } from "react-native";
+import { StyleSheet } from "react-native";
 import { basicLayouts } from "../../../../global_styles/BasicLayouts";
 import { palette } from "../../../../global_styles/Palette";
 import { globalTextStyles } from "../../../../global_styles/GlobalTextStyles";

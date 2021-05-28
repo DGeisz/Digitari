@@ -6,7 +6,6 @@ import { GENERAL_CONTENT_WIDTH } from "../../../../global_constants/screen_const
 
 const msgBorderRadius = 20;
 
-
 export const styles = StyleSheet.create({
     leftMsgContainer: {
         flexDirection: "row",

@@ -109,7 +109,11 @@ const MainFeed: React.FC<Props> = () => {
                 </View>
             ) : (
                 <FlatList
-                ListHeaderComponent={SCREEN_LARGER_THAN_CONTENT ? <View style={globalScreenStyles.headerBuffer}/> : null}
+                    ListHeaderComponent={
+                        SCREEN_LARGER_THAN_CONTENT ? (
+                            <View style={globalScreenStyles.headerBuffer} />
+                        ) : null
+                    }
                     data={finalFeed}
                     renderItem={({ item }) => (
                         <Post

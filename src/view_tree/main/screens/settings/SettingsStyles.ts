@@ -6,7 +6,7 @@ import { palette } from "../../../../global_styles/Palette";
 export const styles = StyleSheet.create({
     outerContainer: {
         width: GENERAL_CONTENT_WIDTH,
-        alignSelf: 'center',
+        alignSelf: "center",
         padding: 20,
     },
     settingsBubble: {

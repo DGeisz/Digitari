@@ -96,7 +96,7 @@ const UserPosts: React.FC<Props> = (props) => {
                         </View>
                     );
                 } else if (SCREEN_LARGER_THAN_CONTENT) {
-                    return <View style={globalScreenStyles.headerBuffer}/>;
+                    return <View style={globalScreenStyles.headerBuffer} />;
                 } else {
                     return null;
                 }

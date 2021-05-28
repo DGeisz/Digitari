@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
         borderRadius: SCREEN_LARGER_THAN_CONTENT ? 5 : 0,
         paddingTop: 10,
         backgroundColor: palette.white,
-        alignSelf: "center"
+        alignSelf: "center",
     },
     postContentContainer: {
         flexDirection: "row",

@@ -6,7 +6,7 @@ import { palette } from "../../../../../../global_styles/Palette";
 export const styles = StyleSheet.create({
     passwordContainer: {
         width: GENERAL_CONTENT_WIDTH,
-        alignSelf: 'center',
+        alignSelf: "center",
         paddingVertical: 20,
         paddingHorizontal: 10,
     },
