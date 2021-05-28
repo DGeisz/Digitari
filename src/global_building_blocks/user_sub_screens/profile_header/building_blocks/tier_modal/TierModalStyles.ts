@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { basicLayouts } from "../../../../../global_styles/BasicLayouts";
 import { palette } from "../../../../../global_styles/Palette";
+import { GENERAL_CONTENT_WIDTH } from "../../../../../global_constants/screen_constants";
 
 export const styles = StyleSheet.create({
     modalOuterContainer: {
@@ -8,6 +9,8 @@ export const styles = StyleSheet.create({
         paddingVertical: 40,
     },
     modalContainer: {
+        width: GENERAL_CONTENT_WIDTH - 40,
+        alignSelf: "center",
         marginVertical: 40,
         backgroundColor: palette.white,
         paddingVertical: 10,

@@ -125,13 +125,13 @@ export function tier2Wage(tier: TierEnum): [number, number] {
             dailyWage = 1500;
             break;
         case TierEnum.Sunglasses:
-            dailyWage = 3000;
+            dailyWage = 2000;
             break;
         case TierEnum.HeartEyes:
-            dailyWage = 8000;
+            dailyWage = 3000;
             break;
         case TierEnum.Angel:
-            dailyWage = 20000;
+            dailyWage = 5000;
             break;
     }
 
@@ -187,11 +187,11 @@ export function tier2convoReward(tier: TierEnum): number {
         case TierEnum.Hugging:
             return 100;
         case TierEnum.Sunglasses:
-            return 250;
+            return 150;
         case TierEnum.HeartEyes:
-            return 600;
+            return 250;
         case TierEnum.Angel:
-            return 1500;
+            return 400;
     }
 }
 
@@ -212,10 +212,10 @@ export function tier2responseCost(tier: TierEnum): number {
         case TierEnum.Hugging:
             return 35;
         case TierEnum.Sunglasses:
-            return 85;
+            return 50;
         case TierEnum.HeartEyes:
-            return 200;
+            return 85;
         case TierEnum.Angel:
-            return 500;
+            return 135;
     }
 }

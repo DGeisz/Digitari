@@ -391,7 +391,7 @@ export default class Post extends React.Component<Props, State> {
                                                 <TouchableOpacity
                                                     onPress={() => {
                                                         this.donateCoin(
-                                                            1
+                                                            10
                                                         ).then();
                                                     }}
                                                     onLongPress={() => {

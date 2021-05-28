@@ -11,8 +11,8 @@ import {
 import { toRep } from "../../global_utils/ValueRepUtils";
 import { UserType } from "../../global_types/UserTypes";
 import ChallengeTier from "./tier/ChallengeTier";
+import { GENERAL_CONTENT_WIDTH } from "../../global_constants/screen_constants";
 
-const { width } = Dimensions.get("window");
 
 interface Props {
     challenge: ChallengeType;
@@ -25,7 +25,7 @@ interface State {
 
 export default class Challenge extends React.PureComponent<Props, State> {
     state = {
-        fillWidth: width / 4,
+        fillWidth: GENERAL_CONTENT_WIDTH / 4,
     };
 
     render() {

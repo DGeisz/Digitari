@@ -36,4 +36,19 @@ export const styles = StyleSheet.create({
         alignSelf: "flex-start",
         lineHeight: 22,
     },
+    infoFooter: {
+        ...basicLayouts.grid2,
+        marginTop: 20,
+    },
+    closeButton: {
+        backgroundColor: palette.softGray,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        borderRadius: 10,
+    },
+    closeButtonText: {
+        color: palette.lightGray,
+        fontWeight: "bold",
+        fontSize: 18,
+    },
 });

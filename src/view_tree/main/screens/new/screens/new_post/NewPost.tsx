@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { styles } from "./NewPostStyles";
 import {
+    COST_PER_RECIPIENT,
     POST_ADD_ON_CONTENT_MAX_LEN,
     POST_CONTENT_MAX_LEN,
     PostAddOn,
@@ -48,6 +49,7 @@ import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
 import InfoModal from "./building_blocks/info_modal/InfoModal";
 import LinkPreview from "../../../../../../global_building_blocks/link_preview/LinkPreview";
 import { challengeCheck } from "../../../../../../global_gql/challenge_check/challenge_check";
+import { receivedFromConvosHandler } from "../../../../../../global_gql/challenge_check/challenge_handlers/received_from_convos/received_from_convos";
 
 interface Props {
     navigation: NewPostNavProp;
@@ -149,16 +151,32 @@ const NewPost: React.FC<Props> = (props) => {
     >(CREATE_POST, {
         update(_, { data }) {
             if (!!data?.createPost && !!data.createPost.presignedUrl && !!img) {
-                fetch(data.createPost.presignedUrl, {
-                    method: "PUT",
-                    body: img,
-                })
-                    .then(() => {
-                        console.log("Image put successful!");
-                    })
-                    .catch((e) => {
-                        console.log("Image put failed: ", e);
-                    });
+                (async () => {
+                    /*
+                     * We'll try to add the picture 10 times
+                     */
+                    for (let i = 0; i < 10; i++) {
+                        try {
+                            await fetch(
+                                data.createPost.presignedUrl as string,
+                                {
+                                    method: "PUT",
+                                    body: img,
+                                }
+                            );
+
+                            console.log("Image put successful treeya!");
+                            break;
+                        } catch (_) {
+                            /*
+                             * Wait a second between each attempt
+                             */
+                            await new Promise((resolve) =>
+                                setTimeout(resolve, 1000)
+                            );
+                        }
+                    }
+                })();
             }
 
             cache.modify({
@@ -168,7 +186,16 @@ const NewPost: React.FC<Props> = (props) => {
                 }),
                 fields: {
                     coin(existing) {
-                        return Math.max(existing - recipients, 0);
+                        return Math.max(
+                            existing - COST_PER_RECIPIENT * recipients,
+                            0
+                        );
+                    },
+                    coinSpent(existing) {
+                        return existing + COST_PER_RECIPIENT * recipients;
+                    },
+                    postCount(existing) {
+                        return existing + 1;
                     },
                 },
             });
@@ -209,7 +236,7 @@ const NewPost: React.FC<Props> = (props) => {
             return;
         }
 
-        if (data.user.coin < recipients) {
+        if (data.user.coin < COST_PER_RECIPIENT * recipients) {
             setErrorMessage(`You only have ${toCommaRep(data.user.coin)} coin`);
             return;
         }
@@ -301,364 +328,347 @@ const NewPost: React.FC<Props> = (props) => {
     }
 
     return (
-        <TouchableOpacity
-            onPress={Keyboard.dismiss}
-            activeOpacity={1}
-            style={styles.outerContainer}
-        >
-            <ScrollView style={styles.newPostContainer} ref={scrollRef}>
-                <View style={styles.postFieldContainer}>
-                    <Text style={styles.fieldTitle}>Post</Text>
-                    <TextInput
-                        ref={contentRef}
-                        keyboardType="twitter"
-                        style={styles.contentInput}
-                        placeholder="Content..."
-                        multiline
-                        onChangeText={(text) => {
-                            setContent(text.substring(0, POST_CONTENT_MAX_LEN));
-                        }}
-                        value={content}
-                    />
-                    <Text style={styles.remainingText}>
-                        {POST_CONTENT_MAX_LEN - content.length}
-                    </Text>
-                </View>
-                <View style={styles.postFieldContainer}>
-                    <Text style={styles.fieldTitle}>Add-on</Text>
-                    <View style={styles.postOptionBar}>
-                        <TouchableOpacity
+        <ScrollView style={styles.newPostContainer} ref={scrollRef}>
+            <View style={styles.postFieldContainer}>
+                <Text style={styles.fieldTitle}>Post</Text>
+                <TextInput
+                    ref={contentRef}
+                    keyboardType="twitter"
+                    style={styles.contentInput}
+                    placeholder="Content..."
+                    multiline
+                    onChangeText={(text) => {
+                        setContent(text.substring(0, POST_CONTENT_MAX_LEN));
+                    }}
+                    value={content}
+                />
+                <Text style={styles.remainingText}>
+                    {POST_CONTENT_MAX_LEN - content.length}
+                </Text>
+            </View>
+            <View style={styles.postFieldContainer}>
+                <Text style={styles.fieldTitle}>Add-on</Text>
+                <View style={styles.postOptionBar}>
+                    <TouchableOpacity
+                        style={
+                            addOn === PostAddOn.None
+                                ? styles.activeOption
+                                : styles.inactiveOption
+                        }
+                        onPress={() => setAddOn(PostAddOn.None)}
+                    >
+                        <Text
                             style={
                                 addOn === PostAddOn.None
-                                    ? styles.activeOption
-                                    : styles.inactiveOption
+                                    ? styles.activeOptionText
+                                    : styles.inactiveOptionText
                             }
-                            onPress={() => setAddOn(PostAddOn.None)}
                         >
-                            <Text
-                                style={
-                                    addOn === PostAddOn.None
-                                        ? styles.activeOptionText
-                                        : styles.inactiveOptionText
-                                }
-                            >
-                                None
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
+                            None
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={
+                            addOn === PostAddOn.Text
+                                ? styles.activeOption
+                                : styles.inactiveOption
+                        }
+                        onPress={() => setAddOn(PostAddOn.Text)}
+                    >
+                        <Text
                             style={
                                 addOn === PostAddOn.Text
-                                    ? styles.activeOption
-                                    : styles.inactiveOption
+                                    ? styles.activeOptionText
+                                    : styles.inactiveOptionText
                             }
-                            onPress={() => setAddOn(PostAddOn.Text)}
                         >
-                            <Text
-                                style={
-                                    addOn === PostAddOn.Text
-                                        ? styles.activeOptionText
-                                        : styles.inactiveOptionText
-                                }
-                            >
-                                Text
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
+                            Text
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={
+                            addOn === PostAddOn.Image
+                                ? styles.activeOption
+                                : styles.inactiveOption
+                        }
+                        onPress={() => setAddOn(PostAddOn.Image)}
+                    >
+                        <Text
                             style={
                                 addOn === PostAddOn.Image
-                                    ? styles.activeOption
-                                    : styles.inactiveOption
+                                    ? styles.activeOptionText
+                                    : styles.inactiveOptionText
                             }
-                            onPress={() => setAddOn(PostAddOn.Image)}
                         >
-                            <Text
-                                style={
-                                    addOn === PostAddOn.Image
-                                        ? styles.activeOptionText
-                                        : styles.inactiveOptionText
-                                }
-                            >
-                                Image
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
+                            Image
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={
+                            addOn === PostAddOn.Link
+                                ? styles.activeOption
+                                : styles.inactiveOption
+                        }
+                        onPress={() => setAddOn(PostAddOn.Link)}
+                    >
+                        <Text
                             style={
                                 addOn === PostAddOn.Link
-                                    ? styles.activeOption
-                                    : styles.inactiveOption
+                                    ? styles.activeOptionText
+                                    : styles.inactiveOptionText
                             }
-                            onPress={() => setAddOn(PostAddOn.Link)}
                         >
-                            <Text
-                                style={
-                                    addOn === PostAddOn.Link
-                                        ? styles.activeOptionText
-                                        : styles.inactiveOptionText
-                                }
-                            >
-                                Link
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                    {addOn === PostAddOn.Text ? (
-                        <>
-                            <TextInput
-                                style={styles.addOnInput}
-                                placeholder="Additional content..."
-                                multiline
-                                onChangeText={(text) => {
-                                    setAddOnText(
-                                        text.substring(
-                                            0,
-                                            POST_ADD_ON_CONTENT_MAX_LEN
-                                        )
-                                    );
-                                }}
-                                value={addOnText}
-                            />
-                            {POST_ADD_ON_CONTENT_MAX_LEN - content.length <=
-                                300 && (
-                                <Text style={styles.remainingText}>
-                                    {POST_ADD_ON_CONTENT_MAX_LEN -
-                                        content.length}
-                                </Text>
-                            )}
-                        </>
-                    ) : addOn === PostAddOn.Link ? (
-                        <>
-                            <TextInput
-                                autoCapitalize="none"
-                                autoCompleteType="off"
-                                style={styles.addOnInput}
-                                contextMenuHidden={false}
-                                multiline
-                                placeholder="Paste link..."
-                                onChangeText={(text) => {
-                                    setAddOnLink(
-                                        text.substring(
-                                            0,
-                                            POST_ADD_ON_CONTENT_MAX_LEN
-                                        )
-                                    );
-                                }}
-                                value={addOnLink}
-                            />
-                            {POST_ADD_ON_CONTENT_MAX_LEN - content.length <=
-                                300 && (
-                                <Text style={styles.remainingText}>
-                                    {POST_ADD_ON_CONTENT_MAX_LEN -
-                                        content.length}
-                                </Text>
-                            )}
-                            {!!addOnLink && <LinkPreview url={addOnLink} />}
-                        </>
-                    ) : (
-                        addOn === PostAddOn.Image && (
-                            <View style={styles.outerImageContainer}>
-                                <View style={styles.imageContainer}>
-                                    {imgUrl === null ? (
-                                        <View style={styles.placeHolderImage}>
-                                            <Feather
-                                                name="camera"
-                                                size={50}
-                                                color={palette.semiSoftGray}
-                                            />
-                                        </View>
-                                    ) : (
-                                        <Image
-                                            source={{ uri: imgUrl }}
-                                            style={styles.image}
-                                        />
-                                    )}
-                                    <TouchableOpacity
-                                        style={styles.selectImageButton}
-                                        onPress={selectImage}
-                                    >
-                                        <Text style={styles.selectImageText}>
-                                            Select image
-                                        </Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                        )
-                    )}
+                            Link
+                        </Text>
+                    </TouchableOpacity>
                 </View>
-                <View style={styles.postFieldContainer}>
-                    <SelectCommunityModal
-                        visible={selectComVisible}
-                        onHide={() => showSelectCom(false)}
-                        selectCommunity={(id) => {
-                            getPostCommunity({ variables: { id } });
-                        }}
-                    />
-                    <View style={styles.fieldTitleContainer}>
-                        <Text style={styles.fieldTitle}>Target</Text>
-                        <InfoModal
-                            title={"Target"}
-                            content={
-                                'When you post to Digitari, you can either send your post to your personal followers ("My Followers"), or you ' +
-                                'can send your post to a community of users ("Community").'
-                            }
+                {addOn === PostAddOn.Text ? (
+                    <>
+                        <TextInput
+                            style={styles.addOnInput}
+                            placeholder="Additional content..."
+                            multiline
+                            onChangeText={(text) => {
+                                setAddOnText(
+                                    text.substring(
+                                        0,
+                                        POST_ADD_ON_CONTENT_MAX_LEN
+                                    )
+                                );
+                            }}
+                            value={addOnText}
                         />
-                    </View>
-                    <View style={styles.postOptionBar}>
-                        <TouchableOpacity
+                        {POST_ADD_ON_CONTENT_MAX_LEN - content.length <=
+                            300 && (
+                            <Text style={styles.remainingText}>
+                                {POST_ADD_ON_CONTENT_MAX_LEN - content.length}
+                            </Text>
+                        )}
+                    </>
+                ) : addOn === PostAddOn.Link ? (
+                    <>
+                        <TextInput
+                            autoCapitalize="none"
+                            autoCompleteType="off"
+                            style={styles.addOnInput}
+                            contextMenuHidden={false}
+                            multiline
+                            placeholder="Paste link..."
+                            onChangeText={(text) => {
+                                setAddOnLink(
+                                    text.substring(
+                                        0,
+                                        POST_ADD_ON_CONTENT_MAX_LEN
+                                    )
+                                );
+                            }}
+                            value={addOnLink}
+                        />
+                        {POST_ADD_ON_CONTENT_MAX_LEN - content.length <=
+                            300 && (
+                            <Text style={styles.remainingText}>
+                                {POST_ADD_ON_CONTENT_MAX_LEN - content.length}
+                            </Text>
+                        )}
+                        {!!addOnLink && <LinkPreview url={addOnLink} />}
+                    </>
+                ) : (
+                    addOn === PostAddOn.Image && (
+                        <View style={styles.outerImageContainer}>
+                            <View style={styles.imageContainer}>
+                                {imgUrl === null ? (
+                                    <View style={styles.placeHolderImage}>
+                                        <Feather
+                                            name="camera"
+                                            size={50}
+                                            color={palette.semiSoftGray}
+                                        />
+                                    </View>
+                                ) : (
+                                    <Image
+                                        source={{ uri: imgUrl }}
+                                        style={styles.image}
+                                    />
+                                )}
+                                <TouchableOpacity
+                                    style={styles.selectImageButton}
+                                    onPress={selectImage}
+                                >
+                                    <Text style={styles.selectImageText}>
+                                        Select image
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    )
+                )}
+            </View>
+            <View style={styles.postFieldContainer}>
+                <SelectCommunityModal
+                    visible={selectComVisible}
+                    onHide={() => showSelectCom(false)}
+                    selectCommunity={(id) => {
+                        getPostCommunity({ variables: { id } });
+                    }}
+                />
+                <View style={styles.fieldTitleContainer}>
+                    <Text style={styles.fieldTitle}>Target</Text>
+                    <InfoModal
+                        title={"Target"}
+                        content={
+                            'When you post to Digitari, you can either send your post to your personal followers ("My Followers"), or you ' +
+                            'can send your post to a community of users ("Community").'
+                        }
+                    />
+                </View>
+                <View style={styles.postOptionBar}>
+                    <TouchableOpacity
+                        style={
+                            target === PostTarget.MyFollowers
+                                ? styles.activeOption
+                                : styles.inactiveOption
+                        }
+                        onPress={() => setTarget(PostTarget.MyFollowers)}
+                    >
+                        <Text
                             style={
                                 target === PostTarget.MyFollowers
-                                    ? styles.activeOption
-                                    : styles.inactiveOption
+                                    ? styles.activeOptionText
+                                    : styles.inactiveOptionText
                             }
-                            onPress={() => setTarget(PostTarget.MyFollowers)}
                         >
-                            <Text
-                                style={
-                                    target === PostTarget.MyFollowers
-                                        ? styles.activeOptionText
-                                        : styles.inactiveOptionText
-                                }
-                            >
-                                My Followers
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
+                            My Followers
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={
+                            target === PostTarget.Community
+                                ? styles.activeOption
+                                : styles.inactiveOption
+                        }
+                        onPress={() => setTarget(PostTarget.Community)}
+                    >
+                        <Text
                             style={
                                 target === PostTarget.Community
-                                    ? styles.activeOption
-                                    : styles.inactiveOption
+                                    ? styles.activeOptionText
+                                    : styles.inactiveOptionText
                             }
-                            onPress={() => setTarget(PostTarget.Community)}
                         >
-                            <Text
-                                style={
-                                    target === PostTarget.Community
-                                        ? styles.activeOptionText
-                                        : styles.inactiveOptionText
-                                }
-                            >
-                                Community
+                            Community
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+                {target === PostTarget.MyFollowers ? (
+                    <Text style={styles.followersText}>
+                        <Text style={styles.followersNumeral}>
+                            {toCommaRep(data.user.followers) + " "}
+                        </Text>
+                        {data.user.followers === 1 ? "Follower" : "Followers"}
+                    </Text>
+                ) : (
+                    <>
+                        <TouchableOpacity
+                            style={styles.communityContainer}
+                            onPress={() => showSelectCom(true)}
+                        >
+                            {!postCommData?.community ? (
+                                <Text style={styles.selectCommunityText}>
+                                    Select Community
+                                </Text>
+                            ) : (
+                                <>
+                                    <Text style={styles.communityText}>
+                                        {postCommData.community.name}
+                                    </Text>
+                                    <Text style={styles.commFollowersText}>
+                                        <Text
+                                            style={styles.commFollowerNumeral}
+                                        >
+                                            {toCommaRep(
+                                                postCommData.community.followers
+                                            ) + " "}
+                                        </Text>
+                                        {postCommData.community.followers === 1
+                                            ? "Follower"
+                                            : "Followers"}
+                                    </Text>
+                                </>
+                            )}
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.createCommunityButton}
+                            onPress={() =>
+                                props.navigation.navigate("NewCommunity")
+                            }
+                        >
+                            <Text style={styles.createCommunityText}>
+                                + Create Community
                             </Text>
                         </TouchableOpacity>
-                    </View>
-                    {target === PostTarget.MyFollowers ? (
-                        <Text style={styles.followersText}>
-                            <Text style={styles.followersNumeral}>
-                                {toCommaRep(data.user.followers) + " "}
-                            </Text>
-                            {data.user.followers === 1
-                                ? "Follower"
-                                : "Followers"}
-                        </Text>
-                    ) : (
-                        <>
-                            <TouchableOpacity
-                                style={styles.communityContainer}
-                                onPress={() => showSelectCom(true)}
-                            >
-                                {!postCommData?.community ? (
-                                    <Text style={styles.selectCommunityText}>
-                                        Select Community
-                                    </Text>
-                                ) : (
-                                    <>
-                                        <Text style={styles.communityText}>
-                                            {postCommData.community.name}
-                                        </Text>
-                                        <Text style={styles.commFollowersText}>
-                                            <Text
-                                                style={
-                                                    styles.commFollowerNumeral
-                                                }
-                                            >
-                                                {toCommaRep(
-                                                    postCommData.community
-                                                        .followers
-                                                ) + " "}
-                                            </Text>
-                                            {postCommData.community
-                                                .followers === 1
-                                                ? "Follower"
-                                                : "Followers"}
-                                        </Text>
-                                    </>
-                                )}
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={styles.createCommunityButton}
-                                onPress={() =>
-                                    props.navigation.navigate("NewCommunity")
-                                }
-                            >
-                                <Text style={styles.createCommunityText}>
-                                    + Create Community
-                                </Text>
-                            </TouchableOpacity>
-                        </>
-                    )}
-                </View>
-                <View style={styles.postFieldContainer}>
-                    <View style={styles.fieldTitleContainer}>
-                        <Text style={styles.fieldTitle}>Recipients</Text>
-                        <InfoModal
-                            title={"Recipients"}
-                            content={
-                                "This is the number of users who will receive this post in their main feed. " +
-                                "\n\nEach post costs 1 digicoin per recipient." +
-                                '\n\nFor example, if you specify "My Followers" for Target and set recipients to 8, this post will go to 8 of your followers' +
-                                " and cost you 8 digicoin."
-                            }
-                        />
-                    </View>
-                    <TextInput
-                        style={styles.recipientsInput}
-                        placeholder="Recipients..."
-                        onFocus={() =>
-                            setTimeout(() => {
-                                !!scrollRef?.current &&
-                                    scrollRef.current.scrollToEnd();
-                            }, 100)
+                    </>
+                )}
+            </View>
+            <View style={styles.postFieldContainer}>
+                <View style={styles.fieldTitleContainer}>
+                    <Text style={styles.fieldTitle}>Recipients</Text>
+                    <InfoModal
+                        title={"Recipients"}
+                        content={
+                            "This is the number of users who will receive this post in their main feed. " +
+                            `\n\nEach post costs ${toCommaRep(
+                                COST_PER_RECIPIENT
+                            )} digicoin per recipient.` +
+                            '\n\nFor example, if you specify "My Followers" for Target and set recipients to 8, this post will go to 8 of your followers' +
+                            " and cost you 80 digicoin."
                         }
-                        keyboardType="numeric"
-                        onChangeText={(raw) => {
-                            const noCommas = raw.replace(/,/g, "");
-                            const num = parseInt(noCommas);
-
-                            if (isNaN(num)) {
-                                setRecipients(0);
-                            } else {
-                                setRecipients(num);
-                            }
-                        }}
-                        value={!!recipients ? toCommaRep(recipients) : ""}
                     />
                 </View>
-                <View style={styles.postFooter}>
-                    {!!errorMessage && (
-                        <Text style={styles.postErrorMessage}>
-                            {errorMessage}
-                        </Text>
-                    )}
-                    {postLoading ? (
-                        <LoadingWheel />
-                    ) : (
-                        <TouchableOpacity
-                            style={styles.postButton}
-                            onPress={post}
-                        >
-                            <View style={styles.postButtonTextContainer}>
-                                <Text style={styles.postButtonText}>Post</Text>
-                            </View>
-                            <CoinBox
-                                amount={recipients}
-                                fontColor={palette.hardGray}
-                                fontSize={20}
-                                coinSize={25}
-                            />
-                        </TouchableOpacity>
-                    )}
-                </View>
-                <View style={{ height: bufferHeight }} />
-            </ScrollView>
-        </TouchableOpacity>
+                <TextInput
+                    style={styles.recipientsInput}
+                    placeholder="Recipients..."
+                    onFocus={() =>
+                        setTimeout(() => {
+                            !!scrollRef?.current &&
+                                scrollRef.current.scrollToEnd();
+                        }, 100)
+                    }
+                    keyboardType="numeric"
+                    onChangeText={(raw) => {
+                        const noCommas = raw.replace(/,/g, "");
+                        const num = parseInt(noCommas);
+
+                        if (isNaN(num)) {
+                            setRecipients(0);
+                        } else {
+                            setRecipients(num);
+                        }
+                    }}
+                    value={!!recipients ? toCommaRep(recipients) : ""}
+                />
+            </View>
+            <View style={styles.postFooter}>
+                {!!errorMessage && (
+                    <Text style={styles.postErrorMessage}>{errorMessage}</Text>
+                )}
+                {postLoading ? (
+                    <LoadingWheel />
+                ) : (
+                    <TouchableOpacity style={styles.postButton} onPress={post}>
+                        <View style={styles.postButtonTextContainer}>
+                            <Text style={styles.postButtonText}>Post</Text>
+                        </View>
+                        <CoinBox
+                            amount={COST_PER_RECIPIENT * recipients}
+                            fontColor={palette.hardGray}
+                            fontSize={20}
+                            coinSize={25}
+                        />
+                    </TouchableOpacity>
+                )}
+            </View>
+            <View style={{ height: bufferHeight }} />
+        </ScrollView>
     );
 };
 

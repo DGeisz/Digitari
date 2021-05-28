@@ -29,7 +29,6 @@ import { palette } from "../global_styles/Palette";
 import Constants from "expo-constants";
 import type { InAppPurchase, IAPQueryResponse } from "expo-in-app-purchases";
 import { USER_TYPENAME } from "../global_types/UserTypes";
-import { updateId } from "expo-updates";
 import { ProductId, products } from "../global_types/IapTypes";
 
 const AppView: React.FC = () => {
@@ -60,7 +59,6 @@ const AppView: React.FC = () => {
                             if (!purchase.acknowledged) {
                                 /* 
                                 Ok, first we want to process this on the backend
-                                TODO: Actually implement backend processing
                                  */
                                 let receipt: string;
                                 let ios: boolean;
@@ -121,7 +119,7 @@ const AppView: React.FC = () => {
                             }
                         });
                     }
-                });
+                }).then();
             })();
 
             return () => {

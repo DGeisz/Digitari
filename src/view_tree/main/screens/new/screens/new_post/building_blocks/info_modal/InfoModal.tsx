@@ -39,6 +39,16 @@ const InfoModal: React.FC<Props> = (props) => {
                     <View style={styles.infoContainer}>
                         <Text style={styles.infoTitle}>{props.title}</Text>
                         <Text style={styles.infoText}>{props.content}</Text>
+                        <View style={styles.infoFooter}>
+                            <TouchableOpacity
+                                style={styles.closeButton}
+                                onPress={() => setVisible(false)}
+                            >
+                                <Text style={styles.closeButtonText}>
+                                    Close
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </TouchableOpacity>
             </Modal>

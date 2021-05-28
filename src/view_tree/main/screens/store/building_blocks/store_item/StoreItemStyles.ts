@@ -6,7 +6,7 @@ import { GENERAL_CONTENT_WIDTH } from "../../../../../../global_constants/screen
 export const styles = StyleSheet.create({
     itemContainer: {
         ...basicLayouts.grid2,
-        width: GENERAL_CONTENT_WIDTH,
+        width: GENERAL_CONTENT_WIDTH - 20,
         alignSelf: "center",
         backgroundColor: palette.white,
         marginHorizontal: 10,
