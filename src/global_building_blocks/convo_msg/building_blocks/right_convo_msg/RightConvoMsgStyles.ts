@@ -1,15 +1,15 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, } from "react-native";
 import { basicLayouts } from "../../../../global_styles/BasicLayouts";
 import { palette } from "../../../../global_styles/Palette";
 import { globalTextStyles } from "../../../../global_styles/GlobalTextStyles";
+import { GENERAL_CONTENT_WIDTH } from "../../../../global_constants/screen_constants";
 
-const { width } = Dimensions.get("window");
 const msgBorderRadius = 20;
 
 export const styles = StyleSheet.create({
     rightMsgContainer: {
         flexDirection: "row",
-        width: width,
+        width: GENERAL_CONTENT_WIDTH,
         marginTop: 10,
     },
     rightMsgBuffer: {

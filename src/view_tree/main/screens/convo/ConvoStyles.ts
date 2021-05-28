@@ -2,8 +2,17 @@ import { StyleSheet } from "react-native";
 import { basicLayouts } from "../../../../global_styles/BasicLayouts";
 import { palette } from "../../../../global_styles/Palette";
 import { globalTextStyles } from "../../../../global_styles/GlobalTextStyles";
+import { GENERAL_CONTENT_WIDTH } from "../../../../global_constants/screen_constants";
 
 export const styles = StyleSheet.create({
+    convoListContainer: {
+        width: GENERAL_CONTENT_WIDTH,
+        alignSelf: "center",
+        borderLeftColor: palette.softGray,
+        borderLeftWidth: 1,
+        borderRightColor: palette.softGray,
+        borderRightWidth: 1,
+    },
     convoContainer: {
         ...basicLayouts.flexGrid1,
     },

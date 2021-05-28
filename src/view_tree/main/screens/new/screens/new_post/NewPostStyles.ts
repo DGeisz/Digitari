@@ -1,14 +1,17 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet } from "react-native";
+import { GENERAL_CONTENT_WIDTH } from "../../../../../../global_constants/screen_constants";
 import { basicLayouts } from "../../../../../../global_styles/BasicLayouts";
 import { palette } from "../../../../../../global_styles/Palette";
 
-const { width } = Dimensions.get("window");
-
-const imageSize = width * 0.5;
+const imageSize = GENERAL_CONTENT_WIDTH * 0.5;
 
 export const styles = StyleSheet.create({
-    newPostContainer: {
+    outerContainer: {
         ...basicLayouts.flexGrid1,
+    },
+    newPostContainer: {
+        width: GENERAL_CONTENT_WIDTH,
+        alignSelf: "center",
         paddingHorizontal: 10,
     },
     postFieldContainer: {

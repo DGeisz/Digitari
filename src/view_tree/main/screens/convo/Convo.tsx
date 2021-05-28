@@ -85,6 +85,7 @@ import {
 import { addTransaction } from "../../hooks/use_realtime_updates/subscription_handlers/utils/cache_utils";
 import { challengeCheck } from "../../../../global_gql/challenge_check/challenge_check";
 import ConvoOptionsModal from "./building_blocks/convo_options_modal/ConvoOptionsModal";
+import { GENERAL_CONTENT_WIDTH } from "../../../../global_constants/screen_constants";
 
 function getCheckLeft(uid: string, tid: string): (id: string) => boolean {
     if (uid === tid) {
@@ -673,6 +674,7 @@ const Convo: React.FC<Props> = (props) => {
     const convoContent = (
         <FlatList
             ref={scrollRef}
+            contentContainerStyle={styles.convoListContainer}
             refreshControl={
                 <RefreshControl
                     refreshing={

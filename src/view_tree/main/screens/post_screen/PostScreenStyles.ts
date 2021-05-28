@@ -2,10 +2,13 @@ import { StyleSheet } from "react-native";
 import { palette } from "../../../../global_styles/Palette";
 import { basicLayouts } from "../../../../global_styles/BasicLayouts";
 import { DefaultTheme } from "@react-navigation/native";
+import { GENERAL_CONTENT_WIDTH } from "../../../../global_constants/screen_constants";
 
 export const styles = StyleSheet.create({
     listContainer: {
         backgroundColor: palette.white,
+        width: GENERAL_CONTENT_WIDTH,
+        alignSelf: "center"
     },
     headerContainer: {},
     postConvosBuffer: {

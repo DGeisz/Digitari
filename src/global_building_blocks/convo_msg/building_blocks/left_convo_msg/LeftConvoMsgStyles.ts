@@ -1,10 +1,11 @@
-import { Dimensions, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { palette } from "../../../../global_styles/Palette";
 import { basicLayouts } from "../../../../global_styles/BasicLayouts";
 import { globalTextStyles } from "../../../../global_styles/GlobalTextStyles";
+import { GENERAL_CONTENT_WIDTH } from "../../../../global_constants/screen_constants";
 
-const { width } = Dimensions.get("window");
 const msgBorderRadius = 20;
+
 
 export const styles = StyleSheet.create({
     leftMsgContainer: {
@@ -12,7 +13,7 @@ export const styles = StyleSheet.create({
         marginTop: 10,
     },
     leftMsgMain: {
-        maxWidth: (4 * width) / 5,
+        maxWidth: (4 * GENERAL_CONTENT_WIDTH) / 5,
         paddingLeft: 5,
     },
     msgBodyContainer: {

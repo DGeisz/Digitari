@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from "react-native";
+import { GENERAL_CONTENT_WIDTH } from "../../../../global_constants/screen_constants";
 import { basicLayouts } from "../../../../global_styles/BasicLayouts";
 
 const { width, height } = Dimensions.get("window");
@@ -9,10 +10,10 @@ export const styles = StyleSheet.create({
         margin: 0,
     },
     outerContainer: {
-        ...basicLayouts.flexGrid1,
+        ...basicLayouts.flexGrid5,
     },
     image: {
-        width,
+        width: GENERAL_CONTENT_WIDTH,
         height,
     },
 });
