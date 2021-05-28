@@ -27,5 +27,5 @@ export function storeTitleTranslation(title: string): string {
 export function extractCoinAmount(description: string): number {
     const raw = description.split(" ")[0];
 
-    return parseInt(raw.replaceAll(",", ""));
+    return parseInt(raw.replace(/,/g, ""));
 }
