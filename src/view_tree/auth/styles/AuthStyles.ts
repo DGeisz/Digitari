@@ -1,5 +1,4 @@
 import { StyleSheet, Dimensions } from "react-native";
-import { basicLayouts } from "../../../global_styles/BasicLayouts";
 import { palette } from "../../../global_styles/Palette";
 
 const { width } = Dimensions.get("window");
@@ -39,5 +38,14 @@ export const authStyles = StyleSheet.create({
     subText: {
         fontWeight: "bold",
         color: palette.lightGray,
+    },
+    signUpConsent: {
+        textAlign: "center",
+        fontWeight: "500",
+        color: palette.hardGray,
+    },
+    tcLink: {
+        textDecorationLine: "underline",
+        color: palette.deepBlue,
     },
 });

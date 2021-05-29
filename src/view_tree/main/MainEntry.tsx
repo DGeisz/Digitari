@@ -34,6 +34,7 @@ import Invites from "./screens/invites/Invites";
 import { styles } from "./MainEntryStyles";
 import Store from "./screens/store/Store";
 import PrivacyPolicy from "./screens/settings/screens/privacy_policy/PrivacyPolicy";
+import TermsAndConditions from "./screens/settings/screens/terms_and_conditions/TermsAndConditions";
 
 const RootStack = createStackNavigator<MainEntryStack>();
 
@@ -250,6 +251,14 @@ const MainEntry: React.FC = () => {
                 name="PrivacyPolicy"
                 options={{ title: "Privacy policy", headerRight: () => null }}
                 component={PrivacyPolicy}
+            />
+            <RootStack.Screen
+                name="TermsAndConditions"
+                options={{
+                    title: "Terms & Conditions",
+                    headerRight: () => null,
+                }}
+                component={TermsAndConditions}
             />
         </RootStack.Navigator>
     );

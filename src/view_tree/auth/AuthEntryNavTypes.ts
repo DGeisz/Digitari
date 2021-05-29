@@ -21,6 +21,7 @@ export type AuthStackType = {
         email: string;
         pwd: string;
     };
+    TermsAndConditions: undefined;
 };
 
 /**

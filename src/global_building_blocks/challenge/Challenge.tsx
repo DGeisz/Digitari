@@ -13,7 +13,6 @@ import { UserType } from "../../global_types/UserTypes";
 import ChallengeTier from "./tier/ChallengeTier";
 import { GENERAL_CONTENT_WIDTH } from "../../global_constants/screen_constants";
 
-
 interface Props {
     challenge: ChallengeType;
     user: UserType;

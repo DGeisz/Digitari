@@ -16,6 +16,7 @@ import VerifyEmail from "./screens/verify_email/VerifyEmail";
 import { palette } from "../../global_styles/Palette";
 import { AuthStackType } from "./AuthEntryNavTypes";
 import InviteCode from "./screens/invite_code/InviteCode";
+import TermsAndConditions from "../main/screens/settings/screens/terms_and_conditions/TermsAndConditions";
 
 const AuthStack = createStackNavigator<AuthStackType>();
 
@@ -110,6 +111,14 @@ const AuthEntry: React.FC = () => {
                 name="VerifyEmail"
                 component={VerifyEmail}
                 options={{ title: "Verify email" }}
+            />
+            <AuthStack.Screen
+                name="TermsAndConditions"
+                component={TermsAndConditions}
+                options={{
+                    title: "Terms & Conditions",
+                    headerTransparent: false,
+                }}
             />
         </AuthStack.Navigator>
     );

@@ -116,6 +116,17 @@ const NewAccountEmailPwd: React.FC<Props> = (props) => {
                     value={password}
                 />
                 <PwdCheck active={pwdActive} pwd={password} />
+                <Text style={authStyles.signUpConsent}>
+                    By signing up, you agree to our{"\n "}
+                    <Text
+                        style={authStyles.tcLink}
+                        onPress={() =>
+                            props.navigation.navigate("TermsAndConditions")
+                        }
+                    >
+                        Terms & Conditions
+                    </Text>
+                </Text>
                 <AuthButton
                     marginTop={20}
                     loading={loading}
