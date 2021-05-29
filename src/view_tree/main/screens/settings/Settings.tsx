@@ -111,7 +111,12 @@ const Settings: React.FC<Props> = (props) => {
                             Terms & Conditions
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.settingsRow}>
+                    <TouchableOpacity
+                        style={styles.settingsRow}
+                        onPress={() =>
+                            props.navigation.navigate("PrivacyPolicy")
+                        }
+                    >
                         <Text style={styles.settingsRowText}>
                             Privacy Policy
                         </Text>

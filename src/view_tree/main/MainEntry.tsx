@@ -31,9 +31,9 @@ import Password from "./screens/settings/screens/password/Password";
 import PasswordChanged from "./screens/settings/screens/password_changed/PasswordChanged";
 import DeleteAccount from "./screens/settings/screens/delete_account/DeleteAccount";
 import Invites from "./screens/invites/Invites";
-import { palette } from "../../global_styles/Palette";
 import { styles } from "./MainEntryStyles";
 import Store from "./screens/store/Store";
+import PrivacyPolicy from "./screens/settings/screens/privacy_policy/PrivacyPolicy";
 
 const RootStack = createStackNavigator<MainEntryStack>();
 
@@ -245,6 +245,11 @@ const MainEntry: React.FC = () => {
                 name="DeleteAccount"
                 options={{ title: "Delete account", headerRight: () => null }}
                 component={DeleteAccount}
+            />
+            <RootStack.Screen
+                name="PrivacyPolicy"
+                options={{ title: "Privacy policy", headerRight: () => null }}
+                component={PrivacyPolicy}
             />
         </RootStack.Navigator>
     );

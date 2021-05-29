@@ -50,6 +50,8 @@ export type MainEntryStack = {
     Password: undefined;
     PasswordChanged: undefined;
     DeleteAccount: undefined;
+    PrivacyPolicy: undefined;
+    TermsAndConditions: undefined;
     Invite: undefined;
     Store: undefined;
 };
