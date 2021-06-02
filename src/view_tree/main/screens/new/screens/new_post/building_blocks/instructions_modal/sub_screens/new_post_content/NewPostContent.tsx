@@ -4,18 +4,27 @@ import { instructionStyles } from "../../../../../../../../../../global_styles/I
 import TutorialFooter from "../../../../../../../../../../global_building_blocks/tutorial/TutorialFooter";
 import { TutorialScreen } from "../../../../../../../../../context/tutorial_context/TutorialContext";
 
-const ExplainTierWage: React.FC = () => {
+interface Props {
+    goBack: () => void;
+}
+
+const NewPostContent: React.FC<Props> = (props) => {
     return (
         <View style={instructionStyles.modalBottom}>
             <View style={instructionStyles.instructionContainer}>
                 <Text style={instructionStyles.instructionText}>
-                    Your account also naturally generates a certain amount of
-                    digicoin called your "Tier Wage."{"\n\n"}Higher tiers like
-                    😎 or 😍 make a higher Tier Wage than lower tiers like 🙁 or
-                    👿, so always try to improve your tier!
+                    When you create a post, first you input the post's main
+                    content, and then you can optionally include an add-on to
+                    the post (text, image, or link). {"\n\n"}
+                    For this post's content, introduce yourself and write out
+                    your favorite place on earth. We'll leave "Add-on" as "None"
+                    for now.{"\n\n"}
+                    (This post is just for the tutorial and won't actually go
+                    online)
                 </Text>
                 <TutorialFooter
-                    goBackScreen={TutorialScreen.ExplainDigicoin}
+                    goBackScreen={TutorialScreen.NewPostPrompt}
+                    goBack={props.goBack}
                     showSkip
                     showGoBack
                 />
@@ -24,4 +33,4 @@ const ExplainTierWage: React.FC = () => {
     );
 };
 
-export default ExplainTierWage;
+export default NewPostContent;

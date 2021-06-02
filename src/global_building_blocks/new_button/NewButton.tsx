@@ -3,7 +3,10 @@ import { TouchableOpacity, View } from "react-native";
 import { styles } from "./NewButtonStyles";
 import { FontAwesome } from "@expo/vector-icons";
 import { palette } from "../../global_styles/Palette";
-import { TutorialContext } from "../../view_tree/context/tutorial_context/TutorialContext";
+import {
+    TutorialContext,
+    TutorialScreen,
+} from "../../view_tree/context/tutorial_context/TutorialContext";
 
 interface Props {
     openNew: () => void;
@@ -13,12 +16,18 @@ export default class NewButton extends React.PureComponent<Props> {
     render() {
         return (
             <TutorialContext.Consumer>
-                {({ tutorialActive }) => (
+                {({ tutorialActive, tutorialScreen, advanceTutorial }) => (
                     <View style={styles.viewContainer} pointerEvents="box-none">
                         <TouchableOpacity
                             style={styles.newPostButton}
                             onPress={() => {
-                                if (!tutorialActive) {
+                                if (
+                                    tutorialActive &&
+                                    tutorialScreen === TutorialScreen.TapNewPost
+                                ) {
+                                    this.props.openNew();
+                                    advanceTutorial();
+                                } else if (!tutorialActive) {
                                     this.props.openNew();
                                 }
                             }}

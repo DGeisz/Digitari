@@ -10,11 +10,25 @@ export enum TutorialScreen {
     TapTier,
     OpenWalletPrompt,
     TapWallet,
+
     /*
      * First wallet screens
      */
     ExplainDigicoin,
     ExplainTierWage,
+    CollectTierWage,
+    FirstCollectTap,
+    NewPostPrompt,
+    TapNewPost,
+
+    /*
+     * New post screens
+     */
+    NewPostContent,
+    InputPostContent,
+    NewPostTarget,
+    NewPostRecipients,
+    InputPostRecipients,
 }
 
 interface TutorialContextType {

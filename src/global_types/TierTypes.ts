@@ -158,12 +158,13 @@ export function getTierWage(
 ): [number, number] {
     const [hourlyWage, dailyWage] = ranking2Wage(ranking);
 
+    const currentTime = Date.now();
+    const parsedTime = parseInt(lastCollectionTime);
+    const lastTime = currentTime > parsedTime ? parsedTime : currentTime;
+
     return [
         Math.min(
-            Math.floor(
-                hourlyWage *
-                    ((Date.now() - parseInt(lastCollectionTime)) / millisInHour)
-            ),
+            Math.floor(hourlyWage * ((currentTime - lastTime) / millisInHour)),
             dailyWage
         ),
         dailyWage,

@@ -132,8 +132,9 @@ const TabNav: React.FC<Props> = (props) => {
                         });
                     }}
                 />
+                {/*TODO: Change tutorial active first screen to wallet*/}
                 <Tab.Navigator
-                    initialRouteName={tutorialActive ? "Profile" : "MainFeed"}
+                    initialRouteName={tutorialActive ? "Wallet" : "MainFeed"}
                     tabBarOptions={{
                         showLabel: false,
                         inactiveTintColor: "gray",
@@ -205,9 +206,10 @@ const TabNav: React.FC<Props> = (props) => {
                             tabBarIcon: ({ color, size }) => {
                                 return (
                                     <View>
-                                        {newTransactionUpdate && (
-                                            <UpdateIndicator />
-                                        )}
+                                        {!tutorialActive &&
+                                            newTransactionUpdate && (
+                                                <UpdateIndicator />
+                                            )}
                                         <Entypo
                                             name="wallet"
                                             size={size}

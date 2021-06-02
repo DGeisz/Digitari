@@ -47,6 +47,10 @@ import {
 } from "../../gql/Queries";
 import { useIsFocused } from "@react-navigation/native";
 import InstructionModal from "./building_blocks/instruction_modal/InstructionModal";
+import {
+    TutorialContext,
+    TutorialScreen,
+} from "../../../../../context/tutorial_context/TutorialContext";
 
 interface Props {
     navigation: WalletNavProp;
@@ -264,25 +268,34 @@ const Wallet: React.FC<Props> = (props) => {
         ).start();
     }, []);
 
+    const { tutorialActive, tutorialScreen, advanceTutorial } = useContext(
+        TutorialContext
+    );
+    const [tutorialCollectionTime, setTutCollectionTime] = useState<string>(
+        "0"
+    );
+
     if (
-        (!collectionData?.user && collectionStatus === NetworkStatus.loading) ||
-        (!accData?.transactionAccumulation &&
-            accNetworkStatus === NetworkStatus.loading &&
-            !transData?.transactions &&
-            transNetworkStatus === NetworkStatus.loading)
+        !tutorialActive &&
+        ((!collectionData?.user &&
+            collectionStatus === NetworkStatus.loading) ||
+            (!accData?.transactionAccumulation &&
+                accNetworkStatus === NetworkStatus.loading &&
+                !transData?.transactions &&
+                transNetworkStatus === NetworkStatus.loading))
     ) {
         return <LoadingWheel />;
     }
 
-    if (!!transError) {
+    if (!tutorialActive && !!transError) {
         return <ErrorMessage refresh={transRefetch} />;
     }
 
-    if (!!collectionError) {
+    if (!tutorialActive && !!collectionError) {
         return <ErrorMessage refresh={collectionRefetch} />;
     }
 
-    if (!!accErr) {
+    if (!tutorialActive && !!accErr) {
         return <ErrorMessage refresh={accRefetch} />;
     }
 
@@ -301,7 +314,16 @@ const Wallet: React.FC<Props> = (props) => {
         );
 
         daily = dailyWage;
+        tierWage = finalWage;
+    }
 
+    /*
+     * Handle tutorial injection
+     */
+    if (tutorialActive) {
+        const [finalWage, dailyWage] = getTierWage(0, tutorialCollectionTime);
+
+        daily = dailyWage;
         tierWage = finalWage;
     }
 
@@ -404,18 +426,44 @@ const Wallet: React.FC<Props> = (props) => {
                                             if (total > 0) {
                                                 shockTheNation();
                                                 setAnimationCoinAmount(total);
-                                                try {
-                                                    await collectEarnings({
-                                                        optimisticResponse: {
-                                                            collectEarnings: {
-                                                                coin: total,
-                                                                time: Date.now().toString(),
-                                                            },
-                                                        },
-                                                    });
 
-                                                    await collectionRefetch();
-                                                } catch (_) {}
+                                                /*
+                                                 * Handle the tutorial scenario
+                                                 */
+                                                if (tutorialActive) {
+                                                    if (
+                                                        tutorialScreen ===
+                                                        TutorialScreen.FirstCollectTap
+                                                    ) {
+                                                        setTutCollectionTime(
+                                                            (
+                                                                2 * Date.now()
+                                                            ).toString()
+                                                        );
+
+                                                        setTimeout(
+                                                            () =>
+                                                                advanceTutorial(),
+                                                            700
+                                                        );
+                                                    }
+                                                } else {
+                                                    /*
+                                                     * Otherwise, handle typical collection mutation
+                                                     */
+                                                    try {
+                                                        await collectEarnings({
+                                                            optimisticResponse: {
+                                                                collectEarnings: {
+                                                                    coin: total,
+                                                                    time: Date.now().toString(),
+                                                                },
+                                                            },
+                                                        });
+
+                                                        await collectionRefetch();
+                                                    } catch (_) {}
+                                                }
                                             }
                                         }}
                                     >

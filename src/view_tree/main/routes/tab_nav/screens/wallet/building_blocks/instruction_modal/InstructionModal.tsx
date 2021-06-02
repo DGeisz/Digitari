@@ -8,6 +8,8 @@ import Modal from "react-native-modal";
 import { instructionStyles } from "../../../../../../../../global_styles/InstructionStyles";
 import ExplainDigicoin from "./sub_screens/explain_digicoin/ExplainDigicoin";
 import ExplainTierWage from "./sub_screens/explain_tier_wage/ExplainTierWage";
+import CollectTierWage from "./sub_screens/collect_tier_wage/CollectTierWage";
+import NewPostPrompt from "./sub_screens/new_post_prompt/NewPostPrompt";
 
 interface Props {
     navigateToProfile: () => void;
@@ -27,6 +29,12 @@ const InstructionModal: React.FC<Props> = (props) => {
             break;
         case TutorialScreen.ExplainTierWage:
             currentScreen = <ExplainTierWage />;
+            break;
+        case TutorialScreen.CollectTierWage:
+            currentScreen = <CollectTierWage />;
+            break;
+        case TutorialScreen.NewPostPrompt:
+            currentScreen = <NewPostPrompt />;
             break;
         default:
             modalVisible = false;
