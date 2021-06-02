@@ -10,6 +10,7 @@ interface Props {
     goBackScreen: TutorialScreen;
     showGoBack?: boolean;
     showSkip?: boolean;
+    goBack?: () => void;
 }
 
 const TutorialFooter: React.FC<Props> = (props) => {
@@ -22,7 +23,10 @@ const TutorialFooter: React.FC<Props> = (props) => {
             <View style={instructionStyles.footerLeft}>
                 {!!props.showGoBack && (
                     <TouchableOpacity
-                        onPress={() => setScreen(props.goBackScreen)}
+                        onPress={() => {
+                            setScreen(props.goBackScreen);
+                            !!props.goBack && props.goBack();
+                        }}
                     >
                         <Text style={instructionStyles.footerText}>
                             Go back

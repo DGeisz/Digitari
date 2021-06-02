@@ -12,12 +12,9 @@ import { View } from "react-native";
 import OpenWalletPrompt from "./sub_screens/open_wallet_prompt/OpenWalletPrompt";
 
 const InstructionModal: React.FC = () => {
-    const { tutorialActive, tutorialScreen, advanceTutorial } = useContext(
-        TutorialContext
-    );
+    const { tutorialActive, tutorialScreen } = useContext(TutorialContext);
 
     let modalVisible = tutorialActive;
-
     let currentScreen = <View />;
 
     switch (tutorialScreen) {

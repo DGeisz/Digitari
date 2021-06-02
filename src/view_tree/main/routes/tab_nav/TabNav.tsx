@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext } from "react";
 import { Entypo, FontAwesome, Ionicons } from "@expo/vector-icons";
 import MainFeed from "./screens/main_feed/MainFeed";
 import Wallet from "./screens/wallet/Wallet";
@@ -22,9 +22,10 @@ import {
 import { getTierWage } from "../../../../global_types/TierTypes";
 import CoinIndicator from "./building_blocks/coin_indicator/CoinIndicator";
 import ChallengeCompleteModal from "./building_blocks/challenge_complete_modal/ChallengeCompleteModal";
-import { addNewReceipt } from "../../../../global_state/CoinUpdates";
-import { TutorialContext } from "../../../context/tutorial_context/TutorialContext";
-import { tutorialUser } from "./screens/profile/data/tutorial_user/tutorial_user";
+import {
+    TutorialContext,
+    TutorialScreen,
+} from "../../../context/tutorial_context/TutorialContext";
 
 const Tab = createBottomTabNavigator<TabNavTab>();
 
@@ -89,7 +90,9 @@ const TabNav: React.FC<Props> = (props) => {
     /*
      * Handle opening the tutorial
      */
-    const { tutorialActive } = useContext(TutorialContext);
+    const { tutorialActive, tutorialScreen, advanceTutorial } = useContext(
+        TutorialContext
+    );
 
     let newConvoUpdate = false;
     let newTransactionUpdate = false;
@@ -217,7 +220,12 @@ const TabNav: React.FC<Props> = (props) => {
                         }}
                         listeners={{
                             tabPress: (e) => {
-                                if (tutorialActive) {
+                                if (
+                                    tutorialActive &&
+                                    tutorialScreen === TutorialScreen.TapWallet
+                                ) {
+                                    advanceTutorial();
+                                } else if (tutorialActive) {
                                     e.preventDefault();
                                 }
                             },

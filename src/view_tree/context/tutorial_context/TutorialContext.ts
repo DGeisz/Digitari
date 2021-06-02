@@ -9,6 +9,12 @@ export enum TutorialScreen {
     OpenTierPrompt,
     TapTier,
     OpenWalletPrompt,
+    TapWallet,
+    /*
+     * First wallet screens
+     */
+    ExplainDigicoin,
+    ExplainTierWage,
 }
 
 interface TutorialContextType {

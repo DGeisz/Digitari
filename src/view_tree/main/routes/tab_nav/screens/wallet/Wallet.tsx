@@ -46,6 +46,7 @@ import {
     GetUpdateFlagsVariables,
 } from "../../gql/Queries";
 import { useIsFocused } from "@react-navigation/native";
+import InstructionModal from "./building_blocks/instruction_modal/InstructionModal";
 
 interface Props {
     navigation: WalletNavProp;
@@ -316,6 +317,11 @@ const Wallet: React.FC<Props> = (props) => {
 
     return (
         <>
+            <InstructionModal
+                navigateToProfile={() =>
+                    setTimeout(() => props.navigation.navigate("Profile"), 700)
+                }
+            />
             <View style={basicLayouts.flexGrid1}>
                 <FlatList
                     style={styles.walletList}
