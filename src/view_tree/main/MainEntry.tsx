@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import TabNav from "./routes/tab_nav/TabNav";
 import Convo from "./screens/convo/Convo";
 import NewResponse from "./screens/new_response/NewResponse";
@@ -35,6 +35,7 @@ import { styles } from "./MainEntryStyles";
 import Store from "./screens/store/Store";
 import PrivacyPolicy from "./screens/settings/screens/privacy_policy/PrivacyPolicy";
 import TermsAndConditions from "./screens/settings/screens/terms_and_conditions/TermsAndConditions";
+import { TutorialContext } from "../context/tutorial_context/TutorialContext";
 
 const RootStack = createStackNavigator<MainEntryStack>();
 
@@ -109,6 +110,11 @@ const MainEntry: React.FC = () => {
         }
     }, []);
 
+    /*
+     * Handle the tutorial
+     */
+    const { tutorialActive } = useContext(TutorialContext);
+
     return (
         <RootStack.Navigator
             initialRouteName="TabNav"
@@ -119,7 +125,9 @@ const MainEntry: React.FC = () => {
                     <TouchableOpacity
                         style={styles.coinContainer}
                         onPress={() => {
-                            navigation.navigate("Store");
+                            if (!tutorialActive) {
+                                navigation.navigate("Store");
+                            }
                         }}
                     >
                         <Text style={styles.coinText}>+</Text>
@@ -140,7 +148,9 @@ const MainEntry: React.FC = () => {
                         headerLeft: () => (
                             <TouchableOpacity
                                 onPress={() => {
-                                    navigation.navigate("Invite");
+                                    if (!tutorialActive) {
+                                        navigation.navigate("Invite");
+                                    }
                                 }}
                             >
                                 <Text style={styles.inviteText}>+ Invite</Text>

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import {
     View,
     Image,
@@ -33,6 +33,7 @@ import TierModal from "./building_blocks/tier_modal/TierModal";
 import { challengeCheck } from "../../../global_gql/challenge_check/challenge_check";
 import { calculateLevelInfo } from "../../../global_utils/LevelUtils";
 import UserOptionsModal from "./building_blocks/user_options_modal/UserOptionsModal";
+import { TutorialContext } from "../../../view_tree/context/tutorial_context/TutorialContext";
 
 interface Props {
     user: UserType;
@@ -164,6 +165,8 @@ const ProfileHeader: React.FC<Props> = (props) => {
         }
     );
 
+    const { tutorialActive } = useContext(TutorialContext);
+
     return (
         <View pointerEvents="box-none">
             <View
@@ -199,7 +202,11 @@ const ProfileHeader: React.FC<Props> = (props) => {
                                     }}
                                 />
                                 <TouchableOpacity
-                                    onPress={() => showEditBio(true)}
+                                    onPress={() => {
+                                        if (!tutorialActive) {
+                                            showEditBio(true);
+                                        }
+                                    }}
                                 >
                                     <Text style={styles.editProfileText}>
                                         Edit
@@ -210,7 +217,13 @@ const ProfileHeader: React.FC<Props> = (props) => {
                     </View>
                     <View style={styles.split0Right}>
                         {props.isMe ? (
-                            <TouchableOpacity onPress={props.openSettings}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    if (!tutorialActive) {
+                                        props.openSettings();
+                                    }
+                                }}
+                            >
                                 <Ionicons
                                     name="settings"
                                     size={24}
@@ -322,7 +335,11 @@ const ProfileHeader: React.FC<Props> = (props) => {
                         <TouchableOpacity
                             style={styles.followsButton}
                             activeOpacity={0.5}
-                            onPress={props.openFollows}
+                            onPress={() => {
+                                if (!tutorialActive) {
+                                    props.openFollows();
+                                }
+                            }}
                         >
                             <Text style={styles.followNumeralText}>
                                 {toRep(props.user.followers)}

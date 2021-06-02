@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import Modal from "react-native-modal";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./TierModalStyles";
 import TierInfo from "./building_blocks/tier_info/TierInfo";
 import { TierEnum } from "../../../../../global_types/TierTypes";
+import {
+    TutorialContext,
+    TutorialScreen,
+} from "../../../../../view_tree/context/tutorial_context/TutorialContext";
 
 interface Props {
     visible: boolean;
@@ -11,6 +15,10 @@ interface Props {
 }
 
 const TierModal: React.FC<Props> = (props) => {
+    const { tutorialActive, tutorialScreen, advanceTutorial } = useContext(
+        TutorialContext
+    );
+
     return (
         <Modal isVisible={props.visible}>
             <View style={styles.modalOuterContainer}>
@@ -33,7 +41,18 @@ const TierModal: React.FC<Props> = (props) => {
                     <View style={styles.modalFooter}>
                         <TouchableOpacity
                             style={styles.closeButton}
-                            onPress={props.hide}
+                            onPress={() => {
+                                props.hide();
+
+                                if (
+                                    tutorialActive &&
+                                    tutorialScreen === TutorialScreen.TapTier
+                                ) {
+                                    setTimeout(() => {
+                                        advanceTutorial();
+                                    }, 500);
+                                }
+                            }}
                         >
                             <Text style={styles.closeButtonText}>Close</Text>
                         </TouchableOpacity>

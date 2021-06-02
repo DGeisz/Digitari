@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Animated, RefreshControl, View } from "react-native";
 import StatsHeader from "./building_blocks/stats_header/StatsHeader";
 import { useCollapsibleScene } from "react-native-collapsible-tab-view";
@@ -9,6 +9,7 @@ import { styles } from "./UserStatsStyles";
 import UserStat from "./building_blocks/user_stat/UserStat";
 import { GENERAL_CONTENT_WIDTH } from "../../../global_constants/screen_constants";
 import { basicLayouts } from "../../../global_styles/BasicLayouts";
+import { TutorialContext } from "../../../view_tree/context/tutorial_context/TutorialContext";
 
 interface Props {
     user: UserType;
@@ -20,6 +21,9 @@ interface Props {
 const UserStats: React.FC<Props> = (props) => {
     const scrollPropsAndRef = useCollapsibleScene(props.routeKey);
     const [stillSpin, setStillSpin] = useState<boolean>(false);
+
+    const { tutorialActive } = useContext(TutorialContext);
+
     return (
         <Animated.ScrollView
             {...scrollPropsAndRef}
@@ -48,7 +52,14 @@ const UserStats: React.FC<Props> = (props) => {
                 />
             }
         >
-            <StatsHeader user={props.user} openFollows={props.openFollows} />
+            <StatsHeader
+                user={props.user}
+                openFollows={() => {
+                    if (!tutorialActive) {
+                        props.openFollows();
+                    }
+                }}
+            />
             <Divider />
             <View style={styles.statsContainer}>
                 <UserStat

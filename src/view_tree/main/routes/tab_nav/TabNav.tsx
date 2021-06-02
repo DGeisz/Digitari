@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { Entypo, FontAwesome, Ionicons } from "@expo/vector-icons";
 import MainFeed from "./screens/main_feed/MainFeed";
 import Wallet from "./screens/wallet/Wallet";
@@ -23,6 +23,8 @@ import { getTierWage } from "../../../../global_types/TierTypes";
 import CoinIndicator from "./building_blocks/coin_indicator/CoinIndicator";
 import ChallengeCompleteModal from "./building_blocks/challenge_complete_modal/ChallengeCompleteModal";
 import { addNewReceipt } from "../../../../global_state/CoinUpdates";
+import { TutorialContext } from "../../../context/tutorial_context/TutorialContext";
+import { tutorialUser } from "./screens/profile/data/tutorial_user/tutorial_user";
 
 const Tab = createBottomTabNavigator<TabNavTab>();
 
@@ -84,6 +86,11 @@ const TabNav: React.FC<Props> = (props) => {
         }
     );
 
+    /*
+     * Handle opening the tutorial
+     */
+    const { tutorialActive } = useContext(TutorialContext);
+
     let newConvoUpdate = false;
     let newTransactionUpdate = false;
 
@@ -123,7 +130,7 @@ const TabNav: React.FC<Props> = (props) => {
                     }}
                 />
                 <Tab.Navigator
-                    initialRouteName="MainFeed"
+                    initialRouteName={tutorialActive ? "Profile" : "MainFeed"}
                     tabBarOptions={{
                         showLabel: false,
                         inactiveTintColor: "gray",
@@ -136,6 +143,13 @@ const TabNav: React.FC<Props> = (props) => {
                             tabBarIcon: ({ color, size }) => (
                                 <Entypo name="home" size={size} color={color} />
                             ),
+                        }}
+                        listeners={{
+                            tabPress: (e) => {
+                                if (tutorialActive) {
+                                    e.preventDefault();
+                                }
+                            },
                         }}
                     />
                     <Tab.Screen
@@ -153,6 +167,13 @@ const TabNav: React.FC<Props> = (props) => {
                                 </View>
                             ),
                         }}
+                        listeners={{
+                            tabPress: (e) => {
+                                if (tutorialActive) {
+                                    e.preventDefault();
+                                }
+                            },
+                        }}
                     />
                     <Tab.Screen
                         name="Search"
@@ -165,6 +186,13 @@ const TabNav: React.FC<Props> = (props) => {
                                     color={color}
                                 />
                             ),
+                        }}
+                        listeners={{
+                            tabPress: (e) => {
+                                if (tutorialActive) {
+                                    e.preventDefault();
+                                }
+                            },
                         }}
                     />
                     <Tab.Screen
@@ -187,6 +215,13 @@ const TabNav: React.FC<Props> = (props) => {
                                 );
                             },
                         }}
+                        listeners={{
+                            tabPress: (e) => {
+                                if (tutorialActive) {
+                                    e.preventDefault();
+                                }
+                            },
+                        }}
                     />
                     <Tab.Screen
                         name="Profile"
@@ -199,6 +234,13 @@ const TabNav: React.FC<Props> = (props) => {
                                     color={color}
                                 />
                             ),
+                        }}
+                        listeners={{
+                            tabPress: (e) => {
+                                if (tutorialActive) {
+                                    e.preventDefault();
+                                }
+                            },
                         }}
                     />
                 </Tab.Navigator>

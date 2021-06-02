@@ -3,7 +3,7 @@ import MainEntry from "./main/MainEntry";
 import AuthEntry from "./auth/AuthEntry";
 import * as SplashScreen from "expo-splash-screen";
 import { Auth, Hub } from "aws-amplify";
-import { useApolloClient, useMutation, useReactiveVar } from "@apollo/client";
+import { useApolloClient, useReactiveVar } from "@apollo/client";
 import {
     CHECK_IN_USER,
     CheckInUserData,
@@ -11,31 +11,42 @@ import {
     CREATE_USER,
     CreateUserData,
     CreateUserVariables,
+    PROCESS_IAP,
     ProcessIapData,
     ProcessIapVariables,
-    PROCESS_IAP,
 } from "./gql/Mutations";
 import {
     localUid,
     setLocalFirstName,
     setLocalHid,
+    setLocalLastName,
     setLocalUid,
 } from "../global_state/UserState";
 import { HID, HidData } from "./gql/Queries";
 import { inviteCode, userAuthenticated } from "../global_state/AuthState";
 import { styles } from "./AppViewStyles";
-import { ActivityIndicator, Platform, Text, View } from "react-native";
+import {
+    ActivityIndicator,
+    Platform,
+    Text,
+    LayoutAnimation,
+    View,
+} from "react-native";
 import { palette } from "../global_styles/Palette";
 import Constants from "expo-constants";
-import type { InAppPurchase, IAPQueryResponse } from "expo-in-app-purchases";
+import type { IAPQueryResponse, InAppPurchase } from "expo-in-app-purchases";
 import { USER_TYPENAME } from "../global_types/UserTypes";
 import { ProductId, products } from "../global_types/IapTypes";
+import {
+    TutorialContext,
+    TutorialScreen,
+} from "./context/tutorial_context/TutorialContext";
 
 const AppView: React.FC = () => {
     const client = useApolloClient();
 
-    /* 
-    First we set up initialize in-app-purchases 
+    /*
+    First we set up initialize in-app-purchases
      */
     useEffect(() => {
         if (Constants.appOwnership !== "expo") {
@@ -50,14 +61,14 @@ const AppView: React.FC = () => {
                 await connectAsync();
 
                 setPurchaseListener((result: IAPQueryResponse) => {
-                    const { responseCode, results, errorCode } = result;
+                    const { responseCode, results } = result;
 
                     if (responseCode === IAPResponseCode.OK && !!results) {
                         results.forEach(async (rawPurchase) => {
                             const purchase = rawPurchase as InAppPurchase;
 
                             if (!purchase.acknowledged) {
-                                /* 
+                                /*
                                 Ok, first we want to process this on the backend
                                  */
                                 let receipt: string;
@@ -86,7 +97,7 @@ const AppView: React.FC = () => {
                                     },
                                 });
 
-                                /* 
+                                /*
                                 Then after we've accepted the transaction on the backend,
                                 we want to mark the transaction as complete.
 
@@ -139,22 +150,26 @@ const AppView: React.FC = () => {
     const [checkedAuth, setCheckAuth] = useState<boolean>(false);
     const [fetchedUser, setFetchedUser] = useState<boolean>(false);
 
+    const [showTutorial, setTutorialActive] = useState<boolean>(false);
+    const [currentTutorialScreen, setTutorialScreen] = useState<TutorialScreen>(
+        TutorialScreen.Welcome
+    );
+
     const [retryCount, setRetryCount] = useState<number>(0);
 
     const [splashHidden, setSplashHidden] = useState<boolean>(false);
-
-    const [newUser, setNewUser] = useState<boolean>(false);
 
     const authenticated = useReactiveVar(userAuthenticated);
 
     const authenticate = async () => {
         try {
-            const { sub, given_name } = (
+            const { sub, given_name, family_name } = (
                 await Auth.currentSession()
             ).getIdToken().payload;
 
             !!sub && setLocalUid(sub);
             !!given_name && setLocalFirstName(given_name);
+            !!family_name && setLocalLastName(family_name);
             userAuthenticated(true);
         } catch (_) {
             userAuthenticated(false);
@@ -168,46 +183,26 @@ const AppView: React.FC = () => {
 
     useEffect(() => {
         (async () => {
-            console.log(
-                "Heres check in ",
-                checkedAuth,
-                authenticated,
-                fetchedUser
-            );
             if (checkedAuth) {
                 if (authenticated) {
                     // If we've authenticated and performed the initial fetch, we show the splash
                     if (fetchedUser) {
                         if (!splashHidden) {
-                            setTimeout(async () => {
-                                try {
-                                    await SplashScreen.hideAsync();
-                                } finally {
-                                    setSplashHidden(true);
-                                }
-                            }, 200);
+                            await SplashScreen.hideAsync();
+                            setSplashHidden(true);
                         }
                     }
                 } else {
                     // If we're not authenticated, immediately show auth flow
 
                     if (!splashHidden) {
-                        setTimeout(async () => {
-                            try {
-                                await SplashScreen.hideAsync();
-                            } finally {
-                                setSplashHidden(true);
-                            }
-                        }, 200);
+                        await SplashScreen.hideAsync();
+                        setSplashHidden(true);
                     }
                 }
             }
         })();
     }, [fetchedUser, checkedAuth]);
-
-    const [createUser] = useMutation<CreateUserData, CreateUserVariables>(
-        CREATE_USER
-    );
 
     useEffect(() => {
         (async () => {
@@ -218,6 +213,7 @@ const AppView: React.FC = () => {
 
                 !!sub && setLocalUid(sub);
                 !!given_name && setLocalFirstName(given_name);
+                !!family_name && setLocalLastName(family_name);
 
                 if (authenticated && email && given_name && family_name) {
                     const { data: checkInData } = await client.mutate<
@@ -225,15 +221,6 @@ const AppView: React.FC = () => {
                         CheckInUserVariables
                     >({
                         mutation: CHECK_IN_USER,
-                    });
-
-                    const { data } = await createUser({
-                        variables: {
-                            email,
-                            firstName: given_name,
-                            lastName: family_name,
-                            code: inviteCode(),
-                        },
                     });
 
                     if (!checkInData?.checkInUser) {
@@ -254,11 +241,15 @@ const AppView: React.FC = () => {
 
                         if (createUserData?.createUser) {
                             setFetchedUser(true);
-                            setNewUser(true);
+                            setTutorialActive(true);
                         }
                     } else {
                         setFetchedUser(true);
-                        setNewUser(false);
+                        /*
+                         * TODO: Change this in production
+                         */
+                        // setTutorialActive(false);
+                        setTutorialActive(true);
                     }
 
                     const { data: hidData } = await client.query<HidData>({
@@ -281,6 +272,10 @@ const AppView: React.FC = () => {
         })();
     }, [authenticated, checkedAuth, retryCount]);
 
+    if (!splashHidden) {
+        return null;
+    }
+
     if (!fetchedUser && authenticated) {
         return (
             <View style={styles.setupContainer}>
@@ -291,7 +286,25 @@ const AppView: React.FC = () => {
             </View>
         );
     } else if (fetchedUser && authenticated) {
-        return <MainEntry />;
+        return (
+            <TutorialContext.Provider
+                value={{
+                    tutorialActive: showTutorial,
+                    tutorialScreen: currentTutorialScreen,
+                    skipTutorial: () => setTutorialActive(false),
+                    advanceTutorial: () => {
+                        LayoutAnimation.easeInEaseOut();
+                        setTutorialScreen((current) => current + 1);
+                    },
+                    setScreen: (screen) => {
+                        LayoutAnimation.easeInEaseOut();
+                        setTutorialScreen(screen);
+                    },
+                }}
+            >
+                <MainEntry />
+            </TutorialContext.Provider>
+        );
     } else {
         return <AuthEntry />;
     }

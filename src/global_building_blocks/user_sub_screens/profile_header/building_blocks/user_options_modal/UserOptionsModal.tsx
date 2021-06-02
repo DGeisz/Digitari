@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import * as Linking from "expo-linking";
 import { Text, TouchableOpacity, View, Share } from "react-native";
 import { optionsStyles } from "../../../../../global_styles/OptionsModalStyles";
 import { Entypo } from "@expo/vector-icons";
 import { palette } from "../../../../../global_styles/Palette";
 import Modal from "react-native-modal";
+import { TutorialContext } from "../../../../../view_tree/context/tutorial_context/TutorialContext";
 
 const prefix = Linking.createURL("/");
 
@@ -16,11 +17,17 @@ interface Props {
 const UserOptionsModal: React.FC<Props> = (props) => {
     const [optionsVisible, setOptionsVisible] = useState<boolean>(false);
 
+    const { tutorialActive } = useContext(TutorialContext);
+
     return (
         <>
             <TouchableOpacity
                 style={optionsStyles.userIconContainer}
-                onPress={() => setOptionsVisible(true)}
+                onPress={() => {
+                    if (!tutorialActive) {
+                        setOptionsVisible(true);
+                    }
+                }}
             >
                 <Entypo
                     name="dots-three-vertical"

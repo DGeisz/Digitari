@@ -52,19 +52,19 @@ export function setLocalFirstName(name: string): void {
     AsyncStorage.setItem(NAME_KEY, JSON.stringify(name)).then();
 }
 
-/*Local push token*/
-const PUSH_KEY = "PUSH_KEY";
+/*User last name*/
+const LAST_NAME_KEY = "LAST_NAME_KEY";
 
-export const localPushToken = makeVar<string>("");
+export const localLastName = makeVar<string>("");
 
-AsyncStorage.getItem(PUSH_KEY).then((raw) => {
+AsyncStorage.getItem(LAST_NAME_KEY).then((raw) => {
     if (raw) {
-        const token = JSON.parse(raw);
-        localPushToken(token);
+        const name = JSON.parse(raw);
+        localLastName(name);
     }
 });
 
-export function setLocalPushToken(token: string): void {
-    localPushToken(token);
-    AsyncStorage.setItem(PUSH_KEY, JSON.stringify(token)).then();
+export function setLocalLastName(name: string): void {
+    localLastName(name);
+    AsyncStorage.setItem(LAST_NAME_KEY, JSON.stringify(name)).then();
 }

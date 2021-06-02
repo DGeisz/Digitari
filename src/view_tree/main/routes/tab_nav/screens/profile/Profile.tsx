@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { View, Text } from "react-native";
+import React, { useContext, useState } from "react";
+import { View, Text, TouchableOpacity } from "react-native";
 import { basicLayouts } from "../../../../../../global_styles/BasicLayouts";
 import TabLabel from "../../../../../../global_building_blocks/tab_label/TabLabel";
 import { createMaterialCollapsibleTopTabNavigator } from "react-native-collapsible-tab-view";
@@ -18,9 +18,17 @@ import UserPosts from "../../../../../../global_building_blocks/user_sub_screens
 import UserConvos from "../../../../../../global_building_blocks/user_sub_screens/user_convos/UserConvos";
 import UserChallenges from "../../../../../../global_building_blocks/user_sub_screens/user_challenges/UserChallenges";
 import UserStats from "../../../../../../global_building_blocks/user_sub_screens/user_stats/UserStats";
-import { localUid } from "../../../../../../global_state/UserState";
+import {
+    localFirstName,
+    localLastName,
+    localUid,
+} from "../../../../../../global_state/UserState";
 import { styles } from "./ProfileStyles";
 import { SCREEN_LARGER_THAN_CONTENT } from "../../../../../../global_constants/screen_constants";
+import InstructionModal from "./building_blocks/instruction_modal/InstructionModal";
+import { TutorialContext } from "../../../../../context/tutorial_context/TutorialContext";
+import { tutorialUser } from "./data/tutorial_user/tutorial_user";
+import { UserType } from "../../../../../../global_types/UserTypes";
 
 const Tab = createMaterialCollapsibleTopTabNavigator();
 
@@ -37,6 +45,9 @@ const Profile: React.FC = () => {
         openReportUser,
         openSettings,
     } = useContext(TabNavContext);
+
+    const { tutorialActive } = useContext(TutorialContext);
+
     const uid = localUid();
 
     const { data, networkStatus, error, refetch } = useQuery<
@@ -49,17 +60,29 @@ const Profile: React.FC = () => {
         },
     });
 
-    if (!data?.user && networkStatus === NetworkStatus.loading) {
+    if (
+        !tutorialActive &&
+        !data?.user &&
+        networkStatus === NetworkStatus.loading
+    ) {
         return <LoadingWheel />;
     }
 
-    if (error) {
+    if (!tutorialActive && error) {
         return <ErrorMessage refresh={refetch} />;
     }
 
-    if (!!data?.user) {
+    const user: UserType | undefined = tutorialActive
+        ? Object.assign(tutorialUser, {
+              firstName: localFirstName(),
+              lastName: localLastName(),
+          })
+        : data?.user;
+
+    if (!!user) {
         return (
             <>
+                <InstructionModal />
                 <View style={basicLayouts.flexGrid1}>
                     <Tab.Navigator
                         collapsibleOptions={{
@@ -67,15 +90,15 @@ const Profile: React.FC = () => {
                                 <ProfileHeader
                                     openFollows={() =>
                                         openFollows(
-                                            `${data.user.firstName} ${data.user.lastName}`,
-                                            data.user.id
+                                            `${user.firstName} ${user.lastName}`,
+                                            user.id
                                         )
                                     }
-                                    user={data.user}
+                                    user={user}
                                     isMe
                                     openSettings={openSettings}
                                     openReportUser={() => {
-                                        openReportUser(data?.user.id);
+                                        openReportUser(user.id);
                                     }}
                                 />
                             ),
@@ -146,7 +169,7 @@ const Profile: React.FC = () => {
                             {() => {
                                 return (
                                     <UserChallenges
-                                        user={data.user}
+                                        user={user}
                                         routeKey={"UserChallenges"}
                                         refreshHeader={refetch}
                                     />
@@ -164,12 +187,12 @@ const Profile: React.FC = () => {
                             {() => (
                                 <UserStats
                                     routeKey="UserStats"
-                                    user={data.user}
+                                    user={user}
                                     refreshHeader={refetch}
                                     openFollows={() =>
                                         openFollows(
-                                            `${data.user.firstName} ${data.user.lastName}`,
-                                            data.user.id
+                                            `${user.firstName} ${user.lastName}`,
+                                            user.id
                                         )
                                     }
                                 />
