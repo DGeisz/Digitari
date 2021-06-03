@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Animated, RefreshControl, Text, View } from "react-native";
 import { NetworkStatus, useMutation, useQuery } from "@apollo/client";
 import {
@@ -26,6 +26,7 @@ import {
 import { localUid } from "../../../global_state/UserState";
 import { basicLayouts } from "../../../global_styles/BasicLayouts";
 import { SCREEN_LARGER_THAN_CONTENT } from "../../../global_constants/screen_constants";
+import { TutorialContext } from "../../../view_tree/context/tutorial_context/TutorialContext";
 
 interface Props {
     routeKey: string;
@@ -60,12 +61,16 @@ const UserPosts: React.FC<Props> = (props) => {
         DONATE_TO_POST
     );
 
+    const { tutorialActive } = useContext(TutorialContext);
+
     const scrollPropsAndRef = useCollapsibleScene(props.routeKey);
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
     const [fetchMoreLen, setFetchMoreLen] = useState<number>(0);
 
-    const finalFeed = !!data?.userPosts
+    const finalFeed = tutorialActive
+        ? []
+        : !!data?.userPosts
         ? data.userPosts.filter((post) => !!post)
         : [];
 
@@ -77,13 +82,14 @@ const UserPosts: React.FC<Props> = (props) => {
             {...scrollPropsAndRef}
             ListHeaderComponent={() => {
                 if (
+                    !tutorialActive &&
                     !data?.userPosts &&
                     networkStatus === NetworkStatus.loading
                 ) {
                     return <LoadingWheel />;
                 }
 
-                if (error) {
+                if (!tutorialActive && error) {
                     return <ErrorMessage refresh={refetch} />;
                 }
 

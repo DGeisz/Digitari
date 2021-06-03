@@ -13,3 +13,4 @@ export type TabNavTab = {
  */
 export type WalletNavProp = StackNavigationProp<TabNavTab, "Wallet">;
 export type ConvosNavProp = StackNavigationProp<TabNavTab, "Convos">;
+export type MainFeedNavProp = StackNavigationProp<TabNavTab, "MainFeed">;

@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import React, { useContext, useState } from "react";
+import { Text, LayoutAnimation, TouchableOpacity, View } from "react-native";
 import { instructionStyles } from "../../global_styles/InstructionStyles";
 import {
     TutorialContext,
@@ -17,6 +17,42 @@ const TutorialFooter: React.FC<Props> = (props) => {
     const { setScreen, skipTutorial, advanceTutorial } = useContext(
         TutorialContext
     );
+
+    const [showSkipDialog, setSkipVisible] = useState<boolean>(false);
+
+    if (showSkipDialog) {
+        return (
+            <View style={instructionStyles.skipContainer}>
+                <Text style={instructionStyles.skipText}>
+                    Are you sure you want to skip the tutorial? {"\n\n"}If you
+                    want to revisit the tutorial, you can open it by going to
+                    the settings page.
+                </Text>
+                <View style={instructionStyles.skipFooter}>
+                    <TouchableOpacity
+                        style={instructionStyles.cancelButton}
+                        onPress={() => {
+                            LayoutAnimation.easeInEaseOut();
+                            setSkipVisible(false);
+                        }}
+                    >
+                        <Text style={instructionStyles.cancelButtonText}>
+                            Cancel
+                        </Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={instructionStyles.skipButton}
+                        onPress={skipTutorial}
+                    >
+                        <Text style={instructionStyles.skipButtonText}>
+                            Skip
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        );
+    }
 
     return (
         <View style={instructionStyles.footerContainer}>
@@ -42,7 +78,12 @@ const TutorialFooter: React.FC<Props> = (props) => {
             </TouchableOpacity>
             <View style={instructionStyles.footerRight}>
                 {!!props.showSkip && (
-                    <TouchableOpacity onPress={skipTutorial}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            LayoutAnimation.easeInEaseOut();
+                            setSkipVisible(true);
+                        }}
+                    >
                         <Text style={instructionStyles.footerText}>Skip</Text>
                     </TouchableOpacity>
                 )}

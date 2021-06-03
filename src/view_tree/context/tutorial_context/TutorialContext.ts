@@ -37,6 +37,17 @@ export enum TutorialScreen {
      * let's go to feed
      */
     OpenFeedPrompt,
+    TapHome,
+
+    /*
+     * Feed screens
+     */
+    IntroduceFeed,
+    LikeFirstPost,
+    TapLike,
+    CustomLikePost,
+    CustomTapLike,
+    RespondToPost,
 }
 
 interface TutorialContextType {

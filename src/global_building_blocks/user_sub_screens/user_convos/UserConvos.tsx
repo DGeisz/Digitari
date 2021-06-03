@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Animated, RefreshControl, Text, View } from "react-native";
 import { NetworkStatus, useQuery } from "@apollo/client";
 import {
@@ -15,6 +15,7 @@ import { globalScreenStyles } from "../../../global_styles/GlobalScreenStyles";
 import { styles } from "./UserConvosStyles";
 import { localUid } from "../../../global_state/UserState";
 import ErrorMessage from "../../error_message/ErrorMessage";
+import { TutorialContext } from "../../../view_tree/context/tutorial_context/TutorialContext";
 
 interface Props {
     routeKey: string;
@@ -36,10 +37,16 @@ const UserConvos: React.FC<Props> = (props) => {
         notifyOnNetworkStatusChange: true,
     });
 
+    const { tutorialActive } = useContext(TutorialContext);
+
     const scrollPropsAndRef = useCollapsibleScene(props.routeKey);
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
-    const finalFeed = !!data?.userConvos ? data.userConvos : [];
+    const finalFeed = tutorialActive
+        ? []
+        : !!data?.userConvos
+        ? data.userConvos
+        : [];
 
     const [fetchMoreLen, setFetchMoreLen] = useState<number>(
         USER_CONVOS_PER_PAGE - 1
@@ -50,9 +57,12 @@ const UserConvos: React.FC<Props> = (props) => {
             {...scrollPropsAndRef}
             data={finalFeed}
             ListHeaderComponent={() => {
-                if (error) {
+                if (!tutorialActive && error) {
                     return <ErrorMessage refresh={refetch} />;
-                } else if (networkStatus === NetworkStatus.loading) {
+                } else if (
+                    !tutorialActive &&
+                    networkStatus === NetworkStatus.loading
+                ) {
                     return <LoadingWheel />;
                 } else if (finalFeed.length === 0) {
                     return (

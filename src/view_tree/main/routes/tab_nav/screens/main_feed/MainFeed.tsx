@@ -21,18 +21,26 @@ import {
     DonateToPostData,
     DonateToPostVariables,
 } from "../../../../../../global_building_blocks/post/gql/Mutations";
-import { localUid } from "../../../../../../global_state/UserState";
+import {
+    localFirstName,
+    localUid,
+} from "../../../../../../global_state/UserState";
 import {
     GET_USER,
     GetUserQueryData,
     GetUserQueryVariables,
 } from "../profile/gql/Queries";
-import { basicLayouts } from "../../../../../../global_styles/BasicLayouts";
 import { SCREEN_LARGER_THAN_CONTENT } from "../../../../../../global_constants/screen_constants";
+import { TutorialContext } from "../../../../../context/tutorial_context/TutorialContext";
+import { tutorialPosts } from "./data/tutorial_posts/tutorial_posts";
+import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
+import { MainFeedNavProp } from "../../TabNavTypes";
 
-interface Props {}
+interface Props {
+    navigation: MainFeedNavProp;
+}
 
-const MainFeed: React.FC<Props> = () => {
+const MainFeed: React.FC<Props> = (props) => {
     const uid = localUid();
 
     const {
@@ -66,33 +74,54 @@ const MainFeed: React.FC<Props> = () => {
         DONATE_TO_POST
     );
 
-    // console.log(data, error);
-
     const [fetchMoreLen, setFetchMoreLen] = useState<number>(0);
-
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
+    const { tutorialActive } = useContext(TutorialContext);
+
     if (
-        (!data?.feed && networkStatus === NetworkStatus.loading) ||
-        (!selfData?.user && selfLoading)
+        !tutorialActive &&
+        ((!data?.feed && networkStatus === NetworkStatus.loading) ||
+            (!selfData?.user && selfLoading))
     ) {
         return <LoadingWheel />;
     }
 
-    if (error) {
+    if (!tutorialActive && error) {
         return <ErrorMessage refresh={refetch} />;
     }
 
-    if (selfError) {
+    if (!tutorialActive && selfError) {
         return <ErrorMessage refresh={selfRefetch} />;
     }
 
-    const finalFeed = !!data?.feed ? data.feed.filter((post) => !!post) : [];
-    const userCoin = !!selfData?.user ? selfData.user.coin : 0;
-    const userFirstName = !!selfData?.user ? selfData.user.firstName : "";
+    const finalFeed = tutorialActive
+        ? tutorialPosts
+        : !!data?.feed
+        ? data.feed.filter((post) => !!post)
+        : [];
+
+    const userCoin = tutorialActive
+        ? 400
+        : !!selfData?.user
+        ? selfData.user.coin
+        : 0;
+
+    const firstName = localFirstName();
+
+    const userFirstName = tutorialActive
+        ? firstName
+        : !!selfData?.user
+        ? selfData.user.firstName
+        : firstName;
 
     return (
         <>
+            <InstructionsModal
+                navigate2Wallet={() =>
+                    setTimeout(() => props.navigation.navigate("Wallet"), 700)
+                }
+            />
             {finalFeed.length === 0 ? (
                 <View style={styles.noFeedContainer}>
                     <Text style={styles.noFeedText}>

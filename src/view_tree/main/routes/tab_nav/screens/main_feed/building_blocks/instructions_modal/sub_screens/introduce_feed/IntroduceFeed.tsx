@@ -4,22 +4,22 @@ import { instructionStyles } from "../../../../../../../../../../global_styles/I
 import TutorialFooter from "../../../../../../../../../../global_building_blocks/tutorial/TutorialFooter";
 import { TutorialScreen } from "../../../../../../../../../context/tutorial_context/TutorialContext";
 
-const NewPostRecipients: React.FC = () => {
+interface Props {
+    navigate2Wallet: () => void;
+}
+
+const IntroduceFeed: React.FC<Props> = (props) => {
     return (
-        <View style={instructionStyles.modalTop}>
+        <View style={instructionStyles.modalBottom}>
             <View style={instructionStyles.instructionContainer}>
                 <Text style={instructionStyles.instructionText}>
-                    Finally, you get to choose how many people are going to
-                    receive your post by entering "Recipients." Pretty neat,
-                    huh?
-                    {"\n\n"}
-                    Posting costs 10 digicoin per recipient, so if you want more
-                    people to see your content, you need to earn more digicoin!
-                    {"\n\n"}
-                    Hit next, and enter "20" into the "Recipients" field.
+                    Here's your feed on Digitari!{"\n\n"}
+                    This is where you'll receive posts from people or
+                    Communities you follow.
                 </Text>
                 <TutorialFooter
-                    goBackScreen={TutorialScreen.NewPostTarget}
+                    goBackScreen={TutorialScreen.OpenFeedPrompt}
+                    goBack={props.navigate2Wallet}
                     showSkip
                     showGoBack
                 />
@@ -28,4 +28,4 @@ const NewPostRecipients: React.FC = () => {
     );
 };
 
-export default NewPostRecipients;
+export default IntroduceFeed;

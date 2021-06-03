@@ -65,4 +65,40 @@ export const instructionStyles = StyleSheet.create({
         ...basicLayouts.grid2,
         marginVertical: 10,
     },
+    skipContainer: {
+        ...basicLayouts.grid2,
+        marginTop: 20,
+    },
+    skipText: {
+        color: palette.white,
+        textAlign: "center",
+        fontSize: 15,
+    },
+    skipFooter: {
+        flexDirection: "row",
+        marginTop: 10,
+    },
+    cancelButton: {
+        backgroundColor: palette.lightGray,
+        paddingVertical: 5,
+        paddingHorizontal: 8,
+        borderRadius: 10,
+    },
+    cancelButtonText: {
+        color: palette.hardGray,
+        fontSize: 20,
+        fontWeight: "bold",
+    },
+    skipButton: {
+        backgroundColor: palette.warningLight,
+        paddingVertical: 5,
+        paddingHorizontal: 8,
+        borderRadius: 10,
+        marginLeft: 5,
+    },
+    skipButtonText: {
+        color: palette.warning,
+        fontSize: 20,
+        fontWeight: "bold",
+    },
 });

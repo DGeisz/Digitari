@@ -150,7 +150,12 @@ const TabNav: React.FC<Props> = (props) => {
                         }}
                         listeners={{
                             tabPress: (e) => {
-                                if (tutorialActive) {
+                                if (
+                                    tutorialActive &&
+                                    tutorialScreen === TutorialScreen.TapHome
+                                ) {
+                                    advanceTutorial();
+                                } else if (tutorialActive) {
                                     e.preventDefault();
                                 }
                             },

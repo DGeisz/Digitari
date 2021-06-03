@@ -77,7 +77,10 @@ const UserStats: React.FC<Props> = (props) => {
                     quantity={props.user.spentOnConvos}
                     showCoin
                 />
-                <UserStat title={"Posts"} quantity={props.user.postCount} />
+                <UserStat
+                    title={"Posts created"}
+                    quantity={props.user.postCount}
+                />
             </View>
         </Animated.ScrollView>
     );
