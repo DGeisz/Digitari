@@ -46,6 +46,7 @@ export enum TutorialScreen {
     LikeFirstPost,
     TapLike,
     ExplainDigicoinLike,
+    ExplainCustomLike,
     CustomLikePost,
     CustomTapLike,
     RespondToPost,

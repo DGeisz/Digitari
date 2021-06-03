@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Modal from "react-native-modal";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { styles } from "./DonationModalStyles";
@@ -18,7 +18,83 @@ interface State {
     error: string;
 }
 
-export default class DonationModal extends React.PureComponent<Props, State> {
+const DonationModal: React.FC<Props> = (props) => {
+    const [amount, setAmount] = useState<number>(NaN);
+    const [error, setError] = useState<string>("");
+
+    const submit = () => {
+        if (isNaN(amount)) {
+            setError("Please set amount");
+        } else if (amount <= 0) {
+            setError("Donate at least one coin");
+        } else {
+            props.donateCoin(amount);
+            props.hide();
+        }
+    };
+
+    return (
+        <Modal
+            isVisible={props.visible}
+            style={styles.donateModal}
+            onBackdropPress={props.hide}
+        >
+            <View style={styles.donateContainer}>
+                <View style={styles.donateHeader}>
+                    <Text style={styles.donateTitle}>Custom</Text>
+                </View>
+                <Text style={styles.errorText}>{error}</Text>
+                <TextInput
+                    autoFocus
+                    style={styles.donateInput}
+                    keyboardType="numeric"
+                    placeholder="Amount..."
+                    placeholderTextColor={palette.semiSoftGray}
+                    value={isNaN(amount) ? "" : toCommaRep(amount).toString()}
+                    onChangeText={(text) => {
+                        const noCommas = text.replace(/,/g, "");
+                        const amount = parseInt(noCommas);
+
+                        if (amount > props.userCoin) {
+                            setError("You don't have enough coin");
+                            setAmount(parseInt(noCommas));
+                        } else {
+                            setError("");
+                            setAmount(parseInt(noCommas));
+                        }
+                    }}
+                />
+                <View style={styles.donateFooter}>
+                    <TouchableOpacity
+                        style={styles.donateButton}
+                        onPress={submit}
+                    >
+                        <View style={styles.donateButtonTextContainer}>
+                            <Text style={styles.donateButtonText}>Like</Text>
+                        </View>
+                        <CoinBox
+                            amount={isNaN(amount) ? 0 : amount}
+                            showAbbreviated
+                            coinSize={23}
+                            fontSize={15}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.cancelButton}
+                        onPress={props.hide}
+                    >
+                        <Text style={styles.cancelButtonText}>Cancel</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </Modal>
+    );
+};
+
+export default DonationModal;
+
+// export default
+class DonationModal1 extends React.PureComponent<Props, State> {
     state = {
         amount: NaN,
         error: "",
