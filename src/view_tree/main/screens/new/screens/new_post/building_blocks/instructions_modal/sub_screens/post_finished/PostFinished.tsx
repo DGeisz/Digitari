@@ -4,18 +4,22 @@ import { instructionStyles } from "../../../../../../../../../../global_styles/I
 import TutorialFooter from "../../../../../../../../../../global_building_blocks/tutorial/TutorialFooter";
 import { TutorialScreen } from "../../../../../../../../../context/tutorial_context/TutorialContext";
 
-const ExplainTierWage: React.FC = () => {
+const PostFinished: React.FC = () => {
     return (
-        <View style={instructionStyles.modalBottom}>
+        <View style={instructionStyles.modalTop}>
             <View style={instructionStyles.instructionContainer}>
                 <Text style={instructionStyles.instructionText}>
-                    Your account also naturally generates a certain amount of
-                    digicoin per day called your "Tier Wage."{"\n\n"}Higher
-                    tiers like 😎 or 😍 make a higher Tier Wage than lower tiers
-                    like 🙁 or 👿, so always try to improve your tier!
+                    Alright, we're finally ready to post this content! (Again,
+                    this is just for the tutorial, and nothing will go online).
+                    {"\n\n"}
+                    Hit "Next", and then tap the "Post" button at the bottom of
+                    the screen!
+                    {"\n\n"}
+                    Note that the post button tells you how much digicoin you're
+                    going to spend on the post.
                 </Text>
                 <TutorialFooter
-                    goBackScreen={TutorialScreen.ExplainDigicoin}
+                    goBackScreen={TutorialScreen.NewPostRecipients}
                     showSkip
                     showGoBack
                 />
@@ -24,4 +28,4 @@ const ExplainTierWage: React.FC = () => {
     );
 };
 
-export default ExplainTierWage;
+export default PostFinished;

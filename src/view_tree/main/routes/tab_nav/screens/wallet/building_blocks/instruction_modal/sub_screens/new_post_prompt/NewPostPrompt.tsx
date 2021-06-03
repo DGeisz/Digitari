@@ -13,7 +13,7 @@ const NewPostPrompt: React.FC = () => {
                 <Text style={instructionStyles.instructionText}>
                     Awesome! Now let's use that digicoin to create a post!
                     {"\n\n"}
-                    Hit "Next" and then tap on the post button in the bottom
+                    Hit "Next" and then tap the blue post button on the bottom
                     right side of your screen.
                 </Text>
                 <View style={instructionStyles.centralContentContainer}>

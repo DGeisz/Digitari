@@ -8,6 +8,8 @@ import Modal from "react-native-modal";
 import { instructionStyles } from "../../../../../../../../global_styles/InstructionStyles";
 import NewPostContent from "./sub_screens/new_post_content/NewPostContent";
 import NewPostTarget from "./sub_screens/new_post_target/NewPostTarget";
+import NewPostRecipients from "./sub_screens/new_post_recipients/NewPostRecipients";
+import PostFinished from "./sub_screens/post_finished/PostFinished";
 
 interface Props {
     goBack: () => void;
@@ -25,6 +27,12 @@ const InstructionsModal: React.FC<Props> = (props) => {
             break;
         case TutorialScreen.NewPostTarget:
             currentScreen = <NewPostTarget />;
+            break;
+        case TutorialScreen.NewPostRecipients:
+            currentScreen = <NewPostRecipients />;
+            break;
+        case TutorialScreen.PostFinished:
+            currentScreen = <PostFinished />;
             break;
         default:
             modalVisible = false;

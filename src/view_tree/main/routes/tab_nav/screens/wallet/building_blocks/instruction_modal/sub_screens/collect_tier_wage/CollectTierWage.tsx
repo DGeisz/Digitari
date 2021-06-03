@@ -9,7 +9,7 @@ const CollectTierWage: React.FC = () => {
         <View style={instructionStyles.modalBottom}>
             <View style={instructionStyles.instructionContainer}>
                 <Text style={instructionStyles.instructionText}>
-                    Alright, let's collect your earnings so we can create some
+                    Alright, let's collect your earnings so you can create some
                     content!{"\n\n"}
                     Hit "Next," then tap on the "Collect" button.
                 </Text>

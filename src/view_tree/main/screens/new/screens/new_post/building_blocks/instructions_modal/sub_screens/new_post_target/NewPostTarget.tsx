@@ -11,13 +11,13 @@ const NewPostTarget: React.FC = () => {
                 <Text style={instructionStyles.instructionText}>
                     In Digitari, you get to decide who's going to receive your
                     post in their main feed by choosing "Target."{"\n\n"}
-                    You can either send your post to your followers, or people
-                    in a Community.{"\n\n"}
+                    You can either send your post to your followers or members
+                    of a Community.{"\n\n"}
                     You don't have followers yet, so we selected the "New
                     members" Community as your post target.
                 </Text>
                 <TutorialFooter
-                    goBackScreen={TutorialScreen.NewPostPrompt}
+                    goBackScreen={TutorialScreen.NewPostContent}
                     showSkip
                     showGoBack
                 />

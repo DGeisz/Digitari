@@ -10,7 +10,7 @@ const ProfileDescription: React.FC = () => {
             <View style={instructionStyles.instructionContainer}>
                 <Text style={instructionStyles.instructionText}>
                     Here's your profile on Digitari! {"\n\n"}On this page, you
-                    can set your profile pic and your bio, as well as review
+                    can set your profile pic and your bio, and you can review
                     your activity on Digitari.
                 </Text>
                 <TutorialFooter

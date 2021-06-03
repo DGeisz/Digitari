@@ -10,9 +10,11 @@ import ExplainDigicoin from "./sub_screens/explain_digicoin/ExplainDigicoin";
 import ExplainTierWage from "./sub_screens/explain_tier_wage/ExplainTierWage";
 import CollectTierWage from "./sub_screens/collect_tier_wage/CollectTierWage";
 import NewPostPrompt from "./sub_screens/new_post_prompt/NewPostPrompt";
+import OpenFeedPrompt from "./sub_screens/open_feed_prompt/OpenFeedPrompt";
 
 interface Props {
     navigateToProfile: () => void;
+    openNewPost: () => void;
 }
 
 const InstructionModal: React.FC<Props> = (props) => {
@@ -35,6 +37,9 @@ const InstructionModal: React.FC<Props> = (props) => {
             break;
         case TutorialScreen.NewPostPrompt:
             currentScreen = <NewPostPrompt />;
+            break;
+        case TutorialScreen.OpenFeedPrompt:
+            currentScreen = <OpenFeedPrompt openNewPost={props.openNewPost} />;
             break;
         default:
             modalVisible = false;

@@ -113,6 +113,7 @@ const NewPost: React.FC<Props> = (props) => {
      */
     const [target, setTarget] = useState<PostTarget>(PostTarget.MyFollowers);
     const [recipients, setRecipients] = useState<number>(0);
+    const recipientsRef = useRef<TextInput>(null);
 
     const uid = localUid();
 
@@ -206,6 +207,15 @@ const NewPost: React.FC<Props> = (props) => {
     });
 
     const post = async () => {
+        if (tutorialActive) {
+            if (tutorialScreen === TutorialScreen.TapPost) {
+                advanceTutorial();
+                setTimeout(props.navigation.goBack, 200);
+            }
+
+            return;
+        }
+
         if (!content) {
             setErrorMessage("Enter post content " + content);
             return;
@@ -323,26 +333,9 @@ const NewPost: React.FC<Props> = (props) => {
     /*
      * Tutorial
      */
-    const {
-        tutorialActive,
-        tutorialScreen,
-        setScreen,
-        advanceTutorial,
-    } = useContext(TutorialContext);
-
-    useEffect(() => {
-        const callback = () => {
-            if (tutorialActive) {
-                setScreen(TutorialScreen.NewPostPrompt);
-            }
-        };
-
-        props.navigation.addListener("beforeRemove", callback);
-
-        return () => {
-            props.navigation.removeListener("beforeRemove", callback);
-        };
-    }, [tutorialActive]);
+    const { tutorialActive, tutorialScreen, advanceTutorial } = useContext(
+        TutorialContext
+    );
 
     useEffect(() => {
         if (tutorialActive) {
@@ -352,11 +345,29 @@ const NewPost: React.FC<Props> = (props) => {
                 setTimeout(() => {
                     !!contentRef.current && contentRef.current.focus();
                 }, 700);
+            } else if (tutorialScreen === TutorialScreen.InputPostRecipients) {
+                setTimeout(() => {
+                    !!recipientsRef.current && recipientsRef.current.focus();
+                }, 700);
             }
         } else {
             !!contentRef.current && contentRef.current.focus();
         }
-    }, [tutorialScreen, tutorialActive]);
+
+        const callback = (e: any) => {
+            if (tutorialActive) {
+                if (tutorialScreen !== TutorialScreen.OpenFeedPrompt) {
+                    e.preventDefault();
+                }
+            }
+        };
+
+        props.navigation.addListener("beforeRemove", callback);
+
+        return () => {
+            props.navigation.removeListener("beforeRemove", callback);
+        };
+    }, [tutorialActive, tutorialScreen]);
 
     if (!tutorialActive && loading && !data?.user) {
         return <LoadingWheel />;
@@ -720,6 +731,7 @@ const NewPost: React.FC<Props> = (props) => {
                             />
                         </View>
                         <TextInput
+                            ref={recipientsRef}
                             style={styles.recipientsInput}
                             editable={
                                 !(
@@ -735,6 +747,12 @@ const NewPost: React.FC<Props> = (props) => {
                                         scrollRef.current.scrollToEnd();
                                 }, 100)
                             }
+                            onBlur={() => {
+                                if (tutorialActive) {
+                                    setRecipients(20);
+                                    advanceTutorial();
+                                }
+                            }}
                             keyboardType="numeric"
                             onChangeText={(raw) => {
                                 const noCommas = raw.replace(/,/g, "");

@@ -343,6 +343,7 @@ const Wallet: React.FC<Props> = (props) => {
                 navigateToProfile={() =>
                     setTimeout(() => props.navigation.navigate("Profile"), 700)
                 }
+                openNewPost={() => setTimeout(openNew, 700)}
             />
             <View style={basicLayouts.flexGrid1}>
                 <FlatList

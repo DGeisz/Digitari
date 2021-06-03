@@ -152,7 +152,7 @@ const AppView: React.FC = () => {
 
     const [showTutorial, setTutorialActive] = useState<boolean>(false);
     const [currentTutorialScreen, setTutorialScreen] = useState<TutorialScreen>(
-        TutorialScreen.ExplainTierWage
+        TutorialScreen.NewPostPrompt
     );
 
     const [retryCount, setRetryCount] = useState<number>(0);

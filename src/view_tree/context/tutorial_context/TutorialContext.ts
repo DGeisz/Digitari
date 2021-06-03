@@ -29,6 +29,14 @@ export enum TutorialScreen {
     NewPostTarget,
     NewPostRecipients,
     InputPostRecipients,
+    PostFinished,
+    TapPost,
+
+    /*
+     * Return to wallet from new post,
+     * let's go to feed
+     */
+    OpenFeedPrompt,
 }
 
 interface TutorialContextType {

@@ -10,7 +10,7 @@ interface Props {
 
 const ExplainDigicoin: React.FC<Props> = (props) => {
     return (
-        <View style={instructionStyles.modalTop}>
+        <View style={instructionStyles.modalBottom}>
             <View style={instructionStyles.instructionContainer}>
                 <Text style={instructionStyles.instructionText}>
                     This is your wallet, where you'll collect the digicoin
