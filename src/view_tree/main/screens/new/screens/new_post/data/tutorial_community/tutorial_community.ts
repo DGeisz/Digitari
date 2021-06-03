@@ -6,6 +6,6 @@ export const tutorialCommunity: CommunityType = {
     name: "New members",
     amFollowing: true,
     description: "Community for new members",
-    followers: 533,
+    followers: 536,
     timeCreated: "0",
 };
