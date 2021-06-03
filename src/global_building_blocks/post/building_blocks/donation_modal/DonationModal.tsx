@@ -48,6 +48,7 @@ export default class DonationModal extends React.PureComponent<Props, State> {
                     </View>
                     <Text style={styles.errorText}>{this.state.error}</Text>
                     <TextInput
+                        autoFocus
                         style={styles.donateInput}
                         keyboardType="numeric"
                         placeholder="Amount..."
