@@ -10,6 +10,7 @@ import CustomLikePost from "./sub_screens/custom_like_post/CustomLikePost";
 import RespondToPost from "./sub_screens/respond_to_post/RespondToPost";
 import Modal from "react-native-modal";
 import { instructionStyles } from "../../../../../../../../global_styles/InstructionStyles";
+import ExplainDigicoinLike from "./sub_screens/explain_digicoin_like/ExplainDigicoinLike";
 
 interface Props {
     navigate2Wallet: () => void;
@@ -29,6 +30,9 @@ const InstructionsModal: React.FC<Props> = (props) => {
             break;
         case TutorialScreen.LikeFirstPost:
             currentScreen = <LikeFirstPost />;
+            break;
+        case TutorialScreen.ExplainDigicoinLike:
+            currentScreen = <ExplainDigicoinLike />;
             break;
         case TutorialScreen.CustomLikePost:
             currentScreen = <CustomLikePost />;

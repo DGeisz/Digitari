@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Text, View } from "react-native";
 import { instructionStyles } from "../../../../../../../../../../global_styles/InstructionStyles";
 import TutorialFooter from "../../../../../../../../../../global_building_blocks/tutorial/TutorialFooter";
-import { TutorialScreen } from "../../../../../../../../../context/tutorial_context/TutorialContext";
+import {
+    TutorialContext,
+    TutorialScreen,
+} from "../../../../../../../../../context/tutorial_context/TutorialContext";
 
-const CustomLikePost: React.FC = () => {
+const ExplainDigicoinLike: React.FC = () => {
+    const { likeTutorialPost } = useContext(TutorialContext);
+
     return (
         <View style={instructionStyles.modalBottom}>
             <View style={instructionStyles.instructionContainer}>
@@ -15,7 +20,8 @@ const CustomLikePost: React.FC = () => {
                     you can earn a ton digicoin if people enjoy your content!
                 </Text>
                 <TutorialFooter
-                    goBackScreen={TutorialScreen.IntroduceFeed}
+                    goBackScreen={TutorialScreen.LikeFirstPost}
+                    goBack={() => likeTutorialPost(false)}
                     showSkip
                     showGoBack
                 />
@@ -24,4 +30,4 @@ const CustomLikePost: React.FC = () => {
     );
 };
 
-export default CustomLikePost;
+export default ExplainDigicoinLike;

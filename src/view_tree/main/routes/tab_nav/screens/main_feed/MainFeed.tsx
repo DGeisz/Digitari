@@ -32,9 +32,9 @@ import {
 } from "../profile/gql/Queries";
 import { SCREEN_LARGER_THAN_CONTENT } from "../../../../../../global_constants/screen_constants";
 import { TutorialContext } from "../../../../../context/tutorial_context/TutorialContext";
-import { tutorialPosts } from "./data/tutorial_posts/tutorial_posts";
 import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
 import { MainFeedNavProp } from "../../TabNavTypes";
+import { tutorialPosts } from "./hooks/tutorial_posts/tutorial_posts";
 
 interface Props {
     navigation: MainFeedNavProp;
@@ -79,6 +79,8 @@ const MainFeed: React.FC<Props> = (props) => {
 
     const { tutorialActive } = useContext(TutorialContext);
 
+    const tutPosts = tutorialPosts();
+
     if (
         !tutorialActive &&
         ((!data?.feed && networkStatus === NetworkStatus.loading) ||
@@ -96,7 +98,7 @@ const MainFeed: React.FC<Props> = (props) => {
     }
 
     const finalFeed = tutorialActive
-        ? tutorialPosts
+        ? tutPosts
         : !!data?.feed
         ? data.feed.filter((post) => !!post)
         : [];

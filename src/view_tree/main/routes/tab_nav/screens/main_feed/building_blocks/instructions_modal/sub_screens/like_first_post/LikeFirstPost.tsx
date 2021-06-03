@@ -14,10 +14,15 @@ const LikeFirstPost: React.FC = () => {
                     introducing herself! Let's like Zariah's post to welcome her
                     to the platform!{"\n\n"}
                     To like her post, tap the coin icon underneath her tier
-                    emoji 🙂
+                    emoji 🙂.
                 </Text>
                 <View style={instructionStyles.centralContentContainer}>
-                    <CoinBox showAmount={false} active={false} coinSize={35} />
+                    <CoinBox
+                        showAmount={false}
+                        active={false}
+                        coinSize={35}
+                        paddingVertical={0}
+                    />
                 </View>
                 <TutorialFooter
                     goBackScreen={TutorialScreen.IntroduceFeed}

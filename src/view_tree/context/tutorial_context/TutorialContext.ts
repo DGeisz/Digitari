@@ -45,6 +45,7 @@ export enum TutorialScreen {
     IntroduceFeed,
     LikeFirstPost,
     TapLike,
+    ExplainDigicoinLike,
     CustomLikePost,
     CustomTapLike,
     RespondToPost,
@@ -56,6 +57,10 @@ interface TutorialContextType {
     advanceTutorial: () => void;
     setScreen: (screen: TutorialScreen) => void;
     skipTutorial: () => void;
+    tutorialPostLiked: boolean;
+    likeTutorialPost: (like: boolean) => void;
+    tutorialPostCustomLiked: boolean;
+    customLikeTutorialPost: () => void;
 }
 
 export const TutorialContext = createContext<TutorialContextType>({
@@ -64,4 +69,8 @@ export const TutorialContext = createContext<TutorialContextType>({
     advanceTutorial: () => {},
     setScreen: () => {},
     skipTutorial: () => {},
+    tutorialPostCustomLiked: false,
+    tutorialPostLiked: false,
+    likeTutorialPost: () => {},
+    customLikeTutorialPost: () => {},
 });

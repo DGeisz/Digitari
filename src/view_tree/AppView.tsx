@@ -154,6 +154,10 @@ const AppView: React.FC = () => {
     const [currentTutorialScreen, setTutorialScreen] = useState<TutorialScreen>(
         TutorialScreen.OpenFeedPrompt
     );
+    const [tutorialPostLiked, likeTutorialPost] = useState<boolean>(false);
+    const [tutorialPostCustomLiked, customLikeTutorialPost] = useState<boolean>(
+        false
+    );
 
     const [retryCount, setRetryCount] = useState<number>(0);
 
@@ -300,6 +304,10 @@ const AppView: React.FC = () => {
                         LayoutAnimation.easeInEaseOut();
                         setTutorialScreen(screen);
                     },
+                    tutorialPostLiked,
+                    tutorialPostCustomLiked,
+                    likeTutorialPost,
+                    customLikeTutorialPost: () => customLikeTutorialPost(true),
                 }}
             >
                 <MainEntry />
