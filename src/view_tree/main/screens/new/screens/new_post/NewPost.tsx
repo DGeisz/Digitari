@@ -356,7 +356,10 @@ const NewPost: React.FC<Props> = (props) => {
 
         const callback = (e: any) => {
             if (tutorialActive) {
-                if (tutorialScreen !== TutorialScreen.OpenFeedPrompt) {
+                if (
+                    tutorialScreen !== TutorialScreen.OpenFeedPrompt &&
+                    tutorialScreen !== TutorialScreen.NewPostPrompt
+                ) {
                     e.preventDefault();
                 }
             }

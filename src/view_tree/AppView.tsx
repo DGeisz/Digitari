@@ -40,6 +40,7 @@ import { ProductId, products } from "../global_types/IapTypes";
 import {
     TutorialContext,
     TutorialScreen,
+    useTutorialContextValues,
 } from "./context/tutorial_context/TutorialContext";
 
 const AppView: React.FC = () => {
@@ -150,14 +151,7 @@ const AppView: React.FC = () => {
     const [checkedAuth, setCheckAuth] = useState<boolean>(false);
     const [fetchedUser, setFetchedUser] = useState<boolean>(false);
 
-    const [showTutorial, setTutorialActive] = useState<boolean>(false);
-    const [currentTutorialScreen, setTutorialScreen] = useState<TutorialScreen>(
-        TutorialScreen.RespondToPost
-    );
-    const [tutorialPostLiked, likeTutorialPost] = useState<boolean>(false);
-    const [tutorialPostCustomLiked, customLikeTutorialPost] = useState<boolean>(
-        false
-    );
+    const tutorialContextValues = useTutorialContextValues();
 
     const [retryCount, setRetryCount] = useState<number>(0);
 
@@ -245,7 +239,7 @@ const AppView: React.FC = () => {
 
                         if (createUserData?.createUser) {
                             setFetchedUser(true);
-                            setTutorialActive(true);
+                            tutorialContextValues.setTutorialActive(true);
                         }
                     } else {
                         setFetchedUser(true);
@@ -253,7 +247,7 @@ const AppView: React.FC = () => {
                          * TODO: Change this in production
                          */
                         // setTutorialActive(false);
-                        setTutorialActive(true);
+                        tutorialContextValues.setTutorialActive(true);
                     }
 
                     const { data: hidData } = await client.query<HidData>({
@@ -291,25 +285,7 @@ const AppView: React.FC = () => {
         );
     } else if (fetchedUser && authenticated) {
         return (
-            <TutorialContext.Provider
-                value={{
-                    tutorialActive: showTutorial,
-                    tutorialScreen: currentTutorialScreen,
-                    skipTutorial: () => setTutorialActive(false),
-                    advanceTutorial: () => {
-                        LayoutAnimation.easeInEaseOut();
-                        setTutorialScreen((current) => current + 1);
-                    },
-                    setScreen: (screen) => {
-                        LayoutAnimation.easeInEaseOut();
-                        setTutorialScreen(screen);
-                    },
-                    tutorialPostLiked,
-                    tutorialPostCustomLiked,
-                    likeTutorialPost,
-                    customLikeTutorialPost,
-                }}
-            >
+            <TutorialContext.Provider value={tutorialContextValues}>
                 <MainEntry />
             </TutorialContext.Provider>
         );

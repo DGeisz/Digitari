@@ -4,17 +4,23 @@ import { instructionStyles } from "../../../../../../../../global_styles/Instruc
 import TutorialFooter from "../../../../../../../../global_building_blocks/tutorial/TutorialFooter";
 import { TutorialScreen } from "../../../../../../../context/tutorial_context/TutorialContext";
 
-const ExplainIdentity: React.FC = () => {
+interface Props {
+    goBack: () => void;
+}
+
+const ExplainIdentity: React.FC<Props> = (props) => {
     return (
         <View style={instructionStyles.modalBottom}>
             <View style={instructionStyles.instructionContainer}>
                 <Text style={instructionStyles.instructionText}>
-                    If you want, you can also send a post a custom amount of
-                    digicoin with a like!{"\n\n"}
-                    To send a custom like, simply tap and hold on the coin icon.
+                    When you respond to a post, you can respond anonymously or
+                    as yourself. {"\n\n"}
+                    For right now, let's respond non-anonymously so Zariah knows
+                    who she's talking to.
                 </Text>
                 <TutorialFooter
-                    goBackScreen={TutorialScreen.ExplainDigicoinLike}
+                    goBackScreen={TutorialScreen.RespondToPost}
+                    goBack={props.goBack}
                     showSkip
                     showGoBack
                 />

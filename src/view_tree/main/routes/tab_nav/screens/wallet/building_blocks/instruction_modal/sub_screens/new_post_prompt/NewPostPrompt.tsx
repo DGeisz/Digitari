@@ -6,7 +6,11 @@ import { TutorialScreen } from "../../../../../../../../../context/tutorial_cont
 import { FontAwesome } from "@expo/vector-icons";
 import { palette } from "../../../../../../../../../../global_styles/Palette";
 
-const NewPostPrompt: React.FC = () => {
+interface Props {
+    resetCollect: () => void;
+}
+
+const NewPostPrompt: React.FC<Props> = (props) => {
     return (
         <View style={instructionStyles.modalTop}>
             <View style={instructionStyles.instructionContainer}>
@@ -25,6 +29,7 @@ const NewPostPrompt: React.FC = () => {
                 </View>
                 <TutorialFooter
                     goBackScreen={TutorialScreen.CollectTierWage}
+                    goBack={props.resetCollect}
                     showSkip
                     showGoBack
                 />

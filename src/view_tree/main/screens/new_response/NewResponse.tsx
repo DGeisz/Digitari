@@ -18,12 +18,11 @@ import {
     CreateConvoVariables,
 } from "./gql/Mutations";
 import LoadingWheel from "../../../../global_building_blocks/loading_wheel/LoadingWheel";
-import {
-    COLLECT_EARNINGS,
-    CollectEarningsData,
-} from "../../routes/tab_nav/screens/wallet/gql/Mutations";
 import { challengeCheck } from "../../../../global_gql/challenge_check/challenge_check";
-import { TutorialContext } from "../../../context/tutorial_context/TutorialContext";
+import {
+    TutorialContext,
+    TutorialScreen,
+} from "../../../context/tutorial_context/TutorialContext";
 import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
 
 interface Props {
@@ -74,35 +73,61 @@ const NewResponse: React.FC<Props> = (props) => {
         },
     });
 
+    const { tutorialActive, tutorialScreen, addTutConvoMessage } = useContext(
+        TutorialContext
+    );
+
     const onSend = async (text: string) => {
-        try {
-            await createConvo({
-                variables: {
-                    pid: props.route.params.pid,
-                    anonymous: anony,
-                    message: text,
-                },
+        if (tutorialActive) {
+            addTutConvoMessage({
+                id: "tutMsg0",
+                anonymous: false,
+                content: text,
+                time: Date.now().toString(),
+                uid: "user",
+                tid: "z",
+                user: firstName,
             });
-        } catch (e) {
-            console.log("Send error", e);
+
+            props.navigation.pop();
+            props.navigation.navigate("Convo", {
+                cvid: "tutConvo0",
+                pid: "tut0",
+            });
+        } else {
+            try {
+                await createConvo({
+                    variables: {
+                        pid: props.route.params.pid,
+                        anonymous: anony,
+                        message: text,
+                    },
+                });
+            } catch (e) {
+                console.log("Send error", e);
+            }
         }
     };
 
-    const { tutorialActive } = useContext(TutorialContext);
-
     useEffect(() => {
         const callback = (e: any) => {
-            if (tutorialActive) {
+            console.log("Here's the event");
+            if (
+                tutorialActive &&
+                tutorialScreen !== TutorialScreen.RespondToPost
+            ) {
                 e.preventDefault();
             }
         };
 
         return props.navigation.addListener("beforeRemove", callback);
-    }, [tutorialActive]);
+    }, [tutorialActive, tutorialScreen]);
 
     return (
         <>
-            <InstructionsModal />
+            <InstructionsModal
+                goBack={() => setTimeout(props.navigation.goBack, 500)}
+            />
             <TouchableOpacity
                 style={basicLayouts.flexGrid1}
                 onPress={Keyboard.dismiss}
@@ -139,9 +164,7 @@ const NewResponse: React.FC<Props> = (props) => {
                             styles.postAsChoice,
                             anony ? { backgroundColor: palette.deepBlue } : {},
                         ]}
-                        onPress={() => {
-                            setAnony(true);
-                        }}
+                        onPress={() => !tutorialActive && setAnony(true)}
                     >
                         <MaterialCommunityIcons
                             name="incognito"
@@ -153,7 +176,13 @@ const NewResponse: React.FC<Props> = (props) => {
                 {loading ? (
                     <LoadingWheel />
                 ) : (
-                    <MessageInput autoFocus={!tutorialActive} onSend={onSend} />
+                    <MessageInput
+                        autoFocus={
+                            !tutorialActive ||
+                            tutorialScreen === TutorialScreen.InputResponse
+                        }
+                        onSend={onSend}
+                    />
                 )}
             </TouchableOpacity>
         </>

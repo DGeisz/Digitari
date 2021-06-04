@@ -7,6 +7,33 @@ import { useContext } from "react";
 import { TutorialContext } from "../../../../../../../context/tutorial_context/TutorialContext";
 import { millisInHour } from "../../../../../../../../global_utils/TimeRepUtils";
 
+export const zariahPost: PostType = {
+    id: "tut0",
+    uid: "",
+
+    user: "Zariah",
+    tier: 0,
+    time: (Date.now() - millisInHour).toString(),
+    content:
+        "Hi! I'm Zariah, and my favorite place in the world is probably Surfer's Paradise in Australia",
+
+    addOn: PostAddOn.None,
+    addOnContent: "",
+    target: PostTarget.Community,
+
+    cmid: "yote",
+    communityName: "New members",
+
+    convoReward: 30,
+    responseCost: 10,
+
+    coin: 0,
+    coinDonated: false,
+
+    convoCount: 2,
+    responseCount: 5,
+};
+
 export function tutorialPosts(): PostType[] {
     const { tutorialPostLiked, tutorialPostCustomLiked } = useContext(
         TutorialContext
@@ -14,32 +41,10 @@ export function tutorialPosts(): PostType[] {
 
     return [
         {
-            id: "tut0",
-            uid: "",
-
-            user: "Zariah",
-            tier: 0,
-            time: (Date.now() - millisInHour).toString(),
-            content:
-                "Hi! I'm Zariah, and my favorite place in the world is probably Surfer's Paradise in Australia",
-
-            addOn: PostAddOn.None,
-            addOnContent: "",
-            target: PostTarget.Community,
-
-            cmid: "yote",
-            communityName: "New members",
-
-            convoReward: 30,
-            responseCost: 10,
-
+            ...zariahPost,
             coin: tutorialPostLiked ? 53 : 43,
             coinDonated: tutorialPostLiked,
-
-            convoCount: 2,
-            responseCount: 5,
         },
-
         {
             id: "tut1",
             uid: "",

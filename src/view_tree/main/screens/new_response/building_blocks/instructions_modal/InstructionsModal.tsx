@@ -9,7 +9,11 @@ import { instructionStyles } from "../../../../../../global_styles/InstructionSt
 import ExplainIdentity from "./sub_screens/explain_identity/ExplainIdentity";
 import PromptResponseMessage from "./sub_screens/prompt_response_message/PromptResponseMessage";
 
-const InstructionsModal: React.FC = () => {
+interface Props {
+    goBack: () => void;
+}
+
+const InstructionsModal: React.FC<Props> = (props) => {
     const { tutorialActive, tutorialScreen } = useContext(TutorialContext);
 
     let modalVisible = tutorialActive;
@@ -17,8 +21,7 @@ const InstructionsModal: React.FC = () => {
 
     switch (tutorialScreen) {
         case TutorialScreen.ExplainIdentity:
-            console.log("We're explaining identity");
-            currentScreen = <ExplainIdentity />;
+            currentScreen = <ExplainIdentity goBack={props.goBack} />;
             break;
         case TutorialScreen.PromptResponseMessage:
             currentScreen = <PromptResponseMessage />;

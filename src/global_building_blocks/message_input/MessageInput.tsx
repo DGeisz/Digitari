@@ -110,7 +110,7 @@ const MessageInput: React.FC<Props> = ({
         return function cleanup() {
             subscriptions.forEach((sub) => sub.remove());
         };
-    }, []);
+    }, [autoFocus]);
 
     return (
         <View style={{ flex: 1 }}>

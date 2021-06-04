@@ -155,7 +155,7 @@ const MainFeed: React.FC<Props> = (props) => {
                             openPost={openPost}
                             onMessage={openNewMessage}
                             post={item}
-                            feedPost={true}
+                            feedPost
                             donateToPost={donateToPost}
                             openReport={openReport}
                         />

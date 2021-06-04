@@ -4,18 +4,23 @@ import { instructionStyles } from "../../../../../../../../global_styles/Instruc
 import TutorialFooter from "../../../../../../../../global_building_blocks/tutorial/TutorialFooter";
 import { TutorialScreen } from "../../../../../../../context/tutorial_context/TutorialContext";
 
-const PromptResponseMessage: React.FC = () => {
+interface Props {
+    goBack: () => void;
+}
+
+const IntroduceConvo: React.FC<Props> = (props) => {
     return (
-        <View style={instructionStyles.modalTop}>
+        <View style={instructionStyles.modalBottom}>
             <View style={instructionStyles.instructionContainer}>
                 <Text style={instructionStyles.instructionText}>
-                    In the message input at the bottom of the screen, say hi to
-                    Zariah and ask her what she likes about Surfer's Paradise.
-                    {"\n\n"}
-                    After doing so, send the message!
+                    When you respond to a post, you can respond anonymously or
+                    as yourself. {"\n\n"}
+                    For right now, let's respond non-anonymously so Zariah knows
+                    who she's talking to.
                 </Text>
                 <TutorialFooter
-                    goBackScreen={TutorialScreen.ExplainIdentity}
+                    goBackScreen={TutorialScreen.RespondToPost}
+                    goBack={props.goBack}
                     showSkip
                     showGoBack
                 />
@@ -24,4 +29,4 @@ const PromptResponseMessage: React.FC = () => {
     );
 };
 
-export default PromptResponseMessage;
+export default IntroduceConvo;

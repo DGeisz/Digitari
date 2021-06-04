@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
     FlatList,
     RefreshControl,
@@ -31,10 +31,15 @@ import CoinBox from "../../../../global_building_blocks/coin_box/CoinBox";
 import { palette } from "../../../../global_styles/Palette";
 import ConvoMsg from "../../../../global_building_blocks/convo_msg/ConvoMsg";
 import ResponseResponse from "./building_blocks/response_response/ResponseResponse";
-import { localHid, localUid } from "../../../../global_state/UserState";
+import {
+    localFirstName,
+    localHid,
+    localUid,
+} from "../../../../global_state/UserState";
 import {
     CONVO_TYPENAME,
     ConvoStatus,
+    ConvoType,
     TARGET_MESSAGE_COUNT_THRESHOLD,
 } from "../../../../global_types/ConvoTypes";
 import {
@@ -85,6 +90,16 @@ import {
 import { addTransaction } from "../../hooks/use_realtime_updates/subscription_handlers/utils/cache_utils";
 import { challengeCheck } from "../../../../global_gql/challenge_check/challenge_check";
 import ConvoOptionsModal from "./building_blocks/convo_options_modal/ConvoOptionsModal";
+import { TutorialContext } from "../../../context/tutorial_context/TutorialContext";
+import { zariahConvo } from "./data/tutorial_convos/tutorial_convos";
+import { PostType } from "../../../../global_types/PostTypes";
+import {
+    tutorialPosts,
+    zariahPost,
+} from "../../routes/tab_nav/screens/main_feed/hooks/tutorial_posts/tutorial_posts";
+import { MessageType } from "../../../../global_types/MessageTypes";
+import { useZariahMessages } from "./hooks/zariah_messages/zariah_messages";
+import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
 
 function getCheckLeft(uid: string, tid: string): (id: string) => boolean {
     if (uid === tid) {
@@ -108,6 +123,13 @@ const Convo: React.FC<Props> = (props) => {
     const [error, setError] = useState<string>("");
 
     /*
+     * Handling tutorial if necessary
+     */
+    const { tutorialActive } = useContext(TutorialContext);
+    const zariahMessages = useZariahMessages();
+    const fetchPolicy = tutorialActive ? "cache-only" : undefined;
+
+    /*
      * Queries
      */
     const {
@@ -119,6 +141,7 @@ const Convo: React.FC<Props> = (props) => {
         variables: {
             pid: props.route.params.pid,
         },
+        fetchPolicy,
     });
 
     const {
@@ -130,6 +153,7 @@ const Convo: React.FC<Props> = (props) => {
         variables: {
             cvid: cvid,
         },
+        fetchPolicy,
     });
 
     const {
@@ -142,6 +166,7 @@ const Convo: React.FC<Props> = (props) => {
         variables: {
             cvid: cvid,
         },
+        fetchPolicy,
     });
 
     /*
@@ -613,315 +638,341 @@ const Convo: React.FC<Props> = (props) => {
         }, 1000);
     }, []);
 
-    if (!!postError) {
-        return <ErrorMessage refresh={postRefetch} />;
-    }
+    let convo: ConvoType;
+    let post: PostType;
+    let messages: MessageType[];
 
-    if (!!convoError) {
-        return <ErrorMessage refresh={convoRefetch} />;
-    }
+    if (tutorialActive) {
+        convo = Object.assign(zariahConvo, { sname: localFirstName() });
+        post = zariahPost;
+        messages = zariahMessages;
 
-    if (!!messagesError) {
-        return <ErrorMessage refresh={messagesRefetch} />;
-    }
+        participant = true;
+    } else {
+        if (!!postError) {
+            return <ErrorMessage refresh={postRefetch} />;
+        }
 
-    if (
-        (!postData?.post && postLoading) ||
-        (!convoData?.convo && convoLoading) ||
-        networkStatus === NetworkStatus.loading ||
-        networkStatus === NetworkStatus.setVariables ||
-        networkStatus === NetworkStatus.fetchMore
-    ) {
-        return <LoadingWheel />;
-    }
+        if (!!convoError) {
+            return <ErrorMessage refresh={convoRefetch} />;
+        }
 
-    if (!messagesData?.convoMessages || !postData?.post || !convoData?.convo) {
-        return (
-            <View style={styles.noConvoContainer}>
-                <Text style={styles.noConvoText}>
-                    This convo no longer exists
-                </Text>
-            </View>
-        );
-    }
+        if (!!messagesError) {
+            return <ErrorMessage refresh={messagesRefetch} />;
+        }
 
-    // console.log(messagesData);
+        if (
+            (!postData?.post && postLoading) ||
+            (!convoData?.convo && convoLoading) ||
+            networkStatus === NetworkStatus.loading ||
+            networkStatus === NetworkStatus.setVariables ||
+            networkStatus === NetworkStatus.fetchMore
+        ) {
+            return <LoadingWheel />;
+        }
+
+        if (
+            !messagesData?.convoMessages ||
+            !postData?.post ||
+            !convoData?.convo
+        ) {
+            return (
+                <View style={styles.noConvoContainer}>
+                    <Text style={styles.noConvoText}>
+                        This convo no longer exists
+                    </Text>
+                </View>
+            );
+        }
+
+        convo = convoData.convo;
+        post = postData.post;
+        messages = messagesData.convoMessages;
+    }
 
     /*
      * Get fields necessary to render the conversation
      */
-
-    const isActive = convoData.convo.status === ConvoStatus.Active;
-    const {
-        status,
-        targetMsgCount,
-        tid,
-        tname,
-        sname,
-        sid,
-        sanony,
-    } = convoData.convo;
+    const isActive = convo.status === ConvoStatus.Active;
+    const { status, targetMsgCount, tid, tname, sname, sid, sanony } = convo;
 
     const checkLeft = getCheckLeft(uid, tid);
 
-    // const status = convoData.convo.status;
+    console.log("Am participant: ", participant);
 
     /*
-     * Make the footer
+     * Create the main convo content
      */
-
     const convoContent = (
-        <FlatList
-            ref={scrollRef}
-            contentContainerStyle={styles.convoListContainer}
-            refreshControl={
-                <RefreshControl
-                    refreshing={
-                        networkStatus === NetworkStatus.refetch || stillSpin
-                    }
-                    onRefresh={() => {
-                        setStillSpin(true);
-                        !!messagesRefetch && messagesRefetch();
-                        !!convoRefetch && convoRefetch();
-                        !!postRefetch && postRefetch();
+        <>
+            <InstructionsModal />
+            <FlatList
+                ref={scrollRef}
+                contentContainerStyle={styles.convoListContainer}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={
+                            networkStatus === NetworkStatus.refetch || stillSpin
+                        }
+                        onRefresh={() => {
+                            setStillSpin(true);
+                            !!messagesRefetch && messagesRefetch();
+                            !!convoRefetch && convoRefetch();
+                            !!postRefetch && postRefetch();
 
-                        setTimeout(() => {
-                            setStillSpin(false);
-                        }, 1000);
-                    }}
-                    colors={[
-                        palette.deepBlue,
-                        palette.darkForestGreen,
-                        palette.oceanSurf,
-                    ]}
-                    tintColor={palette.deepBlue}
-                />
-            }
-            ListHeaderComponent={() => (
-                <View style={styles.convoContainer}>
-                    <View style={styles.convoHeaderContainer}>
-                        <TouchableOpacity
-                            onPress={() =>
-                                props.navigation.navigate("PostScreen", {
-                                    pid: props.route.params.pid,
-                                })
-                            }
-                        >
-                            <Post
-                                donateToPost={donateToPost}
-                                userCoin={0}
-                                userFirstName={""}
-                                stripped
-                                openUser={(uid) =>
-                                    props.navigation.navigate("User", { uid })
-                                }
-                                openReport={(pid) => {
-                                    props.navigation.navigate("ReportPost", {
-                                        pid,
-                                    });
-                                }}
-                                post={postData.post}
-                                openPost={(pid) =>
+                            setTimeout(() => {
+                                setStillSpin(false);
+                            }, 1000);
+                        }}
+                        colors={[
+                            palette.deepBlue,
+                            palette.darkForestGreen,
+                            palette.oceanSurf,
+                        ]}
+                        tintColor={palette.deepBlue}
+                    />
+                }
+                ListHeaderComponent={() => (
+                    <View style={styles.convoContainer}>
+                        <View style={styles.convoHeaderContainer}>
+                            <TouchableOpacity
+                                onPress={() =>
                                     props.navigation.navigate("PostScreen", {
-                                        pid,
+                                        pid: props.route.params.pid,
                                     })
                                 }
-                                openCommunity={(cmid) =>
-                                    props.navigation.navigate("Community", {
-                                        cmid,
-                                    })
-                                }
-                            />
-                        </TouchableOpacity>
-                        <View style={styles.coverContainer}>
-                            <View style={styles.convoTop}>
-                                <View style={styles.convoUserMapContainer}>
-                                    {/*<View style={styles.headerTop}>*/}
-                                    <Tier
-                                        ranking={convoData.convo.sranking}
-                                        size={14}
-                                    />
-                                    <TouchableOpacity
-                                        onPress={() => {
-                                            if (!sanony) {
-                                                props.navigation.navigate(
-                                                    "User",
-                                                    {
-                                                        uid: sid,
-                                                    }
-                                                );
+                            >
+                                <Post
+                                    donateToPost={donateToPost}
+                                    userCoin={0}
+                                    userFirstName={""}
+                                    stripped
+                                    openUser={(uid) =>
+                                        props.navigation.navigate("User", {
+                                            uid,
+                                        })
+                                    }
+                                    openReport={(pid) => {
+                                        props.navigation.navigate(
+                                            "ReportPost",
+                                            {
+                                                pid,
                                             }
-                                        }}
-                                        activeOpacity={sanony ? 1 : 0.5}
-                                    >
-                                        <UserLabel
-                                            name={convoData.convo.sname}
-                                            anonymous={convoData.convo.sanony}
+                                        );
+                                    }}
+                                    post={post}
+                                    openPost={(pid) =>
+                                        props.navigation.navigate(
+                                            "PostScreen",
+                                            {
+                                                pid,
+                                            }
+                                        )
+                                    }
+                                    openCommunity={(cmid) =>
+                                        props.navigation.navigate("Community", {
+                                            cmid,
+                                        })
+                                    }
+                                />
+                            </TouchableOpacity>
+                            <View style={styles.coverContainer}>
+                                <View style={styles.convoTop}>
+                                    <View style={styles.convoUserMapContainer}>
+                                        <Tier
+                                            ranking={convo.sranking}
+                                            size={14}
                                         />
-                                    </TouchableOpacity>
-                                    <Text style={styles.arrowText}>
-                                        {"  ➤  "}
-                                    </Text>
-                                    <Tier
-                                        ranking={convoData.convo.tranking}
-                                        size={14}
-                                    />
-                                    <TouchableOpacity
-                                        onPress={() => {
-                                            props.navigation.navigate("User", {
-                                                uid: tid,
-                                            });
-                                        }}
-                                        activeOpacity={0.5}
-                                    >
-                                        <UserLabel
-                                            name={convoData.convo.tname}
-                                            anonymous={false}
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                if (!sanony) {
+                                                    !tutorialActive &&
+                                                        props.navigation.navigate(
+                                                            "User",
+                                                            {
+                                                                uid: sid,
+                                                            }
+                                                        );
+                                                }
+                                            }}
+                                            activeOpacity={sanony ? 1 : 0.5}
+                                        >
+                                            <UserLabel
+                                                name={convo.sname}
+                                                anonymous={convo.sanony}
+                                            />
+                                        </TouchableOpacity>
+                                        <Text style={styles.arrowText}>
+                                            {"  ➤  "}
+                                        </Text>
+                                        <Tier
+                                            ranking={convo.tranking}
+                                            size={14}
                                         />
-                                    </TouchableOpacity>
-                                    <Text style={styles.mainHeaderDotText}>
-                                        ·
-                                    </Text>
-                                    <Text style={styles.coverTimeText}>
-                                        {millisToRep(
-                                            Date.now() - parseInt(convoTime)
-                                        )}
-                                    </Text>
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                !tutorialActive &&
+                                                    props.navigation.navigate(
+                                                        "User",
+                                                        {
+                                                            uid: tid,
+                                                        }
+                                                    );
+                                            }}
+                                            activeOpacity={0.5}
+                                        >
+                                            <UserLabel
+                                                name={convo.tname}
+                                                anonymous={false}
+                                            />
+                                        </TouchableOpacity>
+                                        <Text style={styles.mainHeaderDotText}>
+                                            ·
+                                        </Text>
+                                        <Text style={styles.coverTimeText}>
+                                            {millisToRep(
+                                                Date.now() - parseInt(convoTime)
+                                            )}
+                                        </Text>
+                                    </View>
+                                    <View style={styles.convoOptionsContainer}>
+                                        <ConvoOptionsModal
+                                            openReportConvo={() => {
+                                                props.navigation.navigate(
+                                                    "ReportConvo",
+                                                    { cvid }
+                                                );
+                                            }}
+                                            convo={convo}
+                                            goBack={props.navigation.goBack}
+                                            cvid={cvid}
+                                            pid={pid}
+                                        />
+                                    </View>
                                 </View>
-                                <View style={styles.convoOptionsContainer}>
-                                    <ConvoOptionsModal
-                                        openReportConvo={() => {
-                                            props.navigation.navigate(
-                                                "ReportConvo",
-                                                { cvid }
-                                            );
-                                        }}
-                                        convo={convoData.convo}
-                                        goBack={props.navigation.goBack}
-                                        cvid={cvid}
-                                        pid={pid}
-                                    />
+                                <View style={styles.rewardContainer}>
+                                    <Text style={styles.rewardText}>
+                                        Reward
+                                    </Text>
+                                    <View style={styles.coinBoxContainer}>
+                                        <CoinBox
+                                            coinSize={20}
+                                            fontSize={14}
+                                            showCoinPlus
+                                            amount={post.convoReward}
+                                            boxColor={palette.lightForestGreen}
+                                            paddingRight={10}
+                                        />
+                                    </View>
                                 </View>
+                                {!!error && (
+                                    <View style={styles.errorContainer}>
+                                        <Text style={styles.errorText}>
+                                            {error}
+                                        </Text>
+                                    </View>
+                                )}
                             </View>
-                            <View style={styles.rewardContainer}>
-                                <Text style={styles.rewardText}>Reward</Text>
-                                <View style={styles.coinBoxContainer}>
-                                    <CoinBox
-                                        coinSize={20}
-                                        fontSize={14}
-                                        showCoinPlus
-                                        amount={postData.post.convoReward}
-                                        boxColor={palette.lightForestGreen}
-                                        paddingRight={10}
-                                    />
-                                </View>
-                            </View>
-                            {!!error && (
-                                <View style={styles.errorContainer}>
-                                    <Text style={styles.errorText}>
-                                        {error}
-                                    </Text>
-                                </View>
-                            )}
                         </View>
                     </View>
-                </View>
-            )}
-            data={messagesData.convoMessages}
-            renderItem={({ item, index }) => (
-                <ConvoMsg
-                    animateMsg={animateMessages}
-                    showBlockMsg={
-                        participant &&
-                        isActive &&
-                        index === messagesData.convoMessages.length - 1
-                    }
-                    left={checkLeft(item.uid)}
-                    msg={item}
-                    showUser={true}
-                    onBlock={async () => {
-                        try {
-                            await blockConvo();
-                        } catch (e) {
-                            console.log("Block error: ", e);
+                )}
+                data={messages}
+                renderItem={({ item, index }) => (
+                    <ConvoMsg
+                        animateMsg={animateMessages}
+                        showBlockMsg={
+                            participant &&
+                            isActive &&
+                            index === messages.length - 1
                         }
-                    }}
-                />
-            )}
-            keyExtractor={(item, index) => {
-                return [item.id, index].join(":");
-            }}
-            ListFooterComponent={() => {
-                switch (status) {
-                    case ConvoStatus.Blocked:
-                        return <BlockedFooter />;
-                    case ConvoStatus.Dismissed:
-                        return <DismissedFooter />;
-                    case ConvoStatus.Finished:
-                        return <SuccessFooter />;
-                    case ConvoStatus.Deleted:
-                        return <DeletedFooter />;
-                    case ConvoStatus.Active:
-                        if (participant) {
-                            if (uid === tid) {
+                        left={checkLeft(item.uid)}
+                        msg={item}
+                        showUser={true}
+                        onBlock={async () => {
+                            try {
+                                await blockConvo();
+                            } catch (e) {
+                                console.log("Block error: ", e);
+                            }
+                        }}
+                    />
+                )}
+                keyExtractor={(item, index) => {
+                    return [item.id, index].join(":");
+                }}
+                ListFooterComponent={() => {
+                    switch (status) {
+                        case ConvoStatus.Blocked:
+                            return <BlockedFooter />;
+                        case ConvoStatus.Dismissed:
+                            return <DismissedFooter />;
+                        case ConvoStatus.Finished:
+                            return <SuccessFooter />;
+                        case ConvoStatus.Deleted:
+                            return <DeletedFooter />;
+                        case ConvoStatus.Active:
+                            if (participant) {
+                                if (uid === tid) {
+                                    return (
+                                        <PendingFinishFooter
+                                            onFinish={finishConvo}
+                                            finishMessage={"Finish convo?"}
+                                        />
+                                    );
+                                } else if (
+                                    targetMsgCount >=
+                                    TARGET_MESSAGE_COUNT_THRESHOLD
+                                ) {
+                                    return (
+                                        <PendingFinishFooter
+                                            onFinish={finishConvo}
+                                            finishMessage={
+                                                "Finish convo and collect reward?"
+                                            }
+                                        />
+                                    );
+                                }
+                            }
+
+                            return <View />;
+                        case ConvoStatus.New:
+                            if (sid === uid || sid === hid) {
                                 return (
-                                    <PendingFinishFooter
-                                        onFinish={finishConvo}
-                                        finishMessage={"Finish convo?"}
-                                    />
-                                );
-                            } else if (
-                                targetMsgCount >= TARGET_MESSAGE_COUNT_THRESHOLD
-                            ) {
-                                return (
-                                    <PendingFinishFooter
-                                        onFinish={finishConvo}
-                                        finishMessage={
-                                            "Finish convo and collect reward?"
-                                        }
-                                    />
+                                    <View style={styles.noResponseContainer}>
+                                        <Text style={styles.noResponseText}>
+                                            {tname} hasn't responded yet
+                                        </Text>
+                                    </View>
                                 );
                             }
-                        }
 
-                        return <View />;
-                    case ConvoStatus.New:
-                        if (sid === uid || sid === hid) {
-                            return (
-                                <View style={styles.noResponseContainer}>
-                                    <Text style={styles.noResponseText}>
-                                        {tname} hasn't responded yet
-                                    </Text>
-                                </View>
-                            );
-                        }
+                            return <View />;
+                        default:
+                            return <View />;
+                    }
+                }}
+                onEndReached={async () => {
+                    if (
+                        !!messagesData?.convoMessages &&
+                        messagesData.convoMessages.length > fetchMoreLen
+                    ) {
+                        const messages = messagesData.convoMessages;
 
-                        return <View />;
-                    default:
-                        return <View />;
-                }
-            }}
-            onEndReached={async () => {
-                if (
-                    !!messagesData?.convoMessages &&
-                    messagesData.convoMessages.length > fetchMoreLen
-                ) {
-                    const messages = messagesData.convoMessages;
+                        const lastTime = messages[messages.length - 1].time;
+                        const ffLen = messages.length;
 
-                    const lastTime = messages[messages.length - 1].time;
-                    const ffLen = messages.length;
+                        setFetchMoreLen(ffLen);
 
-                    setFetchMoreLen(ffLen);
-
-                    !!fetchMore &&
-                        (await fetchMore({
-                            variables: {
-                                lastTime,
-                            },
-                        }));
-                }
-            }}
-        />
+                        !!fetchMore &&
+                            (await fetchMore({
+                                variables: {
+                                    lastTime,
+                                },
+                            }));
+                    }
+                }}
+            />
+        </>
     );
 
     /*
@@ -996,7 +1047,7 @@ const Convo: React.FC<Props> = (props) => {
             <>
                 {convoContent}
                 <ResponseResponse
-                    responseCost={postData.post.convoReward}
+                    responseCost={post.convoReward}
                     onBlock={async () => {
                         try {
                             await blockConvo();

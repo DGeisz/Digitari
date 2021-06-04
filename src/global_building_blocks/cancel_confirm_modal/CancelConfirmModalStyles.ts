@@ -46,7 +46,8 @@ export const styles = StyleSheet.create({
     },
     cancelButton: {
         backgroundColor: palette.softGray,
-        padding: 12,
+        paddingVertical: 5,
+        paddingHorizontal: 8,
         borderRadius: 10,
     },
     cancelText: {
@@ -55,7 +56,8 @@ export const styles = StyleSheet.create({
         color: palette.mediumGray,
     },
     confirmButton: {
-        padding: 12,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
         borderRadius: 10,
         marginLeft: 5,
     },

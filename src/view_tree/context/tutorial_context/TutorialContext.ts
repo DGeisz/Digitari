@@ -1,4 +1,6 @@
-import { createContext } from "react";
+import { createContext, useState } from "react";
+import { LayoutAnimation } from "react-native";
+import { MessageType } from "../../../global_types/MessageTypes";
 
 export enum TutorialScreen {
     /*
@@ -58,22 +60,61 @@ export enum TutorialScreen {
      */
     ExplainIdentity,
     PromptResponseMessage,
+    InputResponse,
+
+    /*
+     * First convo screens
+     */
+    IntroduceConvo,
+    ExplainConvo,
+    ZariahResponse1,
+    PromptReply,
+    ZariahResponse2,
+    PromptFinish,
+    TapFinish,
+    ExplainSuccess,
 }
 
 interface TutorialContextType {
+    /*
+     * Basic info about whether to show the tutorial
+     */
     tutorialActive: boolean;
+    setTutorialActive: (active: boolean) => void;
+
+    /*
+     * Info and methods to manipulate the current tutorial screen
+     */
     tutorialScreen: TutorialScreen;
     advanceTutorial: () => void;
     setScreen: (screen: TutorialScreen) => void;
+
+    /*
+     * Method to skip out of the tutorial
+     */
     skipTutorial: () => void;
+
+    /*
+     * State for liking the first post
+     */
     tutorialPostLiked: boolean;
     likeTutorialPost: (like: boolean) => void;
+    /*
+     * State for custom liking the second post
+     */
     tutorialPostCustomLiked: boolean;
     customLikeTutorialPost: (like: boolean) => void;
+
+    /*
+     * State for the first convo
+     */
+    tutConvoMessages: MessageType[];
+    addTutConvoMessage: (msg: MessageType) => void;
 }
 
 export const TutorialContext = createContext<TutorialContextType>({
     tutorialActive: false,
+    setTutorialActive: () => {},
     tutorialScreen: TutorialScreen.Welcome,
     advanceTutorial: () => {},
     setScreen: () => {},
@@ -82,4 +123,42 @@ export const TutorialContext = createContext<TutorialContextType>({
     tutorialPostLiked: false,
     likeTutorialPost: () => {},
     customLikeTutorialPost: () => {},
+    tutConvoMessages: [],
+    addTutConvoMessage: () => {},
 });
+
+export function useTutorialContextValues(): TutorialContextType {
+    const [showTutorial, setTutorialActive] = useState<boolean>(false);
+    const [currentTutorialScreen, setTutorialScreen] = useState<TutorialScreen>(
+        TutorialScreen.RespondToPost
+    );
+
+    const [tutorialPostLiked, likeTutorialPost] = useState<boolean>(false);
+    const [tutorialPostCustomLiked, customLikeTutorialPost] = useState<boolean>(
+        false
+    );
+
+    const [tutConvoMessages, setTutConvoMessages] = useState<MessageType[]>([]);
+
+    return {
+        tutorialActive: showTutorial,
+        setTutorialActive,
+        tutorialScreen: currentTutorialScreen,
+        skipTutorial: () => setTutorialActive(false),
+        advanceTutorial: () => {
+            LayoutAnimation.easeInEaseOut();
+            setTutorialScreen((current) => current + 1);
+        },
+        setScreen: (screen) => {
+            LayoutAnimation.easeInEaseOut();
+            setTutorialScreen(screen);
+        },
+        tutorialPostLiked,
+        tutorialPostCustomLiked,
+        likeTutorialPost,
+        customLikeTutorialPost,
+        tutConvoMessages,
+        addTutConvoMessage: (msg) =>
+            setTutConvoMessages((current) => [...current, msg]),
+    };
+}

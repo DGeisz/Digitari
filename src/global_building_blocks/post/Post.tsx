@@ -47,7 +47,7 @@ const COMMUNITY_NAME_MAX_LEN = 30;
 
 interface Props {
     post: PostType;
-    feedPost: boolean;
+    feedPost?: boolean;
     userCoin: number;
     userFirstName: string;
     stripped?: boolean;
@@ -470,7 +470,7 @@ const Post: React.FC<Props> = (props) => {
                         <View style={styles.postHeaderRight}>
                             <OptionsModal
                                 post={props.post}
-                                canBlock={props.feedPost}
+                                canBlock={!!props.feedPost}
                                 openReport={props.openReport}
                             />
                         </View>

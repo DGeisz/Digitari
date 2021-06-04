@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Text, TouchableOpacity, View, Share } from "react-native";
 import Modal from "react-native-modal";
 import { optionsStyles } from "../../../../../../global_styles/OptionsModalStyles";
@@ -17,6 +17,7 @@ import {
     DeleteConvoVariables,
 } from "./gql/Mutations";
 import * as Linking from "expo-linking";
+import { TutorialContext } from "../../../../../context/tutorial_context/TutorialContext";
 
 const prefix = Linking.createURL("/");
 
@@ -76,11 +77,13 @@ const ConvoOptionsModal: React.FC<Props> = (props) => {
         setDeleteVisible(false);
     };
 
+    const { tutorialActive } = useContext(TutorialContext);
+
     return (
         <>
             <TouchableOpacity
                 style={optionsStyles.iconContainer}
-                onPress={() => setOptionsVisible(true)}
+                onPress={() => !tutorialActive && setOptionsVisible(true)}
             >
                 <Entypo
                     name="dots-three-horizontal"

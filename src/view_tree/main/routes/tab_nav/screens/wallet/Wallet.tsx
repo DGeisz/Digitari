@@ -344,6 +344,7 @@ const Wallet: React.FC<Props> = (props) => {
                     setTimeout(() => props.navigation.navigate("Profile"), 700)
                 }
                 openNewPost={() => setTimeout(openNew, 700)}
+                resetCollect={() => setTutCollectionTime("0")}
             />
             <View style={basicLayouts.flexGrid1}>
                 <FlatList

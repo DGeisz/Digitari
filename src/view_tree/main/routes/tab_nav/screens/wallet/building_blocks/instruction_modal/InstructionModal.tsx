@@ -15,6 +15,7 @@ import OpenFeedPrompt from "./sub_screens/open_feed_prompt/OpenFeedPrompt";
 interface Props {
     navigateToProfile: () => void;
     openNewPost: () => void;
+    resetCollect: () => void;
 }
 
 const InstructionModal: React.FC<Props> = (props) => {
@@ -36,7 +37,7 @@ const InstructionModal: React.FC<Props> = (props) => {
             currentScreen = <CollectTierWage />;
             break;
         case TutorialScreen.NewPostPrompt:
-            currentScreen = <NewPostPrompt />;
+            currentScreen = <NewPostPrompt resetCollect={props.resetCollect} />;
             break;
         case TutorialScreen.OpenFeedPrompt:
             currentScreen = <OpenFeedPrompt openNewPost={props.openNewPost} />;
