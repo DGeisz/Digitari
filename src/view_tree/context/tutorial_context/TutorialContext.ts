@@ -49,7 +49,15 @@ export enum TutorialScreen {
     ExplainCustomLike,
     CustomLikePost,
     CustomTapLike,
+    ExplainResponse,
     RespondToPost,
+    TapRespond,
+
+    /*
+     * New response screens
+     */
+    ExplainIdentity,
+    PromptResponseMessage,
 }
 
 interface TutorialContextType {
@@ -61,7 +69,7 @@ interface TutorialContextType {
     tutorialPostLiked: boolean;
     likeTutorialPost: (like: boolean) => void;
     tutorialPostCustomLiked: boolean;
-    customLikeTutorialPost: () => void;
+    customLikeTutorialPost: (like: boolean) => void;
 }
 
 export const TutorialContext = createContext<TutorialContextType>({

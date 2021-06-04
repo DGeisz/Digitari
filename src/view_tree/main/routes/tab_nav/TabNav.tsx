@@ -134,7 +134,7 @@ const TabNav: React.FC<Props> = (props) => {
                 />
                 {/*TODO: Change tutorial active first screen to wallet*/}
                 <Tab.Navigator
-                    initialRouteName={tutorialActive ? "Wallet" : "MainFeed"}
+                    initialRouteName={tutorialActive ? "MainFeed" : "MainFeed"}
                     tabBarOptions={{
                         showLabel: false,
                         inactiveTintColor: "gray",

@@ -1,16 +1,16 @@
 import React from "react";
 import { Text, View } from "react-native";
-import { instructionStyles } from "../../../../../../../../../../global_styles/InstructionStyles";
-import TutorialFooter from "../../../../../../../../../../global_building_blocks/tutorial/TutorialFooter";
-import { TutorialScreen } from "../../../../../../../../../context/tutorial_context/TutorialContext";
+import { instructionStyles } from "../../../../../../../../global_styles/InstructionStyles";
+import TutorialFooter from "../../../../../../../../global_building_blocks/tutorial/TutorialFooter";
+import { TutorialScreen } from "../../../../../../../context/tutorial_context/TutorialContext";
 
-const ExplainCustomLike: React.FC = () => {
+const ExplainIdentity: React.FC = () => {
     return (
         <View style={instructionStyles.modalBottom}>
             <View style={instructionStyles.instructionContainer}>
                 <Text style={instructionStyles.instructionText}>
-                    You can also send a post a custom amount of digicoin with a
-                    like!{"\n\n"}
+                    If you want, you can also send a post a custom amount of
+                    digicoin with a like!{"\n\n"}
                     To send a custom like, simply tap and hold on the coin icon.
                 </Text>
                 <TutorialFooter
@@ -23,4 +23,4 @@ const ExplainCustomLike: React.FC = () => {
     );
 };
 
-export default ExplainCustomLike;
+export default ExplainIdentity;

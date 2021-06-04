@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Keyboard, Text, TouchableOpacity, View } from "react-native";
 import {
     NewResponseNavProp,
@@ -23,6 +23,8 @@ import {
     CollectEarningsData,
 } from "../../routes/tab_nav/screens/wallet/gql/Mutations";
 import { challengeCheck } from "../../../../global_gql/challenge_check/challenge_check";
+import { TutorialContext } from "../../../context/tutorial_context/TutorialContext";
+import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
 
 interface Props {
     route: NewResponseRouteProp;
@@ -86,60 +88,75 @@ const NewResponse: React.FC<Props> = (props) => {
         }
     };
 
+    const { tutorialActive } = useContext(TutorialContext);
+
+    useEffect(() => {
+        const callback = (e: any) => {
+            if (tutorialActive) {
+                e.preventDefault();
+            }
+        };
+
+        return props.navigation.addListener("beforeRemove", callback);
+    }, [tutorialActive]);
+
     return (
-        <TouchableOpacity
-            style={basicLayouts.flexGrid1}
-            onPress={Keyboard.dismiss}
-            activeOpacity={1}
-        >
-            <View style={styles.targetContainer}>
-                <Text style={styles.arrowText}>
-                    {"  ➤  "}
-                    <Text style={styles.targetText}>
-                        {props.route.params.tname}
+        <>
+            <InstructionsModal />
+            <TouchableOpacity
+                style={basicLayouts.flexGrid1}
+                onPress={Keyboard.dismiss}
+                activeOpacity={1}
+            >
+                <View style={styles.targetContainer}>
+                    <Text style={styles.arrowText}>
+                        {"  ➤  "}
+                        <Text style={styles.targetText}>
+                            {props.route.params.tname}
+                        </Text>
                     </Text>
-                </Text>
-            </View>
-            <View style={styles.postAsChoiceContainer}>
-                <Text style={styles.postAsText}>{"Message as: "}</Text>
-                <TouchableOpacity
-                    style={[
-                        styles.postAsChoice,
-                        anony ? {} : { backgroundColor: palette.deepBlue },
-                    ]}
-                    onPress={() => setAnony(false)}
-                >
-                    <Text
+                </View>
+                <View style={styles.postAsChoiceContainer}>
+                    <Text style={styles.postAsText}>{"Message as: "}</Text>
+                    <TouchableOpacity
                         style={[
-                            styles.postAsText,
-                            anony ? {} : { color: palette.white },
+                            styles.postAsChoice,
+                            anony ? {} : { backgroundColor: palette.deepBlue },
                         ]}
+                        onPress={() => setAnony(false)}
                     >
-                        {firstName}
-                    </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={[
-                        styles.postAsChoice,
-                        anony ? { backgroundColor: palette.deepBlue } : {},
-                    ]}
-                    onPress={() => {
-                        setAnony(true);
-                    }}
-                >
-                    <MaterialCommunityIcons
-                        name="incognito"
-                        size={17}
-                        color={anony ? palette.white : palette.hardGray}
-                    />
-                </TouchableOpacity>
-            </View>
-            {loading ? (
-                <LoadingWheel />
-            ) : (
-                <MessageInput autoFocus onSend={onSend} />
-            )}
-        </TouchableOpacity>
+                        <Text
+                            style={[
+                                styles.postAsText,
+                                anony ? {} : { color: palette.white },
+                            ]}
+                        >
+                            {firstName}
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[
+                            styles.postAsChoice,
+                            anony ? { backgroundColor: palette.deepBlue } : {},
+                        ]}
+                        onPress={() => {
+                            setAnony(true);
+                        }}
+                    >
+                        <MaterialCommunityIcons
+                            name="incognito"
+                            size={17}
+                            color={anony ? palette.white : palette.hardGray}
+                        />
+                    </TouchableOpacity>
+                </View>
+                {loading ? (
+                    <LoadingWheel />
+                ) : (
+                    <MessageInput autoFocus={!tutorialActive} onSend={onSend} />
+                )}
+            </TouchableOpacity>
+        </>
     );
 };
 

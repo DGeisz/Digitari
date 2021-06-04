@@ -362,11 +362,7 @@ const NewPost: React.FC<Props> = (props) => {
             }
         };
 
-        props.navigation.addListener("beforeRemove", callback);
-
-        return () => {
-            props.navigation.removeListener("beforeRemove", callback);
-        };
+        return props.navigation.addListener("beforeRemove", callback);
     }, [tutorialActive, tutorialScreen]);
 
     if (!tutorialActive && loading && !data?.user) {

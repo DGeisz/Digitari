@@ -235,41 +235,53 @@ const Post: React.FC<Props> = (props) => {
                 onConfirm={async () => {
                     setPostModalLoading(true);
 
-                    try {
-                        const { data } = await client.query<
-                            PostResponseCheckData,
-                            PostResponseCheckVariables
-                        >({
-                            query: POST_RESPONSE_CHECK,
-                            variables: {
-                                pid: props.post.id,
-                            },
-                            fetchPolicy: "no-cache",
-                        });
+                    if (tutorialActive) {
+                        !!props.onMessage &&
+                            props.onMessage(
+                                props.post.user,
+                                props.post.id,
+                                props.post.responseCost
+                            );
 
-                        if (!!data?.postResponseCheck) {
-                            setPostModalVisible(false);
+                        setTimeout(advanceTutorial, 500);
+                    } else {
+                        try {
+                            const { data } = await client.query<
+                                PostResponseCheckData,
+                                PostResponseCheckVariables
+                            >({
+                                query: POST_RESPONSE_CHECK,
+                                variables: {
+                                    pid: props.post.id,
+                                },
+                                fetchPolicy: "no-cache",
+                            });
 
-                            !!props.onMessage &&
-                                props.onMessage(
-                                    props.post.user,
-                                    props.post.id,
-                                    props.post.responseCost
+                            if (!!data?.postResponseCheck) {
+                                setPostModalVisible(false);
+
+                                !!props.onMessage &&
+                                    props.onMessage(
+                                        props.post.user,
+                                        props.post.id,
+                                        props.post.responseCost
+                                    );
+                            } else {
+                                setPostModalError(
+                                    "You've already responded to this post"
                                 );
-                        } else {
+                            }
+                        } catch (e) {
                             setPostModalError(
-                                "You've already responded to this post"
+                                "An error occurred. Please try again"
                             );
                         }
-                    } catch (e) {
-                        setPostModalError(
-                            "An error occurred. Please try again"
-                        );
-                    } finally {
-                        setPostModalLoading(false);
                     }
+
+                    setPostModalLoading(false);
+                    setPostModalVisible(false);
                 }}
-                onCancel={() => setPostModalLoading(false)}
+                onCancel={() => setPostModalVisible(false)}
             />
             <DonationModal
                 donateCoin={async (amount) => {
@@ -278,7 +290,7 @@ const Post: React.FC<Props> = (props) => {
                             tutorialScreen === TutorialScreen.CustomTapLike &&
                             props.post.id === "tut1"
                         ) {
-                            customLikeTutorialPost();
+                            customLikeTutorialPost(true);
                             await donateCoin(amount);
 
                             setTimeout(() => {
@@ -542,11 +554,20 @@ const Post: React.FC<Props> = (props) => {
                                     activeOpacity={
                                         uid === props.post.uid ? 1 : 0.5
                                     }
-                                    onPress={() =>
-                                        !tutorialActive &&
-                                        uid !== props.post.uid &&
-                                        setPostModalVisible(true)
-                                    }
+                                    onPress={() => {
+                                        if (tutorialActive) {
+                                            if (
+                                                props.post.id === "tut0" &&
+                                                tutorialScreen ===
+                                                    TutorialScreen.TapRespond
+                                            ) {
+                                                setPostModalVisible(true);
+                                            }
+                                        } else {
+                                            uid !== props.post.uid &&
+                                                setPostModalVisible(true);
+                                        }
+                                    }}
                                 >
                                     <View
                                         style={[

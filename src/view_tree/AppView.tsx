@@ -152,7 +152,7 @@ const AppView: React.FC = () => {
 
     const [showTutorial, setTutorialActive] = useState<boolean>(false);
     const [currentTutorialScreen, setTutorialScreen] = useState<TutorialScreen>(
-        TutorialScreen.OpenFeedPrompt
+        TutorialScreen.RespondToPost
     );
     const [tutorialPostLiked, likeTutorialPost] = useState<boolean>(false);
     const [tutorialPostCustomLiked, customLikeTutorialPost] = useState<boolean>(
@@ -307,7 +307,7 @@ const AppView: React.FC = () => {
                     tutorialPostLiked,
                     tutorialPostCustomLiked,
                     likeTutorialPost,
-                    customLikeTutorialPost: () => customLikeTutorialPost(true),
+                    customLikeTutorialPost,
                 }}
             >
                 <MainEntry />
