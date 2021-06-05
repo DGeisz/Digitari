@@ -116,16 +116,15 @@ const NewResponse: React.FC<Props> = (props) => {
     };
 
     useEffect(() => {
-        const callback = (e: any) => {
+        return props.navigation.addListener("beforeRemove", (e) => {
             if (
                 tutorialActive &&
-                tutorialScreen !== TutorialScreen.RespondToPost
+                tutorialScreen !== TutorialScreen.RespondToPost &&
+                tutorialScreen !== TutorialScreen.PopToFeed
             ) {
                 e.preventDefault();
             }
-        };
-
-        return props.navigation.addListener("beforeRemove", callback);
+        });
     }, [tutorialActive, tutorialScreen]);
 
     return (

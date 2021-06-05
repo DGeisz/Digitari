@@ -128,28 +128,22 @@ const Convo: React.FC<Props> = (props) => {
         tutorialScreen,
         setTutConvoMessages,
         advanceTutorial,
-        setScreen,
     } = useContext(TutorialContext);
+
     const { messages: zariahMessages, convo: zariahConvo } = useZariahConvo();
     const fetchPolicy = tutorialActive ? "cache-only" : undefined;
 
     useEffect(() => {
         if (tutorialScreen === TutorialScreen.PopToFeed) {
-            setTimeout(() => {
-                console.log("popping baby");
-                props.navigation.navigate("TabNav");
-                setScreen(TutorialScreen.ExplainSuccess);
-            }, 2000);
+            props.navigation.popToTop();
         }
 
         return props.navigation.addListener("beforeRemove", (e) => {
-            console.log("Now we're here: ", tutorialScreen);
             if (
                 tutorialActive &&
                 tutorialScreen !== TutorialScreen.PromptResponseMessage &&
                 tutorialScreen !== TutorialScreen.PopToFeed
             ) {
-                console.log("Yate");
                 e.preventDefault();
             }
         });
