@@ -90,16 +90,15 @@ import {
 import { addTransaction } from "../../hooks/use_realtime_updates/subscription_handlers/utils/cache_utils";
 import { challengeCheck } from "../../../../global_gql/challenge_check/challenge_check";
 import ConvoOptionsModal from "./building_blocks/convo_options_modal/ConvoOptionsModal";
-import { TutorialContext } from "../../../context/tutorial_context/TutorialContext";
-import { zariahConvo } from "./data/tutorial_convos/tutorial_convos";
-import { PostType } from "../../../../global_types/PostTypes";
 import {
-    tutorialPosts,
-    zariahPost,
-} from "../../routes/tab_nav/screens/main_feed/hooks/tutorial_posts/tutorial_posts";
+    TutorialContext,
+    TutorialScreen,
+} from "../../../context/tutorial_context/TutorialContext";
+import { PostType } from "../../../../global_types/PostTypes";
+import { zariahPost } from "../../routes/tab_nav/screens/main_feed/hooks/tutorial_posts/tutorial_posts";
 import { MessageType } from "../../../../global_types/MessageTypes";
-import { useZariahMessages } from "./hooks/zariah_messages/zariah_messages";
 import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
+import { useZariahConvo } from "./hooks/zariah_convo/zariah_convo";
 
 function getCheckLeft(uid: string, tid: string): (id: string) => boolean {
     if (uid === tid) {
@@ -119,15 +118,42 @@ const Convo: React.FC<Props> = (props) => {
     const hid = localHid();
 
     const { cvid, pid } = props.route.params;
-
     const [error, setError] = useState<string>("");
 
     /*
      * Handling tutorial if necessary
      */
-    const { tutorialActive } = useContext(TutorialContext);
-    const zariahMessages = useZariahMessages();
+    const {
+        tutorialActive,
+        tutorialScreen,
+        setTutConvoMessages,
+        advanceTutorial,
+        setScreen,
+    } = useContext(TutorialContext);
+    const { messages: zariahMessages, convo: zariahConvo } = useZariahConvo();
     const fetchPolicy = tutorialActive ? "cache-only" : undefined;
+
+    useEffect(() => {
+        if (tutorialScreen === TutorialScreen.PopToFeed) {
+            setTimeout(() => {
+                console.log("popping baby");
+                props.navigation.navigate("TabNav");
+                setScreen(TutorialScreen.ExplainSuccess);
+            }, 2000);
+        }
+
+        return props.navigation.addListener("beforeRemove", (e) => {
+            console.log("Now we're here: ", tutorialScreen);
+            if (
+                tutorialActive &&
+                tutorialScreen !== TutorialScreen.PromptResponseMessage &&
+                tutorialScreen !== TutorialScreen.PopToFeed
+            ) {
+                console.log("Yate");
+                e.preventDefault();
+            }
+        });
+    }, [tutorialActive, tutorialScreen]);
 
     /*
      * Queries
@@ -630,6 +656,18 @@ const Convo: React.FC<Props> = (props) => {
         MAX_CONVO_MESSAGES_PER_PAGE - 5
     );
 
+    useEffect(() => {
+        if (
+            tutorialScreen === TutorialScreen.ExplainFinish ||
+            tutorialScreen === TutorialScreen.ExplainSuccess
+        ) {
+            setTimeout(
+                () => !!scrollRef.current && scrollRef.current.scrollToEnd(),
+                500
+            );
+        }
+    }, [tutorialScreen, scrollRef]);
+
     const [animateMessages, setAnimateMessages] = useState<boolean>(false);
 
     useEffect(() => {
@@ -643,7 +681,7 @@ const Convo: React.FC<Props> = (props) => {
     let messages: MessageType[];
 
     if (tutorialActive) {
-        convo = Object.assign(zariahConvo, { sname: localFirstName() });
+        convo = zariahConvo;
         post = zariahPost;
         messages = zariahMessages;
 
@@ -698,14 +736,19 @@ const Convo: React.FC<Props> = (props) => {
 
     const checkLeft = getCheckLeft(uid, tid);
 
-    console.log("Am participant: ", participant);
-
     /*
      * Create the main convo content
      */
     const convoContent = (
         <>
-            <InstructionsModal />
+            <InstructionsModal
+                goBack={() => {
+                    setTimeout(() => {
+                        props.navigation.goBack();
+                        setTutConvoMessages([]);
+                    }, 700);
+                }}
+            />
             <FlatList
                 ref={scrollRef}
                 contentContainerStyle={styles.convoListContainer}
@@ -925,7 +968,13 @@ const Convo: React.FC<Props> = (props) => {
                                 ) {
                                     return (
                                         <PendingFinishFooter
-                                            onFinish={finishConvo}
+                                            onFinish={async () => {
+                                                if (tutorialActive) {
+                                                    advanceTutorial();
+                                                } else {
+                                                    await finishConvo();
+                                                }
+                                            }}
                                             finishMessage={
                                                 "Finish convo and collect reward?"
                                             }
@@ -1006,6 +1055,14 @@ const Convo: React.FC<Props> = (props) => {
 
         return (
             <MessageInput
+                blockInput={
+                    tutorialActive &&
+                    tutorialScreen !== TutorialScreen.ZariahBackNForth
+                }
+                autoFocus={
+                    tutorialActive &&
+                    tutorialScreen === TutorialScreen.ZariahBackNForth
+                }
                 onKeyboardShow={() => {
                     setTimeout(() => {
                         !!scrollRef.current && scrollRef.current.scrollToEnd();
@@ -1016,26 +1073,45 @@ const Convo: React.FC<Props> = (props) => {
                     }, 500);
                 }}
                 onSend={async (message) => {
-                    try {
-                        await createMessage({
-                            variables: {
-                                cvid: cvid,
-                                message,
-                            },
-                            optimisticResponse: {
-                                createMessage: {
-                                    id: cvid,
-                                    anonymous: mAnony,
+                    if (tutorialActive) {
+                        if (
+                            tutorialScreen === TutorialScreen.ZariahBackNForth
+                        ) {
+                            setTutConvoMessages((messages) => [
+                                ...messages,
+                                {
+                                    id: "tutMsg2",
+                                    anonymous: false,
                                     content: message,
                                     time: Date.now().toString(),
-                                    uid: mUid,
-                                    tid: mTid,
-                                    user: mUser,
+                                    uid,
+                                    tid: "z",
+                                    user: localFirstName(),
                                 },
-                            },
-                        });
-                    } catch (e) {
-                        console.log("Send error: ", e);
+                            ]);
+                        }
+                    } else {
+                        try {
+                            await createMessage({
+                                variables: {
+                                    cvid: cvid,
+                                    message,
+                                },
+                                optimisticResponse: {
+                                    createMessage: {
+                                        id: cvid,
+                                        anonymous: mAnony,
+                                        content: message,
+                                        time: Date.now().toString(),
+                                        uid: mUid,
+                                        tid: mTid,
+                                        user: mUser,
+                                    },
+                                },
+                            });
+                        } catch (e) {
+                            console.log("Send error: ", e);
+                        }
                     }
                 }}
             >

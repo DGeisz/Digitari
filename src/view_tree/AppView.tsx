@@ -25,13 +25,7 @@ import {
 import { HID, HidData } from "./gql/Queries";
 import { inviteCode, userAuthenticated } from "../global_state/AuthState";
 import { styles } from "./AppViewStyles";
-import {
-    ActivityIndicator,
-    Platform,
-    Text,
-    LayoutAnimation,
-    View,
-} from "react-native";
+import { ActivityIndicator, Platform, Text, LogBox, View } from "react-native";
 import { palette } from "../global_styles/Palette";
 import Constants from "expo-constants";
 import type { IAPQueryResponse, InAppPurchase } from "expo-in-app-purchases";
@@ -42,6 +36,8 @@ import {
     TutorialScreen,
     useTutorialContextValues,
 } from "./context/tutorial_context/TutorialContext";
+
+LogBox.ignoreAllLogs();
 
 const AppView: React.FC = () => {
     const client = useApolloClient();

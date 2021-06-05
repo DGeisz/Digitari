@@ -73,27 +73,33 @@ const NewResponse: React.FC<Props> = (props) => {
         },
     });
 
-    const { tutorialActive, tutorialScreen, addTutConvoMessage } = useContext(
-        TutorialContext
-    );
+    const {
+        tutorialActive,
+        tutorialScreen,
+        setTutConvoMessages,
+        advanceTutorial,
+    } = useContext(TutorialContext);
 
     const onSend = async (text: string) => {
         if (tutorialActive) {
-            addTutConvoMessage({
-                id: "tutMsg0",
-                anonymous: false,
-                content: text,
-                time: Date.now().toString(),
-                uid: "user",
-                tid: "z",
-                user: firstName,
-            });
+            setTutConvoMessages([
+                {
+                    id: "tutMsg0",
+                    anonymous: false,
+                    content: text,
+                    time: Date.now().toString(),
+                    uid,
+                    tid: "z",
+                    user: firstName,
+                },
+            ]);
 
-            props.navigation.pop();
             props.navigation.navigate("Convo", {
                 cvid: "tutConvo0",
                 pid: "tut0",
             });
+
+            advanceTutorial();
         } else {
             try {
                 await createConvo({
@@ -111,7 +117,6 @@ const NewResponse: React.FC<Props> = (props) => {
 
     useEffect(() => {
         const callback = (e: any) => {
-            console.log("Here's the event");
             if (
                 tutorialActive &&
                 tutorialScreen !== TutorialScreen.RespondToPost

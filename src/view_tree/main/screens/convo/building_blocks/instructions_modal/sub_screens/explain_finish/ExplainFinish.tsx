@@ -7,21 +7,27 @@ import {
     TutorialScreen,
 } from "../../../../../../../context/tutorial_context/TutorialContext";
 
-const PromptReply: React.FC = () => {
+const ExplainFinish: React.FC = () => {
     const { setTutConvoMessages } = useContext(TutorialContext);
-
     return (
         <View style={instructionStyles.modalTop}>
             <View style={instructionStyles.instructionContainer}>
                 <Text style={instructionStyles.instructionText}>
-                    Looks like Zariah just responded! {"\n\n"}
-                    Answer her question and tell her whether you like beaches.
+                    After the post creator has sent two messages in a Convo, you
+                    have the opportunity to finish the Convo.{"\n\n"}
+                    When you finish a Convo, you earn the Convo reward, and your
+                    ranking increases by 1 point! {"\n\n"}
+                    Your ranking qualifies you for different tiers, so you have
+                    to successfully finish Convos in order to reach higher
+                    tiers.
                 </Text>
                 <TutorialFooter
-                    goBackScreen={TutorialScreen.ExplainConvo}
+                    goBackScreen={TutorialScreen.PromptReply}
                     goBack={() => {
                         setTimeout(() => {
-                            setTutConvoMessages((messages) => [messages[0]]);
+                            setTutConvoMessages((messages) =>
+                                messages.slice(0, 2)
+                            );
                         }, 700);
                     }}
                     showSkip
@@ -32,4 +38,4 @@ const PromptReply: React.FC = () => {
     );
 };
 
-export default PromptReply;
+export default ExplainFinish;

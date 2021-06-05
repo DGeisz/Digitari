@@ -67,12 +67,18 @@ export enum TutorialScreen {
      */
     IntroduceConvo,
     ExplainConvo,
-    ZariahResponse1,
+    ZariahResponse,
     PromptReply,
-    ZariahResponse2,
+    ZariahBackNForth,
+    ExplainFinish,
     PromptFinish,
     TapFinish,
     ExplainSuccess,
+
+    /*
+     * Transition back to feed
+     */
+    PopToFeed,
 }
 
 interface TutorialContextType {
@@ -109,7 +115,9 @@ interface TutorialContextType {
      * State for the first convo
      */
     tutConvoMessages: MessageType[];
-    addTutConvoMessage: (msg: MessageType) => void;
+    setTutConvoMessages: (
+        messages: MessageType[] | ((messages: MessageType[]) => MessageType[])
+    ) => void;
 }
 
 export const TutorialContext = createContext<TutorialContextType>({
@@ -124,7 +132,7 @@ export const TutorialContext = createContext<TutorialContextType>({
     likeTutorialPost: () => {},
     customLikeTutorialPost: () => {},
     tutConvoMessages: [],
-    addTutConvoMessage: () => {},
+    setTutConvoMessages: () => {},
 });
 
 export function useTutorialContextValues(): TutorialContextType {
@@ -158,7 +166,6 @@ export function useTutorialContextValues(): TutorialContextType {
         likeTutorialPost,
         customLikeTutorialPost,
         tutConvoMessages,
-        addTutConvoMessage: (msg) =>
-            setTutConvoMessages((current) => [...current, msg]),
+        setTutConvoMessages,
     };
 }

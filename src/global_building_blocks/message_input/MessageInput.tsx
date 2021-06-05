@@ -26,6 +26,7 @@ interface Props {
     onKeyboardShow?: () => void;
     inputPlaceholder?: string;
     autoFocus?: boolean;
+    blockInput?: boolean;
 }
 
 const MessageInput: React.FC<Props> = ({
@@ -34,6 +35,7 @@ const MessageInput: React.FC<Props> = ({
     onSend,
     inputPlaceholder,
     autoFocus,
+    blockInput,
 }) => {
     const insets = useSafeAreaInsets();
 
@@ -155,6 +157,7 @@ const MessageInput: React.FC<Props> = ({
                                 setText(text.substring(0, MESSAGE_MAX_LEN))
                             }
                             autoFocus={autoFocus}
+                            editable={!blockInput}
                         />
                         <TouchableOpacity
                             activeOpacity={!!text ? 0.3 : 1}

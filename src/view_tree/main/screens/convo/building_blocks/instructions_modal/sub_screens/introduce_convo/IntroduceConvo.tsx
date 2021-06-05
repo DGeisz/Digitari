@@ -13,13 +13,15 @@ const IntroduceConvo: React.FC<Props> = (props) => {
         <View style={instructionStyles.modalBottom}>
             <View style={instructionStyles.instructionContainer}>
                 <Text style={instructionStyles.instructionText}>
-                    When you respond to a post, you can respond anonymously or
-                    as yourself. {"\n\n"}
-                    For right now, let's respond non-anonymously so Zariah knows
-                    who she's talking to.
+                    This is a Digitari convo! {"\n\n"}
+                    Convos allow you to respond to posts and connect with post
+                    creators!{"\n\n"}
+                    You can think of a Digitari convo as a mini text
+                    conversation between you and the post creator about their
+                    post.
                 </Text>
                 <TutorialFooter
-                    goBackScreen={TutorialScreen.RespondToPost}
+                    goBackScreen={TutorialScreen.PromptResponseMessage}
                     goBack={props.goBack}
                     showSkip
                     showGoBack
