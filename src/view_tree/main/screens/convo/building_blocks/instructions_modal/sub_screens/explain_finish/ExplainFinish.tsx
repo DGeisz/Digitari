@@ -17,9 +17,8 @@ const ExplainFinish: React.FC = () => {
                     have the opportunity to finish the Convo.{"\n\n"}
                     When you finish a Convo, you earn the Convo reward, and your
                     ranking increases by 1 point! {"\n\n"}
-                    Your ranking qualifies you for different tiers, so you have
-                    to successfully finish Convos in order to reach higher
-                    tiers.
+                    Your ranking qualifies you for different tiers, so in order
+                    to reach higher tiers, you must successfully finish Convos.
                 </Text>
                 <TutorialFooter
                     goBackScreen={TutorialScreen.PromptReply}

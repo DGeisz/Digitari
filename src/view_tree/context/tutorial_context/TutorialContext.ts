@@ -79,6 +79,12 @@ export enum TutorialScreen {
      * Transition back to feed
      */
     PopToFeed,
+
+    /*
+     * Feed post convo
+     */
+    PromptReturnToWallet,
+    TapWallet2,
 }
 
 interface TutorialContextType {
@@ -138,7 +144,7 @@ export const TutorialContext = createContext<TutorialContextType>({
 export function useTutorialContextValues(): TutorialContextType {
     const [showTutorial, setTutorialActive] = useState<boolean>(false);
     const [currentTutorialScreen, setTutorialScreen] = useState<TutorialScreen>(
-        TutorialScreen.RespondToPost
+        TutorialScreen.PromptReturnToWallet
     );
 
     const [tutorialPostLiked, likeTutorialPost] = useState<boolean>(false);

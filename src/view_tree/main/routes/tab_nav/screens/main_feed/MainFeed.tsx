@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
     FlatList,
     RefreshControl,
@@ -31,10 +31,18 @@ import {
     GetUserQueryVariables,
 } from "../profile/gql/Queries";
 import { SCREEN_LARGER_THAN_CONTENT } from "../../../../../../global_constants/screen_constants";
-import { TutorialContext } from "../../../../../context/tutorial_context/TutorialContext";
+import {
+    TutorialContext,
+    TutorialScreen,
+} from "../../../../../context/tutorial_context/TutorialContext";
 import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
 import { MainFeedNavProp } from "../../TabNavTypes";
-import { tutorialPosts } from "./hooks/tutorial_posts/tutorial_posts";
+import {
+    useTutorialPosts,
+    zariahPost,
+} from "./hooks/tutorial_posts/tutorial_posts";
+import { addNewReceipt } from "../../../../../../global_state/CoinUpdates";
+import { createTimeout } from "../../../../../../global_utils/TimeoutUtils";
 
 interface Props {
     navigation: MainFeedNavProp;
@@ -50,6 +58,7 @@ const MainFeed: React.FC<Props> = (props) => {
         openUser,
         openNewMessage,
         openReport,
+        openConvo,
     } = useContext(TabNavContext);
 
     const { data, error, networkStatus, refetch, fetchMore } = useQuery<
@@ -77,9 +86,29 @@ const MainFeed: React.FC<Props> = (props) => {
     const [fetchMoreLen, setFetchMoreLen] = useState<number>(0);
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
-    const { tutorialActive } = useContext(TutorialContext);
+    const {
+        tutorialActive,
+        tutorialScreen,
+        advanceTutorial,
+        setScreen,
+    } = useContext(TutorialContext);
+    const tutPosts = useTutorialPosts();
 
-    const tutPosts = tutorialPosts();
+    useEffect(() => {
+        return props.navigation.addListener("focus", async () => {
+            if (tutorialActive && tutorialScreen === TutorialScreen.PopToFeed) {
+                await createTimeout(1000);
+
+                for (const coin of [10, 10, 10, 10, 30, 80]) {
+                    addNewReceipt(coin);
+                    await createTimeout(80);
+                }
+
+                await createTimeout(1000);
+                advanceTutorial();
+            }
+        });
+    }, [tutorialActive, tutorialScreen]);
 
     if (
         !tutorialActive &&
@@ -123,6 +152,17 @@ const MainFeed: React.FC<Props> = (props) => {
                 navigate2Wallet={() =>
                     setTimeout(() => props.navigation.navigate("Wallet"), 700)
                 }
+                navToFirstConvo={() => {
+                    setTimeout(() => {
+                        openNewMessage(
+                            zariahPost.user,
+                            zariahPost.id,
+                            zariahPost.responseCost
+                        );
+                        openConvo("tutConvo0", zariahPost.id);
+                        setScreen(TutorialScreen.ExplainSuccess);
+                    }, 700);
+                }}
             />
             {finalFeed.length === 0 ? (
                 <View style={styles.noFeedContainer}>

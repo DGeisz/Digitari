@@ -211,10 +211,22 @@ const TabNav: React.FC<Props> = (props) => {
                             tabBarIcon: ({ color, size }) => {
                                 return (
                                     <View>
-                                        {!tutorialActive &&
-                                            newTransactionUpdate && (
-                                                <UpdateIndicator />
-                                            )}
+                                        {(() => {
+                                            if (
+                                                !tutorialActive &&
+                                                newTransactionUpdate
+                                            ) {
+                                                return <UpdateIndicator />;
+                                            } else if (
+                                                tutorialActive &&
+                                                (tutorialScreen ===
+                                                    TutorialScreen.PromptReturnToWallet ||
+                                                    tutorialScreen ===
+                                                        TutorialScreen.TapWallet2)
+                                            ) {
+                                                return <UpdateIndicator />;
+                                            }
+                                        })()}
                                         <Entypo
                                             name="wallet"
                                             size={size}
@@ -229,7 +241,10 @@ const TabNav: React.FC<Props> = (props) => {
                             tabPress: (e) => {
                                 if (
                                     tutorialActive &&
-                                    tutorialScreen === TutorialScreen.TapWallet
+                                    (tutorialScreen ===
+                                        TutorialScreen.TapWallet ||
+                                        tutorialScreen ===
+                                            TutorialScreen.TapWallet2)
                                 ) {
                                     advanceTutorial();
                                 } else if (tutorialActive) {

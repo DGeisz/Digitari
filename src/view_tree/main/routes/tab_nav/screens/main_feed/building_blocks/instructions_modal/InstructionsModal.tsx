@@ -13,9 +13,11 @@ import { instructionStyles } from "../../../../../../../../global_styles/Instruc
 import ExplainDigicoinLike from "./sub_screens/explain_digicoin_like/ExplainDigicoinLike";
 import ExplainCustomLike from "./sub_screens/explain_custom_like/ExplainCustomLike";
 import ExplainResponse from "./sub_screens/explain_response/ExplainResponse";
+import PromptReturnToWallet from "./sub_screens/prompt_return_to_wallet/PromptReturnToWallet";
 
 interface Props {
     navigate2Wallet: () => void;
+    navToFirstConvo: () => void;
 }
 
 const InstructionsModal: React.FC<Props> = (props) => {
@@ -47,6 +49,11 @@ const InstructionsModal: React.FC<Props> = (props) => {
             break;
         case TutorialScreen.RespondToPost:
             currentScreen = <RespondToPost />;
+            break;
+        case TutorialScreen.PromptReturnToWallet:
+            currentScreen = (
+                <PromptReturnToWallet navToFirstConvo={props.navToFirstConvo} />
+            );
             break;
         default:
             modalVisible = false;

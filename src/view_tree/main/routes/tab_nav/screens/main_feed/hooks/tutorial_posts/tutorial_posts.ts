@@ -34,7 +34,7 @@ export const zariahPost: PostType = {
     responseCount: 5,
 };
 
-export function tutorialPosts(): PostType[] {
+export function useTutorialPosts(): PostType[] {
     const { tutorialPostLiked, tutorialPostCustomLiked } = useContext(
         TutorialContext
     );
