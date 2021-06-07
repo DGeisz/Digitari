@@ -210,6 +210,8 @@ const NewPost: React.FC<Props> = (props) => {
         if (tutorialActive) {
             if (tutorialScreen === TutorialScreen.TapPost) {
                 advanceTutorial();
+                setPostContent(content);
+
                 setTimeout(props.navigation.goBack, 200);
             }
 
@@ -333,9 +335,12 @@ const NewPost: React.FC<Props> = (props) => {
     /*
      * Tutorial
      */
-    const { tutorialActive, tutorialScreen, advanceTutorial } = useContext(
-        TutorialContext
-    );
+    const {
+        tutorialActive,
+        tutorialScreen,
+        advanceTutorial,
+        setPostContent,
+    } = useContext(TutorialContext);
 
     useEffect(() => {
         if (tutorialActive) {

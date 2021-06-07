@@ -85,6 +85,17 @@ export enum TutorialScreen {
      */
     PromptReturnToWallet,
     TapWallet2,
+
+    /*
+     * Back to wallet, collect transactions
+     */
+    ExplainTransactions,
+    CollectTransactions,
+    CloserLookAtTransactions,
+    ConvoFinishedTransactions,
+    LikeTransactions,
+    NewResponseTransactions,
+    PromptOpenConvos,
 }
 
 interface TutorialContextType {
@@ -107,10 +118,17 @@ interface TutorialContextType {
     skipTutorial: () => void;
 
     /*
+     * State for new post content
+     */
+    postContent: string;
+    setPostContent: (content: string) => void;
+
+    /*
      * State for liking the first post
      */
     tutorialPostLiked: boolean;
     likeTutorialPost: (like: boolean) => void;
+
     /*
      * State for custom liking the second post
      */
@@ -133,6 +151,8 @@ export const TutorialContext = createContext<TutorialContextType>({
     advanceTutorial: () => {},
     setScreen: () => {},
     skipTutorial: () => {},
+    postContent: "",
+    setPostContent: () => {},
     tutorialPostCustomLiked: false,
     tutorialPostLiked: false,
     likeTutorialPost: () => {},
@@ -145,7 +165,10 @@ export function useTutorialContextValues(): TutorialContextType {
     const [showTutorial, setTutorialActive] = useState<boolean>(false);
     const [currentTutorialScreen, setTutorialScreen] = useState<TutorialScreen>(
         TutorialScreen.PromptReturnToWallet
+        // TutorialScreen.Welcome
     );
+
+    const [postContent, setPostContent] = useState<string>("");
 
     const [tutorialPostLiked, likeTutorialPost] = useState<boolean>(false);
     const [tutorialPostCustomLiked, customLikeTutorialPost] = useState<boolean>(
@@ -167,6 +190,8 @@ export function useTutorialContextValues(): TutorialContextType {
             LayoutAnimation.easeInEaseOut();
             setTutorialScreen(screen);
         },
+        postContent,
+        setPostContent,
         tutorialPostLiked,
         tutorialPostCustomLiked,
         likeTutorialPost,

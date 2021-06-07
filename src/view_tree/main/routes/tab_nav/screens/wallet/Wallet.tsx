@@ -51,6 +51,7 @@ import {
     TutorialContext,
     TutorialScreen,
 } from "../../../../../context/tutorial_context/TutorialContext";
+import { useTutorialWallet } from "./hooks/use_tutorial_wallet/use_tutorial_wallet";
 
 interface Props {
     navigation: WalletNavProp;
@@ -271,9 +272,8 @@ const Wallet: React.FC<Props> = (props) => {
     const { tutorialActive, tutorialScreen, advanceTutorial } = useContext(
         TutorialContext
     );
-    const [tutorialCollectionTime, setTutCollectionTime] = useState<string>(
-        "0"
-    );
+
+    const tutorialWallet = useTutorialWallet();
 
     if (
         !tutorialActive &&
@@ -302,36 +302,33 @@ const Wallet: React.FC<Props> = (props) => {
     let tierWage = 0;
     let daily = 0;
     let accumulation = 0;
+    let finalFeed: TransactionType[] = [];
 
-    if (!!accData?.transactionAccumulation) {
-        accumulation = accData.transactionAccumulation;
-    }
-
-    if (!!collectionData?.user) {
-        const [finalWage, dailyWage] = getTierWage(
-            collectionData.user.ranking,
-            collectionData.user.lastCollectionTime
-        );
-
-        daily = dailyWage;
-        tierWage = finalWage;
-    }
-
-    /*
-     * Handle tutorial injection
-     */
     if (tutorialActive) {
-        const [finalWage, dailyWage] = getTierWage(0, tutorialCollectionTime);
+        daily = tutorialWallet.dailyWage;
+        tierWage = tutorialWallet.tierWage;
+        accumulation = tutorialWallet.accumulation;
 
-        daily = dailyWage;
-        tierWage = finalWage;
+        finalFeed = tutorialWallet.transactions;
+    } else {
+        if (!!accData?.transactionAccumulation) {
+            accumulation = accData.transactionAccumulation;
+        }
+
+        if (!!collectionData?.user) {
+            const [finalWage, dailyWage] = getTierWage(
+                collectionData.user.ranking,
+                collectionData.user.lastCollectionTime
+            );
+
+            daily = dailyWage;
+            tierWage = finalWage;
+        }
+
+        finalFeed = !!transData?.transactions ? transData.transactions : [];
     }
 
     let total = tierWage + accumulation;
-
-    const finalFeed: TransactionType[] = !!transData?.transactions
-        ? transData.transactions
-        : [];
 
     const lastCollectionTime: number = !!collectionData?.user
         ? parseInt(collectionData.user.lastCollectionTime)
@@ -344,7 +341,10 @@ const Wallet: React.FC<Props> = (props) => {
                     setTimeout(() => props.navigation.navigate("Profile"), 700)
                 }
                 openNewPost={() => setTimeout(openNew, 700)}
-                resetCollect={() => setTutCollectionTime("0")}
+                resetCollect={tutorialWallet.resetCollectTierWage}
+                nav2MainFeed={() =>
+                    setTimeout(() => props.navigation.navigate("MainFeed"), 700)
+                }
             />
             <View style={basicLayouts.flexGrid1}>
                 <FlatList
@@ -426,9 +426,6 @@ const Wallet: React.FC<Props> = (props) => {
                                         activeOpacity={total === 0 ? 1 : 0.5}
                                         onPress={async () => {
                                             if (total > 0) {
-                                                shockTheNation();
-                                                setAnimationCoinAmount(total);
-
                                                 /*
                                                  * Handle the tutorial scenario
                                                  */
@@ -437,11 +434,12 @@ const Wallet: React.FC<Props> = (props) => {
                                                         tutorialScreen ===
                                                         TutorialScreen.FirstCollectTap
                                                     ) {
-                                                        setTutCollectionTime(
-                                                            (
-                                                                2 * Date.now()
-                                                            ).toString()
+                                                        shockTheNation();
+                                                        setAnimationCoinAmount(
+                                                            total
                                                         );
+
+                                                        tutorialWallet.collectTierWage();
 
                                                         setTimeout(
                                                             () =>
@@ -450,6 +448,11 @@ const Wallet: React.FC<Props> = (props) => {
                                                         );
                                                     }
                                                 } else {
+                                                    shockTheNation();
+                                                    setAnimationCoinAmount(
+                                                        total
+                                                    );
+
                                                     /*
                                                      * Otherwise, handle typical collection mutation
                                                      */

@@ -222,7 +222,11 @@ const TabNav: React.FC<Props> = (props) => {
                                                 (tutorialScreen ===
                                                     TutorialScreen.PromptReturnToWallet ||
                                                     tutorialScreen ===
-                                                        TutorialScreen.TapWallet2)
+                                                        TutorialScreen.TapWallet2 ||
+                                                    tutorialScreen ===
+                                                        TutorialScreen.OpenWalletPrompt ||
+                                                    tutorialScreen ===
+                                                        TutorialScreen.TapWallet)
                                             ) {
                                                 return <UpdateIndicator />;
                                             }
