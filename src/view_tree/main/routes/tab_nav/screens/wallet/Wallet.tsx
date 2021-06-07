@@ -205,6 +205,8 @@ const Wallet: React.FC<Props> = (props) => {
 
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
+    const listRef = useRef<FlatList>(null);
+
     /*
      * Animation playground
      */
@@ -275,6 +277,22 @@ const Wallet: React.FC<Props> = (props) => {
 
     const tutorialWallet = useTutorialWallet();
 
+    useEffect(() => {
+        if (tutorialActive) {
+            if (tutorialScreen === TutorialScreen.ConvoFinishedTransactions) {
+                !!listRef.current && listRef.current.scrollToEnd();
+            } else if (
+                tutorialScreen === TutorialScreen.NewResponseTransactions
+            ) {
+                !!listRef.current &&
+                    listRef.current.scrollToOffset({
+                        offset: 200,
+                        animated: true,
+                    });
+            }
+        }
+    }, [tutorialActive, tutorialScreen]);
+
     if (
         !tutorialActive &&
         ((!collectionData?.user &&
@@ -303,6 +321,7 @@ const Wallet: React.FC<Props> = (props) => {
     let daily = 0;
     let accumulation = 0;
     let finalFeed: TransactionType[] = [];
+    let lastCollectionTime: number = 0;
 
     if (tutorialActive) {
         daily = tutorialWallet.dailyWage;
@@ -310,6 +329,13 @@ const Wallet: React.FC<Props> = (props) => {
         accumulation = tutorialWallet.accumulation;
 
         finalFeed = tutorialWallet.transactions;
+
+        if (
+            tutorialWallet.transactionsCollected ||
+            tutorialScreen > TutorialScreen.CollectTransactions
+        ) {
+            lastCollectionTime = Date.now();
+        }
     } else {
         if (!!accData?.transactionAccumulation) {
             accumulation = accData.transactionAccumulation;
@@ -326,13 +352,13 @@ const Wallet: React.FC<Props> = (props) => {
         }
 
         finalFeed = !!transData?.transactions ? transData.transactions : [];
+
+        lastCollectionTime = !!collectionData?.user
+            ? parseInt(collectionData.user.lastCollectionTime)
+            : 0;
     }
 
     let total = tierWage + accumulation;
-
-    const lastCollectionTime: number = !!collectionData?.user
-        ? parseInt(collectionData.user.lastCollectionTime)
-        : 0;
 
     return (
         <>
@@ -345,9 +371,11 @@ const Wallet: React.FC<Props> = (props) => {
                 nav2MainFeed={() =>
                     setTimeout(() => props.navigation.navigate("MainFeed"), 700)
                 }
+                resetCollectTrans={tutorialWallet.resetCollectTrans}
             />
             <View style={basicLayouts.flexGrid1}>
                 <FlatList
+                    ref={listRef}
                     style={styles.walletList}
                     ListHeaderComponent={
                         <>
@@ -440,6 +468,22 @@ const Wallet: React.FC<Props> = (props) => {
                                                         );
 
                                                         tutorialWallet.collectTierWage();
+
+                                                        setTimeout(
+                                                            () =>
+                                                                advanceTutorial(),
+                                                            700
+                                                        );
+                                                    } else if (
+                                                        tutorialScreen ===
+                                                        TutorialScreen.CollectTransactions
+                                                    ) {
+                                                        shockTheNation();
+                                                        setAnimationCoinAmount(
+                                                            total
+                                                        );
+
+                                                        tutorialWallet.collectTransactions();
 
                                                         setTimeout(
                                                             () =>

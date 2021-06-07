@@ -24,6 +24,7 @@ interface Props {
     openNewPost: () => void;
     resetCollect: () => void;
     nav2MainFeed: () => void;
+    resetCollectTrans: () => void;
 }
 
 const InstructionModal: React.FC<Props> = (props) => {
@@ -56,7 +57,11 @@ const InstructionModal: React.FC<Props> = (props) => {
             );
             break;
         case TutorialScreen.CloserLookAtTransactions:
-            currentScreen = <CloserLookAtTransactions />;
+            currentScreen = (
+                <CloserLookAtTransactions
+                    resetCollectTrans={props.resetCollectTrans}
+                />
+            );
             break;
         case TutorialScreen.ConvoFinishedTransactions:
             currentScreen = <ConvoFinishedTransactions />;

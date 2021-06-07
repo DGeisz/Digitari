@@ -96,6 +96,7 @@ export enum TutorialScreen {
     LikeTransactions,
     NewResponseTransactions,
     PromptOpenConvos,
+    TapConvoIcon,
 }
 
 interface TutorialContextType {

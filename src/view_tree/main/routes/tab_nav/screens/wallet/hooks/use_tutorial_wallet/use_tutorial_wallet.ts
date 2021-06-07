@@ -16,7 +16,9 @@ export function useTutorialWallet(): {
     dailyWage: number;
     collectTierWage: () => void;
     resetCollectTierWage: () => void;
+    resetCollectTrans: () => void;
     collectTransactions: () => void;
+    transactionsCollected: boolean;
     transactions: TransactionType[];
 } {
     const { tutorialScreen, postContent } = useContext(TutorialContext);
@@ -28,6 +30,7 @@ export function useTutorialWallet(): {
     const collectTierWage = () => setTierWageCollected(true);
     const resetCollectTierWage = () => setTierWageCollected(false);
     const collectTransactions = () => setTransCollected(true);
+    const resetCollectTrans = () => setTransCollected(false);
 
     const [time, setTime] = useState<string>("0");
 
@@ -47,6 +50,8 @@ export function useTutorialWallet(): {
             tierWage: tierWageCollected ? 0 : daily,
             dailyWage: daily,
             collectTransactions,
+            resetCollectTrans,
+            transactionsCollected,
             resetCollectTierWage,
             collectTierWage,
             transactions: [],
@@ -55,10 +60,12 @@ export function useTutorialWallet(): {
 
     if (tutorialScreen > TutorialScreen.PromptReturnToWallet) {
         return {
-            accumulation: 145,
+            accumulation: transactionsCollected ? 0 : 145,
             tierWage: 0,
             dailyWage: daily,
+            transactionsCollected,
             collectTransactions,
+            resetCollectTrans,
             resetCollectTierWage,
             collectTierWage,
             transactions: [
@@ -131,7 +138,9 @@ export function useTutorialWallet(): {
         accumulation: 0,
         tierWage: 0,
         dailyWage: daily,
+        transactionsCollected,
         collectTransactions,
+        resetCollectTrans,
         resetCollectTierWage,
         collectTierWage,
         transactions: [],

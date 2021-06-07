@@ -167,7 +167,22 @@ const TabNav: React.FC<Props> = (props) => {
                         options={{
                             tabBarIcon: ({ color, size }) => (
                                 <View style={styles.iconContainer}>
-                                    {newConvoUpdate && <UpdateIndicator />}
+                                    {(() => {
+                                        if (tutorialActive) {
+                                            if (
+                                                tutorialScreen ===
+                                                TutorialScreen.TapConvoIcon
+                                            ) {
+                                                return <UpdateIndicator />;
+                                            }
+                                        } else {
+                                            return (
+                                                newConvoUpdate && (
+                                                    <UpdateIndicator />
+                                                )
+                                            );
+                                        }
+                                    })()}
                                     <Ionicons
                                         name={"ios-chatbubbles"}
                                         size={size}
@@ -179,7 +194,14 @@ const TabNav: React.FC<Props> = (props) => {
                         listeners={{
                             tabPress: (e) => {
                                 if (tutorialActive) {
-                                    e.preventDefault();
+                                    if (
+                                        tutorialScreen ===
+                                        TutorialScreen.TapConvoIcon
+                                    ) {
+                                        advanceTutorial();
+                                    } else {
+                                        e.preventDefault();
+                                    }
                                 }
                             },
                         }}
