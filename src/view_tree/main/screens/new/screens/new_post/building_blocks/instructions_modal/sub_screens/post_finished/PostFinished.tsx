@@ -14,9 +14,6 @@ const PostFinished: React.FC = () => {
                     {"\n\n"}
                     Hit "Next", and then tap the "Post" button at the bottom of
                     the screen!
-                    {"\n\n"}
-                    Note that the post button tells you how much digicoin you're
-                    going to spend on the post.
                 </Text>
                 <TutorialFooter
                     goBackScreen={TutorialScreen.NewPostRecipients}

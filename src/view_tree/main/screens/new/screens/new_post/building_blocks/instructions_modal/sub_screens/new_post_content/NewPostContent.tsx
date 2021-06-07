@@ -14,8 +14,8 @@ const NewPostContent: React.FC<Props> = (props) => {
             <View style={instructionStyles.instructionContainer}>
                 <Text style={instructionStyles.instructionText}>
                     When you create a post, first you input the post's main
-                    content, and then you can optionally include an add-on to
-                    the post (text, image, or link). {"\n\n"}
+                    content, and then you can optionally include an add-on
+                    (text, image, or link). {"\n\n"}
                     For this post's content, introduce yourself and write out
                     your favorite place on earth. We'll leave "Add-on" as "None"
                     for now.{"\n\n"}

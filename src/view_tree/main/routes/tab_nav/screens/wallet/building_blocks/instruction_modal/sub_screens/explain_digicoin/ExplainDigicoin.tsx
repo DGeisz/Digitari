@@ -13,10 +13,9 @@ const ExplainDigicoin: React.FC<Props> = (props) => {
         <View style={instructionStyles.modalBottom}>
             <View style={instructionStyles.instructionContainer}>
                 <Text style={instructionStyles.instructionText}>
-                    This is your wallet, where you'll collect the digicoin
-                    you've earned!{"\n\n"}Digicoin is Digitari's in-game
-                    currency, and you'll use it to create, like, and respond to
-                    posts.
+                    This is your wallet where you'll collect the digicoin you've
+                    earned!{"\n\n"}Digicoin is Digitari's in-game currency, and
+                    you'll use it to create, like, and respond to posts.
                     {"\n\n"}
                     You earn digicoin when other people like and respond to your
                     posts.

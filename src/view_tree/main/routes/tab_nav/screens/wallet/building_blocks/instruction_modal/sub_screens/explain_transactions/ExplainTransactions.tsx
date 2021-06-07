@@ -16,7 +16,7 @@ const ExplainTransactions: React.FC<Props> = (props) => {
                     Wow, looks like you made a ton of digicoin off transactions!
                     {"\n\n"}
                     Transactions are like notifications that contain digicoin
-                    for you to collect!{"\n\n"}
+                    for you to collect.{"\n\n"}
                     Tap the "Collect" button to collect your earnings.
                 </Text>
                 <TutorialFooter

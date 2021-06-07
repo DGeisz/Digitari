@@ -9,7 +9,7 @@ const LikeTransactions: React.FC = () => {
         <View style={instructionStyles.modalTop}>
             <View style={instructionStyles.instructionContainer}>
                 <Text style={instructionStyles.instructionText}>
-                    If you look above you're Convo reward, you'll see that your
+                    If you look above your Convo reward, you'll see that your
                     post has received some likes!{"\n\n"}
                     Whenever your posts get liked, you receive digicoin through
                     transactions.

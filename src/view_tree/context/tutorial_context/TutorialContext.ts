@@ -165,8 +165,8 @@ export const TutorialContext = createContext<TutorialContextType>({
 export function useTutorialContextValues(): TutorialContextType {
     const [showTutorial, setTutorialActive] = useState<boolean>(false);
     const [currentTutorialScreen, setTutorialScreen] = useState<TutorialScreen>(
-        TutorialScreen.PromptReturnToWallet
-        // TutorialScreen.Welcome
+        // TutorialScreen.PromptReturnToWallet
+        TutorialScreen.Welcome
     );
 
     const [postContent, setPostContent] = useState<string>("");

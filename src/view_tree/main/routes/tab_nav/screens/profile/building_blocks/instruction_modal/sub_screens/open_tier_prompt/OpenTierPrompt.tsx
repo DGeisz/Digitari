@@ -12,9 +12,9 @@ const OpenTierPrompt: React.FC = () => {
                     You might have noticed the 🙂 by your name. This is your
                     tier! {"\n\n"}There are 10 different tiers, and you can
                     increase your tier by having good interactions with other
-                    people.{"\n\n"}We'll talk more about tiers in a bit, but for
-                    for now hit "Next" and then tap on the 🙂 to see all the
-                    tiers.
+                    people.{"\n\n"}We'll talk more about tiers and rankings in a
+                    bit, but for for now hit "Next" and then tap on the 🙂 to
+                    see all the tiers.
                 </Text>
                 <TutorialFooter
                     goBackScreen={TutorialScreen.ProfileDescription}
