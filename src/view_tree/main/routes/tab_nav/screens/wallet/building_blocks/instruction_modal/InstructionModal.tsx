@@ -6,21 +6,19 @@ import {
 } from "../../../../../../../tutorial/context/tutorial_context/TutorialContext";
 import Modal from "react-native-modal";
 import { instructionStyles } from "../../../../../../../../global_styles/InstructionStyles";
-import ExplainDigicoin from "./sub_screens/explain_digicoin/ExplainDigicoin";
-import ExplainTierWage from "./sub_screens/explain_tier_wage/ExplainTierWage";
-import CollectTierWage from "./sub_screens/collect_tier_wage/CollectTierWage";
-import NewPostPrompt from "./sub_screens/new_post_prompt/NewPostPrompt";
-import OpenFeedPrompt from "./sub_screens/open_feed_prompt/OpenFeedPrompt";
-import ExplainTransactions from "./sub_screens/explain_transactions/ExplainTransactions";
-import CloserLookAtTransactions from "./sub_screens/closer_look_at_transactions/CloserLookAtTransactions";
-import ConvoFinishedTransactions from "./sub_screens/convo_finished_transactions/ConvoFinishedTransactions";
-import LikeTransactions from "./sub_screens/like_transactions/LikeTransactions";
-import PromptOpenConvos from "./sub_screens/prompt_open_convos/PromptOpenConvos";
-import NewResponseTransactions from "./sub_screens/new_response_transactions/NewResponseTransactions";
 import TutorialModal from "../../../../../../../tutorial/building_blocks/tutorial_modal/TutorialModal";
 import {
+    closerLookAtTransactionsContent,
+    collectTierWageContent,
+    convoFinishedTransactionsContent,
     explainTierWageContent,
+    explainTransactionsContent,
+    likeTransactionsContent,
+    newPostPromptContent,
+    newResponseTransactionsContent,
+    openFeedPromptContent,
     openWalletPromptContent,
+    promptOpenConvosContent,
 } from "../../../../../../../tutorial/screens/tutorial_screens/TutorialScreens";
 
 interface Props {
@@ -67,40 +65,103 @@ const InstructionModal: React.FC<Props> = (props) => {
             currentScreen = (
                 <TutorialModal
                     top={false}
-                    goBackScreen={TutorialScreen.ExplainDigicoin}
-                    content={explainTierWageContent}
+                    goBackScreen={TutorialScreen.ExplainTierWage}
+                    content={collectTierWageContent}
                 />
             );
             break;
         case TutorialScreen.NewPostPrompt:
-            currentScreen = <NewPostPrompt resetCollect={props.resetCollect} />;
+            // currentScreen = <NewPostPrompt resetCollect={props.resetCollect} />;
+
+            currentScreen = (
+                <TutorialModal
+                    top
+                    goBack={props.resetCollect}
+                    goBackScreen={TutorialScreen.CollectTierWage}
+                    content={newPostPromptContent}
+                />
+            );
             break;
         case TutorialScreen.OpenFeedPrompt:
-            currentScreen = <OpenFeedPrompt openNewPost={props.openNewPost} />;
+            // currentScreen = <OpenFeedPrompt openNewPost={props.openNewPost} />;
+
+            currentScreen = (
+                <TutorialModal
+                    top
+                    goBack={props.openNewPost}
+                    goBackScreen={TutorialScreen.NewPostContent}
+                    content={openFeedPromptContent}
+                />
+            );
             break;
         case TutorialScreen.ExplainTransactions:
+            // currentScreen = (
+            //     <ExplainTransactions nav2MainFeed={props.nav2MainFeed} />
+            // );
+            //
             currentScreen = (
-                <ExplainTransactions nav2MainFeed={props.nav2MainFeed} />
+                <TutorialModal
+                    top
+                    goBack={props.nav2MainFeed}
+                    goBackScreen={TutorialScreen.PromptReturnToWallet}
+                    content={explainTransactionsContent}
+                />
             );
             break;
         case TutorialScreen.CloserLookAtTransactions:
+            // currentScreen = (
+            //     <CloserLookAtTransactions
+            //         resetCollectTrans={props.resetCollectTrans}
+            //     />
+            // );
             currentScreen = (
-                <CloserLookAtTransactions
-                    resetCollectTrans={props.resetCollectTrans}
+                <TutorialModal
+                    top
+                    goBack={props.resetCollectTrans}
+                    goBackScreen={TutorialScreen.ExplainTransactions}
+                    content={closerLookAtTransactionsContent}
                 />
             );
             break;
         case TutorialScreen.ConvoFinishedTransactions:
-            currentScreen = <ConvoFinishedTransactions />;
+            currentScreen = (
+                <TutorialModal
+                    top
+                    goBackScreen={TutorialScreen.CloserLookAtTransactions}
+                    content={convoFinishedTransactionsContent}
+                />
+            );
             break;
         case TutorialScreen.LikeTransactions:
-            currentScreen = <LikeTransactions />;
+            // currentScreen = <LikeTransactions />;
+
+            currentScreen = (
+                <TutorialModal
+                    top
+                    goBackScreen={TutorialScreen.ConvoFinishedTransactions}
+                    content={likeTransactionsContent}
+                />
+            );
             break;
         case TutorialScreen.NewResponseTransactions:
-            currentScreen = <NewResponseTransactions />;
+            // currentScreen = <NewResponseTransactions />;
+            currentScreen = (
+                <TutorialModal
+                    top
+                    goBackScreen={TutorialScreen.LikeTransactions}
+                    content={newResponseTransactionsContent}
+                />
+            );
             break;
         case TutorialScreen.PromptOpenConvos:
-            currentScreen = <PromptOpenConvos />;
+            // currentScreen = <PromptOpenConvos />;
+            currentScreen = (
+                <TutorialModal
+                    top
+                    goBackScreen={TutorialScreen.NewResponseTransactions}
+                    content={promptOpenConvosContent}
+                />
+            );
             break;
         default:
             modalVisible = false;
