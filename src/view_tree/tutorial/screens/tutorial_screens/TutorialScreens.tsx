@@ -3,6 +3,7 @@ import { instructionStyles } from "../../../../global_styles/InstructionStyles";
 import React from "react";
 import { Entypo, FontAwesome, Ionicons } from "@expo/vector-icons";
 import { palette } from "../../../../global_styles/Palette";
+import CoinBox from "../../../../global_building_blocks/coin_box/CoinBox";
 
 /*
  * First profile screens
@@ -151,6 +152,101 @@ export const openFeedPromptContent = (
         </Text>
         <View style={instructionStyles.centralContentContainer}>
             <Entypo name="home" size={30} color={palette.white} />
+        </View>
+    </>
+);
+
+/*
+ * Feed screens
+ */
+export const introduceFeedContent = (
+    <Text style={instructionStyles.instructionText}>
+        Here's your feed on Digitari!{"\n\n"}
+        This is where you'll receive posts from people or Communities you
+        follow.
+    </Text>
+);
+
+export const likeFirstPostContent = (
+    <>
+        <Text style={instructionStyles.instructionText}>
+            Looks like Zariah just joined the platform and is introducing
+            herself! Let's like Zariah's post to welcome her to the platform!
+            {"\n\n"}
+            To like her post, tap the coin icon underneath her tier emoji 🙂.
+        </Text>
+        <View style={instructionStyles.centralContentContainer}>
+            <CoinBox
+                showAmount={false}
+                active={false}
+                coinSize={35}
+                paddingVertical={0}
+            />
+        </View>
+    </>
+);
+
+export const explainDigicoinLikeContent = (
+    <Text style={instructionStyles.instructionText}>
+        As you might have noticed, liking a post automatically sends the post
+        creator 10 of your digicoin.{"\n\n"}
+        Because you receive digicoin when people like your posts, you can earn a
+        ton digicoin if people enjoy your content!
+    </Text>
+);
+
+export const explainCustomLikeContent = (
+    <Text style={instructionStyles.instructionText}>
+        You can also send a post a custom amount of digicoin with a like!
+        {"\n\n"}
+        To send a custom like, simply tap and hold on the coin icon.
+    </Text>
+);
+
+export const customLikePostContent = (
+    <Text style={instructionStyles.instructionText}>
+        Bennet's doge meme is pretty cute! To show him our appreciation, let's
+        send him a custom like with 100 digicoin.{"\n\n"}
+        Tap and hold the coin underneath Bennet's tier emoji 😃, enter "100" for
+        "Amount" in the pop-up, and press "Like."
+    </Text>
+);
+
+export const explainResponseContent = (
+    <Text style={instructionStyles.instructionText}>
+        Bennet's making a lot of dough!{"\n\n"}
+        If you want to, you can also respond to a post and chat with the post
+        creator! {"\n\n"}
+        Sending a response to a post costs digicoin, but if your convo goes
+        well, you get a digicoin reward and you can improve your tier!
+    </Text>
+);
+
+export const respondToPostContent = (
+    <>
+        <Text style={instructionStyles.instructionText}>
+            How 'bout we say hi to Zariah?{"\n\n"}
+            To respond to Zariah's post, tap the light blue button on the bottom
+            right side of her post and hit "Ok" in the pop-up that appears.
+        </Text>
+        <View style={instructionStyles.centralContentContainer}>
+            <Entypo name="pencil" size={30} color={palette.white} />
+        </View>
+    </>
+);
+
+/*
+ * Feed post convo
+ */
+export const promptReturnToWalletContent = (
+    <>
+        <Text style={instructionStyles.instructionText}>
+            Woah, did you see that! It looks like you just received some
+            Digicoin! {"\n\n"}
+            Tap the wallet icon in the bottom bar collect your earnings!
+        </Text>
+        <View style={instructionStyles.centralContentContainer}>
+            <Entypo name="wallet" size={30} color={palette.white} />
         </View>
     </>
 );

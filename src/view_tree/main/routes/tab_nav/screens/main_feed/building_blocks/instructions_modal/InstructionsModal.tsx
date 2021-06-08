@@ -4,16 +4,18 @@ import {
     TutorialContext,
     TutorialScreen,
 } from "../../../../../../../tutorial/context/tutorial_context/TutorialContext";
-import IntroduceFeed from "./sub_screens/introduce_feed/IntroduceFeed";
-import LikeFirstPost from "./sub_screens/like_first_post/LikeFirstPost";
-import CustomLikePost from "./sub_screens/custom_like_post/CustomLikePost";
-import RespondToPost from "./sub_screens/respond_to_post/RespondToPost";
 import Modal from "react-native-modal";
 import { instructionStyles } from "../../../../../../../../global_styles/InstructionStyles";
-import ExplainDigicoinLike from "./sub_screens/explain_digicoin_like/ExplainDigicoinLike";
-import ExplainCustomLike from "./sub_screens/explain_custom_like/ExplainCustomLike";
-import ExplainResponse from "./sub_screens/explain_response/ExplainResponse";
-import PromptReturnToWallet from "./sub_screens/prompt_return_to_wallet/PromptReturnToWallet";
+import TutorialModal from "../../../../../../../tutorial/building_blocks/tutorial_modal/TutorialModal";
+import {
+    customLikePostContent,
+    explainCustomLikeContent,
+    explainDigicoinLikeContent,
+    introduceFeedContent,
+    likeFirstPostContent,
+    promptReturnToWalletContent,
+    respondToPostContent,
+} from "../../../../../../../tutorial/screens/tutorial_screens/TutorialScreens";
 
 interface Props {
     navigate2Wallet: () => void;
@@ -21,7 +23,11 @@ interface Props {
 }
 
 const InstructionsModal: React.FC<Props> = (props) => {
-    const { tutorialActive, tutorialScreen } = useContext(TutorialContext);
+    const {
+        tutorialActive,
+        tutorialScreen,
+        customLikeTutorialPost,
+    } = useContext(TutorialContext);
 
     let modalVisible = tutorialActive;
     let currentScreen = <View />;
@@ -29,30 +35,77 @@ const InstructionsModal: React.FC<Props> = (props) => {
     switch (tutorialScreen) {
         case TutorialScreen.IntroduceFeed:
             currentScreen = (
-                <IntroduceFeed navigate2Wallet={props.navigate2Wallet} />
+                <TutorialModal
+                    top={false}
+                    goBack={props.navigate2Wallet}
+                    goBackScreen={TutorialScreen.OpenFeedPrompt}
+                    content={introduceFeedContent}
+                />
             );
             break;
         case TutorialScreen.LikeFirstPost:
-            currentScreen = <LikeFirstPost />;
+            currentScreen = (
+                <TutorialModal
+                    top={false}
+                    goBackScreen={TutorialScreen.IntroduceFeed}
+                    content={likeFirstPostContent}
+                />
+            );
             break;
         case TutorialScreen.ExplainDigicoinLike:
-            currentScreen = <ExplainDigicoinLike />;
+            currentScreen = (
+                <TutorialModal
+                    top={false}
+                    goBackScreen={TutorialScreen.LikeFirstPost}
+                    content={explainDigicoinLikeContent}
+                />
+            );
             break;
         case TutorialScreen.ExplainCustomLike:
-            currentScreen = <ExplainCustomLike />;
+            currentScreen = (
+                <TutorialModal
+                    top={false}
+                    goBackScreen={TutorialScreen.ExplainDigicoinLike}
+                    content={explainCustomLikeContent}
+                />
+            );
             break;
         case TutorialScreen.ExplainResponse:
-            currentScreen = <ExplainResponse />;
+            currentScreen = (
+                <TutorialModal
+                    top={false}
+                    goBackScreen={TutorialScreen.CustomLikePost}
+                    goBack={() => customLikeTutorialPost(false)}
+                    content={explainCustomLikeContent}
+                />
+            );
             break;
         case TutorialScreen.CustomLikePost:
-            currentScreen = <CustomLikePost />;
+            currentScreen = (
+                <TutorialModal
+                    top={false}
+                    goBackScreen={TutorialScreen.ExplainCustomLike}
+                    content={customLikePostContent}
+                />
+            );
             break;
         case TutorialScreen.RespondToPost:
-            currentScreen = <RespondToPost />;
+            currentScreen = (
+                <TutorialModal
+                    top={false}
+                    goBackScreen={TutorialScreen.ExplainResponse}
+                    content={respondToPostContent}
+                />
+            );
             break;
         case TutorialScreen.PromptReturnToWallet:
             currentScreen = (
-                <PromptReturnToWallet navToFirstConvo={props.navToFirstConvo} />
+                <TutorialModal
+                    top
+                    goBack={props.navToFirstConvo}
+                    goBackScreen={TutorialScreen.PromptReply}
+                    content={promptReturnToWalletContent}
+                />
             );
             break;
         default:
