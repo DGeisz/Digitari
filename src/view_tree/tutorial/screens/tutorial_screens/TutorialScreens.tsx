@@ -236,6 +236,27 @@ export const respondToPostContent = (
 );
 
 /*
+ * New response screens
+ */
+export const explainIdentityContent = (
+    <Text style={instructionStyles.instructionText}>
+        When you respond to a post, you can respond anonymously or as yourself.{" "}
+        {"\n\n"}
+        For right now, let's respond non-anonymously so Zariah knows who she's
+        talking to.
+    </Text>
+);
+
+export const promptResponseMessageContent = (
+    <Text style={instructionStyles.instructionText}>
+        In the message input at the bottom of the screen, say hi to Zariah and
+        ask her what she likes about Surfer's Paradise.
+        {"\n\n"}
+        After doing so, send the message!
+    </Text>
+);
+
+/*
  * Feed post convo
  */
 export const promptReturnToWalletContent = (

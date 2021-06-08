@@ -11,6 +11,7 @@ import {
     customLikePostContent,
     explainCustomLikeContent,
     explainDigicoinLikeContent,
+    explainResponseContent,
     introduceFeedContent,
     likeFirstPostContent,
     promptReturnToWalletContent,
@@ -76,7 +77,7 @@ const InstructionsModal: React.FC<Props> = (props) => {
                     top={false}
                     goBackScreen={TutorialScreen.CustomLikePost}
                     goBack={() => customLikeTutorialPost(false)}
-                    content={explainCustomLikeContent}
+                    content={explainResponseContent}
                 />
             );
             break;

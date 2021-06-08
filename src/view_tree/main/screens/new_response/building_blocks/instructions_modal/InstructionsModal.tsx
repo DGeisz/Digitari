@@ -6,8 +6,11 @@ import {
 } from "../../../../../tutorial/context/tutorial_context/TutorialContext";
 import Modal from "react-native-modal";
 import { instructionStyles } from "../../../../../../global_styles/InstructionStyles";
-import ExplainIdentity from "./sub_screens/explain_identity/ExplainIdentity";
-import PromptResponseMessage from "./sub_screens/prompt_response_message/PromptResponseMessage";
+import TutorialModal from "../../../../../tutorial/building_blocks/tutorial_modal/TutorialModal";
+import {
+    explainIdentityContent,
+    promptResponseMessageContent,
+} from "../../../../../tutorial/screens/tutorial_screens/TutorialScreens";
 
 interface Props {
     goBack: () => void;
@@ -21,10 +24,23 @@ const InstructionsModal: React.FC<Props> = (props) => {
 
     switch (tutorialScreen) {
         case TutorialScreen.ExplainIdentity:
-            currentScreen = <ExplainIdentity goBack={props.goBack} />;
+            currentScreen = (
+                <TutorialModal
+                    top={false}
+                    goBack={props.goBack}
+                    goBackScreen={TutorialScreen.RespondToPost}
+                    content={explainIdentityContent}
+                />
+            );
             break;
         case TutorialScreen.PromptResponseMessage:
-            currentScreen = <PromptResponseMessage />;
+            currentScreen = (
+                <TutorialModal
+                    top
+                    goBackScreen={TutorialScreen.ExplainIdentity}
+                    content={promptResponseMessageContent}
+                />
+            );
             break;
         default:
             modalVisible = false;
