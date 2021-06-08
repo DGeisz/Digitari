@@ -6,10 +6,13 @@ import {
 } from "../../../../../../../tutorial/context/tutorial_context/TutorialContext";
 import Modal from "react-native-modal";
 import { instructionStyles } from "../../../../../../../../global_styles/InstructionStyles";
-import NewPostContent from "./sub_screens/new_post_content/NewPostContent";
-import NewPostTarget from "./sub_screens/new_post_target/NewPostTarget";
-import NewPostRecipients from "./sub_screens/new_post_recipients/NewPostRecipients";
-import PostFinished from "./sub_screens/post_finished/PostFinished";
+import TutorialModal from "../../../../../../../tutorial/building_blocks/tutorial_modal/TutorialModal";
+import {
+    newPostContentContent,
+    newPostRecipientsContent,
+    newPostTargetContent,
+    postFinishedContent,
+} from "../../../../../../../tutorial/screens/tutorial_screens/TutorialScreens";
 
 interface Props {
     goBack: () => void;
@@ -23,16 +26,41 @@ const InstructionsModal: React.FC<Props> = (props) => {
 
     switch (tutorialScreen) {
         case TutorialScreen.NewPostContent:
-            currentScreen = <NewPostContent goBack={props.goBack} />;
+            currentScreen = (
+                <TutorialModal
+                    top={false}
+                    goBack={props.goBack}
+                    goBackScreen={TutorialScreen.NewPostPrompt}
+                    content={newPostContentContent}
+                />
+            );
             break;
         case TutorialScreen.NewPostTarget:
-            currentScreen = <NewPostTarget />;
+            currentScreen = (
+                <TutorialModal
+                    top
+                    goBackScreen={TutorialScreen.NewPostContent}
+                    content={newPostTargetContent}
+                />
+            );
             break;
         case TutorialScreen.NewPostRecipients:
-            currentScreen = <NewPostRecipients />;
+            currentScreen = (
+                <TutorialModal
+                    top
+                    goBackScreen={TutorialScreen.NewPostTarget}
+                    content={newPostRecipientsContent}
+                />
+            );
             break;
         case TutorialScreen.PostFinished:
-            currentScreen = <PostFinished />;
+            currentScreen = (
+                <TutorialModal
+                    top
+                    goBackScreen={TutorialScreen.NewPostRecipients}
+                    content={postFinishedContent}
+                />
+            );
             break;
         default:
             modalVisible = false;

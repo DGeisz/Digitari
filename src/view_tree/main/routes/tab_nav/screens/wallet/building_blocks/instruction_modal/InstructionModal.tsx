@@ -11,13 +11,13 @@ import {
     closerLookAtTransactionsContent,
     collectTierWageContent,
     convoFinishedTransactionsContent,
+    explainDigicoinContent,
     explainTierWageContent,
     explainTransactionsContent,
     likeTransactionsContent,
     newPostPromptContent,
     newResponseTransactionsContent,
     openFeedPromptContent,
-    openWalletPromptContent,
     promptOpenConvosContent,
 } from "../../../../../../../tutorial/screens/tutorial_screens/TutorialScreens";
 
@@ -37,21 +37,16 @@ const InstructionModal: React.FC<Props> = (props) => {
 
     switch (tutorialScreen) {
         case TutorialScreen.ExplainDigicoin:
-            // currentScreen = (
-            //     <ExplainDigicoin navigateToProfile={props.navigateToProfile} />
-            // );
-            //
             currentScreen = (
                 <TutorialModal
                     top={false}
                     goBackScreen={TutorialScreen.OpenWalletPrompt}
-                    content={openWalletPromptContent}
+                    content={explainDigicoinContent}
                     goBack={props.navigateToProfile}
                 />
             );
             break;
         case TutorialScreen.ExplainTierWage:
-            // currentScreen = <ExplainTierWage />;
             currentScreen = (
                 <TutorialModal
                     top={false}
@@ -61,7 +56,6 @@ const InstructionModal: React.FC<Props> = (props) => {
             );
             break;
         case TutorialScreen.CollectTierWage:
-            // currentScreen = <CollectTierWage />;
             currentScreen = (
                 <TutorialModal
                     top={false}
@@ -71,8 +65,6 @@ const InstructionModal: React.FC<Props> = (props) => {
             );
             break;
         case TutorialScreen.NewPostPrompt:
-            // currentScreen = <NewPostPrompt resetCollect={props.resetCollect} />;
-
             currentScreen = (
                 <TutorialModal
                     top
@@ -83,8 +75,6 @@ const InstructionModal: React.FC<Props> = (props) => {
             );
             break;
         case TutorialScreen.OpenFeedPrompt:
-            // currentScreen = <OpenFeedPrompt openNewPost={props.openNewPost} />;
-
             currentScreen = (
                 <TutorialModal
                     top
@@ -95,10 +85,6 @@ const InstructionModal: React.FC<Props> = (props) => {
             );
             break;
         case TutorialScreen.ExplainTransactions:
-            // currentScreen = (
-            //     <ExplainTransactions nav2MainFeed={props.nav2MainFeed} />
-            // );
-            //
             currentScreen = (
                 <TutorialModal
                     top
@@ -109,11 +95,6 @@ const InstructionModal: React.FC<Props> = (props) => {
             );
             break;
         case TutorialScreen.CloserLookAtTransactions:
-            // currentScreen = (
-            //     <CloserLookAtTransactions
-            //         resetCollectTrans={props.resetCollectTrans}
-            //     />
-            // );
             currentScreen = (
                 <TutorialModal
                     top
@@ -133,8 +114,6 @@ const InstructionModal: React.FC<Props> = (props) => {
             );
             break;
         case TutorialScreen.LikeTransactions:
-            // currentScreen = <LikeTransactions />;
-
             currentScreen = (
                 <TutorialModal
                     top
@@ -144,7 +123,6 @@ const InstructionModal: React.FC<Props> = (props) => {
             );
             break;
         case TutorialScreen.NewResponseTransactions:
-            // currentScreen = <NewResponseTransactions />;
             currentScreen = (
                 <TutorialModal
                     top
@@ -154,7 +132,6 @@ const InstructionModal: React.FC<Props> = (props) => {
             );
             break;
         case TutorialScreen.PromptOpenConvos:
-            // currentScreen = <PromptOpenConvos />;
             currentScreen = (
                 <TutorialModal
                     top

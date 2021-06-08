@@ -91,6 +91,52 @@ export const newPostPromptContent = (
 );
 
 /*
+ * New post screens
+ */
+export const newPostContentContent = (
+    <Text style={instructionStyles.instructionText}>
+        When you create a post, first you input the post's main content, and
+        then you can optionally include an add-on (text, image, or link).{" "}
+        {"\n\n"}
+        For this post's content, introduce yourself and write out your favorite
+        place on earth. We'll leave "Add-on" as "None" for now.{"\n\n"}
+        (This post is just for the tutorial and won't actually go online)
+    </Text>
+);
+
+export const newPostTargetContent = (
+    <Text style={instructionStyles.instructionText}>
+        In Digitari, you get to decide who's going to receive your post in their
+        main feed by choosing "Target."{"\n\n"}
+        You can either send your post to your followers or members of a
+        Community.{"\n\n"}
+        You don't have followers yet, so we selected the "New members" Community
+        as your post target.
+    </Text>
+);
+
+export const newPostRecipientsContent = (
+    <Text style={instructionStyles.instructionText}>
+        Finally, you get to choose how many people are going to receive your
+        post by entering "Recipients." Pretty neat, huh?
+        {"\n\n"}
+        Posting costs 10 digicoin per recipient, so if you want more people to
+        see your content, you need to earn more digicoin!
+        {"\n\n"}
+        Hit next, and enter "20" into the "Recipients" field.
+    </Text>
+);
+
+export const postFinishedContent = (
+    <Text style={instructionStyles.instructionText}>
+        Alright, we're finally ready to post this content! (Again, this is just
+        for the tutorial, and nothing will go online).
+        {"\n\n"}
+        Hit "Next", and then tap the "Post" button at the bottom of the screen!
+    </Text>
+);
+
+/*
  * Return to wallet from new post,
  * let's go to feed
  */
