@@ -4,7 +4,7 @@ import {
     PostType,
 } from "../../../../../../../../global_types/PostTypes";
 import { useContext } from "react";
-import { TutorialContext } from "../../../../../../../context/tutorial_context/TutorialContext";
+import { TutorialContext } from "../../../../../../../tutorial/context/tutorial_context/TutorialContext";
 import { millisInHour } from "../../../../../../../../global_utils/TimeRepUtils";
 
 export const zariahPost: PostType = {

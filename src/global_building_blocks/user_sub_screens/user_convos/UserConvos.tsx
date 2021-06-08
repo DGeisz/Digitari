@@ -15,7 +15,7 @@ import { globalScreenStyles } from "../../../global_styles/GlobalScreenStyles";
 import { styles } from "./UserConvosStyles";
 import { localUid } from "../../../global_state/UserState";
 import ErrorMessage from "../../error_message/ErrorMessage";
-import { TutorialContext } from "../../../view_tree/context/tutorial_context/TutorialContext";
+import { TutorialContext } from "../../../view_tree/tutorial/context/tutorial_context/TutorialContext";
 
 interface Props {
     routeKey: string;

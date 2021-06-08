@@ -3,7 +3,7 @@ import { useContext, useEffect } from "react";
 import {
     TutorialContext,
     TutorialScreen,
-} from "../../../../../context/tutorial_context/TutorialContext";
+} from "../../../../../tutorial/context/tutorial_context/TutorialContext";
 import {
     ConvoStatus,
     ConvoType,

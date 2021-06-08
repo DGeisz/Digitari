@@ -22,7 +22,7 @@ import { challengeCheck } from "../../../../global_gql/challenge_check/challenge
 import {
     TutorialContext,
     TutorialScreen,
-} from "../../../context/tutorial_context/TutorialContext";
+} from "../../../tutorial/context/tutorial_context/TutorialContext";
 import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
 
 interface Props {

@@ -4,7 +4,7 @@ import { instructionStyles } from "../../../../../../../../../../global_styles/I
 import TutorialFooter from "../../../../../../../../../../global_building_blocks/tutorial/TutorialFooter";
 import { Entypo } from "@expo/vector-icons";
 import { palette } from "../../../../../../../../../../global_styles/Palette";
-import { TutorialScreen } from "../../../../../../../../../context/tutorial_context/TutorialContext";
+import { TutorialScreen } from "../../../../../../../../../tutorial/context/tutorial_context/TutorialContext";
 
 const OpenWalletPrompt: React.FC = () => {
     return (

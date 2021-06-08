@@ -3,7 +3,7 @@ import { View } from "react-native";
 import {
     TutorialContext,
     TutorialScreen,
-} from "../../../../../../../context/tutorial_context/TutorialContext";
+} from "../../../../../../../tutorial/context/tutorial_context/TutorialContext";
 import IntroduceFeed from "./sub_screens/introduce_feed/IntroduceFeed";
 import LikeFirstPost from "./sub_screens/like_first_post/LikeFirstPost";
 import CustomLikePost from "./sub_screens/custom_like_post/CustomLikePost";

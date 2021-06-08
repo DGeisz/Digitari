@@ -3,7 +3,7 @@ import { View } from "react-native";
 import {
     TutorialContext,
     TutorialScreen,
-} from "../../../../../../../context/tutorial_context/TutorialContext";
+} from "../../../../../../../tutorial/context/tutorial_context/TutorialContext";
 import Modal from "react-native-modal";
 import { instructionStyles } from "../../../../../../../../global_styles/InstructionStyles";
 import ExplainDigicoin from "./sub_screens/explain_digicoin/ExplainDigicoin";

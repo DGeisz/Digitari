@@ -9,7 +9,7 @@ import { styles } from "./UserStatsStyles";
 import UserStat from "./building_blocks/user_stat/UserStat";
 import { GENERAL_CONTENT_WIDTH } from "../../../global_constants/screen_constants";
 import { basicLayouts } from "../../../global_styles/BasicLayouts";
-import { TutorialContext } from "../../../view_tree/context/tutorial_context/TutorialContext";
+import { TutorialContext } from "../../../view_tree/tutorial/context/tutorial_context/TutorialContext";
 
 interface Props {
     user: UserType;

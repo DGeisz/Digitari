@@ -6,7 +6,7 @@ import { useContext, useEffect, useState } from "react";
 import {
     TutorialContext,
     TutorialScreen,
-} from "../../../../../../../context/tutorial_context/TutorialContext";
+} from "../../../../../../../tutorial/context/tutorial_context/TutorialContext";
 import { getTierWage } from "../../../../../../../../global_types/TierTypes";
 import { localFirstName } from "../../../../../../../../global_state/UserState";
 

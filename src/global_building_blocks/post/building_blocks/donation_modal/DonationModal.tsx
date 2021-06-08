@@ -5,7 +5,7 @@ import { styles } from "./DonationModalStyles";
 import CoinBox from "../../../coin_box/CoinBox";
 import { toCommaRep } from "../../../../global_utils/ValueRepUtils";
 import { palette } from "../../../../global_styles/Palette";
-import { TutorialContext } from "../../../../view_tree/context/tutorial_context/TutorialContext";
+import { TutorialContext } from "../../../../view_tree/tutorial/context/tutorial_context/TutorialContext";
 
 interface Props {
     visible: boolean;

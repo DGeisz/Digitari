@@ -35,7 +35,7 @@ import {
     TutorialContext,
     TutorialScreen,
     useTutorialContextValues,
-} from "./context/tutorial_context/TutorialContext";
+} from "./tutorial/context/tutorial_context/TutorialContext";
 
 LogBox.ignoreAllLogs();
 

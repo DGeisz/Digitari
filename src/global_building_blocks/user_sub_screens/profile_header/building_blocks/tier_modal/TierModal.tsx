@@ -7,7 +7,7 @@ import { TierEnum } from "../../../../../global_types/TierTypes";
 import {
     TutorialContext,
     TutorialScreen,
-} from "../../../../../view_tree/context/tutorial_context/TutorialContext";
+} from "../../../../../view_tree/tutorial/context/tutorial_context/TutorialContext";
 
 interface Props {
     visible: boolean;

@@ -17,7 +17,7 @@ import {
     DeleteConvoVariables,
 } from "./gql/Mutations";
 import * as Linking from "expo-linking";
-import { TutorialContext } from "../../../../../context/tutorial_context/TutorialContext";
+import { TutorialContext } from "../../../../../tutorial/context/tutorial_context/TutorialContext";
 
 const prefix = Linking.createURL("/");
 

@@ -5,7 +5,7 @@ import { optionsStyles } from "../../../../../global_styles/OptionsModalStyles";
 import { Entypo } from "@expo/vector-icons";
 import { palette } from "../../../../../global_styles/Palette";
 import Modal from "react-native-modal";
-import { TutorialContext } from "../../../../../view_tree/context/tutorial_context/TutorialContext";
+import { TutorialContext } from "../../../../../view_tree/tutorial/context/tutorial_context/TutorialContext";
 
 const prefix = Linking.createURL("/");
 

@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 import { LayoutAnimation } from "react-native";
-import { MessageType } from "../../../global_types/MessageTypes";
+import { MessageType } from "../../../../global_types/MessageTypes";
 
 export enum TutorialScreen {
     /*

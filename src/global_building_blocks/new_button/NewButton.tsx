@@ -6,7 +6,7 @@ import { palette } from "../../global_styles/Palette";
 import {
     TutorialContext,
     TutorialScreen,
-} from "../../view_tree/context/tutorial_context/TutorialContext";
+} from "../../view_tree/tutorial/context/tutorial_context/TutorialContext";
 
 interface Props {
     openNew: () => void;

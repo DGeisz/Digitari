@@ -34,7 +34,7 @@ import { SCREEN_LARGER_THAN_CONTENT } from "../../../../../../global_constants/s
 import {
     TutorialContext,
     TutorialScreen,
-} from "../../../../../context/tutorial_context/TutorialContext";
+} from "../../../../../tutorial/context/tutorial_context/TutorialContext";
 import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
 import { MainFeedNavProp } from "../../TabNavTypes";
 import {

@@ -5,7 +5,7 @@ import TutorialFooter from "../../../../../../../../global_building_blocks/tutor
 import {
     TutorialContext,
     TutorialScreen,
-} from "../../../../../../../context/tutorial_context/TutorialContext";
+} from "../../../../../../../tutorial/context/tutorial_context/TutorialContext";
 
 const ExplainFinish: React.FC = () => {
     const { setTutConvoMessages } = useContext(TutorialContext);

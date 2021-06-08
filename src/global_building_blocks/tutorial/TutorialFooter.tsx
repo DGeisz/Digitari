@@ -4,12 +4,11 @@ import { instructionStyles } from "../../global_styles/InstructionStyles";
 import {
     TutorialContext,
     TutorialScreen,
-} from "../../view_tree/context/tutorial_context/TutorialContext";
+} from "../../view_tree/tutorial/context/tutorial_context/TutorialContext";
 
 interface Props {
     goBackScreen: TutorialScreen;
     showGoBack?: boolean;
-    showSkip?: boolean;
     goBack?: () => void;
 }
 
@@ -77,16 +76,14 @@ const TutorialFooter: React.FC<Props> = (props) => {
                 <Text style={instructionStyles.buttonText}>Next</Text>
             </TouchableOpacity>
             <View style={instructionStyles.footerRight}>
-                {!!props.showSkip && (
-                    <TouchableOpacity
-                        onPress={() => {
-                            LayoutAnimation.easeInEaseOut();
-                            setSkipVisible(true);
-                        }}
-                    >
-                        <Text style={instructionStyles.footerText}>Skip</Text>
-                    </TouchableOpacity>
-                )}
+                <TouchableOpacity
+                    onPress={() => {
+                        LayoutAnimation.easeInEaseOut();
+                        setSkipVisible(true);
+                    }}
+                >
+                    <Text style={instructionStyles.footerText}>Skip</Text>
+                </TouchableOpacity>
             </View>
         </View>
     );

@@ -6,7 +6,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { palette } from "../../../../global_styles/Palette";
 import CancelConfirmModal from "../../../cancel_confirm_modal/CancelConfirmModal";
 import { MessageType } from "../../../../global_types/MessageTypes";
-import { TutorialContext } from "../../../../view_tree/context/tutorial_context/TutorialContext";
+import { TutorialContext } from "../../../../view_tree/tutorial/context/tutorial_context/TutorialContext";
 
 interface Props {
     msg: MessageType;

@@ -26,7 +26,7 @@ import {
 import { styles } from "./ProfileStyles";
 import { SCREEN_LARGER_THAN_CONTENT } from "../../../../../../global_constants/screen_constants";
 import InstructionModal from "./building_blocks/instruction_modal/InstructionModal";
-import { TutorialContext } from "../../../../../context/tutorial_context/TutorialContext";
+import { TutorialContext } from "../../../../../tutorial/context/tutorial_context/TutorialContext";
 import { tutorialUser } from "./data/tutorial_user/tutorial_user";
 import { UserType } from "../../../../../../global_types/UserTypes";
 

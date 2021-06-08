@@ -50,7 +50,7 @@ import InstructionModal from "./building_blocks/instruction_modal/InstructionMod
 import {
     TutorialContext,
     TutorialScreen,
-} from "../../../../../context/tutorial_context/TutorialContext";
+} from "../../../../../tutorial/context/tutorial_context/TutorialContext";
 import { useTutorialWallet } from "./hooks/use_tutorial_wallet/use_tutorial_wallet";
 
 interface Props {

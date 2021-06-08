@@ -35,7 +35,7 @@ import { styles } from "./MainEntryStyles";
 import Store from "./screens/store/Store";
 import PrivacyPolicy from "./screens/settings/screens/privacy_policy/PrivacyPolicy";
 import TermsAndConditions from "./screens/settings/screens/terms_and_conditions/TermsAndConditions";
-import { TutorialContext } from "../context/tutorial_context/TutorialContext";
+import { TutorialContext } from "../tutorial/context/tutorial_context/TutorialContext";
 
 const RootStack = createStackNavigator<MainEntryStack>();
 

@@ -52,7 +52,7 @@ import InstructionsModal from "./building_blocks/instructions_modal/Instructions
 import {
     TutorialContext,
     TutorialScreen,
-} from "../../../../../context/tutorial_context/TutorialContext";
+} from "../../../../../tutorial/context/tutorial_context/TutorialContext";
 import { tutorialUser } from "../../../../routes/tab_nav/screens/profile/data/tutorial_user/tutorial_user";
 import { tutorialCommunity } from "./data/tutorial_community/tutorial_community";
 

@@ -33,7 +33,7 @@ import TierModal from "./building_blocks/tier_modal/TierModal";
 import { challengeCheck } from "../../../global_gql/challenge_check/challenge_check";
 import { calculateLevelInfo } from "../../../global_utils/LevelUtils";
 import UserOptionsModal from "./building_blocks/user_options_modal/UserOptionsModal";
-import { TutorialContext } from "../../../view_tree/context/tutorial_context/TutorialContext";
+import { TutorialContext } from "../../../view_tree/tutorial/context/tutorial_context/TutorialContext";
 
 interface Props {
     user: UserType;

@@ -25,7 +25,7 @@ import ChallengeCompleteModal from "./building_blocks/challenge_complete_modal/C
 import {
     TutorialContext,
     TutorialScreen,
-} from "../../../context/tutorial_context/TutorialContext";
+} from "../../../tutorial/context/tutorial_context/TutorialContext";
 
 const Tab = createBottomTabNavigator<TabNavTab>();
 

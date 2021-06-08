@@ -2,7 +2,7 @@ import React from "react";
 import { Text, View } from "react-native";
 import { instructionStyles } from "../../../../../../../../../../global_styles/InstructionStyles";
 import TutorialFooter from "../../../../../../../../../../global_building_blocks/tutorial/TutorialFooter";
-import { TutorialScreen } from "../../../../../../../../../context/tutorial_context/TutorialContext";
+import { TutorialScreen } from "../../../../../../../../../tutorial/context/tutorial_context/TutorialContext";
 
 const NewPostRecipients: React.FC = () => {
     return (

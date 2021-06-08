@@ -4,12 +4,15 @@ import { instructionStyles } from "../../../../../../../../global_styles/Instruc
 import {
     TutorialContext,
     TutorialScreen,
-} from "../../../../../../../context/tutorial_context/TutorialContext";
-import Welcome from "./sub_screens/welcome/Welcome";
-import ProfileDescription from "./sub_screens/profile_description/ProfileDescription";
-import OpenTierPrompt from "./sub_screens/open_tier_prompt/OpenTierPrompt";
+} from "../../../../../../../tutorial/context/tutorial_context/TutorialContext";
 import { View } from "react-native";
-import OpenWalletPrompt from "./sub_screens/open_wallet_prompt/OpenWalletPrompt";
+import TutorialModal from "../../../../../../../tutorial/building_blocks/tutorial_modal/TutorialModal";
+import {
+    openTierPromptContent,
+    openWalletPromptContent,
+    profileDescriptionContent,
+    welcomeContent,
+} from "../../../../../../../tutorial/screens/tutorial_screens/TutorialScreens";
 
 const InstructionModal: React.FC = () => {
     const { tutorialActive, tutorialScreen } = useContext(TutorialContext);
@@ -19,16 +22,41 @@ const InstructionModal: React.FC = () => {
 
     switch (tutorialScreen) {
         case TutorialScreen.Welcome:
-            currentScreen = <Welcome />;
+            currentScreen = (
+                <TutorialModal
+                    goBackScreen={TutorialScreen.Welcome}
+                    content={welcomeContent}
+                    top
+                    showGoBack={false}
+                />
+            );
             break;
         case TutorialScreen.ProfileDescription:
-            currentScreen = <ProfileDescription />;
+            currentScreen = (
+                <TutorialModal
+                    goBackScreen={TutorialScreen.Welcome}
+                    content={profileDescriptionContent}
+                    top={false}
+                />
+            );
             break;
         case TutorialScreen.OpenTierPrompt:
-            currentScreen = <OpenTierPrompt />;
+            currentScreen = (
+                <TutorialModal
+                    top={false}
+                    goBackScreen={TutorialScreen.ProfileDescription}
+                    content={openTierPromptContent}
+                />
+            );
             break;
         case TutorialScreen.OpenWalletPrompt:
-            currentScreen = <OpenWalletPrompt />;
+            currentScreen = (
+                <TutorialModal
+                    top
+                    goBackScreen={TutorialScreen.OpenTierPrompt}
+                    content={openWalletPromptContent}
+                />
+            );
             break;
         default:
             modalVisible = false;

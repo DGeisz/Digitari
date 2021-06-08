@@ -41,7 +41,7 @@ import OptionsModal from "./building_blocks/options_modal/OptionsModal";
 import {
     TutorialContext,
     TutorialScreen,
-} from "../../view_tree/context/tutorial_context/TutorialContext";
+} from "../../view_tree/tutorial/context/tutorial_context/TutorialContext";
 
 const COMMUNITY_NAME_MAX_LEN = 30;
 

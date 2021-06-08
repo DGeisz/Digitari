@@ -93,7 +93,7 @@ import ConvoOptionsModal from "./building_blocks/convo_options_modal/ConvoOption
 import {
     TutorialContext,
     TutorialScreen,
-} from "../../../context/tutorial_context/TutorialContext";
+} from "../../../tutorial/context/tutorial_context/TutorialContext";
 import { PostType } from "../../../../global_types/PostTypes";
 import { zariahPost } from "../../routes/tab_nav/screens/main_feed/hooks/tutorial_posts/tutorial_posts";
 import { MessageType } from "../../../../global_types/MessageTypes";
