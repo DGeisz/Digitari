@@ -12,12 +12,16 @@ import CollectTierWage from "./sub_screens/collect_tier_wage/CollectTierWage";
 import NewPostPrompt from "./sub_screens/new_post_prompt/NewPostPrompt";
 import OpenFeedPrompt from "./sub_screens/open_feed_prompt/OpenFeedPrompt";
 import ExplainTransactions from "./sub_screens/explain_transactions/ExplainTransactions";
-import PromptCollectTransactions from "./sub_screens/prompt_collect_transactions/PromptCollectTransactions";
 import CloserLookAtTransactions from "./sub_screens/closer_look_at_transactions/CloserLookAtTransactions";
 import ConvoFinishedTransactions from "./sub_screens/convo_finished_transactions/ConvoFinishedTransactions";
 import LikeTransactions from "./sub_screens/like_transactions/LikeTransactions";
 import PromptOpenConvos from "./sub_screens/prompt_open_convos/PromptOpenConvos";
 import NewResponseTransactions from "./sub_screens/new_response_transactions/NewResponseTransactions";
+import TutorialModal from "../../../../../../../tutorial/building_blocks/tutorial_modal/TutorialModal";
+import {
+    explainTierWageContent,
+    openWalletPromptContent,
+} from "../../../../../../../tutorial/screens/tutorial_screens/TutorialScreens";
 
 interface Props {
     navigateToProfile: () => void;
@@ -35,15 +39,38 @@ const InstructionModal: React.FC<Props> = (props) => {
 
     switch (tutorialScreen) {
         case TutorialScreen.ExplainDigicoin:
+            // currentScreen = (
+            //     <ExplainDigicoin navigateToProfile={props.navigateToProfile} />
+            // );
+            //
             currentScreen = (
-                <ExplainDigicoin navigateToProfile={props.navigateToProfile} />
+                <TutorialModal
+                    top={false}
+                    goBackScreen={TutorialScreen.OpenWalletPrompt}
+                    content={openWalletPromptContent}
+                    goBack={props.navigateToProfile}
+                />
             );
             break;
         case TutorialScreen.ExplainTierWage:
-            currentScreen = <ExplainTierWage />;
+            // currentScreen = <ExplainTierWage />;
+            currentScreen = (
+                <TutorialModal
+                    top={false}
+                    goBackScreen={TutorialScreen.ExplainDigicoin}
+                    content={explainTierWageContent}
+                />
+            );
             break;
         case TutorialScreen.CollectTierWage:
-            currentScreen = <CollectTierWage />;
+            // currentScreen = <CollectTierWage />;
+            currentScreen = (
+                <TutorialModal
+                    top={false}
+                    goBackScreen={TutorialScreen.ExplainDigicoin}
+                    content={explainTierWageContent}
+                />
+            );
             break;
         case TutorialScreen.NewPostPrompt:
             currentScreen = <NewPostPrompt resetCollect={props.resetCollect} />;
