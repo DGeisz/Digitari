@@ -257,6 +257,68 @@ export const promptResponseMessageContent = (
 );
 
 /*
+ * First convo screens
+ */
+export const introduceConvoContent = (
+    <Text style={instructionStyles.instructionText}>
+        This is a Digitari convo! {"\n\n"}
+        Convos allow you to respond to posts and connect with post creators!
+        {"\n\n"}
+        You can think of a Digitari convo as a mini text conversation between
+        you and the post creator about their post.
+    </Text>
+);
+
+export const explainConvoContent = (
+    <Text style={instructionStyles.instructionText}>
+        Internet comments sections can be very disorganized and toxic, so
+        Digitari replaces comments with Convos!
+        {"\n\n"}
+        Like a comments section, all Convos associated with a post are visible
+        to anyone on the platform and can be viewed by opening a post.
+        {"\n\n"}
+        However, Convos only become visible if the post creator responds to the
+        Convo.
+    </Text>
+);
+
+export const promptReplyContent = (
+    <Text style={instructionStyles.instructionText}>
+        Looks like Zariah just responded! {"\n\n"}
+        Answer her question and tell her whether you like beaches.
+    </Text>
+);
+
+export const explainFinishContent = (
+    <Text style={instructionStyles.instructionText}>
+        After the post creator has sent two messages in a Convo, you have the
+        opportunity to finish the Convo.{"\n\n"}
+        When you finish a Convo, you earn the Convo reward, and your ranking
+        increases by 1 point! {"\n\n"}
+        Your ranking qualifies you for different tiers, so in order to reach
+        higher tiers, you must successfully finish Convos.
+    </Text>
+);
+
+export const promptFinishContent = (
+    <Text style={instructionStyles.instructionText}>
+        It seems like a good time to finish your Convo with Zariah!
+        {"\n\n"}
+        To finish this convo, tap the "Finish Convo" button at the end of the
+        Convo, and then press "Finish" in the pop-up that appears.
+    </Text>
+);
+
+export const explainSuccessContent = (
+    <Text style={instructionStyles.instructionText}>
+        Congratulations! You finished your first Convo!
+        {"\n\n"}
+        Once a Convo is finished, you can't send any more messages, so make sure
+        the Convo has reached a good stopping point before you Finish it!
+    </Text>
+);
+
+/*
  * Feed post convo
  */
 export const promptReturnToWalletContent = (

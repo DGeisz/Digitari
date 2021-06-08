@@ -6,19 +6,24 @@ import {
 } from "../../../../../tutorial/context/tutorial_context/TutorialContext";
 import Modal from "react-native-modal";
 import { instructionStyles } from "../../../../../../global_styles/InstructionStyles";
-import IntroduceConvo from "./sub_screens/introduce_convo/IntroduceConvo";
-import ExplainConvo from "./sub_screens/explain_convo/ExplainConvo";
-import PromptReply from "./sub_screens/prompt_reply/PromptReply";
-import PromptFinish from "./sub_screens/prompt_finish/PromptFinish";
-import ExplainSuccess from "./sub_screens/explain_success/ExplainSuccess";
-import ExplainFinish from "./sub_screens/explain_finish/ExplainFinish";
+import TutorialModal from "../../../../../tutorial/building_blocks/tutorial_modal/TutorialModal";
+import {
+    explainConvoContent,
+    explainFinishContent,
+    explainSuccessContent,
+    introduceConvoContent,
+    promptFinishContent,
+    promptReplyContent,
+} from "../../../../../tutorial/screens/tutorial_screens/TutorialScreens";
 
 interface Props {
     goBack: () => void;
 }
 
 const InstructionsModal: React.FC<Props> = (props) => {
-    const { tutorialActive, tutorialScreen } = useContext(TutorialContext);
+    const { tutorialActive, tutorialScreen, setTutConvoMessages } = useContext(
+        TutorialContext
+    );
 
     let modalVisible = tutorialActive;
     let currentScreen = <View />;
@@ -27,22 +32,71 @@ const InstructionsModal: React.FC<Props> = (props) => {
 
     switch (tutorialScreen) {
         case TutorialScreen.IntroduceConvo:
-            currentScreen = <IntroduceConvo goBack={props.goBack} />;
+            currentScreen = (
+                <TutorialModal
+                    top={false}
+                    goBack={props.goBack}
+                    goBackScreen={TutorialScreen.PromptResponseMessage}
+                    content={introduceConvoContent}
+                />
+            );
             break;
         case TutorialScreen.ExplainConvo:
-            currentScreen = <ExplainConvo />;
+            currentScreen = (
+                <TutorialModal
+                    top={false}
+                    goBackScreen={TutorialScreen.IntroduceConvo}
+                    content={explainConvoContent}
+                />
+            );
             break;
         case TutorialScreen.PromptReply:
-            currentScreen = <PromptReply />;
+            currentScreen = (
+                <TutorialModal
+                    top
+                    goBack={() => {
+                        setTimeout(() => {
+                            setTutConvoMessages((messages) => [messages[0]]);
+                        }, 700);
+                    }}
+                    goBackScreen={TutorialScreen.ExplainConvo}
+                    content={promptReplyContent}
+                />
+            );
             break;
         case TutorialScreen.ExplainFinish:
-            currentScreen = <ExplainFinish />;
+            currentScreen = (
+                <TutorialModal
+                    top
+                    goBackScreen={TutorialScreen.PromptReply}
+                    goBack={() => {
+                        setTimeout(() => {
+                            setTutConvoMessages((messages) =>
+                                messages.slice(0, 2)
+                            );
+                        }, 700);
+                    }}
+                    content={explainFinishContent}
+                />
+            );
             break;
         case TutorialScreen.PromptFinish:
-            currentScreen = <PromptFinish />;
+            currentScreen = (
+                <TutorialModal
+                    top
+                    goBackScreen={TutorialScreen.ExplainFinish}
+                    content={promptFinishContent}
+                />
+            );
             break;
         case TutorialScreen.ExplainSuccess:
-            currentScreen = <ExplainSuccess />;
+            currentScreen = (
+                <TutorialModal
+                    top
+                    goBackScreen={TutorialScreen.PromptFinish}
+                    content={explainSuccessContent}
+                />
+            );
             break;
         default:
             modalVisible = false;
