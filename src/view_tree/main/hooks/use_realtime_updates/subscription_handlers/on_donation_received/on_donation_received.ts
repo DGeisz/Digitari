@@ -47,13 +47,7 @@ export async function onDonationReceived(
             },
         });
 
-        let message;
-
-        if (amount === 1) {
-            message = `${name} donated a digicoin to your post`;
-        } else {
-            message = `${name} donated ${toRep(amount)} digicoin to your post`;
-        }
+        let message = `${name} liked your post`;
 
         try {
             const { data: postData } = await client.query<
@@ -67,13 +61,7 @@ export async function onDonationReceived(
             });
 
             if (!!postData?.post) {
-                if (amount === 1) {
-                    message = `${name} donated a digicoin to your post: "${postData.post.content}"`;
-                } else {
-                    message = `${name} donated ${toRep(
-                        amount
-                    )} digicoin to your post: "${postData.post.content}"`;
-                }
+                message = `${name} liked your post: "${postData.post.content}"`;
             }
         } catch (e) {}
 
@@ -108,6 +96,9 @@ export async function onDonationReceived(
                     return true;
                 },
                 receivedFromConvos(existing) {
+                    return existing + amount;
+                },
+                transTotal(existing) {
                     return existing + amount;
                 },
             },

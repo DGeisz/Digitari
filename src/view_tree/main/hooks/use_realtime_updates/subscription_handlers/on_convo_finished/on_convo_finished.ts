@@ -117,6 +117,9 @@ export function onConvoFinished(
                     newTransactionUpdate() {
                         return true;
                     },
+                    transTotal(existing) {
+                        return existing + convo.convoReward;
+                    },
                 },
             });
 

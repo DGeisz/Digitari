@@ -37,18 +37,6 @@ const TierInfo: React.FC<Props> = (props) => {
             </View>
             <View style={styles.infoBar}>
                 <View style={styles.singleInfo}>
-                    <Text style={styles.infoTitle}>Tier wage</Text>
-                    <View style={styles.coinContainer}>
-                        <CoinBox
-                            amount={tierWage}
-                            fontSize={infoFontSize}
-                            coinSize={20}
-                            showAbbreviated={false}
-                        />
-                        <Text style={styles.infoText}>/ Day</Text>
-                    </View>
-                </View>
-                <View style={styles.singleInfo}>
                     <Text style={styles.infoTitle}>Response cost</Text>
                     <CoinBox
                         amount={tier2responseCost(props.tier)}

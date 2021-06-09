@@ -119,6 +119,9 @@ export function onConvoCreated(
                 receivedFromConvos(existing) {
                     return existing + convo.responseCost;
                 },
+                transTotal(existing) {
+                    return existing + convo.responseCost;
+                },
             },
         });
 

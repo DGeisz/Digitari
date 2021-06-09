@@ -44,6 +44,9 @@ export function onNewFollower(
                 newTransactionUpdate() {
                     return true;
                 },
+                transTotal(existing) {
+                    return existing + FOLLOW_USER_PRICE;
+                },
             },
         });
 

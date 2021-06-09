@@ -23,8 +23,11 @@ export const styles = StyleSheet.create({
     entryContainer: {
         borderTopColor: palette.softGray,
         borderTopWidth: 1,
-        paddingTop: 5,
+        borderBottomColor: palette.softGray,
+        borderBottomWidth: 1,
+        paddingVertical: 10,
         marginBottom: 10,
+        marginHorizontal: 20,
     },
     entryTitle: {
         fontWeight: "bold",

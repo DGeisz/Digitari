@@ -4,7 +4,7 @@ import { styles, countdownCoinSize } from "./CoinCountdownStyles";
 import CoinBox from "../coin_box/CoinBox";
 import { palette } from "../../global_styles/Palette";
 
-const countdownAmount = 30;
+const countdownAmount = 20;
 
 interface Props {
     referenceTime: number;

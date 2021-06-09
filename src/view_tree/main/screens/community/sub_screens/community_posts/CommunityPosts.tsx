@@ -410,7 +410,7 @@ const CommunityPosts: React.FC<Props> = (props) => {
                                         tid: localUid(),
                                         time: Date.now().toString(),
                                         coin: nextPostsReward,
-                                        message: "Viewed feed",
+                                        message: "Viewed community posts",
                                         transactionType:
                                             TransactionTypesEnum.Post,
                                         data: "",
@@ -433,6 +433,11 @@ const CommunityPosts: React.FC<Props> = (props) => {
                                         fields: {
                                             newTransactionUpdate() {
                                                 return true;
+                                            },
+                                            transTotal(existing) {
+                                                return (
+                                                    existing + nextPostsReward
+                                                );
                                             },
                                         },
                                     });

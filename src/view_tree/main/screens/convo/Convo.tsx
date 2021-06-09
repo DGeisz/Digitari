@@ -496,7 +496,7 @@ const Convo: React.FC<Props> = (props) => {
                         successfulConvos(existing) {
                             return existing + 1;
                         },
-                        coin(existing) {
+                        transTotal(existing) {
                             if (
                                 !!convoData?.convo &&
                                 (convoData.convo.sid === uid ||

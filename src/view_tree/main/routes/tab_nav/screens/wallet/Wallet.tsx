@@ -22,8 +22,6 @@ import {
     LAST_COLLECTION_TIME,
     LastCollectionTimeData,
     LastCollectionTimeVariables,
-    TRANSACTION_ACCUMULATION,
-    TransactionAccumulationData,
     TRANSACTIONS,
     TransactionsData,
     TransactionsVariables,
@@ -81,16 +79,6 @@ const Wallet: React.FC<Props> = (props) => {
     );
 
     const {
-        data: accData,
-        error: accErr,
-        networkStatus: accNetworkStatus,
-        refetch: accRefetch,
-    } = useQuery<TransactionAccumulationData>(TRANSACTION_ACCUMULATION, {
-        fetchPolicy: "cache-and-network",
-        notifyOnNetworkStatusChange: true,
-    });
-
-    const {
         data: transData,
         error: transError,
         networkStatus: transNetworkStatus,
@@ -101,15 +89,11 @@ const Wallet: React.FC<Props> = (props) => {
 
     useEffect(() => {
         return props.navigation.addListener("focus", () => {
-            if (typeof accData !== "undefined") {
-                !!accRefetch && accRefetch();
-            }
-
             if (typeof transData !== "undefined") {
                 !!transRefetch && transRefetch();
             }
         });
-    }, [accData, transData]);
+    }, [transData]);
 
     /*
      * Mutations
@@ -117,7 +101,7 @@ const Wallet: React.FC<Props> = (props) => {
     const [collectEarnings] = useMutation<CollectEarningsData>(
         COLLECT_EARNINGS,
         {
-            update(cache, { data, errors }) {
+            update(cache, { data }) {
                 if (!!data?.collectEarnings) {
                     cache.modify({
                         id: cache.identify({
@@ -141,6 +125,9 @@ const Wallet: React.FC<Props> = (props) => {
                             },
                             lastCollectionTime() {
                                 return data.collectEarnings.time;
+                            },
+                            transTotal() {
+                                return 0;
                             },
                         },
                     });
@@ -297,9 +284,7 @@ const Wallet: React.FC<Props> = (props) => {
         !tutorialActive &&
         ((!collectionData?.user &&
             collectionStatus === NetworkStatus.loading) ||
-            (!accData?.transactionAccumulation &&
-                accNetworkStatus === NetworkStatus.loading &&
-                !transData?.transactions &&
+            (!transData?.transactions &&
                 transNetworkStatus === NetworkStatus.loading))
     ) {
         return <LoadingWheel />;
@@ -313,20 +298,12 @@ const Wallet: React.FC<Props> = (props) => {
         return <ErrorMessage refresh={collectionRefetch} />;
     }
 
-    if (!tutorialActive && !!accErr) {
-        return <ErrorMessage refresh={accRefetch} />;
-    }
-
-    let tierWage = 0;
-    let daily = 0;
-    let accumulation = 0;
+    let total = 0;
     let finalFeed: TransactionType[] = [];
     let lastCollectionTime: number = 0;
 
     if (tutorialActive) {
-        daily = tutorialWallet.dailyWage;
-        tierWage = tutorialWallet.tierWage;
-        accumulation = tutorialWallet.accumulation;
+        total = tutorialWallet.accumulation;
 
         finalFeed = tutorialWallet.transactions;
 
@@ -337,18 +314,8 @@ const Wallet: React.FC<Props> = (props) => {
             lastCollectionTime = Date.now();
         }
     } else {
-        if (!!accData?.transactionAccumulation) {
-            accumulation = accData.transactionAccumulation;
-        }
-
         if (!!collectionData?.user) {
-            const [finalWage, dailyWage] = getTierWage(
-                collectionData.user.ranking,
-                collectionData.user.lastCollectionTime
-            );
-
-            daily = dailyWage;
-            tierWage = finalWage;
+            total = collectionData.user.transTotal;
         }
 
         finalFeed = !!transData?.transactions ? transData.transactions : [];
@@ -357,8 +324,6 @@ const Wallet: React.FC<Props> = (props) => {
             ? parseInt(collectionData.user.lastCollectionTime)
             : 0;
     }
-
-    let total = tierWage + accumulation;
 
     return (
         <>
@@ -385,33 +350,33 @@ const Wallet: React.FC<Props> = (props) => {
                                         Earnings
                                     </Text>
                                 </View>
-                                <View style={styles.entryContainer}>
-                                    <Text style={styles.entryTitle}>
-                                        Tier wage
-                                    </Text>
-                                    <Animated.View
-                                        style={{ opacity: tierWageOpacity }}
-                                    >
-                                        <CoinBox
-                                            amount={tierWage}
-                                            coinSize={20}
-                                            fontSize={15}
-                                            outOfCoin={daily}
-                                            showAbbreviated={false}
-                                        />
-                                    </Animated.View>
-                                </View>
-                                <View style={styles.entryContainer}>
-                                    <Text style={styles.entryTitle}>
-                                        Transaction total
-                                    </Text>
-                                    <CoinBox
-                                        amount={accumulation}
-                                        coinSize={20}
-                                        fontSize={15}
-                                        showAbbreviated={false}
-                                    />
-                                </View>
+                                {/*<View style={styles.entryContainer}>*/}
+                                {/*    <Text style={styles.entryTitle}>*/}
+                                {/*        Tier wage*/}
+                                {/*    </Text>*/}
+                                {/*    <Animated.View*/}
+                                {/*        style={{ opacity: tierWageOpacity }}*/}
+                                {/*    >*/}
+                                {/*        <CoinBox*/}
+                                {/*            amount={tierWage}*/}
+                                {/*            coinSize={20}*/}
+                                {/*            fontSize={15}*/}
+                                {/*            outOfCoin={daily}*/}
+                                {/*            showAbbreviated={false}*/}
+                                {/*        />*/}
+                                {/*    </Animated.View>*/}
+                                {/*</View>*/}
+                                {/*<View style={styles.entryContainer}>*/}
+                                {/*    <Text style={styles.entryTitle}>*/}
+                                {/*        Transaction total*/}
+                                {/*    </Text>*/}
+                                {/*    <CoinBox*/}
+                                {/*        amount={accumulation}*/}
+                                {/*        coinSize={20}*/}
+                                {/*        fontSize={15}*/}
+                                {/*        showAbbreviated={false}*/}
+                                {/*    />*/}
+                                {/*</View>*/}
                                 <View style={styles.entryContainer}>
                                     <Text style={styles.totalTitle}>Total</Text>
                                     <CoinBox
@@ -562,7 +527,6 @@ const Wallet: React.FC<Props> = (props) => {
                             onRefresh={() => {
                                 setStillSpin(true);
                                 !!transRefetch && transRefetch();
-                                !!accRefetch && accRefetch();
                                 !!collectionRefetch && collectionRefetch();
 
                                 setTimeout(() => {

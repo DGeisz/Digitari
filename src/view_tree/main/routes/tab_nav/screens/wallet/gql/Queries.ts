@@ -6,6 +6,7 @@ export const LAST_COLLECTION_TIME = gql`
         user(uid: $uid) {
             id
             lastCollectionTime
+            transTotal
             ranking
         }
     }
@@ -15,6 +16,7 @@ export interface LastCollectionTimeData {
     user: {
         lastCollectionTime: string;
         ranking: number;
+        transTotal: number;
     };
 }
 

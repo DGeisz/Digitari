@@ -13,6 +13,7 @@ export const schema = gql`
         timeCreated: String
         imgUrl: String
         remainingInvites: Int
+        transTotal: Int
 
         lastCollectionTime: String
 

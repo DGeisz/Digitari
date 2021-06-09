@@ -294,6 +294,12 @@ const MainFeed: React.FC<Props> = (props) => {
                                                     newTransactionUpdate() {
                                                         return true;
                                                     },
+                                                    transTotal(existing) {
+                                                        return (
+                                                            existing +
+                                                            nextPostsReward
+                                                        );
+                                                    },
                                                 },
                                             });
 

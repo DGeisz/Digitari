@@ -88,6 +88,9 @@ export async function onNewCommunityFollower(
                 newTransactionUpdate() {
                     return true;
                 },
+                transTotal(existing) {
+                    return existing + FOLLOW_COMMUNITY_PRICE;
+                },
             },
         });
 
