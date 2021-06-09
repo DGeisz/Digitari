@@ -242,8 +242,8 @@ const AppView: React.FC = () => {
                         /*
                          * TODO: Change this in production
                          */
-                        // setTutorialActive(false);
-                        tutorialContextValues.setTutorialActive(true);
+                        tutorialContextValues.setTutorialActive(false);
+                        // tutorialContextValues.setTutorialActive(true);
                     }
 
                     const { data: hidData } = await client.query<HidData>({
