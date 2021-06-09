@@ -4,8 +4,18 @@ import { PostType } from "../../../../../../../global_types/PostTypes";
 export const MAX_COMMUNITY_POSTS_PER_PAGE = 20;
 
 export const GET_COMMUNITY_POSTS = gql`
-    query GetCommunityPosts($cmid: ID!, $lastTime: String, $tier: Int) {
-        communityPosts(cmid: $cmid, lastTime: $lastTime, tier: $tier) {
+    query GetCommunityPosts(
+        $cmid: ID!
+        $lastTime: String
+        $tier: Int
+        $skipReward: Boolean
+    ) {
+        communityPosts(
+            cmid: $cmid
+            lastTime: $lastTime
+            tier: $tier
+            skipReward: $skipReward
+        ) {
             id
             uid
 
@@ -41,4 +51,5 @@ export interface GetCommunityPostsVariables {
     cmid: string;
     lastTime?: string;
     tier?: number;
+    skipReward?: boolean;
 }

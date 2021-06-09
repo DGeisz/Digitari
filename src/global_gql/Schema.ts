@@ -215,7 +215,7 @@ export const schema = gql`
         feed(lastTime: String): [Post]
         user(uid: ID!): User
         hid: String
-        userPosts(uid: ID!, lastTime: String): [Post]
+        userPosts(uid: ID!, lastTime: String, skipReward: Boolean): [Post]
         userConvos(uid: ID!, lastTime: String): [Convo]
         newConvos(orderingType: Int, offset: Int): [Convo]
         activeConvos(lastTime: String): [Convo]
@@ -226,7 +226,12 @@ export const schema = gql`
         convoMessages(cvid: ID!, lastTime: String): [Message]
         createCommunityCoinCheck: CoinCheck
         community(cmid: ID!): Community
-        communityPosts(cmid: ID!, lastTime: String, tier: Int): [Post]
+        communityPosts(
+            cmid: ID!
+            lastTime: String
+            tier: Int
+            skipReward: Boolean
+        ): [Post]
         communityConvos(cmid: ID!, lastTime: String, tier: Int): [Convo]
         search(text: String!, offset: Int, entityType: Int): [SearchEntity]
         topResults(offset: Int, entityType: Int): [SearchEntity]
