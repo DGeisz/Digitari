@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
     FlatList,
+    Image,
     RefreshControl,
     Text,
     TouchableOpacity,
@@ -43,6 +44,7 @@ import {
 } from "./hooks/tutorial_posts/tutorial_posts";
 import { addNewReceipt } from "../../../../../../global_state/CoinUpdates";
 import { createTimeout } from "../../../../../../global_utils/TimeoutUtils";
+import CoinLoader from "./building_blocks/coin_loader/CoinLoader";
 
 interface Props {
     navigation: MainFeedNavProp;
@@ -166,6 +168,7 @@ const MainFeed: React.FC<Props> = (props) => {
             />
             {finalFeed.length === 0 ? (
                 <View style={styles.noFeedContainer}>
+                    <CoinLoader />
                     <Text style={styles.noFeedText}>
                         Follow some users or communities to start receiving a
                         feed!
