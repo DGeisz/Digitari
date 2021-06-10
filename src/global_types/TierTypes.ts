@@ -178,19 +178,19 @@ export function tier2convoReward(tier: TierEnum): number {
         case TierEnum.Steam:
             return 4;
         case TierEnum.Frowning:
-            return 15;
+            return 10;
         case TierEnum.SlightlySmiling:
-            return 30;
+            return 20;
         case TierEnum.Smiling:
-            return 45;
+            return 40;
         case TierEnum.Grinning:
-            return 75;
+            return 80;
         case TierEnum.Hugging:
-            return 100;
+            return 120;
         case TierEnum.Sunglasses:
-            return 150;
+            return 200;
         case TierEnum.HeartEyes:
-            return 250;
+            return 300;
         case TierEnum.Angel:
             return 400;
     }
@@ -207,16 +207,16 @@ export function tier2responseCost(tier: TierEnum): number {
         case TierEnum.SlightlySmiling:
             return 10;
         case TierEnum.Smiling:
-            return 15;
+            return 20;
         case TierEnum.Grinning:
-            return 25;
+            return 40;
         case TierEnum.Hugging:
-            return 35;
+            return 60;
         case TierEnum.Sunglasses:
-            return 50;
+            return 100;
         case TierEnum.HeartEyes:
-            return 85;
+            return 150;
         case TierEnum.Angel:
-            return 135;
+            return 200;
     }
 }
