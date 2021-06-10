@@ -150,7 +150,7 @@ const Invites: React.FC<Props> = (props) => {
                 onPress={Keyboard.dismiss}
             >
                 <Text style={styles.invitesHeaderText}>
-                    Invite your friends to join Digitari and earn 100 digicoin
+                    Invite your friends to join Digitari and earn 500 digicoin
                     every time someone you invite creates an account!
                 </Text>
                 <Text style={styles.invitesRemaining}>

@@ -18,6 +18,9 @@ import {
     CREATE_COMMUNITY_CHECK,
     CreateCommunityCheckQueryData,
     CreateCommunityCheckQueryVariables,
+    USER_COIN_CHECK,
+    UserCoinCheckData,
+    UserCoinCheckVariables,
 } from "./gql/Queries";
 import ErrorMessage from "../../../../../../global_building_blocks/error_message/ErrorMessage";
 import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
@@ -34,8 +37,10 @@ import {
     COMMUNITY_DESCRIPTION_MAX_LEN,
     COMMUNITY_NAME_MAX_LEN,
     COMMUNITY_TYPENAME,
+    CREATE_COMMUNITY_PRICE,
 } from "../../../../../../global_types/CommunityTypes";
 import { useAuthKeyboardBuffer } from "../../../../../auth/building_blocks/use_auth_keyboard_buffer/UseAuthKeyboardBuffer";
+import { toCommaRep } from "../../../../../../global_utils/ValueRepUtils";
 
 interface Props {
     navigation: NewCommunityNavProp;
@@ -45,16 +50,14 @@ const NewCommunity: React.FC<Props> = (props) => {
     const uid = localUid();
 
     const {
-        data: checkData,
-        error: checkError,
+        data,
         loading: checkLoading,
+        error: checkError,
         refetch,
-    } = useQuery<
-        CreateCommunityCheckQueryData,
-        CreateCommunityCheckQueryVariables
-    >(CREATE_COMMUNITY_CHECK, {
-        notifyOnNetworkStatusChange: true,
-        fetchPolicy: "network-only",
+    } = useQuery<UserCoinCheckData, UserCoinCheckVariables>(USER_COIN_CHECK, {
+        variables: {
+            uid,
+        },
     });
 
     const [createCommunity] = useMutation<
@@ -63,24 +66,20 @@ const NewCommunity: React.FC<Props> = (props) => {
     >(CREATE_COMMUNITY, {
         update(cache, { data }) {
             if (!!data?.createCommunity) {
-                if (!!checkData?.createCommunityCoinCheck) {
-                    cache.modify({
-                        id: cache.identify({
-                            __typename: USER_TYPENAME,
-                            id: uid,
-                        }),
-                        fields: {
-                            coin(existing) {
-                                return Math.max(
-                                    existing -
-                                        checkData.createCommunityCoinCheck
-                                            .price,
-                                    0
-                                );
-                            },
+                cache.modify({
+                    id: cache.identify({
+                        __typename: USER_TYPENAME,
+                        id: uid,
+                    }),
+                    fields: {
+                        coin(existing) {
+                            return Math.max(
+                                existing - CREATE_COMMUNITY_PRICE,
+                                0
+                            );
                         },
-                    });
-                }
+                    },
+                });
 
                 cache.writeFragment({
                     fragment: CREATE_COMMUNITY_FRAGMENT,
@@ -129,7 +128,7 @@ const NewCommunity: React.FC<Props> = (props) => {
 
     const scrollViewRef = useRef<ScrollView>(null);
 
-    if (!checkData?.createCommunityCoinCheck && checkLoading) {
+    if (!data?.user && checkLoading) {
         return <LoadingWheel />;
     }
 
@@ -139,9 +138,7 @@ const NewCommunity: React.FC<Props> = (props) => {
 
     return (
         <ScrollView ref={scrollViewRef}>
-            {checkData &&
-            checkData.createCommunityCoinCheck.coin >=
-                checkData.createCommunityCoinCheck.price ? (
+            {!!data && data.user.coin >= CREATE_COMMUNITY_PRICE ? (
                 <TouchableOpacity
                     activeOpacity={1}
                     style={styles.newCommunityContainer}
@@ -209,10 +206,8 @@ const NewCommunity: React.FC<Props> = (props) => {
                                 <CoinBox
                                     fontSize={18}
                                     coinSize={25}
-                                    amount={
-                                        checkData?.createCommunityCoinCheck
-                                            .price
-                                    }
+                                    amount={CREATE_COMMUNITY_PRICE}
+                                    showAbbreviated={false}
                                 />
                             </TouchableOpacity>
                         )}
@@ -222,7 +217,9 @@ const NewCommunity: React.FC<Props> = (props) => {
             ) : (
                 <View style={styles.cantCreateContainer}>
                     <Text style={styles.cantCreateText}>
-                        {`You need ${checkData?.createCommunityCoinCheck.price} digicoin to create a community`}
+                        {`You need ${toCommaRep(
+                            CREATE_COMMUNITY_PRICE
+                        )} digicoin to create a community`}
                     </Text>
                 </View>
             )}
