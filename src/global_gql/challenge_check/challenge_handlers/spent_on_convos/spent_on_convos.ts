@@ -14,8 +14,8 @@ const supremeCount = 10000;
 
 const bronzeCoin = 250;
 const silverCoin = 500;
-const goldCoin = 1000;
-const supremeCoin = 5000;
+const goldCoin = 5000;
+const supremeCoin = 10000;
 
 export function spentOnConvosHandler(user: UserType, cache: ApolloCache<any>) {
     if (user.socChallengeIndex >= 4) {

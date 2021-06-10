@@ -13,9 +13,9 @@ const goldCount = 100;
 const supremeCount = 1000;
 
 const bronzeCoin = 250;
-const silverCoin = 500;
-const goldCoin = 5000;
-const supremeCoin = 10000;
+const silverCoin = 1000;
+const goldCoin = 10000;
+const supremeCoin = 50000;
 
 export function followingHandler(user: UserType, cache: ApolloCache<any>) {
     if (user.followingChallengeIndex >= 4) {

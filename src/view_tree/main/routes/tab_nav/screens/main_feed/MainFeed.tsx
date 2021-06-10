@@ -255,7 +255,8 @@ const MainFeed: React.FC<Props> = (props) => {
                             <LoadingWheel />
                         ) : (
                             <>
-                                {finalFeed.length > fetchMoreLen ? (
+                                {finalFeed.length !== fetchMoreLen &&
+                                !!finalFeed.length ? (
                                     <CoinCountdown
                                         referenceTime={lastFetchTime}
                                         onNextPosts={async () => {

@@ -100,13 +100,6 @@ const TabNav: React.FC<Props> = (props) => {
     if (!!data?.user) {
         newConvoUpdate = data.user.newConvoUpdate;
         newTransactionUpdate = data.user.newTransactionUpdate;
-
-        if (
-            getTierWage(data.user.ranking, data.user.lastCollectionTime)[0] >=
-            10
-        ) {
-            newTransactionUpdate = true;
-        }
     }
 
     return (

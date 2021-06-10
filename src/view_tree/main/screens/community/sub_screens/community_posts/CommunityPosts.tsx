@@ -94,13 +94,15 @@ const CommunityPosts: React.FC<Props> = (props) => {
     const scrollPropsAndRef = useCollapsibleScene(props.routeKey);
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
-    const [fetchMoreLen, setFetchMoreLen] = useState<number>(
-        MAX_COMMUNITY_POSTS_PER_PAGE - 5
-    );
+    const [fetchMoreLen, setFetchMoreLen] = useState<number>(0);
 
     const finalFeed = !!data?.communityPosts
         ? data.communityPosts.filter((post) => !!post)
         : [];
+
+    useEffect(() => {
+        setFetchMoreLen(0);
+    }, [tier]);
 
     useEffect(() => {
         setLastFetch(Date.now());
@@ -396,80 +398,84 @@ const CommunityPosts: React.FC<Props> = (props) => {
                     <LoadingWheel />
                 ) : (
                     <>
-                        {finalFeed.length !== fetchMoreLen && (
-                            <CoinCountdown
-                                referenceTime={lastFetchTime}
-                                onNextPosts={async () => {
-                                    const lastTime =
-                                        finalFeed[finalFeed.length - 1].time;
-                                    const ffLen = finalFeed.length;
+                        {finalFeed.length !== fetchMoreLen &&
+                            !!finalFeed.length && (
+                                <CoinCountdown
+                                    referenceTime={lastFetchTime}
+                                    onNextPosts={async () => {
+                                        const lastTime =
+                                            finalFeed[finalFeed.length - 1]
+                                                .time;
+                                        const ffLen = finalFeed.length;
 
-                                    setFetchMoreLen(ffLen);
+                                        setFetchMoreLen(ffLen);
 
-                                    const transaction: TransactionType = {
-                                        tid: localUid(),
-                                        time: Date.now().toString(),
-                                        coin: nextPostsReward,
-                                        message: "Viewed community posts",
-                                        transactionType:
-                                            TransactionTypesEnum.Post,
-                                        data: "",
-                                        __typename: TRANSACTION_TYPENAME,
-                                    };
+                                        const transaction: TransactionType = {
+                                            tid: localUid(),
+                                            time: Date.now().toString(),
+                                            coin: nextPostsReward,
+                                            message: "Viewed community posts",
+                                            transactionType:
+                                                TransactionTypesEnum.Post,
+                                            data: "",
+                                            __typename: TRANSACTION_TYPENAME,
+                                        };
 
-                                    /*
-                                     * Add receipt for animation
-                                     */
-                                    addNewReceipt(nextPostsReward);
+                                        /*
+                                         * Add receipt for animation
+                                         */
+                                        addNewReceipt(nextPostsReward);
 
-                                    /*
-                                     * Notify user of new transaction update
-                                     */
-                                    cache.modify({
-                                        id: cache.identify({
-                                            __typename: USER_TYPENAME,
-                                            id: localUid(),
-                                        }),
-                                        fields: {
-                                            newTransactionUpdate() {
-                                                return true;
+                                        /*
+                                         * Notify user of new transaction update
+                                         */
+                                        cache.modify({
+                                            id: cache.identify({
+                                                __typename: USER_TYPENAME,
+                                                id: localUid(),
+                                            }),
+                                            fields: {
+                                                newTransactionUpdate() {
+                                                    return true;
+                                                },
+                                                transTotal(existing) {
+                                                    return (
+                                                        existing +
+                                                        nextPostsReward
+                                                    );
+                                                },
                                             },
-                                            transTotal(existing) {
-                                                return (
-                                                    existing + nextPostsReward
-                                                );
-                                            },
-                                        },
-                                    });
+                                        });
 
-                                    addTransaction(transaction, cache);
+                                        addTransaction(transaction, cache);
 
-                                    !!fetchMore &&
-                                        (await fetchMore({
-                                            variables: {
-                                                lastTime,
-                                            },
-                                        }));
-                                }}
-                                amount={nextPostsReward}
-                                showSkip
-                                onSkip={async () => {
-                                    const lastTime =
-                                        finalFeed[finalFeed.length - 1].time;
-                                    const ffLen = finalFeed.length;
+                                        !!fetchMore &&
+                                            (await fetchMore({
+                                                variables: {
+                                                    lastTime,
+                                                },
+                                            }));
+                                    }}
+                                    amount={nextPostsReward}
+                                    showSkip
+                                    onSkip={async () => {
+                                        const lastTime =
+                                            finalFeed[finalFeed.length - 1]
+                                                .time;
+                                        const ffLen = finalFeed.length;
 
-                                    setFetchMoreLen(ffLen);
+                                        setFetchMoreLen(ffLen);
 
-                                    !!fetchMore &&
-                                        (await fetchMore({
-                                            variables: {
-                                                lastTime,
-                                                skipReward: true,
-                                            },
-                                        }));
-                                }}
-                            />
-                        )}
+                                        !!fetchMore &&
+                                            (await fetchMore({
+                                                variables: {
+                                                    lastTime,
+                                                    skipReward: true,
+                                                },
+                                            }));
+                                    }}
+                                />
+                            )}
                         <View style={globalScreenStyles.listFooterBuffer} />
                     </>
                 );
