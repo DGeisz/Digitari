@@ -2,7 +2,10 @@ import React, { useContext, useState } from "react";
 import { styles } from "./StatusFooterStyles";
 import { Text, TouchableOpacity, View } from "react-native";
 import CancelConfirmModal from "../../../../../../global_building_blocks/cancel_confirm_modal/CancelConfirmModal";
-import { TutorialContext } from "../../../../../tutorial/context/tutorial_context/TutorialContext";
+import {
+    TutorialContext,
+    TutorialScreen,
+} from "../../../../../tutorial/context/tutorial_context/TutorialContext";
 import UpdateIndicator from "../../../../routes/tab_nav/building_blocks/update_indicator/UpdateIndicator";
 
 export class DismissedFooter extends React.PureComponent {
@@ -81,9 +84,11 @@ export const PendingFinishFooter: React.FC<PendingProps> = (props) => {
                 onCancel={() => setModalVisible(false)}
             />
             <View style={styles.pulseOuterContainer}>
-                <View style={styles.pulseInnerContainer}>
-                    <UpdateIndicator dotSize={8} />
-                </View>
+                {tutorialActive && tutorialScreen === TutorialScreen.TapFinish && (
+                    <View style={styles.pulseInnerContainer}>
+                        <UpdateIndicator dotSize={8} />
+                    </View>
+                )}
             </View>
             <TouchableOpacity
                 activeOpacity={0.5}

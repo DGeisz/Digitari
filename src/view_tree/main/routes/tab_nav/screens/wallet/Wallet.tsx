@@ -263,22 +263,6 @@ const Wallet: React.FC<Props> = (props) => {
 
     const tutorialWallet = useTutorialWallet();
 
-    useEffect(() => {
-        if (tutorialActive) {
-            if (tutorialScreen === TutorialScreen.ConvoFinishedTransactions) {
-                !!listRef.current && listRef.current.scrollToEnd();
-            } else if (
-                tutorialScreen === TutorialScreen.NewResponseTransactions
-            ) {
-                !!listRef.current &&
-                    listRef.current.scrollToOffset({
-                        offset: 200,
-                        animated: true,
-                    });
-            }
-        }
-    }, [tutorialActive, tutorialScreen]);
-
     if (
         !tutorialActive &&
         ((!collectionData?.user &&
@@ -305,13 +289,6 @@ const Wallet: React.FC<Props> = (props) => {
         total = tutorialWallet.accumulation;
 
         finalFeed = tutorialWallet.transactions;
-
-        if (
-            tutorialWallet.transactionsCollected ||
-            tutorialScreen > TutorialScreen.CollectTransactions
-        ) {
-            lastCollectionTime = Date.now();
-        }
     } else {
         if (!!collectionData?.user) {
             total = collectionData.user.transTotal;

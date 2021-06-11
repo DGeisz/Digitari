@@ -44,14 +44,14 @@ const TierModal: React.FC<Props> = (props) => {
                             onPress={() => {
                                 props.hide();
 
-                                // if (
-                                //     tutorialActive &&
-                                //     tutorialScreen === TutorialScreen.TapTier
-                                // ) {
-                                //     setTimeout(() => {
-                                //         advanceTutorial();
-                                //     }, 500);
-                                // }
+                                if (
+                                    tutorialActive &&
+                                    tutorialScreen === TutorialScreen.TapTier
+                                ) {
+                                    setTimeout(() => {
+                                        advanceTutorial();
+                                    }, 500);
+                                }
                             }}
                         >
                             <Text style={styles.closeButtonText}>Close</Text>

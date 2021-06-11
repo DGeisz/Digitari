@@ -80,12 +80,29 @@ export enum TutorialScreen {
     PopToFeed,
 
     /*
+     * Jk, we're not actually going to feed,
+     * we're going to profile
+     */
+
+    /*
      * First profile screens
      */
     ProfileDescription,
     OpenTierPrompt,
     TapTier,
-    OpenWalletPrompt,
+    ExplainRankingTier,
+    RankingTier2,
+    AlmostFinished,
+    ExplainChallenges,
+    ExplainInvites,
+    LastRemarks,
+    Finish,
+
+    /*
+     * All screens that follow this have been deprecated
+     */
+
+    // OpenWalletPrompt,
     // TapWallet,
 
     /*
@@ -255,7 +272,9 @@ export function useTutorialContextValues(): TutorialContextType {
 
     return {
         tutorialActive: showTutorial,
-        setTutorialActive,
+        setTutorialActive: (active) => {
+            setTutorialActive(active);
+        },
         tutorialScreen: currentTutorialScreen,
         skipTutorial: () => setTutorialActive(false),
         advanceTutorial: () => {

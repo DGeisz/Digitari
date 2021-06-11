@@ -38,11 +38,6 @@ export function useTutorialWallet(): {
         setTime(Date.now().toString());
     }, []);
 
-    useEffect(() => {
-        if (tutorialScreen === TutorialScreen.TapWallet2) {
-            setTime(Date.now().toString());
-        }
-    }, [tutorialScreen]);
     //
     // if (tutorialScreen < TutorialScreen.NewPostPrompt) {
     //     return {

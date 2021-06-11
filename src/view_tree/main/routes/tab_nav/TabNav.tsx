@@ -178,14 +178,7 @@ const TabNav: React.FC<Props> = (props) => {
                             tabBarIcon: ({ color, size }) => (
                                 <View style={styles.iconContainer}>
                                     {(() => {
-                                        if (tutorialActive) {
-                                            if (
-                                                tutorialScreen ===
-                                                TutorialScreen.TapConvoIcon
-                                            ) {
-                                                return <UpdateIndicator />;
-                                            }
-                                        } else {
+                                        if (!tutorialActive) {
                                             return (
                                                 newConvoUpdate && (
                                                     <UpdateIndicator />
@@ -204,14 +197,7 @@ const TabNav: React.FC<Props> = (props) => {
                         listeners={{
                             tabPress: (e) => {
                                 if (tutorialActive) {
-                                    if (
-                                        tutorialScreen ===
-                                        TutorialScreen.TapConvoIcon
-                                    ) {
-                                        advanceTutorial();
-                                    } else {
-                                        e.preventDefault();
-                                    }
+                                    e.preventDefault();
                                 }
                             },
                         }}
@@ -276,10 +262,8 @@ const TabNav: React.FC<Props> = (props) => {
                         listeners={{
                             tabPress: (e) => {
                                 if (
-                                    (tutorialActive &&
-                                        tutorialScreen ===
-                                            TutorialScreen.TapWallet) ||
-                                    tutorialScreen === TutorialScreen.TapWallet2
+                                    tutorialActive &&
+                                    tutorialScreen === TutorialScreen.TapWallet
                                 ) {
                                     advanceTutorial();
                                 } else if (tutorialActive) {

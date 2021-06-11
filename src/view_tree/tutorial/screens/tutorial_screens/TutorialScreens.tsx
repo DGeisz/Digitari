@@ -140,10 +140,6 @@ export const backToFeedContent = (
         </View>
     </>
 );
-/*
- * --- NOTE ---
- * Everything after this isn't used
- */
 
 /*
  * First profile screens
@@ -158,12 +154,69 @@ export const profileDescriptionContent = (
 export const openTierPromptContent = (
     <Text style={instructionStyles.instructionText}>
         You might have noticed the 🙂 by your name. This is your tier! {"\n\n"}
-        There are 10 different tiers, and you can increase your tier by having
-        good interactions with other people.{"\n\n"}We'll talk more about tiers
-        and rankings in a bit, but for for now hit "Next" and then tap on the 🙂
-        to see all the tiers.
+        This is the same emoji that you saw on all the posts.
+        {"\n\n"}
+        We'll talk more about tiers and rankings in a bit, but for now, tap on
+        the 🙂 to see all the tiers.
     </Text>
 );
+
+export const explainRankingTierContent = (
+    <Text style={instructionStyles.instructionText}>
+        Your ranking increases when you have successful Convos and decreases if
+        your messages are blocked.{"\n\n"}
+        Your ranking then qualifies you for different tiers, like 🙂 or 😎.
+    </Text>
+);
+
+export const rankingTier2Content = (
+    <Text style={instructionStyles.instructionText}>
+        Not only does your tier show other users whether you're nice or mean,
+        but having a higher ranking and tier helps other users see and respond
+        to your Convos.{"\n\n"}
+        Basically, it'll really help you to increase your ranking and tier!
+    </Text>
+);
+
+export const almostFinishedContent = (
+    <Text style={instructionStyles.instructionText}>
+        Alright, we're almost finished! Before you start using Digitari, there
+        are two more things you should know.
+    </Text>
+);
+
+export const explainChallengesContent = (
+    <Text style={instructionStyles.instructionText}>
+        Here are challenges for you to complete!{"\n\n"} Completing challenges
+        is a great way to make some extra coin, especially when you're starting
+        out.
+    </Text>
+);
+
+export const explainInvitesContent = (
+    <Text style={instructionStyles.instructionText}>
+        See "+Invite" at the very top left of your screen? That allows you to
+        invite your friends to join Digitari!{"\n\n"}
+        When someone you invite creates an account, you earn 500 digicoin!
+        {"\n\n"}
+        Inviting your friends is probably the easiest way to make a bunch of
+        coin when you're just starting out.
+    </Text>
+);
+
+export const lastRemarksContent = (
+    <Text style={instructionStyles.instructionText}>
+        Alright, you're ready to rock 'n roll!{"\n\n"}
+        If you ever want to see this tutorial again, you can open it in your
+        settings.{"\n\n"}
+        Have fun!!
+    </Text>
+);
+
+/*
+ * ----- NOTE ----
+ * Most things after this aren't used
+ */
 
 export const openWalletPromptContent = (
     <>
@@ -323,7 +376,7 @@ export const explainDigicoinLikeContent = (
         As you might have noticed, liking a post automatically sends the post
         creator 10 of your digicoin.{"\n\n"}
         Because you receive digicoin when people like your posts, you can earn a
-        ton digicoin if people enjoy your content!
+        ton of digicoin if people enjoy your content!
     </Text>
 );
 
@@ -348,7 +401,7 @@ export const explainResponseContent = (
     <Text style={instructionStyles.instructionText}>
         Bennet's making a lot of dough!{"\n\n"}
         If you'd like, you can also respond to a post and chat with the post
-        creator! {"\n\n"}
+        creator. {"\n\n"}
         Sending a response to a post costs digicoin, but if your convo goes
         well, you get a reward!
     </Text>

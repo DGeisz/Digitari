@@ -135,7 +135,12 @@ const Convo: React.FC<Props> = (props) => {
 
     useEffect(() => {
         if (tutorialScreen === TutorialScreen.PopToFeed) {
-            props.navigation.popToTop();
+            setTimeout(() => {
+                // props.navigation.popToTop();
+                props.navigation.navigate("TabNav", { screen: "Profile" });
+
+                setTimeout(advanceTutorial, 700);
+            }, 700);
         }
 
         return props.navigation.addListener("beforeRemove", (e) => {

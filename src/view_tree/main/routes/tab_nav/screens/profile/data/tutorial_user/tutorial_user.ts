@@ -9,7 +9,7 @@ export const tutorialUser: UserType = {
     amFollowing: false,
 
     bio: "",
-    ranking: 0,
+    ranking: 1,
     blocked: 0,
     beenBlocked: 0,
     coin: 0,

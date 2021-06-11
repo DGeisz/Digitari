@@ -208,13 +208,6 @@ const NewPost: React.FC<Props> = (props) => {
 
     const post = async () => {
         if (tutorialActive) {
-            if (tutorialScreen === TutorialScreen.TapPost) {
-                advanceTutorial();
-                setPostContent(content);
-
-                setTimeout(props.navigation.goBack, 200);
-            }
-
             return;
         }
 
@@ -406,13 +399,7 @@ const NewPost: React.FC<Props> = (props) => {
                         <Text style={styles.fieldTitle}>Post</Text>
                         <TextInput
                             ref={contentRef}
-                            editable={
-                                !(
-                                    tutorialActive &&
-                                    tutorialScreen !==
-                                        TutorialScreen.InputPostContent
-                                )
-                            }
+                            editable={!tutorialActive}
                             onBlur={() => {
                                 if (tutorialActive && content.length > 10) {
                                     advanceTutorial();
@@ -744,13 +731,7 @@ const NewPost: React.FC<Props> = (props) => {
                         <TextInput
                             ref={recipientsRef}
                             style={styles.recipientsInput}
-                            editable={
-                                !(
-                                    tutorialActive &&
-                                    tutorialScreen !==
-                                        TutorialScreen.InputPostRecipients
-                                )
-                            }
+                            editable={!tutorialActive}
                             placeholder="Recipients..."
                             onFocus={() =>
                                 setTimeout(() => {

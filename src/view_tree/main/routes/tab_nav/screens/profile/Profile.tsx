@@ -1,5 +1,5 @@
-import React, { useContext, useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import React, { useContext, useEffect } from "react";
+import { Text, View } from "react-native";
 import { basicLayouts } from "../../../../../../global_styles/BasicLayouts";
 import TabLabel from "../../../../../../global_building_blocks/tab_label/TabLabel";
 import { createMaterialCollapsibleTopTabNavigator } from "react-native-collapsible-tab-view";
@@ -26,13 +26,23 @@ import {
 import { styles } from "./ProfileStyles";
 import { SCREEN_LARGER_THAN_CONTENT } from "../../../../../../global_constants/screen_constants";
 import InstructionModal from "./building_blocks/instruction_modal/InstructionModal";
-import { TutorialContext } from "../../../../../tutorial/context/tutorial_context/TutorialContext";
+import {
+    TutorialContext,
+    TutorialScreen,
+} from "../../../../../tutorial/context/tutorial_context/TutorialContext";
 import { tutorialUser } from "./data/tutorial_user/tutorial_user";
 import { UserType } from "../../../../../../global_types/UserTypes";
+import { ProfileNavProp } from "../../TabNavTypes";
+import { zariahPost } from "../main_feed/hooks/tutorial_posts/tutorial_posts";
+import InstructionsModal from "../main_feed/building_blocks/instructions_modal/InstructionsModal";
 
 const Tab = createMaterialCollapsibleTopTabNavigator();
 
-const Profile: React.FC = () => {
+interface Props {
+    navigation: ProfileNavProp;
+}
+
+const Profile: React.FC<Props> = (props) => {
     const {
         openNew,
         openFollows,
@@ -46,7 +56,18 @@ const Profile: React.FC = () => {
         openSettings,
     } = useContext(TabNavContext);
 
-    const { tutorialActive } = useContext(TutorialContext);
+    const { tutorialActive, tutorialScreen, setScreen } = useContext(
+        TutorialContext
+    );
+
+    useEffect(() => {
+        if (
+            tutorialActive &&
+            tutorialScreen === TutorialScreen.ExplainChallenges
+        ) {
+            props.navigation.navigate("Profile", { screen: "UserChallenges" });
+        }
+    }, [tutorialActive, tutorialScreen]);
 
     const uid = localUid();
 
@@ -82,7 +103,19 @@ const Profile: React.FC = () => {
     if (!!user) {
         return (
             <>
-                <InstructionModal />
+                <InstructionModal
+                    navToFirstConvo={() => {
+                        setTimeout(() => {
+                            openNewMessage(
+                                zariahPost.user,
+                                zariahPost.id,
+                                zariahPost.responseCost
+                            );
+                            openConvo("tutConvo0", zariahPost.id);
+                            setScreen(TutorialScreen.ExplainSuccess);
+                        }, 700);
+                    }}
+                />
                 <View style={basicLayouts.flexGrid1}>
                     <Tab.Navigator
                         collapsibleOptions={{

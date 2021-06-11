@@ -8,13 +8,21 @@ import {
 import { View } from "react-native";
 import TutorialModal from "../../../../../../../tutorial/building_blocks/tutorial_modal/TutorialModal";
 import {
+    almostFinishedContent,
+    explainChallengesContent,
+    explainInvitesContent,
+    explainRankingTierContent,
+    lastRemarksContent,
     openTierPromptContent,
-    openWalletPromptContent,
     profileDescriptionContent,
-    welcomeContent,
+    rankingTier2Content,
 } from "../../../../../../../tutorial/screens/tutorial_screens/TutorialScreens";
 
-const InstructionModal: React.FC = () => {
+interface Props {
+    navToFirstConvo: () => void;
+}
+
+const InstructionModal: React.FC<Props> = (props) => {
     const { tutorialActive, tutorialScreen } = useContext(TutorialContext);
 
     let modalVisible = tutorialActive;
@@ -31,33 +39,79 @@ const InstructionModal: React.FC = () => {
         //         />
         //     );
         //     break;
-        // case TutorialScreen.ProfileDescription:
-        //     currentScreen = (
-        //         <TutorialModal
-        //             goBackScreen={TutorialScreen.Welcome}
-        //             content={profileDescriptionContent}
-        //             top={false}
-        //         />
-        //     );
-        //     break;
-        // case TutorialScreen.OpenTierPrompt:
-        //     currentScreen = (
-        //         <TutorialModal
-        //             top={false}
-        //             goBackScreen={TutorialScreen.ProfileDescription}
-        //             content={openTierPromptContent}
-        //         />
-        //     );
-        //     break;
-        // case TutorialScreen.OpenWalletPrompt:
-        //     currentScreen = (
-        //         <TutorialModal
-        //             top
-        //             goBackScreen={TutorialScreen.OpenTierPrompt}
-        //             content={openWalletPromptContent}
-        //         />
-        //     );
-        //     break;
+        case TutorialScreen.ProfileDescription:
+            currentScreen = (
+                <TutorialModal
+                    goBack={props.navToFirstConvo}
+                    goBackScreen={TutorialScreen.Welcome}
+                    content={profileDescriptionContent}
+                    top={false}
+                />
+            );
+            break;
+        case TutorialScreen.OpenTierPrompt:
+            currentScreen = (
+                <TutorialModal
+                    top={false}
+                    goBackScreen={TutorialScreen.ProfileDescription}
+                    content={openTierPromptContent}
+                />
+            );
+            break;
+        case TutorialScreen.RankingTier2:
+            currentScreen = (
+                <TutorialModal
+                    top
+                    goBackScreen={TutorialScreen.OpenTierPrompt}
+                    content={rankingTier2Content}
+                />
+            );
+            break;
+        case TutorialScreen.ExplainRankingTier:
+            currentScreen = (
+                <TutorialModal
+                    top
+                    goBackScreen={TutorialScreen.OpenTierPrompt}
+                    content={explainRankingTierContent}
+                />
+            );
+            break;
+        case TutorialScreen.AlmostFinished:
+            currentScreen = (
+                <TutorialModal
+                    top
+                    goBackScreen={TutorialScreen.ExplainRankingTier}
+                    content={almostFinishedContent}
+                />
+            );
+            break;
+        case TutorialScreen.ExplainChallenges:
+            currentScreen = (
+                <TutorialModal
+                    top
+                    goBackScreen={TutorialScreen.AlmostFinished}
+                    content={explainChallengesContent}
+                />
+            );
+            break;
+        case TutorialScreen.ExplainInvites:
+            currentScreen = (
+                <TutorialModal
+                    top={false}
+                    goBackScreen={TutorialScreen.ExplainChallenges}
+                    content={explainInvitesContent}
+                />
+            );
+            break;
+        case TutorialScreen.LastRemarks:
+            currentScreen = (
+                <TutorialModal
+                    top
+                    goBackScreen={TutorialScreen.ExplainInvites}
+                    content={lastRemarksContent}
+                />
+            );
+            break;
         default:
             modalVisible = false;
     }

@@ -33,7 +33,11 @@ import TierModal from "./building_blocks/tier_modal/TierModal";
 import { challengeCheck } from "../../../global_gql/challenge_check/challenge_check";
 import { calculateLevelInfo } from "../../../global_utils/LevelUtils";
 import UserOptionsModal from "./building_blocks/user_options_modal/UserOptionsModal";
-import { TutorialContext } from "../../../view_tree/tutorial/context/tutorial_context/TutorialContext";
+import {
+    TutorialContext,
+    TutorialScreen,
+} from "../../../view_tree/tutorial/context/tutorial_context/TutorialContext";
+import UpdateIndicator from "../../../view_tree/main/routes/tab_nav/building_blocks/update_indicator/UpdateIndicator";
 
 interface Props {
     user: UserType;
@@ -165,7 +169,7 @@ const ProfileHeader: React.FC<Props> = (props) => {
         }
     );
 
-    const { tutorialActive } = useContext(TutorialContext);
+    const { tutorialActive, tutorialScreen } = useContext(TutorialContext);
 
     return (
         <View pointerEvents="box-none">
@@ -296,6 +300,12 @@ const ProfileHeader: React.FC<Props> = (props) => {
                             activeOpacity={0.5}
                             onPress={() => showTierModal(true)}
                         >
+                            {tutorialActive &&
+                                tutorialScreen === TutorialScreen.TapTier && (
+                                    <View style={styles.pulseContainer}>
+                                        <UpdateIndicator dotSize={4} />
+                                    </View>
+                                )}
                             <Tier size={40} ranking={props.user.ranking} />
                         </TouchableOpacity>
                         <View style={styles.userLevelContainer}>

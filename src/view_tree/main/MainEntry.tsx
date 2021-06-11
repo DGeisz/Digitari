@@ -21,7 +21,7 @@ import {
 } from "./gql/Mutations";
 import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
-import { Image, Platform, Text, TouchableOpacity, View } from "react-native";
+import { Image, Platform, Text, TouchableOpacity } from "react-native";
 import ReportPost from "./screens/reports/report_post/ReportPost";
 import ReportConvo from "./screens/reports/report_convo/ReportConvo";
 import ReportUser from "./screens/reports/report_user/ReportUser";
@@ -35,7 +35,10 @@ import { styles } from "./MainEntryStyles";
 import Store from "./screens/store/Store";
 import PrivacyPolicy from "./screens/settings/screens/privacy_policy/PrivacyPolicy";
 import TermsAndConditions from "./screens/settings/screens/terms_and_conditions/TermsAndConditions";
-import { TutorialContext } from "../tutorial/context/tutorial_context/TutorialContext";
+import {
+    TutorialContext,
+    TutorialScreen,
+} from "../tutorial/context/tutorial_context/TutorialContext";
 
 const RootStack = createStackNavigator<MainEntryStack>();
 
@@ -113,7 +116,15 @@ const MainEntry: React.FC = () => {
     /*
      * Handle the tutorial
      */
-    const { tutorialActive } = useContext(TutorialContext);
+    const { tutorialActive, tutorialScreen, setTutorialActive } = useContext(
+        TutorialContext
+    );
+
+    useEffect(() => {
+        if (tutorialActive && tutorialScreen === TutorialScreen.Finish) {
+            setTutorialActive(false);
+        }
+    }, [tutorialActive, tutorialScreen]);
 
     return (
         <RootStack.Navigator

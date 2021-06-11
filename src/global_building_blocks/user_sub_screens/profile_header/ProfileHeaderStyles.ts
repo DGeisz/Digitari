@@ -52,6 +52,11 @@ export const styles = StyleSheet.create({
         flexDirection: "row",
         ...basicLayouts.flexGrid2,
     },
+    pulseContainer: {
+        position: "absolute",
+        left: 9,
+        top: 10,
+    },
     userLevelContainer: {
         paddingLeft: 5,
     },

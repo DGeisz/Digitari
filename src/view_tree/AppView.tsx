@@ -233,17 +233,13 @@ const AppView: React.FC = () => {
 
                         console.log("Here's create user: ", createUserData);
 
-                        if (createUserData?.createUser) {
+                        if (!!createUserData?.createUser) {
                             setFetchedUser(true);
                             tutorialContextValues.setTutorialActive(true);
                         }
                     } else {
                         setFetchedUser(true);
-                        /*
-                         * TODO: Change this in production
-                         */
-                        // tutorialContextValues.setTutorialActive(false);
-                        tutorialContextValues.setTutorialActive(true);
+                        tutorialContextValues.setTutorialActive(false);
                     }
 
                     const { data: hidData } = await client.query<HidData>({
