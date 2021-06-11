@@ -231,8 +231,6 @@ const AppView: React.FC = () => {
                             },
                         });
 
-                        console.log("Here's create user: ", createUserData);
-
                         if (!!createUserData?.createUser) {
                             setFetchedUser(true);
                             tutorialContextValues.setTutorialActive(true);

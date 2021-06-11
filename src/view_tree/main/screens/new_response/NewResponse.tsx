@@ -130,7 +130,14 @@ const NewResponse: React.FC<Props> = (props) => {
     return (
         <>
             <InstructionsModal
-                goBack={() => setTimeout(props.navigation.goBack, 500)}
+                goBack={() =>
+                    setTimeout(() => {
+                        props.navigation.goBack();
+                        props.navigation.navigate("TabNav", {
+                            screen: "MainFeed",
+                        });
+                    }, 500)
+                }
             />
             <TouchableOpacity
                 style={basicLayouts.flexGrid1}
