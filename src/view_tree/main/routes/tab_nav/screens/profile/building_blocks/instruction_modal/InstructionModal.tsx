@@ -29,16 +29,6 @@ const InstructionModal: React.FC<Props> = (props) => {
     let currentScreen = <View />;
 
     switch (tutorialScreen) {
-        // case TutorialScreen.Welcome:
-        //     currentScreen = (
-        //         <TutorialModal
-        //             goBackScreen={TutorialScreen.Welcome}
-        //             content={welcomeContent}
-        //             top
-        //             showGoBack={false}
-        //         />
-        //     );
-        //     break;
         case TutorialScreen.ProfileDescription:
             currentScreen = (
                 <TutorialModal

@@ -53,43 +53,6 @@ const InstructionsModal: React.FC<Props> = (props) => {
             );
             break;
 
-        // case TutorialScreen.NewPostContent:
-        //     currentScreen = (
-        //         <TutorialModal
-        //             top={false}
-        //             goBack={props.goBack}
-        //             goBackScreen={TutorialScreen.NewPostPrompt}
-        //             content={newPostContentContent}
-        //         />
-        //     );
-        //     break;
-        // case TutorialScreen.NewPostTarget:
-        //     currentScreen = (
-        //         <TutorialModal
-        //             top
-        //             goBackScreen={TutorialScreen.NewPostContent}
-        //             content={newPostTargetContent}
-        //         />
-        //     );
-        //     break;
-        // case TutorialScreen.NewPostRecipients:
-        //     currentScreen = (
-        //         <TutorialModal
-        //             top
-        //             goBackScreen={TutorialScreen.NewPostTarget}
-        //             content={newPostRecipientsContent}
-        //         />
-        //     );
-        //     break;
-        // case TutorialScreen.PostFinished:
-        //     currentScreen = (
-        //         <TutorialModal
-        //             top
-        //             goBackScreen={TutorialScreen.NewPostRecipients}
-        //             content={postFinishedContent}
-        //         />
-        //     );
-        //     break;
         default:
             modalVisible = false;
     }

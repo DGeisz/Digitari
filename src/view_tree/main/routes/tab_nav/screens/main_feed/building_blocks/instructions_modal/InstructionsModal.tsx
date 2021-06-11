@@ -169,26 +169,7 @@ const InstructionsModal: React.FC<Props> = (props) => {
                 />
             );
             break;
-        // case TutorialScreen.IntroduceFeed:
-        //     currentScreen = (
-        //         <TutorialModal
-        //             top={false}
-        //             goBack={props.navigate2Wallet}
-        //             goBackScreen={TutorialScreen.OpenFeedPrompt}
-        //             content={introduceFeedContent}
-        //         />
-        //     );
-        //     break;
-        // case TutorialScreen.PromptReturnToWallet:
-        //     currentScreen = (
-        //         <TutorialModal
-        //             top
-        //             goBack={props.navToFirstConvo}
-        //             goBackScreen={TutorialScreen.PromptReply}
-        //             content={promptReturnToWalletContent}
-        //         />
-        //     );
-        //     break;
+
         default:
             modalVisible = false;
     }
