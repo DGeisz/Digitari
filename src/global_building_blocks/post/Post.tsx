@@ -43,6 +43,7 @@ import {
     TutorialScreen,
 } from "../../view_tree/tutorial/context/tutorial_context/TutorialContext";
 import UpdateIndicator from "../../view_tree/main/routes/tab_nav/building_blocks/update_indicator/UpdateIndicator";
+import SymbolModal from "./building_blocks/symbol_modal/SymbolModal";
 
 const COMMUNITY_NAME_MAX_LEN = 30;
 
@@ -82,6 +83,8 @@ const Post: React.FC<Props> = (props) => {
 
     const [donationModalVisible, setDonationVisible] = useState<boolean>(false);
     const [error, setPostError] = useState<string>("");
+
+    const [symbolModalVisible, showSymbolModal] = useState<boolean>(false);
 
     const [animatedCoinAmount, setCoinAmount] = useState<number>(0);
 
@@ -305,6 +308,10 @@ const Post: React.FC<Props> = (props) => {
                 userCoin={props.userCoin}
                 visible={donationModalVisible}
                 hide={() => setDonationVisible(false)}
+            />
+            <SymbolModal
+                visible={symbolModalVisible}
+                hide={() => showSymbolModal(false)}
             />
             <TouchableOpacity
                 style={[
@@ -547,7 +554,10 @@ const Post: React.FC<Props> = (props) => {
                     ) : null}
                     {!props.stripped && props.showFooter ? (
                         <View style={styles.postMainFooter}>
-                            <View style={styles.mainFooterLeft}>
+                            <TouchableOpacity
+                                style={styles.mainFooterLeft}
+                                onPress={() => showSymbolModal(true)}
+                            >
                                 <View style={styles.infoIconContainer}>
                                     <Entypo
                                         name="pencil"
@@ -558,8 +568,11 @@ const Post: React.FC<Props> = (props) => {
                                         {toRep(props.post.responseCount)}
                                     </Text>
                                 </View>
-                            </View>
-                            <View style={styles.mainFooterCenter}>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.mainFooterCenter}
+                                onPress={() => showSymbolModal(true)}
+                            >
                                 <View style={styles.infoIconContainer}>
                                     <Ionicons
                                         name="chatbubbles"
@@ -570,7 +583,7 @@ const Post: React.FC<Props> = (props) => {
                                         {toRep(props.post.convoCount)}
                                     </Text>
                                 </View>
-                            </View>
+                            </TouchableOpacity>
                             <View style={styles.mainFooterRight}>
                                 <TouchableOpacity
                                     style={[
