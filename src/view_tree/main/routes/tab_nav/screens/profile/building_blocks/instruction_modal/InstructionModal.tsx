@@ -21,43 +21,43 @@ const InstructionModal: React.FC = () => {
     let currentScreen = <View />;
 
     switch (tutorialScreen) {
-        case TutorialScreen.Welcome:
-            currentScreen = (
-                <TutorialModal
-                    goBackScreen={TutorialScreen.Welcome}
-                    content={welcomeContent}
-                    top
-                    showGoBack={false}
-                />
-            );
-            break;
-        case TutorialScreen.ProfileDescription:
-            currentScreen = (
-                <TutorialModal
-                    goBackScreen={TutorialScreen.Welcome}
-                    content={profileDescriptionContent}
-                    top={false}
-                />
-            );
-            break;
-        case TutorialScreen.OpenTierPrompt:
-            currentScreen = (
-                <TutorialModal
-                    top={false}
-                    goBackScreen={TutorialScreen.ProfileDescription}
-                    content={openTierPromptContent}
-                />
-            );
-            break;
-        case TutorialScreen.OpenWalletPrompt:
-            currentScreen = (
-                <TutorialModal
-                    top
-                    goBackScreen={TutorialScreen.OpenTierPrompt}
-                    content={openWalletPromptContent}
-                />
-            );
-            break;
+        // case TutorialScreen.Welcome:
+        //     currentScreen = (
+        //         <TutorialModal
+        //             goBackScreen={TutorialScreen.Welcome}
+        //             content={welcomeContent}
+        //             top
+        //             showGoBack={false}
+        //         />
+        //     );
+        //     break;
+        // case TutorialScreen.ProfileDescription:
+        //     currentScreen = (
+        //         <TutorialModal
+        //             goBackScreen={TutorialScreen.Welcome}
+        //             content={profileDescriptionContent}
+        //             top={false}
+        //         />
+        //     );
+        //     break;
+        // case TutorialScreen.OpenTierPrompt:
+        //     currentScreen = (
+        //         <TutorialModal
+        //             top={false}
+        //             goBackScreen={TutorialScreen.ProfileDescription}
+        //             content={openTierPromptContent}
+        //         />
+        //     );
+        //     break;
+        // case TutorialScreen.OpenWalletPrompt:
+        //     currentScreen = (
+        //         <TutorialModal
+        //             top
+        //             goBackScreen={TutorialScreen.OpenTierPrompt}
+        //             content={openWalletPromptContent}
+        //         />
+        //     );
+        //     break;
         default:
             modalVisible = false;
     }

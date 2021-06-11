@@ -346,15 +346,22 @@ const NewPost: React.FC<Props> = (props) => {
         if (tutorialActive) {
             setTarget(PostTarget.Community);
 
-            if (tutorialScreen === TutorialScreen.InputPostContent) {
+            if (tutorialScreen === TutorialScreen.ReturnToFeed) {
                 setTimeout(() => {
-                    !!contentRef.current && contentRef.current.focus();
-                }, 700);
-            } else if (tutorialScreen === TutorialScreen.InputPostRecipients) {
-                setTimeout(() => {
-                    !!recipientsRef.current && recipientsRef.current.focus();
+                    props.navigation.goBack();
+                    advanceTutorial();
                 }, 700);
             }
+
+            // if (tutorialScreen === TutorialScreen.InputPostContent) {
+            //     setTimeout(() => {
+            //         !!contentRef.current && contentRef.current.focus();
+            //     }, 700);
+            // } else if (tutorialScreen === TutorialScreen.InputPostRecipients) {
+            //     setTimeout(() => {
+            //         !!recipientsRef.current && recipientsRef.current.focus();
+            //     }, 700);
+            // }
         } else {
             !!contentRef.current && contentRef.current.focus();
         }
@@ -362,8 +369,8 @@ const NewPost: React.FC<Props> = (props) => {
         const callback = (e: any) => {
             if (tutorialActive) {
                 if (
-                    tutorialScreen !== TutorialScreen.OpenFeedPrompt &&
-                    tutorialScreen !== TutorialScreen.NewPostPrompt
+                    tutorialScreen !== TutorialScreen.IntroduceDigicoin &&
+                    tutorialScreen !== TutorialScreen.ReturnToFeed
                 ) {
                     e.preventDefault();
                 }
@@ -391,7 +398,7 @@ const NewPost: React.FC<Props> = (props) => {
             <>
                 <InstructionsModal
                     goBack={() => {
-                        setTimeout(() => props.navigation.goBack(), 500);
+                        setTimeout(() => props.navigation.goBack(), 700);
                     }}
                 />
                 <ScrollView style={styles.newPostContainer} ref={scrollRef}>

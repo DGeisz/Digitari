@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { styles } from "./StatusFooterStyles";
 import { Text, TouchableOpacity, View } from "react-native";
 import CancelConfirmModal from "../../../../../../global_building_blocks/cancel_confirm_modal/CancelConfirmModal";
+import { TutorialContext } from "../../../../../tutorial/context/tutorial_context/TutorialContext";
+import UpdateIndicator from "../../../../routes/tab_nav/building_blocks/update_indicator/UpdateIndicator";
 
 export class DismissedFooter extends React.PureComponent {
     render() {
@@ -60,36 +62,70 @@ interface PendingState {
     modalVisible: boolean;
 }
 
-export class PendingFinishFooter extends React.PureComponent<
-    PendingProps,
-    PendingState
-> {
-    state = {
-        modalVisible: false,
-    };
+export const PendingFinishFooter: React.FC<PendingProps> = (props) => {
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
 
-    render() {
-        return (
-            <View style={styles.statusContainer}>
-                <CancelConfirmModal
-                    visible={this.state.modalVisible}
-                    body={this.props.finishMessage}
-                    title={"Finish Convo"}
-                    onConfirm={() => {
-                        this.setState({ modalVisible: false });
-                        setTimeout(this.props.onFinish, 200);
-                    }}
-                    confirmMessage="Finish"
-                    onCancel={() => this.setState({ modalVisible: false })}
-                />
-                <TouchableOpacity
-                    activeOpacity={0.5}
-                    style={styles.pendingContainer}
-                    onPress={() => this.setState({ modalVisible: true })}
-                >
-                    <Text style={styles.pendingText}>Finish Convo</Text>
-                </TouchableOpacity>
+    const { tutorialActive, tutorialScreen } = useContext(TutorialContext);
+
+    return (
+        <View style={styles.statusContainer}>
+            <CancelConfirmModal
+                visible={modalVisible}
+                body={props.finishMessage}
+                title={"Finish Convo"}
+                onConfirm={() => {
+                    setModalVisible(false);
+                    setTimeout(props.onFinish, 200);
+                }}
+                confirmMessage="Finish"
+                onCancel={() => setModalVisible(false)}
+            />
+            <View style={styles.pulseOuterContainer}>
+                <View style={styles.pulseInnerContainer}>
+                    <UpdateIndicator dotSize={8} />
+                </View>
             </View>
-        );
-    }
-}
+            <TouchableOpacity
+                activeOpacity={0.5}
+                style={styles.pendingContainer}
+                onPress={() => setModalVisible(true)}
+            >
+                <Text style={styles.pendingText}>Finish Convo</Text>
+            </TouchableOpacity>
+        </View>
+    );
+};
+
+// export class PendingFinishFooter extends React.PureComponent<
+//     PendingProps,
+//     PendingState
+// > {
+//     state = {
+//         modalVisible: false,
+//     };
+//
+//     render() {
+//         return (
+//             <View style={styles.statusContainer}>
+//                 <CancelConfirmModal
+//                     visible={this.state.modalVisible}
+//                     body={this.props.finishMessage}
+//                     title={"Finish Convo"}
+//                     onConfirm={() => {
+//                         this.setState({ modalVisible: false });
+//                         setTimeout(this.props.onFinish, 200);
+//                     }}
+//                     confirmMessage="Finish"
+//                     onCancel={() => this.setState({ modalVisible: false })}
+//                 />
+//                 <TouchableOpacity
+//                     activeOpacity={0.5}
+//                     style={styles.pendingContainer}
+//                     onPress={() => this.setState({ modalVisible: true })}
+//                 >
+//                     <Text style={styles.pendingText}>Finish Convo</Text>
+//                 </TouchableOpacity>
+//             </View>
+//         );
+//     }
+// }

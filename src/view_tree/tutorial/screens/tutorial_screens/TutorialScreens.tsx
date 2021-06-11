@@ -5,17 +5,149 @@ import { Entypo, FontAwesome, Ionicons } from "@expo/vector-icons";
 import { palette } from "../../../../global_styles/Palette";
 import CoinBox from "../../../../global_building_blocks/coin_box/CoinBox";
 
-/*
- * First profile screens
- */
 export const welcomeContent = (
     <Text style={instructionStyles.instructionText}>
-        Welcome to Digitari!{"\n\n"}Ready to gain a massive following, connect
-        with fascinating people, or just find some top-notch content? Let's get
-        started!
+        Welcome to Digitari!{"\n\n"}
+        Ready to conquer the platform? Let's get started!
     </Text>
 );
 
+export const explainDigitariContent = (
+    <Text style={instructionStyles.instructionText}>
+        Like other social media, people post content to Digitari, and other
+        people like or respond to posts.{"\n\n"}
+        However, there's one main thing that makes Digitari unique...
+    </Text>
+);
+
+export const hypeDigicoinContent = (
+    <>
+        <Text style={instructionStyles.instructionText}>DIGICOIN!</Text>
+        <View style={instructionStyles.centralContentContainer}>
+            <CoinBox showAmount={false} coinSize={50} paddingVertical={0} />
+        </View>
+    </>
+);
+
+export const introduceDigicoinContent = (
+    <>
+        <Text style={instructionStyles.instructionText}>
+            Digicoin is Digitari's in-game currency. We'll talk about how you
+            earn digicoin in a second, but first let's talk about how you use
+            it. {"\n\n"}
+            Tap the blue post button on the bottom right side of your screen.
+        </Text>
+        <View style={instructionStyles.centralContentContainer}>
+            <FontAwesome name="pencil" size={35} color={palette.white} />
+        </View>
+    </>
+);
+
+/*
+ * New post screens
+ */
+export const introduceNewPostContent = (
+    <Text style={instructionStyles.instructionText}>
+        You use digicoin to post on Digitari.{"\n\n"}
+        Posting is super easy. You just write a quick message as the post
+        content, and you can optionally include an add-on.{"\n\n"}
+        Now then, there are two special fields when posting...
+    </Text>
+);
+
+export const explainTargetContent = (
+    <Text style={instructionStyles.instructionText}>
+        In the "Target" field, you get to decide who's going to receive your
+        post. {"\n\n"}
+        You can either send your post to your followers or the members of a
+        Community.
+    </Text>
+);
+
+export const explainRecipientsContent = (
+    <Text style={instructionStyles.instructionText}>
+        The "Recipients" field is one of the coolest parts of Digitari -- you
+        get to choose how many people receive your post! {"\n\n"}
+        Posting costs 10 digicoin per recipient, so if you want 10k people to
+        see your post, you need 100k digicoin.
+    </Text>
+);
+
+/*
+ * Return to feed
+ */
+export const earningCoinContent = (
+    <Text style={instructionStyles.instructionText}>
+        There are a bunch of ways to earn digicoin, but the easiest way is by
+        viewing posts.
+    </Text>
+);
+
+export const explainFeedRewardContent = (
+    <Text style={instructionStyles.instructionText}>
+        After a couple posts, you'll see a message like the one you see at the
+        bottom of your screen.{"\n\n"}
+        After the time is up, hit "Next posts" to earn the reward.
+    </Text>
+);
+
+export const promptOpenWalletContent = (
+    <>
+        <Text style={instructionStyles.instructionText}>
+            Ok, now let's collect the digicoin you just earned!{"\n\n"}
+            Tap the wallet icon in the bottom tab bar.
+        </Text>
+        <View style={instructionStyles.centralContentContainer}>
+            <Entypo name="wallet" size={30} color={palette.white} />
+        </View>
+    </>
+);
+
+/*
+ * Wallet
+ */
+export const explainWalletContent = (
+    <Text style={instructionStyles.instructionText}>
+        This is your wallet! On this page you'll collect the digicoin you've
+        earned.
+        {"\n\n"}
+        Every time you earn coin, it will show up as a transaction.
+    </Text>
+);
+
+export const promptCollectContent = (
+    <Text style={instructionStyles.instructionText}>
+        Tap "Collect" to collect the digicoin you've earned.
+    </Text>
+);
+
+export const explainDigicoinUsesContent = (
+    <Text style={instructionStyles.instructionText}>
+        Great! Now you can use that coin to create posts, like we just talked
+        about. {"\n\n"}
+        You can also use digicoin to like and respond to posts.
+    </Text>
+);
+
+export const backToFeedContent = (
+    <>
+        <Text style={instructionStyles.instructionText}>
+            Let's go back to your feed!{"\n\n"}
+            Tap the home icon in the bottom tab bar.
+        </Text>
+        <View style={instructionStyles.centralContentContainer}>
+            <Entypo name="home" size={30} color={palette.white} />
+        </View>
+    </>
+);
+/*
+ * --- NOTE ---
+ * Everything after this isn't used
+ */
+
+/*
+ * First profile screens
+ */
 export const profileDescriptionContent = (
     <Text style={instructionStyles.instructionText}>
         Here's your profile on Digitari! {"\n\n"}On this page, you can set your
@@ -171,9 +303,9 @@ export const likeFirstPostContent = (
     <>
         <Text style={instructionStyles.instructionText}>
             Looks like Zariah just joined the platform and is introducing
-            herself! Let's like Zariah's post to welcome her to the platform!
+            herself! Let's like Zariah's post to welcome her to Digitari!
             {"\n\n"}
-            To like her post, tap the coin icon underneath her tier emoji 🙂.
+            To like her post, tap the coin icon under the emoji.
         </Text>
         <View style={instructionStyles.centralContentContainer}>
             <CoinBox
@@ -207,18 +339,18 @@ export const customLikePostContent = (
     <Text style={instructionStyles.instructionText}>
         Bennet's doge meme is pretty cute! To show him our appreciation, let's
         send him a custom like with 100 digicoin.{"\n\n"}
-        Tap and hold the coin underneath Bennet's tier emoji 😃, enter "100" for
-        "Amount" in the pop-up, and press "Like."
+        Tap and hold the coin on Bennet's post, enter "100" for "Amount" in the
+        pop-up, and press "Like."
     </Text>
 );
 
 export const explainResponseContent = (
     <Text style={instructionStyles.instructionText}>
         Bennet's making a lot of dough!{"\n\n"}
-        If you want to, you can also respond to a post and chat with the post
+        If you'd like, you can also respond to a post and chat with the post
         creator! {"\n\n"}
         Sending a response to a post costs digicoin, but if your convo goes
-        well, you get a digicoin reward and you can improve your tier!
+        well, you get a reward!
     </Text>
 );
 
@@ -265,7 +397,7 @@ export const introduceConvoContent = (
         Convos allow you to respond to posts and connect with post creators!
         {"\n\n"}
         You can think of a Digitari convo as a mini text conversation between
-        you and the post creator about their post.
+        you and the post creator.
     </Text>
 );
 
@@ -293,10 +425,7 @@ export const explainFinishContent = (
     <Text style={instructionStyles.instructionText}>
         After the post creator has sent two messages in a Convo, you have the
         opportunity to finish the Convo.{"\n\n"}
-        When you finish a Convo, you earn the Convo reward, and your ranking
-        increases by 1 point! {"\n\n"}
-        Your ranking qualifies you for different tiers, so in order to reach
-        higher tiers, you must successfully finish Convos.
+        When you finish a Convo, you earn the Convo reward!
     </Text>
 );
 

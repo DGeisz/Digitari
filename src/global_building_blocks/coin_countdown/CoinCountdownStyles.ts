@@ -53,4 +53,9 @@ export const styles = StyleSheet.create({
         color: palette.deepBlue,
         fontWeight: "500",
     },
+    pulseContainer: {
+        ...StyleSheet.absoluteFillObject,
+        top: 24,
+        left: 53,
+    },
 });

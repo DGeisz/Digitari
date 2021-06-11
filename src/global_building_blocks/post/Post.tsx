@@ -42,6 +42,7 @@ import {
     TutorialContext,
     TutorialScreen,
 } from "../../view_tree/tutorial/context/tutorial_context/TutorialContext";
+import UpdateIndicator from "../../view_tree/main/routes/tab_nav/building_blocks/update_indicator/UpdateIndicator";
 
 const COMMUNITY_NAME_MAX_LEN = 30;
 
@@ -370,6 +371,14 @@ const Post: React.FC<Props> = (props) => {
                                                     advanceTutorial();
                                                 }, 700);
                                             }
+
+                                            if (
+                                                tutorialScreen ===
+                                                    TutorialScreen.CustomTapLike &&
+                                                props.post.id === "tut1"
+                                            ) {
+                                                setDonationVisible(true);
+                                            }
                                         } else {
                                             await donateCoin(10);
                                         }
@@ -388,6 +397,28 @@ const Post: React.FC<Props> = (props) => {
                                         }
                                     }}
                                 >
+                                    {(() => {
+                                        if (tutorialActive) {
+                                            if (
+                                                (tutorialScreen ===
+                                                    TutorialScreen.TapLike &&
+                                                    props.post.id === "tut0") ||
+                                                (tutorialScreen ===
+                                                    TutorialScreen.CustomTapLike &&
+                                                    props.post.id === "tut1")
+                                            ) {
+                                                return (
+                                                    <View
+                                                        style={
+                                                            styles.pulseContainer
+                                                        }
+                                                    >
+                                                        <UpdateIndicator />
+                                                    </View>
+                                                );
+                                            }
+                                        }
+                                    })()}
                                     <CoinBox
                                         active={false}
                                         showAmount={false}
@@ -580,6 +611,18 @@ const Post: React.FC<Props> = (props) => {
                                                 : {},
                                         ]}
                                     >
+                                        {tutorialActive &&
+                                            tutorialScreen ===
+                                                TutorialScreen.TapRespond &&
+                                            props.post.id === "tut0" && (
+                                                <View
+                                                    style={
+                                                        styles.responsePulseContainer
+                                                    }
+                                                >
+                                                    <UpdateIndicator />
+                                                </View>
+                                            )}
                                         <Entypo
                                             name="pencil"
                                             size={24}

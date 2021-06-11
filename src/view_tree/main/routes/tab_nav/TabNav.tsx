@@ -19,7 +19,6 @@ import {
     GetUpdateFlagsData,
     GetUpdateFlagsVariables,
 } from "./gql/Queries";
-import { getTierWage } from "../../../../global_types/TierTypes";
 import CoinIndicator from "./building_blocks/coin_indicator/CoinIndicator";
 import ChallengeCompleteModal from "./building_blocks/challenge_complete_modal/ChallengeCompleteModal";
 import {
@@ -127,7 +126,7 @@ const TabNav: React.FC<Props> = (props) => {
                 />
                 {/*TODO: Change tutorial active first screen to wallet*/}
                 <Tab.Navigator
-                    initialRouteName={tutorialActive ? "Profile" : "MainFeed"}
+                    initialRouteName={"MainFeed"}
                     tabBarOptions={{
                         showLabel: false,
                         inactiveTintColor: "gray",
@@ -138,7 +137,25 @@ const TabNav: React.FC<Props> = (props) => {
                         component={MainFeed}
                         options={{
                             tabBarIcon: ({ color, size }) => (
-                                <Entypo name="home" size={size} color={color} />
+                                <View style={styles.iconContainer}>
+                                    {(() => {
+                                        if (tutorialActive) {
+                                            if (
+                                                tutorialScreen ===
+                                                    TutorialScreen.TapHome ||
+                                                tutorialScreen ===
+                                                    TutorialScreen.BackToFeed
+                                            ) {
+                                                return <UpdateIndicator />;
+                                            }
+                                        }
+                                    })()}
+                                    <Entypo
+                                        name="home"
+                                        size={size}
+                                        color={color}
+                                    />
+                                </View>
                             ),
                         }}
                         listeners={{
@@ -235,13 +252,13 @@ const TabNav: React.FC<Props> = (props) => {
                                             } else if (
                                                 tutorialActive &&
                                                 (tutorialScreen ===
-                                                    TutorialScreen.PromptReturnToWallet ||
-                                                    tutorialScreen ===
-                                                        TutorialScreen.TapWallet2 ||
-                                                    tutorialScreen ===
-                                                        TutorialScreen.OpenWalletPrompt ||
+                                                    TutorialScreen.PromptOpenWallet ||
                                                     tutorialScreen ===
                                                         TutorialScreen.TapWallet)
+                                                // tutorialScreen ===
+                                                //     TutorialScreen.OpenWalletPrompt ||
+                                                // tutorialScreen ===
+                                                //     TutorialScreen.TapWallet
                                             ) {
                                                 return <UpdateIndicator />;
                                             }
@@ -259,11 +276,10 @@ const TabNav: React.FC<Props> = (props) => {
                         listeners={{
                             tabPress: (e) => {
                                 if (
-                                    tutorialActive &&
-                                    (tutorialScreen ===
-                                        TutorialScreen.TapWallet ||
+                                    (tutorialActive &&
                                         tutorialScreen ===
-                                            TutorialScreen.TapWallet2)
+                                            TutorialScreen.TapWallet) ||
+                                    tutorialScreen === TutorialScreen.TapWallet2
                                 ) {
                                     advanceTutorial();
                                 } else if (tutorialActive) {

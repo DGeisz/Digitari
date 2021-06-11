@@ -9,18 +9,24 @@ import { instructionStyles } from "../../../../../../../../global_styles/Instruc
 import TutorialModal from "../../../../../../../tutorial/building_blocks/tutorial_modal/TutorialModal";
 import {
     customLikePostContent,
+    earningCoinContent,
     explainCustomLikeContent,
     explainDigicoinLikeContent,
+    explainDigitariContent,
+    explainFeedRewardContent,
     explainResponseContent,
-    introduceFeedContent,
+    hypeDigicoinContent,
+    introduceDigicoinContent,
     likeFirstPostContent,
-    promptReturnToWalletContent,
+    promptOpenWalletContent,
     respondToPostContent,
+    welcomeContent,
 } from "../../../../../../../tutorial/screens/tutorial_screens/TutorialScreens";
 
 interface Props {
     navigate2Wallet: () => void;
     navToFirstConvo: () => void;
+    nav2NewPost: () => void;
 }
 
 const InstructionsModal: React.FC<Props> = (props) => {
@@ -34,21 +40,85 @@ const InstructionsModal: React.FC<Props> = (props) => {
     let currentScreen = <View />;
 
     switch (tutorialScreen) {
-        case TutorialScreen.IntroduceFeed:
+        /*
+         * First screens
+         */
+        case TutorialScreen.Welcome:
             currentScreen = (
                 <TutorialModal
-                    top={false}
-                    goBack={props.navigate2Wallet}
-                    goBackScreen={TutorialScreen.OpenFeedPrompt}
-                    content={introduceFeedContent}
+                    top
+                    showGoBack={false}
+                    goBackScreen={TutorialScreen.Welcome}
+                    content={welcomeContent}
                 />
             );
             break;
+        case TutorialScreen.ExplainDigitari:
+            currentScreen = (
+                <TutorialModal
+                    top
+                    goBackScreen={TutorialScreen.Welcome}
+                    content={explainDigitariContent}
+                />
+            );
+            break;
+        case TutorialScreen.HypeDigicoin:
+            currentScreen = (
+                <TutorialModal
+                    top
+                    goBackScreen={TutorialScreen.ExplainDigitari}
+                    content={hypeDigicoinContent}
+                />
+            );
+            break;
+        case TutorialScreen.IntroduceDigicoin:
+            currentScreen = (
+                <TutorialModal
+                    top
+                    goBackScreen={TutorialScreen.HypeDigicoin}
+                    content={introduceDigicoinContent}
+                />
+            );
+            break;
+
+        /*
+         * Return to feed screens
+         */
+        case TutorialScreen.EarningCoin:
+            currentScreen = (
+                <TutorialModal
+                    top
+                    goBack={props.nav2NewPost}
+                    goBackScreen={TutorialScreen.ExplainRecipients}
+                    content={earningCoinContent}
+                />
+            );
+            break;
+        case TutorialScreen.ExplainFeedReward:
+            currentScreen = (
+                <TutorialModal
+                    top
+                    goBackScreen={TutorialScreen.EarningCoin}
+                    content={explainFeedRewardContent}
+                />
+            );
+            break;
+        case TutorialScreen.PromptOpenWallet:
+            currentScreen = (
+                <TutorialModal
+                    top
+                    goBackScreen={TutorialScreen.ExplainFeedReward}
+                    content={promptOpenWalletContent}
+                />
+            );
+            break;
+
         case TutorialScreen.LikeFirstPost:
             currentScreen = (
                 <TutorialModal
                     top={false}
-                    goBackScreen={TutorialScreen.IntroduceFeed}
+                    goBack={props.navigate2Wallet}
+                    goBackScreen={TutorialScreen.BackToFeed}
                     content={likeFirstPostContent}
                 />
             );
@@ -99,16 +169,26 @@ const InstructionsModal: React.FC<Props> = (props) => {
                 />
             );
             break;
-        case TutorialScreen.PromptReturnToWallet:
-            currentScreen = (
-                <TutorialModal
-                    top
-                    goBack={props.navToFirstConvo}
-                    goBackScreen={TutorialScreen.PromptReply}
-                    content={promptReturnToWalletContent}
-                />
-            );
-            break;
+        // case TutorialScreen.IntroduceFeed:
+        //     currentScreen = (
+        //         <TutorialModal
+        //             top={false}
+        //             goBack={props.navigate2Wallet}
+        //             goBackScreen={TutorialScreen.OpenFeedPrompt}
+        //             content={introduceFeedContent}
+        //         />
+        //     );
+        //     break;
+        // case TutorialScreen.PromptReturnToWallet:
+        //     currentScreen = (
+        //         <TutorialModal
+        //             top
+        //             goBack={props.navToFirstConvo}
+        //             goBackScreen={TutorialScreen.PromptReply}
+        //             content={promptReturnToWalletContent}
+        //         />
+        //     );
+        //     break;
         default:
             modalVisible = false;
     }

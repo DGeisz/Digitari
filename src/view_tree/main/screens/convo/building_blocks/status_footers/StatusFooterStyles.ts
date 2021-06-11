@@ -47,4 +47,10 @@ export const styles = StyleSheet.create({
         fontWeight: "600",
         color: palette.primary,
     },
+    pulseOuterContainer: {},
+    pulseInnerContainer: {
+        position: "absolute",
+        left: -13,
+        top: 8,
+    },
 });

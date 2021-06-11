@@ -49,4 +49,9 @@ export const styles = StyleSheet.create({
 
         elevation: 4,
     },
+    pulseContainer: {
+        position: "absolute",
+        top: 15,
+        left: 17,
+    },
 });

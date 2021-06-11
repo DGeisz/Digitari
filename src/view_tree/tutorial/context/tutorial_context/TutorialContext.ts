@@ -4,47 +4,46 @@ import { MessageType } from "../../../../global_types/MessageTypes";
 
 export enum TutorialScreen {
     /*
-     * First profile screens
+     * First feed screen
      */
     Welcome,
-    ProfileDescription,
-    OpenTierPrompt,
-    TapTier,
-    OpenWalletPrompt,
-    TapWallet,
-
-    /*
-     * First wallet screens
-     */
-    ExplainDigicoin,
-    ExplainTierWage,
-    CollectTierWage,
-    FirstCollectTap,
-    NewPostPrompt,
+    ExplainDigitari,
+    HypeDigicoin,
+    IntroduceDigicoin,
     TapNewPost,
 
     /*
      * New post screens
      */
-    NewPostContent,
-    InputPostContent,
-    NewPostTarget,
-    NewPostRecipients,
-    InputPostRecipients,
-    PostFinished,
-    TapPost,
+    IntroduceNewPost,
+    ExplainTarget,
+    ExplainRecipients,
+    ReturnToFeed,
 
     /*
-     * Return to wallet from new post,
-     * let's go to feed
+     * Return to feed
      */
-    OpenFeedPrompt,
+    EarningCoin,
+    ExplainFeedReward,
+    CollectFeedReward,
+    CollectFeedReward2,
+    PromptOpenWallet,
+    TapWallet,
+
+    /*
+     * Wallet
+     */
+    ExplainWallet,
+    PromptCollect,
+    CollectCoin,
+    ExplainDigicoinUses,
+    BackToFeed,
     TapHome,
 
     /*
-     * Feed screens
+     * Return to feed again
      */
-    IntroduceFeed,
+    // IntroduceFeed,
     LikeFirstPost,
     TapLike,
     ExplainDigicoinLike,
@@ -76,9 +75,85 @@ export enum TutorialScreen {
     ExplainSuccess,
 
     /*
-     * Transition back to feed
+     * Return to feed again!
      */
     PopToFeed,
+
+    /*
+     * First profile screens
+     */
+    ProfileDescription,
+    OpenTierPrompt,
+    TapTier,
+    OpenWalletPrompt,
+    // TapWallet,
+
+    /*
+     * First wallet screens
+     */
+    ExplainDigicoin,
+    ExplainTierWage,
+    CollectTierWage,
+    FirstCollectTap,
+    NewPostPrompt,
+    // TapNewPost,
+
+    /*
+     * New post screens
+     */
+    NewPostContent,
+    InputPostContent,
+    NewPostTarget,
+    NewPostRecipients,
+    InputPostRecipients,
+    PostFinished,
+    TapPost,
+
+    /*
+     * Return to wallet from new post,
+     * let's go to feed
+     */
+    OpenFeedPrompt,
+    // TapHome,
+
+    /*
+     * Feed screens
+     */
+    // IntroduceFeed,
+    // LikeFirstPost,
+    // TapLike,
+    // ExplainDigicoinLike,
+    // ExplainCustomLike,
+    // CustomLikePost,
+    // CustomTapLike,
+    // ExplainResponse,
+    // RespondToPost,
+    // TapRespond,
+
+    // /*
+    //  * New response screens
+    //  */
+    // ExplainIdentity,
+    // PromptResponseMessage,
+    // InputResponse,
+    //
+    // /*
+    //  * First convo screens
+    //  */
+    // IntroduceConvo,
+    // ExplainConvo,
+    // ZariahResponse,
+    // PromptReply,
+    // ZariahBackNForth,
+    // ExplainFinish,
+    // PromptFinish,
+    // TapFinish,
+    // ExplainSuccess,
+
+    /*
+     * Transition back to feed
+     */
+    // PopToFeed,
 
     /*
      * Feed post convo

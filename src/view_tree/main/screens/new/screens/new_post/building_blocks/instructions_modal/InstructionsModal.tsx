@@ -5,14 +5,13 @@ import {
     TutorialScreen,
 } from "../../../../../../../tutorial/context/tutorial_context/TutorialContext";
 import Modal from "react-native-modal";
-import { instructionStyles } from "../../../../../../../../global_styles/InstructionStyles";
 import TutorialModal from "../../../../../../../tutorial/building_blocks/tutorial_modal/TutorialModal";
 import {
-    newPostContentContent,
-    newPostRecipientsContent,
-    newPostTargetContent,
-    postFinishedContent,
+    explainRecipientsContent,
+    explainTargetContent,
+    introduceNewPostContent,
 } from "../../../../../../../tutorial/screens/tutorial_screens/TutorialScreens";
+import { instructionStyles } from "../../../../../../../../global_styles/InstructionStyles";
 
 interface Props {
     goBack: () => void;
@@ -25,43 +24,72 @@ const InstructionsModal: React.FC<Props> = (props) => {
     let currentScreen = <View />;
 
     switch (tutorialScreen) {
-        case TutorialScreen.NewPostContent:
+        case TutorialScreen.IntroduceNewPost:
             currentScreen = (
                 <TutorialModal
                     top={false}
                     goBack={props.goBack}
-                    goBackScreen={TutorialScreen.NewPostPrompt}
-                    content={newPostContentContent}
+                    goBackScreen={TutorialScreen.IntroduceDigicoin}
+                    content={introduceNewPostContent}
                 />
             );
             break;
-        case TutorialScreen.NewPostTarget:
+        case TutorialScreen.ExplainTarget:
             currentScreen = (
                 <TutorialModal
                     top
-                    goBackScreen={TutorialScreen.NewPostContent}
-                    content={newPostTargetContent}
+                    goBackScreen={TutorialScreen.IntroduceNewPost}
+                    content={explainTargetContent}
                 />
             );
             break;
-        case TutorialScreen.NewPostRecipients:
+        case TutorialScreen.ExplainRecipients:
             currentScreen = (
                 <TutorialModal
                     top
-                    goBackScreen={TutorialScreen.NewPostTarget}
-                    content={newPostRecipientsContent}
+                    goBackScreen={TutorialScreen.ExplainTarget}
+                    content={explainRecipientsContent}
                 />
             );
             break;
-        case TutorialScreen.PostFinished:
-            currentScreen = (
-                <TutorialModal
-                    top
-                    goBackScreen={TutorialScreen.NewPostRecipients}
-                    content={postFinishedContent}
-                />
-            );
-            break;
+
+        // case TutorialScreen.NewPostContent:
+        //     currentScreen = (
+        //         <TutorialModal
+        //             top={false}
+        //             goBack={props.goBack}
+        //             goBackScreen={TutorialScreen.NewPostPrompt}
+        //             content={newPostContentContent}
+        //         />
+        //     );
+        //     break;
+        // case TutorialScreen.NewPostTarget:
+        //     currentScreen = (
+        //         <TutorialModal
+        //             top
+        //             goBackScreen={TutorialScreen.NewPostContent}
+        //             content={newPostTargetContent}
+        //         />
+        //     );
+        //     break;
+        // case TutorialScreen.NewPostRecipients:
+        //     currentScreen = (
+        //         <TutorialModal
+        //             top
+        //             goBackScreen={TutorialScreen.NewPostTarget}
+        //             content={newPostRecipientsContent}
+        //         />
+        //     );
+        //     break;
+        // case TutorialScreen.PostFinished:
+        //     currentScreen = (
+        //         <TutorialModal
+        //             top
+        //             goBackScreen={TutorialScreen.NewPostRecipients}
+        //             content={postFinishedContent}
+        //         />
+        //     );
+        //     break;
         default:
             modalVisible = false;
     }

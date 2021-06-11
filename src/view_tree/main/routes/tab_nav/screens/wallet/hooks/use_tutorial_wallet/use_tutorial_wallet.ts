@@ -43,24 +43,24 @@ export function useTutorialWallet(): {
             setTime(Date.now().toString());
         }
     }, [tutorialScreen]);
+    //
+    // if (tutorialScreen < TutorialScreen.NewPostPrompt) {
+    //     return {
+    //         accumulation: 0,
+    //         tierWage: tierWageCollected ? 0 : daily,
+    //         dailyWage: daily,
+    //         collectTransactions,
+    //         resetCollectTrans,
+    //         transactionsCollected,
+    //         resetCollectTierWage,
+    //         collectTierWage,
+    //         transactions: [],
+    //     };
+    // }
 
-    if (tutorialScreen < TutorialScreen.NewPostPrompt) {
+    if (tutorialScreen >= TutorialScreen.ExplainWallet) {
         return {
-            accumulation: 0,
-            tierWage: tierWageCollected ? 0 : daily,
-            dailyWage: daily,
-            collectTransactions,
-            resetCollectTrans,
-            transactionsCollected,
-            resetCollectTierWage,
-            collectTierWage,
-            transactions: [],
-        };
-    }
-
-    if (tutorialScreen > TutorialScreen.PromptReturnToWallet) {
-        return {
-            accumulation: transactionsCollected ? 0 : 145,
+            accumulation: transactionsCollected ? 0 : 80,
             tierWage: 0,
             dailyWage: daily,
             transactionsCollected,
@@ -72,64 +72,62 @@ export function useTutorialWallet(): {
                 {
                     tid: "",
                     time,
-                    coin: 15,
-                    message:
-                        'Your post received a new response: "I really ' +
-                        'like turtles.  Especially sea turtles."',
+                    coin: 80,
+                    message: "Viewed feed",
                     transactionType: TransactionTypesEnum.User,
                     data: "",
                 },
-                {
-                    tid: "",
-                    time,
-                    coin: 15,
-                    message: `Your post received a new response: "No one cares that you joined.  Why would you even post that?"`,
-                    transactionType: TransactionTypesEnum.User,
-                    data: "",
-                },
-                {
-                    tid: "",
-                    time,
-                    coin: 15,
-                    message:
-                        `Your post received a new response: "Hi ${localFirstName()}! ` +
-                        `Welcome to Digitari! This is my favorite social platform, ` +
-                        `and I'm sure you'll enjoy it"`,
-                    transactionType: TransactionTypesEnum.User,
-                    data: "",
-                },
-                {
-                    tid: "",
-                    time,
-                    coin: 50,
-                    message: `Damion liked your post: ${postContent}`,
-                    transactionType: TransactionTypesEnum.User,
-                    data: "",
-                },
-                {
-                    tid: "",
-                    time,
-                    coin: 10,
-                    message: `Kaela liked your post: ${postContent}`,
-                    transactionType: TransactionTypesEnum.User,
-                    data: "",
-                },
-                {
-                    tid: "",
-                    time,
-                    coin: 10,
-                    message: `Sarah liked your post: ${postContent}`,
-                    transactionType: TransactionTypesEnum.User,
-                    data: "",
-                },
-                {
-                    tid: "",
-                    time,
-                    coin: 30,
-                    message: "Reward for your successful convo with Zariah",
-                    transactionType: TransactionTypesEnum.User,
-                    data: "",
-                },
+                // {
+                //     tid: "",
+                //     time,
+                //     coin: 15,
+                //     message: `Your post received a new response: "No one cares that you joined.  Why would you even post that?"`,
+                //     transactionType: TransactionTypesEnum.User,
+                //     data: "",
+                // },
+                // {
+                //     tid: "",
+                //     time,
+                //     coin: 15,
+                //     message:
+                //         `Your post received a new response: "Hi ${localFirstName()}! ` +
+                //         `Welcome to Digitari! This is my favorite social platform, ` +
+                //         `and I'm sure you'll enjoy it"`,
+                //     transactionType: TransactionTypesEnum.User,
+                //     data: "",
+                // },
+                // {
+                //     tid: "",
+                //     time,
+                //     coin: 50,
+                //     message: `Damion liked your post: ${postContent}`,
+                //     transactionType: TransactionTypesEnum.User,
+                //     data: "",
+                // },
+                // {
+                //     tid: "",
+                //     time,
+                //     coin: 10,
+                //     message: `Kaela liked your post: ${postContent}`,
+                //     transactionType: TransactionTypesEnum.User,
+                //     data: "",
+                // },
+                // {
+                //     tid: "",
+                //     time,
+                //     coin: 10,
+                //     message: `Sarah liked your post: ${postContent}`,
+                //     transactionType: TransactionTypesEnum.User,
+                //     data: "",
+                // },
+                // {
+                //     tid: "",
+                //     time,
+                //     coin: 30,
+                //     message: "Reward for your successful convo with Zariah",
+                //     transactionType: TransactionTypesEnum.User,
+                //     data: "",
+                // },
             ],
         };
     }

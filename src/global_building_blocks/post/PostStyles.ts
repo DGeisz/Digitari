@@ -47,6 +47,11 @@ export const styles = StyleSheet.create({
         left: 5,
         zIndex: 100,
     },
+    pulseContainer: {
+        position: "absolute",
+        top: 2,
+        left: 5,
+    },
     coinText: {
         color: palette.mediumGray,
         fontWeight: "bold",
@@ -163,6 +168,11 @@ export const styles = StyleSheet.create({
         borderRightColor: palette.oceanSurf,
         marginRight: 2,
         paddingRight: 5,
+    },
+    responsePulseContainer: {
+        position: "absolute",
+        top: -2,
+        left: -1,
     },
     pencil: {
         marginRight: 5,

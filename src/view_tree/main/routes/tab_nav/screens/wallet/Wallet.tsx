@@ -28,7 +28,6 @@ import {
 } from "./gql/Queries";
 import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import ErrorMessage from "../../../../../../global_building_blocks/error_message/ErrorMessage";
-import { getTierWage } from "../../../../../../global_types/TierTypes";
 import { palette } from "../../../../../../global_styles/Palette";
 import {
     COLLECT_EARNINGS,
@@ -423,25 +422,27 @@ const Wallet: React.FC<Props> = (props) => {
                                                  * Handle the tutorial scenario
                                                  */
                                                 if (tutorialActive) {
+                                                    // if (
+                                                    //     tutorialScreen ===
+                                                    //     TutorialScreen.FirstCollectTap
+                                                    // ) {
+                                                    //     shockTheNation();
+                                                    //     setAnimationCoinAmount(
+                                                    //         total
+                                                    //     );
+                                                    //
+                                                    //     tutorialWallet.collectTierWage();
+                                                    //
+                                                    //     setTimeout(
+                                                    //         () =>
+                                                    //             advanceTutorial(),
+                                                    //         700
+                                                    //     );
+                                                    // }
+
                                                     if (
                                                         tutorialScreen ===
-                                                        TutorialScreen.FirstCollectTap
-                                                    ) {
-                                                        shockTheNation();
-                                                        setAnimationCoinAmount(
-                                                            total
-                                                        );
-
-                                                        tutorialWallet.collectTierWage();
-
-                                                        setTimeout(
-                                                            () =>
-                                                                advanceTutorial(),
-                                                            700
-                                                        );
-                                                    } else if (
-                                                        tutorialScreen ===
-                                                        TutorialScreen.CollectTransactions
+                                                        TutorialScreen.CollectCoin
                                                     ) {
                                                         shockTheNation();
                                                         setAnimationCoinAmount(

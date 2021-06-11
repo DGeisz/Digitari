@@ -3,6 +3,7 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 import { styles, countdownCoinSize } from "./CoinCountdownStyles";
 import CoinBox from "../coin_box/CoinBox";
 import { palette } from "../../global_styles/Palette";
+import UpdateIndicator from "../../view_tree/main/routes/tab_nav/building_blocks/update_indicator/UpdateIndicator";
 
 const countdownAmount = 20;
 
@@ -12,15 +13,18 @@ interface Props {
     amount: number;
     showSkip?: boolean;
     onSkip?: () => void;
+    accelerate?: boolean;
 }
 
 const CoinCountdown: React.FC<Props> = (props) => {
     const [time, setTime] = useState<number>(Date.now());
 
+    const interval = !!props.accelerate ? 400 : 1000;
+
     useEffect(() => {
         const increase = setInterval(() => {
             setTime((time) => {
-                if (time - props.referenceTime > countdownAmount * 1000) {
+                if (time - props.referenceTime > countdownAmount * interval) {
                     clearInterval(increase);
 
                     return time;
@@ -28,7 +32,7 @@ const CoinCountdown: React.FC<Props> = (props) => {
                     return Date.now();
                 }
             });
-        }, 1000);
+        }, interval);
 
         return () => {
             clearInterval(increase);
@@ -36,7 +40,7 @@ const CoinCountdown: React.FC<Props> = (props) => {
     }, []);
 
     const elapsed = Math.max(
-        Math.floor((time - props.referenceTime) / 1000),
+        Math.floor((time - props.referenceTime) / interval),
         0
     );
 
@@ -89,6 +93,9 @@ const CoinCountdown: React.FC<Props> = (props) => {
                     activeOpacity={0.5}
                     onPress={props.onNextPosts}
                 >
+                    <View style={styles.pulseContainer}>
+                        <UpdateIndicator dotSize={10} />
+                    </View>
                     <Text style={styles.nextPostsText}>Next posts</Text>
                     <CoinBox
                         boxColor={palette.lightForestGreen}

@@ -1,10 +1,14 @@
 import React, { useEffect, useRef } from "react";
-import { Animated, Easing, View } from "react-native";
+import { Animated } from "react-native";
 import { styles } from "./UpdateIndicatorStyles";
 
 const animationDuration = 1400;
 
-const UpdateIndicator: React.FC = () => {
+interface Props {
+    dotSize?: number;
+}
+
+const UpdateIndicator: React.FC<Props> = (props) => {
     const opacityAnim = useRef(new Animated.Value(1)).current;
     const dotSize = useRef(new Animated.Value(0)).current;
 
@@ -18,7 +22,7 @@ const UpdateIndicator: React.FC = () => {
                         duration: animationDuration,
                     }),
                     Animated.timing(dotSize, {
-                        toValue: 3,
+                        toValue: !!props.dotSize ? props.dotSize : 3,
                         useNativeDriver: true,
                         duration: animationDuration,
                     }),
