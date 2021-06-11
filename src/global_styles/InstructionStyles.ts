@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { basicLayouts } from "./BasicLayouts";
 import { palette } from "./Palette";
+import { GENERAL_CONTENT_WIDTH } from "../global_constants/screen_constants";
 
 export const instructionStyles = StyleSheet.create({
     modal: {
@@ -17,6 +18,9 @@ export const instructionStyles = StyleSheet.create({
         backgroundColor: "black",
         opacity: 0.9,
         padding: 20,
+    },
+    innerContainer: {
+        width: GENERAL_CONTENT_WIDTH,
     },
     header: {
         flexDirection: "row",

@@ -22,12 +22,14 @@ const TutorialModal: React.FC<Props> = (props) => {
             }
         >
             <View style={instructionStyles.instructionContainer}>
-                {props.content}
-                <TutorialFooter
-                    goBackScreen={props.goBackScreen}
-                    goBack={props.goBack}
-                    showGoBack={props.showGoBack}
-                />
+                <View style={instructionStyles.innerContainer}>
+                    {props.content}
+                    <TutorialFooter
+                        goBackScreen={props.goBackScreen}
+                        goBack={props.goBack}
+                        showGoBack={props.showGoBack}
+                    />
+                </View>
             </View>
         </View>
     );
