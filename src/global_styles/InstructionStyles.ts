@@ -21,6 +21,7 @@ export const instructionStyles = StyleSheet.create({
     },
     innerContainer: {
         width: GENERAL_CONTENT_WIDTH,
+        alignSelf: "center",
     },
     header: {
         flexDirection: "row",
