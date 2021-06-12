@@ -20,7 +20,7 @@ export const instructionStyles = StyleSheet.create({
         padding: 20,
     },
     innerContainer: {
-        width: GENERAL_CONTENT_WIDTH,
+        width: GENERAL_CONTENT_WIDTH - 40,
         alignSelf: "center",
     },
     header: {

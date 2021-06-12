@@ -3,6 +3,7 @@ import { View } from "react-native";
 import { instructionStyles } from "../../../../global_styles/InstructionStyles";
 import TutorialFooter from "../../../../global_building_blocks/tutorial/TutorialFooter";
 import { TutorialScreen } from "../../context/tutorial_context/TutorialContext";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface Props {
     content: ReactNode;
@@ -13,6 +14,8 @@ interface Props {
 }
 
 const TutorialModal: React.FC<Props> = (props) => {
+    const { top, bottom } = useSafeAreaInsets();
+
     return (
         <View
             style={
@@ -21,7 +24,12 @@ const TutorialModal: React.FC<Props> = (props) => {
                     : instructionStyles.modalBottom
             }
         >
-            <View style={instructionStyles.instructionContainer}>
+            <View
+                style={[
+                    instructionStyles.instructionContainer,
+                    { marginTop: top, marginBottom: bottom },
+                ]}
+            >
                 <View style={instructionStyles.innerContainer}>
                     {props.content}
                     <TutorialFooter
