@@ -19,7 +19,6 @@ export type MainEntryStack = {
     PostScreen: {
         pid: string;
     };
-    AccountSettings: undefined;
     NewPost: {
         cmid?: string;
     };
