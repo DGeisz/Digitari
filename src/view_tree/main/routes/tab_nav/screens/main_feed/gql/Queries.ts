@@ -2,8 +2,8 @@ import { gql } from "@apollo/client";
 import { PostType } from "../../../../../../../global_types/PostTypes";
 
 export const GET_FEED = gql`
-    query GetFeed($lastTime: String) {
-        feed(lastTime: $lastTime) {
+    query GetFeed($lastTime: String, $skipReward: Boolean) {
+        feed(lastTime: $lastTime, skipReward: $skipReward) {
             id
             uid
 
@@ -38,4 +38,5 @@ export interface GetFeedData {
 
 export interface GetFeedVariables {
     lastTime?: string;
+    skipReward?: boolean;
 }

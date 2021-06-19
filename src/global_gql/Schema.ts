@@ -213,7 +213,7 @@ export const schema = gql`
     }
 
     type Query @aws_cognito_user_pools @aws_iam {
-        feed(lastTime: String): [Post]
+        feed(lastTime: String, skipReward: Boolean): [Post]
         user(uid: ID!): User
         hid: String
         userPosts(uid: ID!, lastTime: String, skipReward: Boolean): [Post]

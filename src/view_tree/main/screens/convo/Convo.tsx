@@ -892,21 +892,25 @@ const Convo: React.FC<Props> = (props) => {
                                         />
                                     </View>
                                 </View>
-                                <View style={styles.rewardContainer}>
-                                    <Text style={styles.rewardText}>
-                                        Reward
-                                    </Text>
-                                    <View style={styles.coinBoxContainer}>
-                                        <CoinBox
-                                            coinSize={20}
-                                            fontSize={14}
-                                            showCoinPlus
-                                            amount={post.convoReward}
-                                            boxColor={palette.lightForestGreen}
-                                            paddingRight={10}
-                                        />
+                                {tid !== uid && (
+                                    <View style={styles.rewardContainer}>
+                                        <Text style={styles.rewardText}>
+                                            Reward
+                                        </Text>
+                                        <View style={styles.coinBoxContainer}>
+                                            <CoinBox
+                                                coinSize={20}
+                                                fontSize={14}
+                                                showCoinPlus
+                                                amount={post.convoReward}
+                                                boxColor={
+                                                    palette.lightForestGreen
+                                                }
+                                                paddingRight={10}
+                                            />
+                                        </View>
                                     </View>
-                                </View>
+                                )}
                                 {!!error && (
                                     <View style={styles.errorContainer}>
                                         <Text style={styles.errorText}>

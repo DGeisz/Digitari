@@ -3,7 +3,7 @@ export const POST_TYPENAME = "Post";
 export const POST_CONTENT_MAX_LEN = 250;
 export const POST_ADD_ON_CONTENT_MAX_LEN = 10000;
 export const COST_PER_RECIPIENT = 10;
-export const POST_BLOCK_COST = 30;
+export const POST_BLOCK_COST = 200;
 
 export enum PostAddOn {
     None,

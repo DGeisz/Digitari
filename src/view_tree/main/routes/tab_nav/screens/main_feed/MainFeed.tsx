@@ -381,6 +381,25 @@ const MainFeed: React.FC<Props> = (props) => {
                                                             },
                                                         }));
                                                 }}
+                                                showSkip
+                                                onSkip={async () => {
+                                                    const lastTime =
+                                                        finalFeed[
+                                                            finalFeed.length - 1
+                                                        ].time;
+                                                    const ffLen =
+                                                        finalFeed.length;
+
+                                                    setFetchMoreLen(ffLen);
+
+                                                    !!fetchMore &&
+                                                        (await fetchMore({
+                                                            variables: {
+                                                                lastTime,
+                                                                skipReward: true,
+                                                            },
+                                                        }));
+                                                }}
                                                 amount={nextPostsReward}
                                             />
                                         ) : (
