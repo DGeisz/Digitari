@@ -686,12 +686,14 @@ const NewPost: React.FC<Props> = (props) => {
                                                         styles.commFollowerNumeral
                                                     }
                                                 >
-                                                    {toCommaRep(
-                                                        community.followers
-                                                    ) + " "}
+                                                    {/*TODO Change back to normal*/}
+                                                    {/*{toCommaRep(*/}
+                                                    {/*    community.followers*/}
+                                                    {/*) + " "}*/}
+                                                    {toCommaRep(1326) + " "}
                                                 </Text>
                                                 {community.followers === 1
-                                                    ? "Follower"
+                                                    ? "Followers"
                                                     : "Followers"}
                                             </Text>
                                         </>
