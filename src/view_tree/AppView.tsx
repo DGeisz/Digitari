@@ -167,6 +167,7 @@ const AppView: React.FC = () => {
             userAuthenticated(true);
         } catch (_) {
             userAuthenticated(false);
+            setFetchedUser(false);
         }
     };
 
@@ -189,6 +190,7 @@ const AppView: React.FC = () => {
                 } else {
                     // If we're not authenticated, immediately show auth flow
 
+                    setFetchedUser(false);
                     if (!splashHidden) {
                         await SplashScreen.hideAsync();
                         setSplashHidden(true);
@@ -217,23 +219,42 @@ const AppView: React.FC = () => {
                         mutation: CHECK_IN_USER,
                     });
 
-                    if (!checkInData?.checkInUser) {
-                        const { data: createUserData } = await client.mutate<
-                            CreateUserData,
-                            CreateUserVariables
-                        >({
-                            mutation: CREATE_USER,
-                            variables: {
-                                email,
-                                firstName: given_name,
-                                lastName: family_name,
-                                code: inviteCode(),
-                            },
-                        });
+                    console.log("This is checkin data", checkInData);
 
-                        if (!!createUserData?.createUser) {
-                            setFetchedUser(true);
+                    if (
+                        !checkInData?.checkInUser ||
+                        !checkInData.checkInUser.firstName ||
+                        !checkInData.checkInUser.lastName ||
+                        !checkInData.checkInUser.email
+                    ) {
+                        try {
+                            const {
+                                data: createUserData,
+                            } = await client.mutate<
+                                CreateUserData,
+                                CreateUserVariables
+                            >({
+                                mutation: CREATE_USER,
+                                variables: {
+                                    email,
+                                    firstName: given_name,
+                                    lastName: family_name,
+                                    code: inviteCode(),
+                                },
+                            });
+
+                            console.log(
+                                "This is create user data: ",
+                                createUserData
+                            );
+
+                            if (!!createUserData?.createUser) {
+                                setFetchedUser(true);
+                            }
+
                             tutorialContextValues.setTutorialActive(true);
+                        } catch (e) {
+                            console.error("Create user error: ", e);
                         }
                     } else {
                         setFetchedUser(true);

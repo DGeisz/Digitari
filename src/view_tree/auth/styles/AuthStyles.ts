@@ -40,6 +40,7 @@ export const authStyles = StyleSheet.create({
         color: palette.lightGray,
     },
     signUpConsent: {
+        marginTop: 10,
         textAlign: "center",
         fontWeight: "500",
         color: palette.hardGray,
