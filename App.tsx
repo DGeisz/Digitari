@@ -17,6 +17,16 @@ import { useApollo } from "./src/global_gql/hooks/use_apollo/use_apollo";
 import { setStatusBarStyle } from "expo-status-bar";
 import { EventType } from "expo-linking";
 
+/*
+* For Info.plist:
+* Put in NSExceptionDomains
+        <key>localhost</key>
+        <dict>
+          <key>NSExceptionAllowsInsecureHTTPLoads</key>
+          <true/>
+        </dict>
+* */
+
 setStatusBarStyle("dark");
 enableScreens();
 
