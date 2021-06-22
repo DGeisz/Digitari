@@ -187,8 +187,8 @@ export const almostFinishedContent = (
 
 export const explainChallengesContent = (
     <Text style={instructionStyles.instructionText}>
-        Here are challenges for you to complete!{"\n\n"} Completing challenges
-        is a great way to make some extra coin, especially when you're starting
+        Here are challenges for you to complete!{"\n\n"}Completing challenges is
+        a great way to make some extra coin, especially when you're starting
         out.
     </Text>
 );

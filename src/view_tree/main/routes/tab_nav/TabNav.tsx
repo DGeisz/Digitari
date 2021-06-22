@@ -124,7 +124,6 @@ const TabNav: React.FC<Props> = (props) => {
                         });
                     }}
                 />
-                {/*TODO: Change tutorial active first screen to wallet*/}
                 <Tab.Navigator
                     initialRouteName={"MainFeed"}
                     tabBarOptions={{

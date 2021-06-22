@@ -226,9 +226,9 @@ const CommunityHeader: React.FC<Props> = (props) => {
                 <View style={styles.footerLeft}>
                     <Text style={styles.followsText}>
                         <Text style={styles.followsCountText}>
-                            {/*{toRep(props.community.followers)}*/}
-                            {toRep(5448)}
-                            {/*TODO: Change this back*/}
+                            {toRep(props.community.followers)}
+                            {/*{toRep(5448)}*/}
+                            {/*TODO: Change this for screenshots*/}
                             <Text style={styles.followsText}>
                                 {" Followers"}
                             </Text>
@@ -237,12 +237,11 @@ const CommunityHeader: React.FC<Props> = (props) => {
                 </View>
                 <View style={styles.footerRight}>
                     <Text style={styles.dateText}>
-                        {/*{`Created: ${dateFormatter(*/}
-                        {/*    props.community.timeCreated*/}
-                        {/*)}`}*/}
-                        {/*TODO: Change this back*/}
-
-                        {`Created: 5/11/2021`}
+                        {`Created: ${dateFormatter(
+                            props.community.timeCreated
+                        )}`}
+                        {/*TODO: Change this for screenshots*/}
+                        {/*{`Created: 5/11/2021`}*/}
                     </Text>
                 </View>
             </View>

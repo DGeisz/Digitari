@@ -686,11 +686,11 @@ const NewPost: React.FC<Props> = (props) => {
                                                         styles.commFollowerNumeral
                                                     }
                                                 >
-                                                    {/*TODO Change back to normal*/}
-                                                    {/*{toCommaRep(*/}
-                                                    {/*    community.followers*/}
-                                                    {/*) + " "}*/}
-                                                    {toCommaRep(1326) + " "}
+                                                    {/*TODO Change for screenshots*/}
+                                                    {toCommaRep(
+                                                        community.followers
+                                                    ) + " "}
+                                                    {/*{toCommaRep(1326) + " "}*/}
                                                 </Text>
                                                 {community.followers === 1
                                                     ? "Followers"
@@ -793,8 +793,6 @@ const NewPost: React.FC<Props> = (props) => {
             </>
         );
     } else {
-        /*TODO: Make this better*/
-
         return null;
     }
 };
