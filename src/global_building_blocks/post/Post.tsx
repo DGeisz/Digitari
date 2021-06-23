@@ -283,7 +283,6 @@ const Post: React.FC<Props> = (props) => {
                     }
 
                     setPostModalLoading(false);
-                    setPostModalVisible(false);
                 }}
                 onCancel={() => setPostModalVisible(false)}
             />

@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
         borderRadius: 20,
     },
     errorText: {
+        textAlign: "center",
         marginBottom: 10,
         fontWeight: "bold",
         color: palette.danger,
