@@ -8,27 +8,28 @@ import {
     TutorialScreen,
 } from "../../../../../../../tutorial/context/tutorial_context/TutorialContext";
 import { getTierWage } from "../../../../../../../../global_types/TierTypes";
-import { localFirstName } from "../../../../../../../../global_state/UserState";
 
 export function useTutorialWallet(): {
     accumulation: number;
     tierWage: number;
     dailyWage: number;
-    collectTierWage: () => void;
-    resetCollectTierWage: () => void;
     resetCollectTrans: () => void;
     collectTransactions: () => void;
     transactionsCollected: boolean;
     transactions: TransactionType[];
 } {
-    const { tutorialScreen, postContent } = useContext(TutorialContext);
-    const [tierWageCollected, setTierWageCollected] = useState<boolean>(false);
+    const { tutorialScreen } = useContext(TutorialContext);
+
+    useEffect(() => {
+        if (tutorialScreen === TutorialScreen.Welcome) {
+            setTransCollected(false);
+        }
+    }, [tutorialScreen]);
+
     const [transactionsCollected, setTransCollected] = useState<boolean>(false);
 
     const daily = getTierWage(0, "0")[1];
 
-    const collectTierWage = () => setTierWageCollected(true);
-    const resetCollectTierWage = () => setTierWageCollected(false);
     const collectTransactions = () => setTransCollected(true);
     const resetCollectTrans = () => setTransCollected(false);
 
@@ -61,8 +62,6 @@ export function useTutorialWallet(): {
             transactionsCollected,
             collectTransactions,
             resetCollectTrans,
-            resetCollectTierWage,
-            collectTierWage,
             transactions: [
                 {
                     tid: "",
@@ -134,8 +133,6 @@ export function useTutorialWallet(): {
         transactionsCollected,
         collectTransactions,
         resetCollectTrans,
-        resetCollectTierWage,
-        collectTierWage,
         transactions: [],
     };
 }

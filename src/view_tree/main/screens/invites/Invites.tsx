@@ -46,7 +46,6 @@ const Invites: React.FC<Props> = (props) => {
     const [offset, setOffset] = useState<number>(0);
 
     const getContacts = async () => {
-        console.log("Getting contacts");
         const { status } = await Contacts.requestPermissionsAsync();
 
         if (status === "granted") {

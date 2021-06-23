@@ -215,7 +215,7 @@ const MainEntry: React.FC = () => {
             <RootStack.Screen
                 name="Store"
                 component={Store}
-                options={{ headerRight: () => null }}
+                options={{ headerRight: () => null, title: "Get more coins!" }}
             />
             {/*
              * Reporting

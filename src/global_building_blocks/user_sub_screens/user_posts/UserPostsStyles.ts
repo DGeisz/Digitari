@@ -8,6 +8,11 @@ export const styles = StyleSheet.create({
         paddingTop: 30,
         paddingHorizontal: 30,
     },
+    endOfPostsContainer: {
+        ...basicLayouts.flexGrid5,
+        paddingTop: 10,
+        paddingHorizontal: 30,
+    },
     noPostsText: {
         fontSize: 18,
         fontWeight: "bold",

@@ -219,8 +219,6 @@ const AppView: React.FC = () => {
                         mutation: CHECK_IN_USER,
                     });
 
-                    console.log("This is checkin data", checkInData);
-
                     if (
                         !checkInData?.checkInUser ||
                         !checkInData.checkInUser.firstName ||
@@ -242,11 +240,6 @@ const AppView: React.FC = () => {
                                     code: inviteCode(),
                                 },
                             });
-
-                            console.log(
-                                "This is create user data: ",
-                                createUserData
-                            );
 
                             if (!!createUserData?.createUser) {
                                 setFetchedUser(true);

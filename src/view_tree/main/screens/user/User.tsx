@@ -50,8 +50,6 @@ const User: React.FC<Props> = (props) => {
         }
     }, [!!data?.user ? data.user.firstName + data.user.lastName : ""]);
 
-    console.log(error);
-
     if (!data?.user && loading) {
         return <LoadingWheel />;
     }

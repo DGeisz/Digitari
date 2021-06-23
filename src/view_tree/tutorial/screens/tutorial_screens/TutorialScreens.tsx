@@ -35,7 +35,8 @@ export const introduceDigicoinContent = (
             Digicoin is Digitari's in-game currency. We'll talk about how you
             earn digicoin in a second, but first let's talk about how you use
             it. {"\n\n"}
-            Tap the blue post button on the bottom right side of your screen.
+            Hit "Next," then tap the blue post button on the bottom right side
+            of your screen.
         </Text>
         <View style={instructionStyles.centralContentContainer}>
             <FontAwesome name="pencil" size={35} color={palette.white} />
@@ -87,7 +88,8 @@ export const explainFeedRewardContent = (
     <Text style={instructionStyles.instructionText}>
         After a couple posts, you'll see a message like the one you see at the
         bottom of your screen.{"\n\n"}
-        After the time is up, hit "Next posts" to earn the reward.
+        Press "Next," and then hit "Next posts" to earn the reward after the
+        time is up.
     </Text>
 );
 
@@ -95,7 +97,7 @@ export const promptOpenWalletContent = (
     <>
         <Text style={instructionStyles.instructionText}>
             Ok, now let's collect the digicoin you just earned!{"\n\n"}
-            Tap the wallet icon in the bottom tab bar.
+            Hit "Next," then tap the wallet icon in the bottom tab bar.
         </Text>
         <View style={instructionStyles.centralContentContainer}>
             <Entypo name="wallet" size={30} color={palette.white} />
@@ -117,7 +119,7 @@ export const explainWalletContent = (
 
 export const promptCollectContent = (
     <Text style={instructionStyles.instructionText}>
-        Tap "Collect" to collect the digicoin you've earned.
+        Hit "Next," then tap "Collect" to collect the digicoin you've earned.
     </Text>
 );
 
@@ -133,7 +135,7 @@ export const backToFeedContent = (
     <>
         <Text style={instructionStyles.instructionText}>
             Let's go back to your feed!{"\n\n"}
-            Tap the home icon in the bottom tab bar.
+            Hit "Next," then tap the home icon in the bottom tab bar.
         </Text>
         <View style={instructionStyles.centralContentContainer}>
             <Entypo name="home" size={30} color={palette.white} />
@@ -156,8 +158,8 @@ export const openTierPromptContent = (
         You might have noticed the 🙂 by your name. This is your tier! {"\n\n"}
         This is the same emoji that you saw on all the posts.
         {"\n\n"}
-        We'll talk more about tiers and rankings in a bit, but for now, tap on
-        the 🙂 to see all the tiers.
+        We'll talk more about tiers and rankings in a bit, but for now, hit
+        "Next," then tap on the 🙂 to see all the tiers.
     </Text>
 );
 
@@ -222,7 +224,7 @@ export const likeFirstPostContent = (
             Looks like Zariah just joined the platform and is introducing
             herself! Let's like Zariah's post to welcome her to Digitari!
             {"\n\n"}
-            To like her post, tap the coin icon under the emoji.
+            Hit "Next," then tap the coin icon under 🙂 to like her post.
         </Text>
         <View style={instructionStyles.centralContentContainer}>
             <CoinBox
@@ -248,7 +250,7 @@ export const explainCustomLikeContent = (
     <Text style={instructionStyles.instructionText}>
         You can also send a post a custom amount of digicoin with a like!
         {"\n\n"}
-        To send a custom like, simply tap and hold on the coin icon.
+        To send a custom like, all you do is tap and hold on the coin icon.
     </Text>
 );
 
@@ -256,8 +258,8 @@ export const customLikePostContent = (
     <Text style={instructionStyles.instructionText}>
         Bennet's doge meme is pretty cute! To show him our appreciation, let's
         send him a custom like with 100 digicoin.{"\n\n"}
-        Tap and hold the coin on Bennet's post, enter "100" for "Amount" in the
-        pop-up, and press "Like."
+        Hit "Next," then tap and hold the coin on Bennet's post.{"\n\n"}
+        In the pop-up, enter "100" for "Amount" and press "Like."
     </Text>
 );
 
@@ -275,8 +277,9 @@ export const respondToPostContent = (
     <>
         <Text style={instructionStyles.instructionText}>
             How 'bout we say hi to Zariah?{"\n\n"}
-            To respond to Zariah's post, tap the light blue button on the bottom
-            right side of her post and hit "Ok" in the pop-up that appears.
+            To respond to Zariah's post, hit "Next" and then tap the light blue
+            button on the bottom right side of her post.{"\n\n"}
+            Hit "Ok" in the pop-up that appears.
         </Text>
         <View style={instructionStyles.centralContentContainer}>
             <Entypo name="pencil" size={30} color={palette.white} />
@@ -298,8 +301,8 @@ export const explainIdentityContent = (
 
 export const promptResponseMessageContent = (
     <Text style={instructionStyles.instructionText}>
-        In the message input at the bottom of the screen, say hi to Zariah and
-        ask her what she likes about Surfer's Paradise.
+        Hit "Next," then say hi to Zariah and ask her what she likes about
+        Surfer's Paradise.
         {"\n\n"}
         After doing so, send the message!
     </Text>
@@ -334,7 +337,8 @@ export const explainConvoContent = (
 export const promptReplyContent = (
     <Text style={instructionStyles.instructionText}>
         Looks like Zariah just responded! {"\n\n"}
-        Answer her question and tell her whether you like beaches.
+        Hit "Next," then answer her question and tell her whether you like
+        beaches.
     </Text>
 );
 
@@ -350,8 +354,10 @@ export const promptFinishContent = (
     <Text style={instructionStyles.instructionText}>
         It seems like a good time to finish your Convo with Zariah!
         {"\n\n"}
-        To finish this convo, tap the "Finish Convo" button at the end of the
-        Convo, and then press "Finish" in the pop-up that appears.
+        Hit "Next" and then tap the "Finish Convo" button at the end of the
+        Convo.
+        {"\n\n"}
+        Then press "Finish" in the pop-up that appears.
     </Text>
 );
 

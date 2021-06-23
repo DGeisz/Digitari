@@ -398,8 +398,8 @@ const CommunityPosts: React.FC<Props> = (props) => {
                     <LoadingWheel />
                 ) : (
                     <>
-                        {finalFeed.length !== fetchMoreLen &&
-                            !!finalFeed.length && (
+                        {!!finalFeed.length &&
+                            (finalFeed.length !== fetchMoreLen ? (
                                 <CoinCountdown
                                     referenceTime={lastFetchTime}
                                     onNextPosts={async () => {
@@ -475,7 +475,13 @@ const CommunityPosts: React.FC<Props> = (props) => {
                                             }));
                                     }}
                                 />
-                            )}
+                            ) : (
+                                <View style={styles.endOfPostsContainer}>
+                                    <Text style={styles.noPostsText}>
+                                        You've reached the end!
+                                    </Text>
+                                </View>
+                            ))}
                         <View style={globalScreenStyles.listFooterBuffer} />
                     </>
                 );

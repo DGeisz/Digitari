@@ -47,7 +47,6 @@ const SelectCommunityModal: React.FC<Props> = (props) => {
     useEffect(() => {
         if (props.visible) {
             myRefetch().then();
-            console.log("Doing refetch");
         }
     }, [props.visible]);
 

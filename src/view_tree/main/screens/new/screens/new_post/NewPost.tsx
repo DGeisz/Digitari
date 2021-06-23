@@ -167,7 +167,6 @@ const NewPost: React.FC<Props> = (props) => {
                                 }
                             );
 
-                            console.log("Image put successful treeya!");
                             break;
                         } catch (_) {
                             /*
@@ -407,7 +406,7 @@ const NewPost: React.FC<Props> = (props) => {
                             }}
                             keyboardType="twitter"
                             style={styles.contentInput}
-                            placeholder="Content..."
+                            placeholder="What's on your mind?"
                             multiline
                             onChangeText={(text) => {
                                 setContent(
@@ -734,7 +733,7 @@ const NewPost: React.FC<Props> = (props) => {
                             ref={recipientsRef}
                             style={styles.recipientsInput}
                             editable={!tutorialActive}
-                            placeholder="Recipients..."
+                            placeholder="How many recipients?"
                             onFocus={() =>
                                 setTimeout(() => {
                                     !!scrollRef?.current &&

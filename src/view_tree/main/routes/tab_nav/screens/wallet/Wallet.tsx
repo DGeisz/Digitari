@@ -308,7 +308,6 @@ const Wallet: React.FC<Props> = (props) => {
                     setTimeout(() => props.navigation.navigate("Profile"), 700)
                 }
                 openNewPost={() => setTimeout(openNew, 700)}
-                resetCollect={tutorialWallet.resetCollectTierWage}
                 nav2MainFeed={() =>
                     setTimeout(() => props.navigation.navigate("MainFeed"), 700)
                 }

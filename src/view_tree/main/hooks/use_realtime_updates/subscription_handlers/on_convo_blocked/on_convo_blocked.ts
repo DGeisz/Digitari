@@ -16,8 +16,6 @@ import {
 export function onConvoBlocked(
     options: OnSubscriptionDataOptions<ConvoBlockedData>
 ) {
-    console.log("Getting convo blocked sub");
-
     const {
         client: { cache },
         subscriptionData: { data },

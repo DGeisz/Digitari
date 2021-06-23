@@ -56,7 +56,7 @@ const ActiveConvos: React.FC<Props> = () => {
         return (
             <View style={styles.noActiveConvos}>
                 <Text style={styles.noActiveConvosText}>
-                    You don't have any active convos
+                    Respond to posts to start convos!
                 </Text>
                 <TouchableOpacity
                     onPress={() => {

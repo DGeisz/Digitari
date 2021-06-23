@@ -595,8 +595,6 @@ const Convo: React.FC<Props> = (props) => {
                 });
 
                 if (!!activeConvosData?.activeConvos) {
-                    console.log("Now we're sorting everything");
-
                     let convos = [...activeConvosData.activeConvos];
                     convos.sort(
                         (a, b) => parseInt(b.lastTime) - parseInt(a.lastTime)

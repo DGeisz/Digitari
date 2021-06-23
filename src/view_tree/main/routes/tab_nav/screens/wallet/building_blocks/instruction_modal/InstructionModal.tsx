@@ -17,7 +17,6 @@ import {
 interface Props {
     navigateToProfile: () => void;
     openNewPost: () => void;
-    resetCollect: () => void;
     nav2MainFeed: () => void;
     resetCollectTrans: () => void;
 }

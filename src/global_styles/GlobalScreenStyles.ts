@@ -6,7 +6,7 @@ export const globalScreenStyles = StyleSheet.create({
         backgroundColor: palette.white,
     },
     listFooterBuffer: {
-        height: 60,
+        height: 80,
     },
     headerBuffer: {
         height: 20,

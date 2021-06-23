@@ -110,7 +110,7 @@ const NewConvos: React.FC<Props> = () => {
             ) : finalFeed.length === 0 ? (
                 <View style={styles.noNewConvos}>
                     <Text style={styles.noNewConvosText}>
-                        You don't have any new convos
+                        Create posts to get responses!
                     </Text>
                     <TouchableOpacity
                         onPress={() => {
