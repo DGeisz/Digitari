@@ -12,9 +12,10 @@ import { createSubscriptionHandshakeLink } from "aws-appsync-subscription-link";
 import { userAuthenticated } from "../../../global_state/AuthState";
 import { useMemo } from "react";
 import { cache } from "../../../global_state/Cache";
+// @ts-ignore
+import { API_ENDPOINT } from "react-native-dotenv";
 
-const url =
-    "https://yvetqqqrlbgklmrodh6dx5ix6a.appsync-api.us-east-2.amazonaws.com/graphql";
+const url = API_ENDPOINT;
 const region = "us-east-2";
 const auth: AuthOptions = {
     type: AUTH_TYPE.AMAZON_COGNITO_USER_POOLS,
