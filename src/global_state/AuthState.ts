@@ -1,5 +1,6 @@
 import { makeVar } from "@apollo/client";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-community/async-storage";
 
 export const userAuthenticated = makeVar<boolean>(true);
 

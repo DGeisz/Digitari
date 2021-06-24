@@ -1,5 +1,5 @@
 import { makeVar } from "@apollo/client";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-community/async-storage";
 
 /*User id*/
 const UID_KEY = "UID_KEY";
