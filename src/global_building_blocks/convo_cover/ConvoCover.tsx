@@ -36,17 +36,6 @@ export default class ConvoCover extends React.Component<Props> {
         );
     }
 
-    componentDidUpdate(
-        prevProps: Readonly<Props>,
-        prevState: Readonly<{}>,
-        snapshot?: any
-    ) {
-        console.log(
-            prevProps.convo === this.props.convo,
-            prevProps.openConvo === this.props.openConvo
-        );
-    }
-
     render() {
         const uid = localUid();
 

@@ -23,6 +23,7 @@ const windowHeight = height;
 
 interface Props {
     onSend: (text: string) => void;
+    onChangeText?: (text: string) => void;
     onKeyboardShow?: () => void;
     inputPlaceholder?: string;
     autoFocus?: boolean;
@@ -36,6 +37,7 @@ const MessageInput: React.FC<Props> = ({
     inputPlaceholder,
     autoFocus,
     blockInput,
+    onChangeText,
 }) => {
     const insets = useSafeAreaInsets();
 
@@ -153,9 +155,15 @@ const MessageInput: React.FC<Props> = ({
                             multiline={true}
                             scrollEnabled={true}
                             value={text}
-                            onChangeText={(text) =>
-                                setText(text.substring(0, MESSAGE_MAX_LEN))
-                            }
+                            onChangeText={(text) => {
+                                const message = text.substring(
+                                    0,
+                                    MESSAGE_MAX_LEN
+                                );
+
+                                setText(message);
+                                !!onChangeText && onChangeText(message);
+                            }}
                             autoFocus={autoFocus}
                             editable={!blockInput}
                         />

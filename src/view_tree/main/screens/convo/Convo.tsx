@@ -671,6 +671,8 @@ const Convo: React.FC<Props> = (props) => {
         setTimeout(() => {
             setAnimateMessages(true);
         }, 1000);
+
+        props.navigation.setOptions({ animationEnabled: true });
     }, []);
 
     let convo: ConvoType;

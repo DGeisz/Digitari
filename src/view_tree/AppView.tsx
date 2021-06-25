@@ -273,9 +273,7 @@ const AppView: React.FC = () => {
     if (!splashHidden || (!fetchedUser && authenticated)) {
         return (
             <View style={styles.setupContainer}>
-                <Text style={styles.setupText}>
-                    Getting everything ready...
-                </Text>
+                <Text style={styles.setupText}>Warming the engines...</Text>
                 <ActivityIndicator color={palette.deepBlue} size="large" />
             </View>
         );

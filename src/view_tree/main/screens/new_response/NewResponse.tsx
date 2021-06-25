@@ -6,11 +6,15 @@ import {
 } from "../../MainEntryNavTypes";
 import { basicLayouts } from "../../../../global_styles/BasicLayouts";
 import { styles } from "./NewResponseStyles";
-import { localFirstName, localUid } from "../../../../global_state/UserState";
+import {
+    localFirstName,
+    localHid,
+    localUid,
+} from "../../../../global_state/UserState";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { palette } from "../../../../global_styles/Palette";
 import MessageInput from "../../../../global_building_blocks/message_input/MessageInput";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { USER_TYPENAME } from "../../../../global_types/UserTypes";
 import {
     CREATE_CONVO,
@@ -24,6 +28,25 @@ import {
     TutorialScreen,
 } from "../../../tutorial/context/tutorial_context/TutorialContext";
 import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
+import {
+    CONVO,
+    CONVO_MESSAGES,
+    ConvoData,
+    ConvoMessagesData,
+    ConvoMessagesVariables,
+    ConvoVariables,
+} from "../convo/gql/Queries";
+import { POST, PostData, PostVariables } from "../post_screen/gql/Queries";
+import { ConvoStatus } from "../../../../global_types/ConvoTypes";
+import {
+    GET_USER,
+    GetUserQueryData,
+    GetUserQueryVariables,
+} from "../../routes/tab_nav/screens/profile/gql/Queries";
+import {
+    ranking2Tier,
+    tier2MinRanking,
+} from "../../../../global_types/TierTypes";
 
 interface Props {
     route: NewResponseRouteProp;
@@ -33,8 +56,29 @@ interface Props {
 const NewResponse: React.FC<Props> = (props) => {
     const firstName = localFirstName();
     const uid = localUid();
+    const hid = localHid();
+
+    const { pid } = props.route.params;
 
     const [anony, setAnony] = useState<boolean>(false);
+    const [content, setContent] = useState<string>("");
+
+    const [optimisticSent, setOpt] = useState<boolean>(false);
+
+    const { data: postData } = useQuery<PostData, PostVariables>(POST, {
+        variables: {
+            pid,
+        },
+    });
+
+    const { data: userData } = useQuery<
+        GetUserQueryData,
+        GetUserQueryVariables
+    >(GET_USER, {
+        variables: {
+            uid,
+        },
+    });
 
     const [createConvo, { loading }] = useMutation<
         CreateConvoData,
@@ -42,6 +86,8 @@ const NewResponse: React.FC<Props> = (props) => {
     >(CREATE_CONVO, {
         update(cache, { data }) {
             if (!!data?.createConvo) {
+                console.log(data.createConvo);
+
                 cache.modify({
                     id: cache.identify({
                         __typename: USER_TYPENAME,
@@ -57,15 +103,49 @@ const NewResponse: React.FC<Props> = (props) => {
                     },
                 });
 
+                if (!!postData?.post) {
+                    cache.writeQuery<ConvoMessagesData, ConvoMessagesVariables>(
+                        {
+                            query: CONVO_MESSAGES,
+                            variables: {
+                                cvid: data.createConvo.id,
+                            },
+                            data: {
+                                convoMessages: [
+                                    {
+                                        id: data.createConvo.id,
+                                        anonymous: anony,
+                                        content,
+                                        time: Date.now().toString(),
+                                        uid,
+                                        tid: postData.post.uid,
+                                        user: anony ? "" : firstName,
+                                    },
+                                ],
+                            },
+                        }
+                    );
+
+                    cache.writeQuery<ConvoData, ConvoVariables>({
+                        query: CONVO,
+                        variables: {
+                            cvid: data.createConvo.id,
+                        },
+                        data: {
+                            convo: data.createConvo,
+                        },
+                    });
+                }
+
                 /*
                  * Do a quick challenge check
                  */
                 challengeCheck(cache);
 
-                props.navigation.pop();
-                props.navigation.navigate("Convo", {
+                props.navigation.replace("Convo", {
                     cvid: data.createConvo.id,
-                    pid: props.route.params.pid,
+                    pid,
+                    noAnimation: data.createConvo.id.length > 5,
                 });
             } else {
                 console.log("No new data for new response");
@@ -102,12 +182,61 @@ const NewResponse: React.FC<Props> = (props) => {
             advanceTutorial();
         } else {
             try {
+                const now = Date.now().toString();
+
+                console.log(
+                    "Do I have necessary data? ",
+                    !!postData?.post && !!userData?.user
+                );
+
                 await createConvo({
                     variables: {
-                        pid: props.route.params.pid,
+                        pid,
                         anonymous: anony,
                         message: text,
                     },
+                    optimisticResponse:
+                        !!postData?.post && !!userData?.user
+                            ? {
+                                  createConvo: {
+                                      id: Math.floor(
+                                          100 * Math.random()
+                                      ).toString(),
+                                      pid,
+                                      cmid: !!postData.post.cmid
+                                          ? postData.post.cmid
+                                          : "",
+
+                                      status: ConvoStatus.New,
+                                      initialTime: now,
+                                      initialMsg: text,
+
+                                      lastTime: now,
+                                      lastMsg: text,
+
+                                      sid: anony ? hid : uid,
+                                      stier: ranking2Tier(
+                                          userData.user.ranking
+                                      ),
+                                      sranking: userData.user.ranking,
+                                      sname: anony ? "" : firstName,
+                                      sanony: anony,
+                                      sviewed: true,
+
+                                      tid: postData.post.uid,
+                                      ttier: postData.post.tier,
+                                      tranking: tier2MinRanking(
+                                          postData.post.tier
+                                      ),
+                                      tname: postData.post.user,
+                                      tviewed: false,
+
+                                      targetMsgCount: 0,
+                                      convoReward: postData.post.convoReward,
+                                      responseCost: postData.post.responseCost,
+                                  },
+                              }
+                            : undefined,
                 });
             } catch (e) {
                 console.log("Send error", e);
@@ -153,7 +282,7 @@ const NewResponse: React.FC<Props> = (props) => {
                     </Text>
                 </View>
                 <View style={styles.postAsChoiceContainer}>
-                    <Text style={styles.postAsText}>{"Message as: "}</Text>
+                    <Text style={styles.postAsText}>{"Respond as: "}</Text>
                     <TouchableOpacity
                         style={[
                             styles.postAsChoice,
@@ -193,6 +322,7 @@ const NewResponse: React.FC<Props> = (props) => {
                             tutorialScreen === TutorialScreen.InputResponse
                         }
                         onSend={onSend}
+                        onChangeText={setContent}
                     />
                 )}
             </TouchableOpacity>

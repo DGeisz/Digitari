@@ -10,6 +10,7 @@ export type MainEntryStack = {
     Convo: {
         cvid: string;
         pid: string;
+        noAnimation?: boolean;
     };
     NewResponse: {
         tname: string;

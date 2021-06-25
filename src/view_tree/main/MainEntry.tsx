@@ -169,11 +169,17 @@ const MainEntry: React.FC = () => {
                     };
                 }}
             />
-            <RootStack.Screen name="Convo" component={Convo} />
+            <RootStack.Screen
+                name="Convo"
+                component={Convo}
+                options={({ route }) => ({
+                    animationEnabled: !route.params.noAnimation,
+                })}
+            />
             <RootStack.Screen
                 name="NewResponse"
                 component={NewResponse}
-                options={{ title: "New Message" }}
+                options={{ title: "New Response" }}
                 initialParams={{ tname: "", pid: "", responseCost: 0 }}
             />
             <RootStack.Screen

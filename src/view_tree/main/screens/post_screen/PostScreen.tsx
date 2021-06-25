@@ -27,8 +27,6 @@ import ConvoCover from "../../../../global_building_blocks/convo_cover/ConvoCove
 import { styles } from "./PostScreenStyles";
 import Post from "../../../../global_building_blocks/post/Post";
 import { palette } from "../../../../global_styles/Palette";
-import { globalScreenStyles } from "../../../../global_styles/GlobalScreenStyles";
-import { NEW_CONVOS_PER_PAGE } from "../../routes/tab_nav/screens/convos/sub_screens/new_convos/gql/Queries";
 import {
     DONATE_TO_POST,
     DonateToPostData,

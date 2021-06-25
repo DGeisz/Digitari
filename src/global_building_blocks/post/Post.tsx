@@ -230,11 +230,11 @@ const Post: React.FC<Props> = (props) => {
                 loading={postModalLoading}
                 body={`Use ${toCommaRep(
                     props.post.responseCost
-                )} digicoin to message ${props.post.user}? 
+                )} digicoin to respond to ${props.post.user}? 
                                 \nThe reward for a successful convo is ${
                                     props.post.convoReward
                                 } digicoin.`}
-                title={"New Message"}
+                title={"New Response"}
                 error={postModalError}
                 onConfirm={async () => {
                     setPostModalLoading(true);
