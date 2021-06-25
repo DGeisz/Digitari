@@ -1,4 +1,4 @@
-import { IAPItemDetails, IAPItemType } from "expo-in-app-purchases";
+import { IAPItemDetails } from "expo-in-app-purchases";
 
 export const purchaseItems: IAPItemDetails[] = [
     {
