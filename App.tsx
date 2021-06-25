@@ -9,7 +9,6 @@ import {
 import AppView from "./src/view_tree/AppView";
 import Amplify from "aws-amplify";
 import { ApolloProvider } from "@apollo/client";
-import * as SplashScreen from "expo-splash-screen";
 import * as Notifications from "expo-notifications";
 import { PushNotificationType } from "./src/global_types/PushTypes";
 import { enableScreens } from "react-native-screens";
@@ -134,10 +133,6 @@ const linking: LinkingOptions = {
 };
 
 export default function App() {
-    useEffect(() => {
-        SplashScreen.preventAutoHideAsync().then();
-    }, []);
-
     const client = useApollo();
 
     return (

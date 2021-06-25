@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MainEntry from "./main/MainEntry";
 import AuthEntry from "./auth/AuthEntry";
-import * as SplashScreen from "expo-splash-screen";
 import { Auth, Hub } from "aws-amplify";
 import { useApolloClient, useReactiveVar } from "@apollo/client";
 import {
@@ -33,7 +32,6 @@ import { USER_TYPENAME } from "../global_types/UserTypes";
 import { ProductId, products } from "../global_types/IapTypes";
 import {
     TutorialContext,
-    TutorialScreen,
     useTutorialContextValues,
 } from "./tutorial/context/tutorial_context/TutorialContext";
 
@@ -183,7 +181,6 @@ const AppView: React.FC = () => {
                     // If we've authenticated and performed the initial fetch, we show the splash
                     if (fetchedUser) {
                         if (!splashHidden) {
-                            await SplashScreen.hideAsync();
                             setSplashHidden(true);
                         }
                     }
@@ -192,7 +189,6 @@ const AppView: React.FC = () => {
 
                     setFetchedUser(false);
                     if (!splashHidden) {
-                        await SplashScreen.hideAsync();
                         setSplashHidden(true);
                     }
                 }
@@ -274,11 +270,7 @@ const AppView: React.FC = () => {
         })();
     }, [authenticated, checkedAuth, retryCount]);
 
-    if (!splashHidden) {
-        return null;
-    }
-
-    if (!fetchedUser && authenticated) {
+    if (!splashHidden || (!fetchedUser && authenticated)) {
         return (
             <View style={styles.setupContainer}>
                 <Text style={styles.setupText}>
