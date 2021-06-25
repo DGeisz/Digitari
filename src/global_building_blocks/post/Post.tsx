@@ -11,7 +11,7 @@ import {
 import { styles } from "./PostStyles";
 import Tier from "../tier/Tier";
 import CoinBox from "../coin_box/CoinBox";
-import { Entypo, Ionicons } from "@expo/vector-icons";
+import { Entypo, FontAwesome, Ionicons } from "@expo/vector-icons";
 import {
     POST_TYPENAME,
     PostAddOn,
@@ -46,6 +46,7 @@ import UpdateIndicator from "../../view_tree/main/routes/tab_nav/building_blocks
 import SymbolModal from "./building_blocks/symbol_modal/SymbolModal";
 
 const COMMUNITY_NAME_MAX_LEN = 30;
+const HEART_SIZE = 23;
 
 interface Props {
     post: PostType;
@@ -116,7 +117,7 @@ const Post: React.FC<Props> = (props) => {
          * Make sure we aren't donating to our own post
          */
         if (props.post.uid === localUid()) {
-            setError("You can't like your own post");
+            setError(`You can't "like" your own post`);
         } else {
             const { id: pid } = props.post;
 
@@ -332,34 +333,12 @@ const Post: React.FC<Props> = (props) => {
                             <View style={styles.sideBufferDivider} />
                         </View>
                         <View style={styles.sideBufferBottom}>
-                            <Animated.View
-                                pointerEvents="none"
-                                style={[
-                                    styles.animatedContainer,
-                                    {
-                                        transform: [
-                                            {
-                                                translateY: animatedHeight,
-                                            },
-                                        ],
-                                        opacity: animatedOpacity,
-                                    },
-                                ]}
-                            >
-                                <CoinBox
-                                    showCoinPlus
-                                    amount={animatedCoinAmount}
-                                    coinSize={30}
-                                    fontSize={14}
-                                />
-                            </Animated.View>
                             {props.post.coinDonated ? (
-                                <CoinBox
-                                    active
-                                    showAmount={false}
-                                    coinSize={30}
-                                    fontSize={14}
-                                    paddingVertical={0}
+                                <FontAwesome
+                                    name="heart"
+                                    style={styles.likeIcon}
+                                    size={HEART_SIZE}
+                                    color={palette.deepBlue}
                                 />
                             ) : (
                                 <TouchableOpacity
@@ -403,40 +382,119 @@ const Post: React.FC<Props> = (props) => {
                                         }
                                     }}
                                 >
-                                    {(() => {
-                                        if (tutorialActive) {
-                                            if (
-                                                (tutorialScreen ===
-                                                    TutorialScreen.TapLike &&
-                                                    props.post.id === "tut0") ||
-                                                (tutorialScreen ===
-                                                    TutorialScreen.CustomTapLike &&
-                                                    props.post.id === "tut1")
-                                            ) {
-                                                return (
-                                                    <View
-                                                        style={
-                                                            styles.pulseContainer
-                                                        }
-                                                    >
-                                                        <UpdateIndicator />
-                                                    </View>
-                                                );
-                                            }
-                                        }
-                                    })()}
-                                    <CoinBox
-                                        active={false}
-                                        showAmount={false}
-                                        coinSize={30}
-                                        fontSize={14}
-                                        paddingVertical={0}
+                                    <FontAwesome
+                                        name="heart-o"
+                                        style={styles.likeIcon}
+                                        size={HEART_SIZE}
+                                        color={palette.deepBlue}
                                     />
                                 </TouchableOpacity>
                             )}
-                            <Text style={styles.coinText}>
-                                {toRep(props.post.coin)}
-                            </Text>
+                            {/*<Animated.View*/}
+                            {/*    pointerEvents="none"*/}
+                            {/*    style={[*/}
+                            {/*        styles.animatedContainer,*/}
+                            {/*        {*/}
+                            {/*            transform: [*/}
+                            {/*                {*/}
+                            {/*                    translateY: animatedHeight,*/}
+                            {/*                },*/}
+                            {/*            ],*/}
+                            {/*            opacity: animatedOpacity,*/}
+                            {/*        },*/}
+                            {/*    ]}*/}
+                            {/*>*/}
+                            {/*    <CoinBox*/}
+                            {/*        showCoinPlus*/}
+                            {/*        amount={animatedCoinAmount}*/}
+                            {/*        coinSize={30}*/}
+                            {/*        fontSize={14}*/}
+                            {/*    />*/}
+                            {/*</Animated.View>*/}
+                            {/*{props.post.coinDonated ? (*/}
+                            {/*    <CoinBox*/}
+                            {/*        active*/}
+                            {/*        showAmount={false}*/}
+                            {/*        coinSize={30}*/}
+                            {/*        fontSize={14}*/}
+                            {/*        paddingVertical={0}*/}
+                            {/*    />*/}
+                            {/*) : (*/}
+                            {/*    <TouchableOpacity*/}
+                            {/*        onPress={async () => {*/}
+                            {/*            if (tutorialActive) {*/}
+                            {/*                if (*/}
+                            {/*                    tutorialScreen ===*/}
+                            {/*                        TutorialScreen.TapLike &&*/}
+                            {/*                    props.post.id === "tut0"*/}
+                            {/*                ) {*/}
+                            {/*                    likeTutorialPost(true);*/}
+                            {/*                    await donateCoin(10);*/}
+
+                            {/*                    setTimeout(() => {*/}
+                            {/*                        advanceTutorial();*/}
+                            {/*                    }, 700);*/}
+                            {/*                }*/}
+
+                            {/*                if (*/}
+                            {/*                    tutorialScreen ===*/}
+                            {/*                        TutorialScreen.CustomTapLike &&*/}
+                            {/*                    props.post.id === "tut1"*/}
+                            {/*                ) {*/}
+                            {/*                    setDonationVisible(true);*/}
+                            {/*                }*/}
+                            {/*            } else {*/}
+                            {/*                await donateCoin(10);*/}
+                            {/*            }*/}
+                            {/*        }}*/}
+                            {/*        onLongPress={() => {*/}
+                            {/*            if (tutorialActive) {*/}
+                            {/*                if (*/}
+                            {/*                    tutorialScreen ===*/}
+                            {/*                        TutorialScreen.CustomTapLike &&*/}
+                            {/*                    props.post.id === "tut1"*/}
+                            {/*                ) {*/}
+                            {/*                    setDonationVisible(true);*/}
+                            {/*                }*/}
+                            {/*            } else {*/}
+                            {/*                setDonationVisible(true);*/}
+                            {/*            }*/}
+                            {/*        }}*/}
+                            {/*    >*/}
+                            {/*        {(() => {*/}
+                            {/*            if (tutorialActive) {*/}
+                            {/*                if (*/}
+                            {/*                    (tutorialScreen ===*/}
+                            {/*                        TutorialScreen.TapLike &&*/}
+                            {/*                        props.post.id === "tut0") ||*/}
+                            {/*                    (tutorialScreen ===*/}
+                            {/*                        TutorialScreen.CustomTapLike &&*/}
+                            {/*                        props.post.id === "tut1")*/}
+                            {/*                ) {*/}
+                            {/*                    return (*/}
+                            {/*                        <View*/}
+                            {/*                            style={*/}
+                            {/*                                styles.pulseContainer*/}
+                            {/*                            }*/}
+                            {/*                        >*/}
+                            {/*                            <UpdateIndicator />*/}
+                            {/*                        </View>*/}
+                            {/*                    );*/}
+                            {/*                }*/}
+                            {/*            }*/}
+                            {/*        })()}*/}
+                            {/*        <CoinBox*/}
+                            {/*            active={false}*/}
+                            {/*            showAmount={false}*/}
+                            {/*            coinSize={30}*/}
+                            {/*            fontSize={14}*/}
+                            {/*            paddingVertical={0}*/}
+                            {/*        />*/}
+                            {/*    </TouchableOpacity>*/}
+                            {/*)}*/}
+                            {/*<Text style={styles.coinText}>*/}
+                            {/*    {toRep(props.post.coin)}*/}
+                            {/*</Text>*/}
                         </View>
                     </View>
                 )}
@@ -558,13 +616,58 @@ const Post: React.FC<Props> = (props) => {
                                 onPress={() => showSymbolModal(true)}
                             >
                                 <View style={styles.infoIconContainer}>
-                                    <Entypo
-                                        name="pencil"
-                                        size={20}
-                                        color={palette.semiSoftGray}
+                                    <Animated.View
+                                        pointerEvents="none"
+                                        style={[
+                                            styles.animatedContainer,
+                                            {
+                                                transform: [
+                                                    {
+                                                        translateY: animatedHeight,
+                                                    },
+                                                ],
+                                                opacity: animatedOpacity,
+                                            },
+                                        ]}
+                                    >
+                                        <CoinBox
+                                            showCoinPlus
+                                            amount={animatedCoinAmount}
+                                            coinSize={30}
+                                            fontSize={14}
+                                        />
+                                    </Animated.View>
+                                    <Image
+                                        source={require("../../../assets/coin2_semi_soft_gray.png")}
+                                        style={{
+                                            height: 24,
+                                            width: 24,
+                                            transform: [
+                                                {
+                                                    translateY: 1,
+                                                },
+                                                {
+                                                    translateX: -2,
+                                                },
+                                            ],
+                                        }}
                                     />
-                                    <Text style={styles.infoIconText}>
-                                        {toRep(props.post.responseCount)}
+                                    <Text
+                                        style={[
+                                            styles.infoIconText,
+                                            {
+                                                transform: [
+                                                    {
+                                                        translateY: 2,
+                                                    },
+                                                    {
+                                                        translateX: -4,
+                                                    },
+                                                ],
+                                            },
+                                        ]}
+                                    >
+                                        {toRep(props.post.coin)}
                                     </Text>
                                 </View>
                             </TouchableOpacity>

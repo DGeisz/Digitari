@@ -41,10 +41,13 @@ export const styles = StyleSheet.create({
     sideBufferBottom: {
         ...basicLayouts.flexGrid2,
     },
+    likeIcon: {
+        marginTop: 5,
+    },
     animatedContainer: {
         position: "absolute",
         overflow: "visible",
-        left: 5,
+        left: -4,
         zIndex: 100,
     },
     pulseContainer: {

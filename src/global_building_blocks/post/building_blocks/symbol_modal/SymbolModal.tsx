@@ -33,25 +33,8 @@ const SymbolModal: React.FC<Props> = (props) => {
                         </View>
                         <View style={styles.symExpRight}>
                             <Text style={styles.symExpText}>
-                                Amount of digicoin this post has earned
-                            </Text>
-                        </View>
-                    </View>
-                    <View style={styles.symExpContainer}>
-                        <View style={styles.symExpLeft}>
-                            <View style={styles.symColonContainer}>
-                                <Entypo
-                                    name="pencil"
-                                    size={30}
-                                    color={palette.semiSoftGray}
-                                />
-                                <Text style={styles.colon}>{" : "}</Text>
-                            </View>
-                        </View>
-                        <View style={styles.symExpRight}>
-                            <Text style={styles.symExpText}>
-                                Number of responses this post has received
-                                (including responses that haven't led to convos)
+                                This is the amount of digicoin this post has
+                                earned
                             </Text>
                         </View>
                     </View>
@@ -68,8 +51,8 @@ const SymbolModal: React.FC<Props> = (props) => {
                         </View>
                         <View style={styles.symExpRight}>
                             <Text style={styles.symExpText}>
-                                Number of visible convos associated with this
-                                post
+                                This is the number of convos that have been
+                                created about this post
                             </Text>
                         </View>
                     </View>

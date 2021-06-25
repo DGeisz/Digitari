@@ -42,6 +42,9 @@ import {
     CREATE_POST,
     CreatePostData,
     CreatePostVariables,
+    DISTRIBUTE_POST,
+    DistributePostData,
+    DistributePostVariables,
 } from "./gql/Mutations";
 import { cache } from "../../../../../../global_state/Cache";
 import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
@@ -147,37 +150,52 @@ const NewPost: React.FC<Props> = (props) => {
      */
     const [errorMessage, setErrorMessage] = useState<string>("");
 
+    const [distributePost] = useMutation<
+        DistributePostData,
+        DistributePostVariables
+    >(DISTRIBUTE_POST);
+
     const [createPost, { loading: postLoading }] = useMutation<
         CreatePostData,
         CreatePostVariables
     >(CREATE_POST, {
         update(_, { data }) {
-            if (!!data?.createPost && !!data.createPost.presignedUrl && !!img) {
-                (async () => {
-                    /*
-                     * We'll try to add the picture 10 times
-                     */
-                    for (let i = 0; i < 10; i++) {
-                        try {
-                            await fetch(
-                                data.createPost.presignedUrl as string,
-                                {
-                                    method: "PUT",
-                                    body: img,
-                                }
-                            );
+            if (!!data?.createPost) {
+                /*
+                 * Immediately distribute the post
+                 */
+                distributePost({
+                    variables: { pid: data.createPost.post.id },
+                    optimisticResponse: { distributePost: true },
+                }).then();
 
-                            break;
-                        } catch (_) {
-                            /*
-                             * Wait a second between each attempt
-                             */
-                            await new Promise((resolve) =>
-                                setTimeout(resolve, 1000)
-                            );
+                if (!!data.createPost.presignedUrl && !!img) {
+                    (async () => {
+                        /*
+                         * We'll try to add the picture 10 times
+                         */
+                        for (let i = 0; i < 10; i++) {
+                            try {
+                                await fetch(
+                                    data.createPost.presignedUrl as string,
+                                    {
+                                        method: "PUT",
+                                        body: img,
+                                    }
+                                );
+
+                                break;
+                            } catch (_) {
+                                /*
+                                 * Wait a second between each attempt
+                                 */
+                                await new Promise((resolve) =>
+                                    setTimeout(resolve, 1000)
+                                );
+                            }
                         }
-                    }
-                })();
+                    })();
+                }
             }
 
             cache.modify({

@@ -66,3 +66,17 @@ export interface CreatePostVariables {
     cmid?: string;
     recipients: number;
 }
+
+export const DISTRIBUTE_POST = gql`
+    mutation DistributePost($pid: ID) {
+        distributePost(pid: $pid)
+    }
+`;
+
+export interface DistributePostData {
+    distributePost: boolean;
+}
+
+export interface DistributePostVariables {
+    pid: string;
+}

@@ -27,8 +27,6 @@ export async function onDonationReceived(
         subscriptionData: { data },
     } = options;
 
-    console.log("Donation received", data);
-
     if (!!data?.donationReceived) {
         const { pid, amount, name, uid } = data.donationReceived;
 

@@ -295,6 +295,8 @@ export const schema = gql`
             recipients: Int
         ): PostPackage
 
+        distributePost(pid: ID): Boolean
+
         donateToPost(pid: ID!, amount: Int!): DonationRecord
 
         updateBio(bio: String): User
