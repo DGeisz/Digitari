@@ -40,6 +40,22 @@ export const styles = StyleSheet.create({
     },
     sideBufferBottom: {
         ...basicLayouts.flexGrid2,
+        paddingTop: 5,
+    },
+    boltContainer: {},
+    tapContainer: {},
+    tapText: {
+        fontWeight: "bold",
+        fontSize: 10,
+        color: palette.semiSoftGray,
+    },
+    dot: {
+        position: "absolute",
+        top: 10,
+        backgroundColor: palette.deepBlue,
+        borderRadius: 50,
+        height: 20,
+        width: 20,
     },
     likeIcon: {
         marginTop: 5,

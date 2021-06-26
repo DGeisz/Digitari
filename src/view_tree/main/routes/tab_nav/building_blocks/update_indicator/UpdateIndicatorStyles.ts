@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
         left: 3,
         top: 4,
         position: "absolute",
-        backgroundColor: palette.deepBlue, //palette.deepBlue,
+        backgroundColor: palette.deepBlue,
         borderRadius: 50,
         height: 20,
         width: 20,

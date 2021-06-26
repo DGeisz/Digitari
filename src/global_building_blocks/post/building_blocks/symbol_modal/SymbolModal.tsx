@@ -4,7 +4,6 @@ import { Text, TouchableOpacity, View } from "react-native";
 import { Entypo, Ionicons } from "@expo/vector-icons";
 import { styles } from "./SymbolModalStyles";
 import { palette } from "../../../../global_styles/Palette";
-import { SuccessfulConversationsSymbol } from "../../../big_three/BigThree";
 import CoinBox from "../../../coin_box/CoinBox";
 
 interface Props {
