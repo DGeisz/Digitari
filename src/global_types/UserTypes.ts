@@ -60,8 +60,14 @@ export interface UserType {
     maxCommunityFollowers: number;
 }
 
-export enum ProfileFonts {}
+export enum ProfileFonts {
+    Default,
+}
 
-export enum ProfileColors {}
+export enum ProfileColors {
+    Default,
+}
 
-export enum NameStickers {}
+export enum NameStickers {
+    Default,
+}
