@@ -39,10 +39,15 @@ export const styles = StyleSheet.create({
         marginVertical: 2,
     },
     sideBufferBottom: {
-        ...basicLayouts.flexGrid2,
+        // ...basicLayouts.flexGrid2,
+        ...basicLayouts.grid2,
         paddingTop: 5,
     },
-    boltContainer: {},
+    boltContainer: {
+        height: 50,
+        width: 50,
+        backgroundColor: "red",
+    },
     tapContainer: {},
     tapText: {
         fontWeight: "bold",

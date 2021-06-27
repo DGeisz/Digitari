@@ -49,6 +49,9 @@ import {
 } from "../../view_tree/tutorial/context/tutorial_context/TutorialContext";
 import UpdateIndicator from "../../view_tree/main/routes/tab_nav/building_blocks/update_indicator/UpdateIndicator";
 import SymbolModal from "./building_blocks/symbol_modal/SymbolModal";
+import LightningFlyer from "./building_blocks/lightning_flyer/LightningFlyer";
+import LikeFlyer from "./building_blocks/like_flyer/LikeFlyer";
+import { createTimeout } from "../../global_utils/TimeoutUtils";
 
 const COMMUNITY_NAME_MAX_LEN = 30;
 const HEART_SIZE = 23;
@@ -99,13 +102,20 @@ const Post: React.FC<Props> = (props) => {
 
     const [picModalVisible, setPicVisible] = useState<boolean>(false);
 
-    const boltRotation = useRef(new Animated.Value(0)).current;
     const boltScale = useRef(new Animated.Value(1)).current;
 
     const tapScale = useRef(new Animated.Value(1)).current;
 
     const dotScale = useRef(new Animated.Value(0)).current;
     const dotOpacity = useRef(new Animated.Value(0.5)).current;
+
+    const [boltId, setBoltId] = useState<number>(0);
+
+    const [numBolts, setNumBolts] = useState<number>(0);
+
+    const [bulkTimeout, setBulkTimeout] = useState<number | undefined>(
+        undefined
+    );
 
     /*
      * Lightning animation
@@ -476,17 +486,38 @@ const Post: React.FC<Props> = (props) => {
                             <Tier size={30} tier={props.post.tier} />
                             <View style={styles.sideBufferDivider} />
                         </View>
-                        <View style={styles.sideBufferBottom}>
+                        <TouchableOpacity
+                            style={styles.sideBufferBottom}
+                            onPress={() => {
+                                setBoltId(1 + Math.random());
+                                setNumBolts(numBolts + 1);
+
+                                if (typeof bulkTimeout !== "undefined") {
+                                    clearTimeout(bulkTimeout);
+                                }
+
+                                setBulkTimeout(
+                                    setTimeout(() => {
+                                        /*
+                                         * TODO: handle bulk operations in here
+                                         */
+
+                                        console.log(
+                                            "Immmmmmmma finished!",
+                                            numBolts
+                                        );
+
+                                        setNumBolts(0);
+                                    }, 1000)
+                                );
+                            }}
+                            activeOpacity={1}
+                        >
+                            <LightningFlyer boltId={boltId} />
                             <Animated.View
-                                style={[
-                                    styles.boltContainer,
-                                    {
-                                        transform: [
-                                            { rotateZ: boltRotation },
-                                            { scale: boltScale },
-                                        ],
-                                    },
-                                ]}
+                                style={{
+                                    transform: [{ scale: boltScale }],
+                                }}
                             >
                                 <MaterialIcons
                                     name="bolt"
@@ -511,70 +542,7 @@ const Post: React.FC<Props> = (props) => {
                             >
                                 <Text style={styles.tapText}>Tap!</Text>
                             </Animated.View>
-                            {/*{props.post.coinDonated ? (*/}
-                            {/*    <FontAwesome*/}
-                            {/*        name="heart"*/}
-                            {/*        style={styles.likeIcon}*/}
-                            {/*        size={HEART_SIZE}*/}
-                            {/*        color={palette.deepBlue}*/}
-                            {/*    />*/}
-                            {/*) : (*/}
-                            {/*    <TouchableOpacity*/}
-                            {/*    // onPress={async () => {*/}
-                            {/*    //     if (tutorialActive) {*/}
-                            {/*    //         if (*/}
-                            {/*    //             tutorialScreen ===*/}
-                            {/*    //                 TutorialScreen.TapLike &&*/}
-                            {/*    //             props.post.id === "tut0"*/}
-                            {/*    //         ) {*/}
-                            {/*    //             likeTutorialPost(true);*/}
-                            {/*    //             await donateCoin(10);*/}
-                            {/*    //*/}
-                            {/*    //             setTimeout(() => {*/}
-                            {/*    //                 advanceTutorial();*/}
-                            {/*    //             }, 700);*/}
-                            {/*    //         }*/}
-                            {/*    //*/}
-                            {/*    //         if (*/}
-                            {/*    //             tutorialScreen ===*/}
-                            {/*    //                 TutorialScreen.CustomTapLike &&*/}
-                            {/*    //             props.post.id === "tut1"*/}
-                            {/*    //         ) {*/}
-                            {/*    //             setDonationVisible(true);*/}
-                            {/*    //         }*/}
-                            {/*    //     } else {*/}
-                            {/*    //         await donateCoin(10);*/}
-                            {/*    //     }*/}
-                            {/*    // }}*/}
-                            {/*    // onLongPress={() => {*/}
-                            {/*    //     if (tutorialActive) {*/}
-                            {/*    //         if (*/}
-                            {/*    //             tutorialScreen ===*/}
-                            {/*    //                 TutorialScreen.CustomTapLike &&*/}
-                            {/*    //             props.post.id === "tut1"*/}
-                            {/*    //         ) {*/}
-                            {/*    //             setDonationVisible(true);*/}
-                            {/*    //         }*/}
-                            {/*    //     } else {*/}
-                            {/*    //         setDonationVisible(true);*/}
-                            {/*    //     }*/}
-                            {/*    // }}*/}
-                            {/*    >*/}
-                            {/*        <MaterialIcons*/}
-                            {/*            name={"bolt"}*/}
-                            {/*            style={styles.likeIcon}*/}
-                            {/*            size={35}*/}
-                            {/*            color={palette.deepBlue}*/}
-                            {/*        />*/}
-                            {/*        /!*<FontAwesome*!/*/}
-                            {/*        /!*    name="heart-o"*!/*/}
-                            {/*        /!*    style={styles.likeIcon}*!/*/}
-                            {/*        /!*    size={HEART_SIZE}*!/*/}
-                            {/*        /!*    color={palette.deepBlue}*!/*/}
-                            {/*/>*/}
-                            {/*    </TouchableOpacity>*/}
-                            {/*)}*/}
-                        </View>
+                        </TouchableOpacity>
                     </View>
                 )}
                 <View style={styles.postMain}>
@@ -695,27 +663,27 @@ const Post: React.FC<Props> = (props) => {
                                 onPress={() => showSymbolModal(true)}
                             >
                                 <View style={styles.infoIconContainer}>
-                                    <Animated.View
-                                        pointerEvents="none"
-                                        style={[
-                                            styles.animatedContainer,
-                                            {
-                                                transform: [
-                                                    {
-                                                        translateY: animatedHeight,
-                                                    },
-                                                ],
-                                                opacity: animatedOpacity,
-                                            },
-                                        ]}
-                                    >
-                                        <CoinBox
-                                            showCoinPlus
-                                            amount={animatedCoinAmount}
-                                            coinSize={30}
-                                            fontSize={14}
-                                        />
-                                    </Animated.View>
+                                    {/*<Animated.View*/}
+                                    {/*    pointerEvents="none"*/}
+                                    {/*    style={[*/}
+                                    {/*        styles.animatedContainer,*/}
+                                    {/*        {*/}
+                                    {/*            transform: [*/}
+                                    {/*                {*/}
+                                    {/*                    translateY: animatedHeight,*/}
+                                    {/*                },*/}
+                                    {/*            ],*/}
+                                    {/*            opacity: animatedOpacity,*/}
+                                    {/*        },*/}
+                                    {/*    ]}*/}
+                                    {/*>*/}
+                                    {/*    <CoinBox*/}
+                                    {/*        showCoinPlus*/}
+                                    {/*        amount={animatedCoinAmount}*/}
+                                    {/*        coinSize={30}*/}
+                                    {/*        fontSize={14}*/}
+                                    {/*    />*/}
+                                    {/*</Animated.View>*/}
                                     <Image
                                         source={require("../../../assets/coin2_semi_soft_gray.png")}
                                         style={{
@@ -748,6 +716,7 @@ const Post: React.FC<Props> = (props) => {
                                     >
                                         {toRep(props.post.coin)}
                                     </Text>
+                                    <LikeFlyer coinId={boltId} />
                                 </View>
                             </TouchableOpacity>
                             <TouchableOpacity
@@ -868,3 +837,192 @@ export default React.memo(Post, (oldProps, nextProps) => {
         oldProps.userFirstName === nextProps.userFirstName
     );
 });
+{
+    /*{props.post.coinDonated ? (*/
+}
+{
+    /*    <FontAwesome*/
+}
+{
+    /*        name="heart"*/
+}
+{
+    /*        style={styles.likeIcon}*/
+}
+{
+    /*        size={HEART_SIZE}*/
+}
+{
+    /*        color={palette.deepBlue}*/
+}
+{
+    /*    />*/
+}
+{
+    /*) : (*/
+}
+{
+    /*    <TouchableOpacity*/
+}
+{
+    /*    // onPress={async () => {*/
+}
+{
+    /*    //     if (tutorialActive) {*/
+}
+{
+    /*    //         if (*/
+}
+{
+    /*    //             tutorialScreen ===*/
+}
+{
+    /*    //                 TutorialScreen.TapLike &&*/
+}
+{
+    /*    //             props.post.id === "tut0"*/
+}
+{
+    /*    //         ) {*/
+}
+{
+    /*    //             likeTutorialPost(true);*/
+}
+{
+    /*    //             await donateCoin(10);*/
+}
+{
+    /*    //*/
+}
+{
+    /*    //             setTimeout(() => {*/
+}
+{
+    /*    //                 advanceTutorial();*/
+}
+{
+    /*    //             }, 700);*/
+}
+{
+    /*    //         }*/
+}
+{
+    /*    //*/
+}
+{
+    /*    //         if (*/
+}
+{
+    /*    //             tutorialScreen ===*/
+}
+{
+    /*    //                 TutorialScreen.CustomTapLike &&*/
+}
+{
+    /*    //             props.post.id === "tut1"*/
+}
+{
+    /*    //         ) {*/
+}
+{
+    /*    //             setDonationVisible(true);*/
+}
+{
+    /*    //         }*/
+}
+{
+    /*    //     } else {*/
+}
+{
+    /*    //         await donateCoin(10);*/
+}
+{
+    /*    //     }*/
+}
+{
+    /*    // }}*/
+}
+{
+    /*    // onLongPress={() => {*/
+}
+{
+    /*    //     if (tutorialActive) {*/
+}
+{
+    /*    //         if (*/
+}
+{
+    /*    //             tutorialScreen ===*/
+}
+{
+    /*    //                 TutorialScreen.CustomTapLike &&*/
+}
+{
+    /*    //             props.post.id === "tut1"*/
+}
+{
+    /*    //         ) {*/
+}
+{
+    /*    //             setDonationVisible(true);*/
+}
+{
+    /*    //         }*/
+}
+{
+    /*    //     } else {*/
+}
+{
+    /*    //         setDonationVisible(true);*/
+}
+{
+    /*    //     }*/
+}
+{
+    /*    // }}*/
+}
+{
+    /*    >*/
+}
+{
+    /*        <MaterialIcons*/
+}
+{
+    /*            name={"bolt"}*/
+}
+{
+    /*            style={styles.likeIcon}*/
+}
+{
+    /*            size={35}*/
+}
+{
+    /*            color={palette.deepBlue}*/
+}
+{
+    /*        />*/
+}
+{
+    /*        /!*<FontAwesome*!/*/
+}
+{
+    /*        /!*    name="heart-o"*!/*/
+}
+{
+    /*        /!*    style={styles.likeIcon}*!/*/
+}
+{
+    /*        /!*    size={HEART_SIZE}*!/*/
+}
+{
+    /*        /!*    color={palette.deepBlue}*!/*/
+}
+{
+    /*/>*/
+}
+{
+    /*    </TouchableOpacity>*/
+}
+{
+    /*)}*/
+}
