@@ -35,14 +35,15 @@ export interface ConvoType {
     sname: string;
     sanony: boolean;
     sviewed: boolean;
+    sourceMsgCount: number;
 
     tid: string;
     ttier: number;
     tranking: number;
     tname: string;
     tviewed: boolean;
-
     targetMsgCount: number;
+
     convoReward: number;
     responseCost: number;
 }

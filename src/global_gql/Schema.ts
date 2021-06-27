@@ -24,10 +24,19 @@ export const schema = gql`
         newTransactionUpdate: Boolean
 
         bio: String
+        link: String
         ranking: Int
         blocked: Int
         beenBlocked: Int
         coin: Int
+        bolts: Int
+
+        # Profile customizations
+        nameFont: Int
+        nameColor: Int
+        bioFont: Int
+        bioColor: Int
+        nameSticker: Int
 
         challengeReceipts: [String]
 
@@ -75,15 +84,19 @@ export const schema = gql`
         sname: String
         sanony: Boolean
         sviewed: Boolean
+        sourceMsgCount: Int
 
         tid: ID
         ttier: Int
         tranking: Int
         tname: String
         tviewed: Boolean
-
         targetMsgCount: Int
+
+        # Convo reward is digicoin
         convoReward: Int
+
+        # Response cost is in bolts
         responseCost: Int
     }
 
@@ -123,7 +136,6 @@ export const schema = gql`
         convoReward: Int
         responseCost: Int
         coin: Int
-        coinDonated: Boolean
 
         # Convos
         convoCount: Int
@@ -280,7 +292,6 @@ export const schema = gql`
         createMessage(cvid: ID!, message: String!): Message
 
         createCommunity(name: String, description: String): Community
-        indexUser(id: ID, firstName: String, lastName: String): SearchEntity
         followUser(tid: ID!): FollowEntity
         unFollowUser(tid: ID!): FollowEntity
         followCommunity(tid: ID!): FollowEntity

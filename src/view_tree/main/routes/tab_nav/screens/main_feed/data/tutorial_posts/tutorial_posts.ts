@@ -27,7 +27,6 @@ export const tutorialPosts: PostType[] = [
         responseCost: 10,
 
         coin: 43,
-        coinDonated: false,
 
         convoCount: 2,
         responseCount: 5,
@@ -53,7 +52,6 @@ export const tutorialPosts: PostType[] = [
         responseCost: 25,
 
         coin: 475,
-        coinDonated: false,
 
         convoCount: 11,
         responseCount: 20,

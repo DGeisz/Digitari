@@ -17,6 +17,16 @@ const LightningFlyer: React.FC<Props> = (props) => {
 
                 setBoltIds(newIds);
             }
+            //
+            // (async () => {
+            //     console.log("Playing sound");
+            //     const sound = new Audio.Sound();
+            //
+            //     await sound.loadAsync(require("../../../../../assets/zap.mp3"));
+            //     await sound.playAsync();
+            //     await sound.unloadAsync();
+            //     console.log("Finished playing!");
+            // })();
         }
     }, [props.boltId]);
 

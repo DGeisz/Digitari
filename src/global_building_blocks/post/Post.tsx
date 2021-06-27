@@ -187,43 +187,7 @@ const Post: React.FC<Props> = (props) => {
                         }),
                     ]),
                 ]),
-                // Animated.parallel([
-                //     // Animated.timing(boltRotation, {
-                //     //     toValue: 2 * Math.PI,
-                //     //     useNativeDriver: true,
-                //     //     duration: 2 * BOLT_QUANTA,
-                //     // }),
-                //     Animated.parallel([
-                //         Animated.timing(boltScale, {
-                //             toValue: BOLT_SCALE,
-                //             useNativeDriver: true,
-                //             duration: BOLT_QUANTA,
-                //         }),
-                //         Animated.timing(tapScale, {
-                //             toValue: BOLT_SCALE,
-                //             useNativeDriver: true,
-                //             duration: BOLT_QUANTA,
-                //         }),
-                //     ]),
-                //     Animated.sequence([
-                //         Animated.timing(tapScale, {
-                //             toValue: BOLT_SCALE,
-                //             useNativeDriver: true,
-                //             duration: BOLT_QUANTA,
-                //         }),
-                //         Animated.timing(tapScale, {
-                //             toValue: 1,
-                //             useNativeDriver: true,
-                //             duration: BOLT_QUANTA,
-                //         }),
-                //     ]),
-                // ]),
                 Animated.parallel([
-                    // Animated.timing(boltRotation, {
-                    //     toValue: 0,
-                    //     useNativeDriver: true,
-                    //     duration: 0,
-                    // }),
                     Animated.timing(dotScale, {
                         toValue: 0,
                         useNativeDriver: true,
@@ -240,15 +204,12 @@ const Post: React.FC<Props> = (props) => {
 
         animation.start();
 
-        return () => {
-            animation.stop();
-        };
+        return animation.stop;
     }, []);
 
     const {
         tutorialActive,
         tutorialScreen,
-        likeTutorialPost,
         advanceTutorial,
         customLikeTutorialPost,
     } = useContext(TutorialContext);

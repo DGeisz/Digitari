@@ -325,33 +325,6 @@ const Wallet: React.FC<Props> = (props) => {
                                         Earnings
                                     </Text>
                                 </View>
-                                {/*<View style={styles.entryContainer}>*/}
-                                {/*    <Text style={styles.entryTitle}>*/}
-                                {/*        Tier wage*/}
-                                {/*    </Text>*/}
-                                {/*    <Animated.View*/}
-                                {/*        style={{ opacity: tierWageOpacity }}*/}
-                                {/*    >*/}
-                                {/*        <CoinBox*/}
-                                {/*            amount={tierWage}*/}
-                                {/*            coinSize={20}*/}
-                                {/*            fontSize={15}*/}
-                                {/*            outOfCoin={daily}*/}
-                                {/*            showAbbreviated={false}*/}
-                                {/*        />*/}
-                                {/*    </Animated.View>*/}
-                                {/*</View>*/}
-                                {/*<View style={styles.entryContainer}>*/}
-                                {/*    <Text style={styles.entryTitle}>*/}
-                                {/*        Transaction total*/}
-                                {/*    </Text>*/}
-                                {/*    <CoinBox*/}
-                                {/*        amount={accumulation}*/}
-                                {/*        coinSize={20}*/}
-                                {/*        fontSize={15}*/}
-                                {/*        showAbbreviated={false}*/}
-                                {/*    />*/}
-                                {/*</View>*/}
                                 <View style={styles.entryContainer}>
                                     <Text style={styles.totalTitle}>Total</Text>
                                     <CoinBox
@@ -398,24 +371,6 @@ const Wallet: React.FC<Props> = (props) => {
                                                  * Handle the tutorial scenario
                                                  */
                                                 if (tutorialActive) {
-                                                    // if (
-                                                    //     tutorialScreen ===
-                                                    //     TutorialScreen.FirstCollectTap
-                                                    // ) {
-                                                    //     shockTheNation();
-                                                    //     setAnimationCoinAmount(
-                                                    //         total
-                                                    //     );
-                                                    //
-                                                    //     tutorialWallet.collectTierWage();
-                                                    //
-                                                    //     setTimeout(
-                                                    //         () =>
-                                                    //             advanceTutorial(),
-                                                    //         700
-                                                    //     );
-                                                    // }
-
                                                     if (
                                                         tutorialScreen ===
                                                         TutorialScreen.CollectCoin

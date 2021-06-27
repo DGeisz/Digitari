@@ -14,11 +14,19 @@ export interface UserType {
     amFollowing: boolean;
 
     bio: string;
+    link: string;
     ranking: number;
     blocked: number;
     beenBlocked: number;
     coin: number;
+    bolts: number;
     imgUrl?: string;
+
+    nameFont: ProfileFonts;
+    nameColor: ProfileColors;
+    bioFont: ProfileFonts;
+    bioColor: ProfileColors;
+    nameSticker: NameStickers;
 
     lastCollectionTime: string;
 
@@ -51,3 +59,9 @@ export interface UserType {
     communityFollowersChallengeIndex: number;
     maxCommunityFollowers: number;
 }
+
+export enum ProfileFonts {}
+
+export enum ProfileColors {}
+
+export enum NameStickers {}

@@ -21,7 +21,6 @@ export const BLOCK_POST = gql`
             convoReward
             responseCost
             coin
-            coinDonated
 
             convoCount
             responseCount

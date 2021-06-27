@@ -36,7 +36,6 @@ export interface PostType {
     responseCost: number;
 
     coin: number;
-    coinDonated?: boolean;
 
     convoCount: number;
     responseCount: number;
@@ -81,7 +80,6 @@ export const postExampleNoLink: PostType = {
     responseCost: 4,
     time: (1612394591366).toString(),
     user: "Danny",
-    coinDonated: false,
     convoCount: 10,
     responseCount: 10,
 };

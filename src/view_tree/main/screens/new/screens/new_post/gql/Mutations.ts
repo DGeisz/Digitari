@@ -43,7 +43,6 @@ export const CREATE_POST = gql`
                 convoReward
                 responseCost
                 coin
-                coinDonated
             }
 
             presignedUrl

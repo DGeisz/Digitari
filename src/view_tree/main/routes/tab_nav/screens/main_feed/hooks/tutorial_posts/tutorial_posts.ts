@@ -35,7 +35,6 @@ export const zariahPost: PostType = {
     responseCost: tier2responseCost(0),
 
     coin: 0,
-    coinDonated: false,
 
     convoCount: 2,
     responseCount: 5,

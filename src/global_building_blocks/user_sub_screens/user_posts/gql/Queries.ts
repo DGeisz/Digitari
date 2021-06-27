@@ -24,7 +24,6 @@ export const GET_USER_POSTS = gql`
             convoReward
             responseCost
             coin
-            coinDonated
             convoCount
             responseCount
         }

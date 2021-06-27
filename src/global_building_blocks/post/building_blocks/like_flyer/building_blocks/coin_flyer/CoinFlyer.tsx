@@ -42,11 +42,14 @@ const CoinFlyer: React.FC<Props> = (props) => {
 
         animation.start();
 
-        setTimeout(() => {
+        const timeout = setTimeout(() => {
             props.removeFlyer(props.id);
         }, duration);
 
-        return animation.stop;
+        return () => {
+            animation.stop();
+            clearTimeout(timeout);
+        };
     }, []);
     return (
         <Animated.View

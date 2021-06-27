@@ -67,7 +67,6 @@ export const CONVO_POST = gql`
             convoReward
             responseCost
             coin
-            coinDonated
 
             # Convos
             convoCount
