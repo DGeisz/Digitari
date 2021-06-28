@@ -217,14 +217,25 @@ const Post: React.FC<Props> = (props) => {
     const animatedHeight = useRef(new Animated.Value(0)).current;
     const animatedOpacity = useRef(new Animated.Value(0)).current;
 
+    const [errorTimeout, setErrorTimeout] = useState<number | undefined>(
+        undefined
+    );
+
     const setError = (error: string) => {
         LayoutAnimation.easeInEaseOut();
         setPostError(error);
 
-        setTimeout(() => {
+        if (!!errorTimeout) {
+            clearTimeout(errorTimeout);
+        }
+
+        const newTimeout = setTimeout(() => {
             LayoutAnimation.easeInEaseOut();
             setPostError("");
-        }, 5000);
+            setErrorTimeout(undefined);
+        }, 4000);
+
+        setErrorTimeout(newTimeout);
     };
 
     const donateCoin = async (amount: number) => {

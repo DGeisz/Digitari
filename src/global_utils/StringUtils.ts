@@ -8,3 +8,7 @@ export function capitalizeWord(
         return word[0].toLocaleUpperCase(locale) + word.substring(1);
     }
 }
+
+export function filterEmoji(text: string): string {
+    return text.replace(/[^\p{L}\p{N}\p{P}\p{Z}]/gu, "");
+}

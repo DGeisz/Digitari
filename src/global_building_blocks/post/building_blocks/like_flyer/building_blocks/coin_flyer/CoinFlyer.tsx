@@ -53,6 +53,7 @@ const CoinFlyer: React.FC<Props> = (props) => {
     }, []);
     return (
         <Animated.View
+            pointerEvents="none"
             style={[
                 styles.coinContainer,
                 {

@@ -6,6 +6,7 @@ import { Input } from "react-native-elements";
 import AuthButton from "../../building_blocks/auth_button/AuthButton";
 import { NewAccountNameNavProp } from "../../AuthEntryNavTypes";
 import { useAuthKeyboardBuffer } from "../../building_blocks/use_auth_keyboard_buffer/UseAuthKeyboardBuffer";
+import { filterEmoji } from "../../../../global_utils/StringUtils";
 
 interface Props {
     navigation: NewAccountNameNavProp;
@@ -32,7 +33,9 @@ const NewAccountName: React.FC<Props> = (props) => {
                     spellCheck={false}
                     placeholder={"First name..."}
                     onChangeText={(text) => {
-                        setFirstName(text.replace(/\r?\n|\r/g, ""));
+                        setFirstName(
+                            filterEmoji(text.replace(/\r?\n|\r/g, ""))
+                        );
 
                         if (firstName && lastName) {
                             setActive(true);
@@ -40,6 +43,7 @@ const NewAccountName: React.FC<Props> = (props) => {
                             setActive(false);
                         }
                     }}
+                    value={firstName}
                 />
                 <Input
                     keyboardType="twitter"
@@ -47,7 +51,7 @@ const NewAccountName: React.FC<Props> = (props) => {
                     spellCheck={false}
                     placeholder={"Last name..."}
                     onChangeText={(text) => {
-                        setLastName(text.replace(/\r?\n|\r/g, ""));
+                        setLastName(filterEmoji(text.replace(/\r?\n|\r/g, "")));
 
                         if (firstName && lastName) {
                             setActive(true);
@@ -55,6 +59,7 @@ const NewAccountName: React.FC<Props> = (props) => {
                             setActive(false);
                         }
                     }}
+                    value={lastName}
                 />
                 <Text style={authStyles.subText}>
                     We use real names on Digitari 😊

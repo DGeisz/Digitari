@@ -24,16 +24,6 @@ export interface LastCollectionTimeVariables {
     uid: string;
 }
 
-export const TRANSACTION_ACCUMULATION = gql`
-    query TransactionAccumulation {
-        transactionAccumulation
-    }
-`;
-
-export interface TransactionAccumulationData {
-    transactionAccumulation: number;
-}
-
 export const TRANSACTIONS = gql`
     query Transactions($lastTime: String) {
         transactions(lastTime: $lastTime) {

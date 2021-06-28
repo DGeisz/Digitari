@@ -36,7 +36,7 @@ export const schema = gql`
         nameColor: Int
         bioFont: Int
         bioColor: Int
-        nameSticker: Int
+        profileSticker: Int
 
         challengeReceipts: [String]
 
@@ -252,7 +252,6 @@ export const schema = gql`
         followers(tid: ID!, lastTime: String): [FollowEntity]
         following(sid: ID!, lastTime: String, entityType: Int): [FollowEntity]
         postResponseCheck(pid: ID): Boolean
-        transactionAccumulation: Int
         transactions(lastTime: String): [Transaction]
 
         validInviteCode(code: String): Boolean
@@ -312,7 +311,6 @@ export const schema = gql`
 
         updateBio(bio: String): User
         updateProfilePic(imgName: String): ImgUrl
-        deleteSearchEntity(id: String): SearchEntity
 
         collectEarnings: EarningsReceipt
 
