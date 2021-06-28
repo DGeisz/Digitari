@@ -135,11 +135,14 @@ const MainFeed: React.FC<Props> = (props) => {
         ? data.feed.filter((post) => !!post)
         : [];
 
-    const userCoin = tutorialActive
-        ? 400
-        : !!selfData?.user
-        ? selfData.user.coin
-        : 0;
+    // const userCoin = tutorialActive
+    //     ? 400
+    //     : !!selfData?.user
+    //     ? selfData.user.coin
+    //     : 0;
+
+    const userCoin = !!selfData?.user ? selfData.user.coin : 0;
+    const userBolts = !!selfData?.user ? selfData.user.bolts : 0;
 
     const firstName = localFirstName();
 
@@ -237,6 +240,7 @@ const MainFeed: React.FC<Props> = (props) => {
                     renderItem={({ item }) => (
                         <Post
                             userCoin={userCoin}
+                            userBolts={userBolts}
                             userFirstName={userFirstName}
                             openUser={openUser}
                             openCommunity={openCommunity}

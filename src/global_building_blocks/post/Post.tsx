@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import {
     Animated,
-    Easing,
     Image,
     LayoutAnimation,
     Text,
@@ -33,7 +32,6 @@ import {
 import { FetchResult } from "@apollo/client/link/core";
 import { MutationFunctionOptions } from "@apollo/client/react/types/types";
 import { DonateToPostData, DonateToPostVariables } from "./gql/Mutations";
-import DonationModal from "./building_blocks/donation_modal/DonationModal";
 import { DIGIBOLT_PRICE, USER_TYPENAME } from "../../global_types/UserTypes";
 import { challengeCheck } from "../../global_gql/challenge_check/challenge_check";
 import PicModal from "./building_blocks/pic_modal/PicModal";
@@ -46,6 +44,7 @@ import UpdateIndicator from "../../view_tree/main/routes/tab_nav/building_blocks
 import SymbolModal from "./building_blocks/symbol_modal/SymbolModal";
 import LightningFlyer from "./building_blocks/lightning_flyer/LightningFlyer";
 import LikeFlyer from "./building_blocks/like_flyer/LikeFlyer";
+import BoltBox from "../../bolt_box/BoltBox";
 
 const COMMUNITY_NAME_MAX_LEN = 30;
 
@@ -56,6 +55,7 @@ interface Props {
     post: PostType;
     feedPost?: boolean;
     userCoin: number;
+    userBolts: number;
     userFirstName: string;
     stripped?: boolean;
     openUser: (uid: string) => void;
@@ -329,97 +329,6 @@ const Post: React.FC<Props> = (props) => {
         }
     };
 
-    const donateCoin = async (amount: number) => {
-        /*
-         * Make sure we aren't donating to our own post
-         */
-        if (props.post.uid === localUid()) {
-            setError(`You can't "like" your own post`);
-        } else {
-            const { id: pid } = props.post;
-
-            setCoinAmount(amount);
-            animatedHeight.setValue(0);
-            animatedOpacity.setValue(1);
-
-            const animationDuration = 500;
-
-            Animated.parallel([
-                Animated.timing(animatedHeight, {
-                    toValue: -80,
-                    duration: animationDuration,
-                    easing: Easing.linear,
-                    useNativeDriver: true,
-                }),
-                Animated.timing(animatedOpacity, {
-                    toValue: 0,
-                    duration: animationDuration,
-                    easing: Easing.linear,
-                    useNativeDriver: true,
-                }),
-            ]).start(() => {
-                animatedOpacity.setValue(0);
-            });
-
-            if (!tutorialActive && !!props.donateToPost) {
-                try {
-                    await props.donateToPost({
-                        variables: {
-                            pid: props.post.id,
-                            amount,
-                        },
-                        optimisticResponse: {
-                            donateToPost: {
-                                uid: localUid(),
-                                pid,
-                                tuid: props.post.uid,
-                                amount,
-                                name: props.userFirstName,
-                            },
-                        },
-                        update(cache, { data }) {
-                            if (!!data?.donateToPost) {
-                                cache.modify({
-                                    id: cache.identify({
-                                        __typename: POST_TYPENAME,
-                                        id: pid,
-                                    }),
-                                    fields: {
-                                        coinDonated() {
-                                            return true;
-                                        },
-                                        coin(existing) {
-                                            return existing + amount;
-                                        },
-                                    },
-                                });
-
-                                cache.modify({
-                                    id: cache.identify({
-                                        __typename: USER_TYPENAME,
-                                        id: localUid(),
-                                    }),
-                                    fields: {
-                                        coin(existing) {
-                                            return existing - amount;
-                                        },
-                                    },
-                                });
-
-                                challengeCheck(cache);
-                            }
-                        },
-                    });
-                } catch (e) {
-                    console.log("This is error: ", e);
-                    setError(
-                        "An error occurred.  Make sure you have enough coin and try again"
-                    );
-                }
-            }
-        }
-    };
-
     let communityName = "";
 
     if (!!props.post.communityName) {
@@ -448,7 +357,7 @@ const Post: React.FC<Props> = (props) => {
                 loading={postModalLoading}
                 body={`Use ${toCommaRep(
                     props.post.responseCost
-                )} digicoin to respond to ${props.post.user}? 
+                )} digibolts to respond to ${props.post.user}? 
                                 \nThe reward for a successful convo is ${
                                     props.post.convoReward
                                 } digicoin.`}
@@ -466,6 +375,8 @@ const Post: React.FC<Props> = (props) => {
                             );
 
                         setTimeout(advanceTutorial, 500);
+                    } else if (props.userBolts < props.post.responseCost) {
+                        setPostModalError("You don't have enough digibolts!");
                     } else {
                         try {
                             const { data } = await client.query<
@@ -490,7 +401,7 @@ const Post: React.FC<Props> = (props) => {
                                     );
                             } else {
                                 setPostModalError(
-                                    "You've already responded to this post"
+                                    "You've already responded to this post!"
                                 );
                             }
                         } catch (e) {
@@ -504,28 +415,6 @@ const Post: React.FC<Props> = (props) => {
                 }}
                 onCancel={() => setPostModalVisible(false)}
             />
-            {/*<DonationModal*/}
-            {/*    donateCoin={async (amount) => {*/}
-            {/*        if (tutorialActive) {*/}
-            {/*            if (*/}
-            {/*                tutorialScreen === TutorialScreen.CustomTapLike &&*/}
-            {/*                props.post.id === "tut1"*/}
-            {/*            ) {*/}
-            {/*                customLikeTutorialPost(true);*/}
-            {/*                await donateCoin(amount);*/}
-
-            {/*                setTimeout(() => {*/}
-            {/*                    advanceTutorial();*/}
-            {/*                }, 700);*/}
-            {/*            }*/}
-            {/*        } else {*/}
-            {/*            await donateCoin(amount);*/}
-            {/*        }*/}
-            {/*    }}*/}
-            {/*    userCoin={props.userCoin}*/}
-            {/*    visible={donationModalVisible}*/}
-            {/*    hide={() => setDonationVisible(false)}*/}
-            {/*/>*/}
             <SymbolModal
                 visible={symbolModalVisible}
                 hide={() => showSymbolModal(false)}
@@ -714,27 +603,6 @@ const Post: React.FC<Props> = (props) => {
                                 onPress={() => showSymbolModal(true)}
                             >
                                 <View style={styles.infoIconContainer}>
-                                    {/*<Animated.View*/}
-                                    {/*    pointerEvents="none"*/}
-                                    {/*    style={[*/}
-                                    {/*        styles.animatedContainer,*/}
-                                    {/*        {*/}
-                                    {/*            transform: [*/}
-                                    {/*                {*/}
-                                    {/*                    translateY: animatedHeight,*/}
-                                    {/*                },*/}
-                                    {/*            ],*/}
-                                    {/*            opacity: animatedOpacity,*/}
-                                    {/*        },*/}
-                                    {/*    ]}*/}
-                                    {/*>*/}
-                                    {/*    <CoinBox*/}
-                                    {/*        showCoinPlus*/}
-                                    {/*        amount={animatedCoinAmount}*/}
-                                    {/*        coinSize={30}*/}
-                                    {/*        fontSize={14}*/}
-                                    {/*    />*/}
-                                    {/*</Animated.View>*/}
                                     <Image
                                         source={require("../../../assets/coin2_semi_soft_gray.png")}
                                         style={{
@@ -857,9 +725,9 @@ const Post: React.FC<Props> = (props) => {
                                             boxColor={palette.lightForestGreen}
                                         />
                                     </View>
-                                    <CoinBox
+                                    <BoltBox
                                         amount={props.post.responseCost}
-                                        coinSize={17}
+                                        boltSize={17}
                                     />
                                 </TouchableOpacity>
                             </View>
@@ -891,192 +759,3 @@ export default React.memo(Post, (oldProps, nextProps) => {
         oldProps.userFirstName === nextProps.userFirstName
     );
 });
-{
-    /*{props.post.coinDonated ? (*/
-}
-{
-    /*    <FontAwesome*/
-}
-{
-    /*        name="heart"*/
-}
-{
-    /*        style={styles.likeIcon}*/
-}
-{
-    /*        size={HEART_SIZE}*/
-}
-{
-    /*        color={palette.deepBlue}*/
-}
-{
-    /*    />*/
-}
-{
-    /*) : (*/
-}
-{
-    /*    <TouchableOpacity*/
-}
-{
-    /*    // onPress={async () => {*/
-}
-{
-    /*    //     if (tutorialActive) {*/
-}
-{
-    /*    //         if (*/
-}
-{
-    /*    //             tutorialScreen ===*/
-}
-{
-    /*    //                 TutorialScreen.TapLike &&*/
-}
-{
-    /*    //             props.post.id === "tut0"*/
-}
-{
-    /*    //         ) {*/
-}
-{
-    /*    //             likeTutorialPost(true);*/
-}
-{
-    /*    //             await donateCoin(10);*/
-}
-{
-    /*    //*/
-}
-{
-    /*    //             setTimeout(() => {*/
-}
-{
-    /*    //                 advanceTutorial();*/
-}
-{
-    /*    //             }, 700);*/
-}
-{
-    /*    //         }*/
-}
-{
-    /*    //*/
-}
-{
-    /*    //         if (*/
-}
-{
-    /*    //             tutorialScreen ===*/
-}
-{
-    /*    //                 TutorialScreen.CustomTapLike &&*/
-}
-{
-    /*    //             props.post.id === "tut1"*/
-}
-{
-    /*    //         ) {*/
-}
-{
-    /*    //             setDonationVisible(true);*/
-}
-{
-    /*    //         }*/
-}
-{
-    /*    //     } else {*/
-}
-{
-    /*    //         await donateCoin(10);*/
-}
-{
-    /*    //     }*/
-}
-{
-    /*    // }}*/
-}
-{
-    /*    // onLongPress={() => {*/
-}
-{
-    /*    //     if (tutorialActive) {*/
-}
-{
-    /*    //         if (*/
-}
-{
-    /*    //             tutorialScreen ===*/
-}
-{
-    /*    //                 TutorialScreen.CustomTapLike &&*/
-}
-{
-    /*    //             props.post.id === "tut1"*/
-}
-{
-    /*    //         ) {*/
-}
-{
-    /*    //             setDonationVisible(true);*/
-}
-{
-    /*    //         }*/
-}
-{
-    /*    //     } else {*/
-}
-{
-    /*    //         setDonationVisible(true);*/
-}
-{
-    /*    //     }*/
-}
-{
-    /*    // }}*/
-}
-{
-    /*    >*/
-}
-{
-    /*        <MaterialIcons*/
-}
-{
-    /*            name={"bolt"}*/
-}
-{
-    /*            style={styles.likeIcon}*/
-}
-{
-    /*            size={35}*/
-}
-{
-    /*            color={palette.deepBlue}*/
-}
-{
-    /*        />*/
-}
-{
-    /*        /!*<FontAwesome*!/*/
-}
-{
-    /*        /!*    name="heart-o"*!/*/
-}
-{
-    /*        /!*    style={styles.likeIcon}*!/*/
-}
-{
-    /*        /!*    size={HEART_SIZE}*!/*/
-}
-{
-    /*        /!*    color={palette.deepBlue}*!/*/
-}
-{
-    /*/>*/
-}
-{
-    /*    </TouchableOpacity>*/
-}
-{
-    /*)}*/
-}

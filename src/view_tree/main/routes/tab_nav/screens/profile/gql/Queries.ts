@@ -17,6 +17,7 @@ export const GET_USER = gql`
             lastCollectionTime
 
             amFollowing
+            bolts
             newConvoUpdate
             newTransactionUpdate
             bio

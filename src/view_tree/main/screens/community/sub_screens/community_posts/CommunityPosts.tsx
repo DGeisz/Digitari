@@ -83,6 +83,7 @@ const CommunityPosts: React.FC<Props> = (props) => {
     });
 
     const userCoin = !!selfData?.user ? selfData.user.coin : 0;
+    const userBolts = !!selfData?.user ? selfData.user.bolts : 0;
     const userFirstName = !!selfData?.user ? selfData.user.firstName : "";
 
     const [donateToPost] = useMutation<DonateToPostData, DonateToPostVariables>(
@@ -342,6 +343,7 @@ const CommunityPosts: React.FC<Props> = (props) => {
                 <Post
                     donateToPost={donateToPost}
                     userFirstName={userFirstName}
+                    userBolts={userBolts}
                     userCoin={userCoin}
                     openUser={(uid: string) => {
                         props.navigation.push("User", { uid });

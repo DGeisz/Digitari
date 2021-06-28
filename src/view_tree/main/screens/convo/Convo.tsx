@@ -787,6 +787,7 @@ const Convo: React.FC<Props> = (props) => {
                                 <Post
                                     donateToPost={donateToPost}
                                     userCoin={0}
+                                    userBolts={0}
                                     userFirstName={""}
                                     stripped
                                     openUser={(uid) =>

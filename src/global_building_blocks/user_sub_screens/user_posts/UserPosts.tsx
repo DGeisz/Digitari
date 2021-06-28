@@ -100,6 +100,7 @@ const UserPosts: React.FC<Props> = (props) => {
     const { cache } = useApolloClient();
 
     const userCoin = !!selfData?.user ? selfData.user.coin : 0;
+    const userBolts = !!selfData?.user ? selfData.user.bolts : 0;
     const userFirstName = !!selfData?.user ? selfData.user.firstName : "";
 
     return (
@@ -135,6 +136,7 @@ const UserPosts: React.FC<Props> = (props) => {
             data={finalFeed}
             renderItem={({ item }) => (
                 <Post
+                    userBolts={userBolts}
                     donateToPost={donateToPost}
                     userCoin={userCoin}
                     userFirstName={userFirstName}
