@@ -24,13 +24,13 @@ export const CONVO = gql`
             sname
             sanony
             sviewed
+            sourceMsgCount
 
             tid
             ttier
             tranking
             tname
             tviewed
-
             targetMsgCount
         }
     }

@@ -1,9 +1,12 @@
 import { OnSubscriptionDataOptions } from "@apollo/client";
 import { NewMessageAddedData } from "../../gql/Subscriptions";
 import {
+    CONVO,
     CONVO_MESSAGES,
+    ConvoData,
     ConvoMessagesData,
     ConvoMessagesVariables,
+    ConvoVariables,
 } from "../../../../screens/convo/gql/Queries";
 import { CONVO_TYPENAME } from "../../../../../../global_types/ConvoTypes";
 import { sort_active_convos } from "../utils/cache_utils";
@@ -18,10 +21,12 @@ export function onMessageData(
         subscriptionData: { data, error },
     } = options;
 
+    const uid = localUid();
+
     console.log("On message options: ", data, error);
 
     if (!!data?.messageAdded) {
-        const convoData = cache.readQuery<
+        const convoMessagesData = cache.readQuery<
             ConvoMessagesData,
             ConvoMessagesVariables
         >({
@@ -31,7 +36,14 @@ export function onMessageData(
             },
         });
 
-        if (!!convoData?.convoMessages) {
+        const convoData = cache.readQuery<ConvoData, ConvoVariables>({
+            query: CONVO,
+            variables: {
+                cvid: data.messageAdded.id,
+            },
+        });
+
+        if (!!convoMessagesData?.convoMessages) {
             cache.writeQuery<ConvoMessagesData, ConvoMessagesVariables>({
                 query: CONVO_MESSAGES,
                 variables: {
@@ -39,7 +51,7 @@ export function onMessageData(
                 },
                 data: {
                     convoMessages: [
-                        ...convoData.convoMessages,
+                        ...convoMessagesData.convoMessages,
                         data.messageAdded,
                     ],
                 },
@@ -66,6 +78,20 @@ export function onMessageData(
                 sviewed() {
                     return false;
                 },
+                targetMsgCount(existing) {
+                    if (!!convoData?.convo && uid !== convoData.convo.tid) {
+                        return existing + 1;
+                    }
+
+                    return existing;
+                },
+                sourceMsgCount(existing) {
+                    if (!!convoData?.convo && uid === convoData.convo.tid) {
+                        return existing + 1;
+                    }
+
+                    return existing;
+                },
             },
         });
 
@@ -75,7 +101,7 @@ export function onMessageData(
         cache.modify({
             id: cache.identify({
                 __typename: USER_TYPENAME,
-                id: localUid(),
+                id: uid,
             }),
             fields: {
                 newConvoUpdate() {

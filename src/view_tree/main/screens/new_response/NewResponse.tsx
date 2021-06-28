@@ -58,12 +58,10 @@ const NewResponse: React.FC<Props> = (props) => {
     const uid = localUid();
     const hid = localHid();
 
-    const { pid } = props.route.params;
+    const { pid, responseCost } = props.route.params;
 
     const [anony, setAnony] = useState<boolean>(false);
     const [content, setContent] = useState<string>("");
-
-    const [optimisticSent, setOpt] = useState<boolean>(false);
 
     const { data: postData } = useQuery<PostData, PostVariables>(POST, {
         variables: {
@@ -94,11 +92,8 @@ const NewResponse: React.FC<Props> = (props) => {
                         id: uid,
                     }),
                     fields: {
-                        coin(existing) {
-                            return Math.max(
-                                existing - props.route.params.responseCost,
-                                0
-                            );
+                        bolts(existing) {
+                            return Math.max(existing - responseCost, 0);
                         },
                     },
                 });
@@ -222,6 +217,7 @@ const NewResponse: React.FC<Props> = (props) => {
                                       sname: anony ? "" : firstName,
                                       sanony: anony,
                                       sviewed: true,
+                                      sourceMsgCount: 1,
 
                                       tid: postData.post.uid,
                                       ttier: postData.post.tier,

@@ -5,7 +5,7 @@ export const CONVO_TYPENAME = "Convo";
  * write before the source user of the convo can successfully
  * finish the conversation
  */
-export const TARGET_MESSAGE_COUNT_THRESHOLD = 2;
+export const MESSAGE_COUNT_THRESHOLD = 2;
 
 export enum ConvoStatus {
     Deleted = -3,

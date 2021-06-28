@@ -9,6 +9,7 @@ import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel
 
 interface Props {
     responseCost: number;
+    userBolts: number;
     onBlock: () => void;
     onDismiss: () => void;
     onRespond: () => void;
@@ -18,6 +19,7 @@ interface State {
     blockVisible: boolean;
     dismissVisible: boolean;
     messageVisible: boolean;
+    responseError: boolean;
     loading: boolean;
 }
 
@@ -29,6 +31,7 @@ export default class ResponseResponse extends React.PureComponent<
         blockVisible: false,
         dismissVisible: false,
         messageVisible: false,
+        responseError: false,
         loading: false,
     };
 
@@ -65,15 +68,27 @@ export default class ResponseResponse extends React.PureComponent<
                 />
                 <CancelConfirmModal
                     visible={this.state.messageVisible}
-                    body={`Respond to convo and put up ${toCommaRep(
+                    body={`Use ${toCommaRep(
                         this.props.responseCost
-                    )} digicoin for the convo reward?`}
+                    )} digibolts to respond to this convo?`}
                     title="Respond"
+                    error={
+                        this.state.responseError
+                            ? "You don't have enough digibolts!"
+                            : undefined
+                    }
                     onConfirm={() => {
-                        this.setState({ messageVisible: false, loading: true });
-                        setTimeout(() => {
-                            this.props.onRespond();
-                        }, 500);
+                        if (this.props.userBolts < this.props.responseCost) {
+                            this.setState({ responseError: true });
+                        } else {
+                            this.setState({
+                                messageVisible: false,
+                                loading: true,
+                            });
+                            setTimeout(() => {
+                                this.props.onRespond();
+                            }, 500);
+                        }
                     }}
                     confirmMessage="Respond"
                     onCancel={() => this.setState({ messageVisible: false })}

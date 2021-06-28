@@ -40,7 +40,7 @@ import {
     CONVO_TYPENAME,
     ConvoStatus,
     ConvoType,
-    TARGET_MESSAGE_COUNT_THRESHOLD,
+    MESSAGE_COUNT_THRESHOLD,
 } from "../../../../global_types/ConvoTypes";
 import {
     BlockedFooter,
@@ -99,6 +99,11 @@ import { zariahPost } from "../../routes/tab_nav/screens/main_feed/hooks/tutoria
 import { MessageType } from "../../../../global_types/MessageTypes";
 import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
 import { useZariahConvo } from "./hooks/zariah_convo/zariah_convo";
+import {
+    GET_USER,
+    GetUserQueryData,
+    GetUserQueryVariables,
+} from "../../routes/tab_nav/screens/profile/gql/Queries";
 
 function getCheckLeft(uid: string, tid: string): (id: string) => boolean {
     if (uid === tid) {
@@ -193,6 +198,17 @@ const Convo: React.FC<Props> = (props) => {
         },
         fetchPolicy,
     });
+
+    const { data: selfData } = useQuery<
+        GetUserQueryData,
+        GetUserQueryVariables
+    >(GET_USER, {
+        variables: {
+            uid,
+        },
+    });
+
+    const userBolts = !!selfData?.user ? selfData.user.bolts : 0;
 
     /*
      * Mutations
@@ -395,7 +411,7 @@ const Convo: React.FC<Props> = (props) => {
                 });
 
                 /*
-                 * Update user's coin
+                 * Update user's bolts
                  */
                 cache.modify({
                     id: cache.identify({
@@ -403,9 +419,9 @@ const Convo: React.FC<Props> = (props) => {
                         id: uid,
                     }),
                     fields: {
-                        coin(existing) {
+                        bolts(existing) {
                             if (!!postData?.post) {
-                                return existing - postData.post.convoReward;
+                                return existing - postData.post.responseCost;
                             } else {
                                 return existing;
                             }
@@ -487,7 +503,7 @@ const Convo: React.FC<Props> = (props) => {
 
                 /*
                  * Increase the user's ranking, successfulConvos, and
-                 * if this is the source user, also increase their coin
+                 * increase their trans total by the convo reward
                  */
                 cache.modify({
                     id: cache.identify({
@@ -502,12 +518,7 @@ const Convo: React.FC<Props> = (props) => {
                             return existing + 1;
                         },
                         transTotal(existing) {
-                            if (
-                                !!convoData?.convo &&
-                                (convoData.convo.sid === uid ||
-                                    convoData.convo.sid === hid) &&
-                                !!postData?.post
-                            ) {
+                            if (!!postData?.post) {
                                 return existing + postData.post.convoReward;
                             }
 
@@ -517,15 +528,10 @@ const Convo: React.FC<Props> = (props) => {
                 });
 
                 /*
-                 * If this user is the convo source, then
-                 * add a transaction indicating this user
+                 * Add a transaction indicating this user
                  * just made some dough
                  */
-                if (!!convoData?.convo && uid !== convoData.convo.tid) {
-                    /*
-                     * Now that we've established we're the source
-                     * we add a transaction accordingly
-                     */
+                if (!!convoData?.convo) {
                     const transaction: TransactionType = {
                         tid: uid,
                         time: Date.now().toString(),
@@ -731,7 +737,16 @@ const Convo: React.FC<Props> = (props) => {
      * Get fields necessary to render the conversation
      */
     const isActive = convo.status === ConvoStatus.Active;
-    const { status, targetMsgCount, tid, tname, sname, sid, sanony } = convo;
+    const {
+        status,
+        targetMsgCount,
+        sourceMsgCount,
+        tid,
+        tname,
+        sname,
+        sid,
+        sanony,
+    } = convo;
 
     const checkLeft = getCheckLeft(uid, tid);
 
@@ -893,25 +908,25 @@ const Convo: React.FC<Props> = (props) => {
                                         />
                                     </View>
                                 </View>
-                                {tid !== uid && (
-                                    <View style={styles.rewardContainer}>
-                                        <Text style={styles.rewardText}>
-                                            Reward
-                                        </Text>
-                                        <View style={styles.coinBoxContainer}>
-                                            <CoinBox
-                                                coinSize={20}
-                                                fontSize={14}
-                                                showCoinPlus
-                                                amount={post.convoReward}
-                                                boxColor={
-                                                    palette.lightForestGreen
-                                                }
-                                                paddingRight={10}
-                                            />
-                                        </View>
+                                <View style={styles.rewardContainer}>
+                                    <Text>
+                                        {convoData?.convo.sourceMsgCount}{" "}
+                                        {convoData?.convo.targetMsgCount}
+                                    </Text>
+                                    <Text style={styles.rewardText}>
+                                        Reward
+                                    </Text>
+                                    <View style={styles.coinBoxContainer}>
+                                        <CoinBox
+                                            coinSize={20}
+                                            fontSize={14}
+                                            showCoinPlus
+                                            amount={post.convoReward}
+                                            boxColor={palette.lightForestGreen}
+                                            paddingRight={10}
+                                        />
                                     </View>
-                                )}
+                                </View>
                                 {!!error && (
                                     <View style={styles.errorContainer}>
                                         <Text style={styles.errorText}>
@@ -960,15 +975,19 @@ const Convo: React.FC<Props> = (props) => {
                         case ConvoStatus.Active:
                             if (participant) {
                                 if (uid === tid) {
-                                    return (
-                                        <PendingFinishFooter
-                                            onFinish={finishConvo}
-                                            finishMessage={"Finish convo?"}
-                                        />
-                                    );
+                                    if (
+                                        sourceMsgCount >=
+                                        MESSAGE_COUNT_THRESHOLD
+                                    ) {
+                                        return (
+                                            <PendingFinishFooter
+                                                onFinish={finishConvo}
+                                                finishMessage={"Finish convo?"}
+                                            />
+                                        );
+                                    }
                                 } else if (
-                                    targetMsgCount >=
-                                    TARGET_MESSAGE_COUNT_THRESHOLD
+                                    targetMsgCount >= MESSAGE_COUNT_THRESHOLD
                                 ) {
                                     return (
                                         <PendingFinishFooter
@@ -1127,7 +1146,8 @@ const Convo: React.FC<Props> = (props) => {
             <>
                 {convoContent}
                 <ResponseResponse
-                    responseCost={post.convoReward}
+                    responseCost={post.responseCost}
+                    userBolts={userBolts}
                     onBlock={async () => {
                         try {
                             await blockConvo();
