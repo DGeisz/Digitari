@@ -10,9 +10,11 @@ export default class ErrorMessage extends React.PureComponent<Props> {
     render() {
         return (
             <View style={styles.errorStateContainer}>
-                <Text style={styles.errorFailText}>Connection failed!</Text>
                 <Text style={styles.errorFailText}>
-                    Please check your connection and try again
+                    Well, shoot. Something went wrong.
+                </Text>
+                <Text style={styles.errorFailText}>
+                    Check your connection and see if that helps!
                 </Text>
                 <TouchableOpacity
                     style={{ marginTop: 15 }}

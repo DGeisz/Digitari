@@ -122,7 +122,7 @@ const PostScreen: React.FC<Props> = (props) => {
     return (
         <FlatList
             style={styles.listContainer}
-            ListHeaderComponent={() => (
+            ListHeaderComponent={
                 <>
                     <View style={styles.headerContainer}>
                         <Post
@@ -227,7 +227,7 @@ const PostScreen: React.FC<Props> = (props) => {
                         </View>
                     ) : null}
                 </>
-            )}
+            }
             refreshControl={
                 <RefreshControl
                     refreshing={

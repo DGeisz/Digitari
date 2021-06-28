@@ -7,16 +7,19 @@ import {
     TransactionTypesEnum,
 } from "../../../../../../global_types/TransactionTypes";
 import { localUid } from "../../../../../../global_state/UserState";
-import { toRep } from "../../../../../../global_utils/ValueRepUtils";
 import {
     POST,
     PostData,
     PostVariables,
 } from "../../../../screens/post_screen/gql/Queries";
 import { addTransaction } from "../utils/cache_utils";
-import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
+import {
+    DIGIBOLT_PRICE,
+    USER_TYPENAME,
+} from "../../../../../../global_types/UserTypes";
 import { addNewReceipt } from "../../../../../../global_state/CoinUpdates";
 import { challengeCheck } from "../../../../../../global_gql/challenge_check/challenge_check";
+import { toRep } from "../../../../../../global_utils/ValueRepUtils";
 
 export async function onDonationReceived(
     options: OnSubscriptionDataOptions<DonationReceivedData>
@@ -29,6 +32,7 @@ export async function onDonationReceived(
 
     if (!!data?.donationReceived) {
         const { pid, amount, name, uid } = data.donationReceived;
+        const coinTotal = DIGIBOLT_PRICE * amount;
 
         /*
          * First we add coin to the post
@@ -40,12 +44,12 @@ export async function onDonationReceived(
             }),
             fields: {
                 coin(existing) {
-                    return existing + amount;
+                    return existing + coinTotal;
                 },
             },
         });
 
-        let message = `${name} liked your post`;
+        let message = `${name} spent ${toRep(coinTotal)} digicoin on your post`;
 
         try {
             const { data: postData } = await client.query<
@@ -59,7 +63,9 @@ export async function onDonationReceived(
             });
 
             if (!!postData?.post) {
-                message = `${name} liked your post: "${postData.post.content}"`;
+                message = `${name} spent ${toRep(
+                    coinTotal
+                )} digicoin on your post: "${postData.post.content}"`;
             }
         } catch (e) {}
 
@@ -69,7 +75,7 @@ export async function onDonationReceived(
         const transaction: TransactionType = {
             tid: localUid(),
             time: Date.now().toString(),
-            coin: amount,
+            coin: coinTotal,
             message,
             transactionType: TransactionTypesEnum.User,
             data: uid,
@@ -79,7 +85,7 @@ export async function onDonationReceived(
         /*
          * Add receipt for animation
          */
-        addNewReceipt(amount);
+        addNewReceipt(coinTotal);
 
         /*
          * Notify user of new transaction update
@@ -94,10 +100,10 @@ export async function onDonationReceived(
                     return true;
                 },
                 receivedFromConvos(existing) {
-                    return existing + amount;
+                    return existing + coinTotal;
                 },
                 transTotal(existing) {
-                    return existing + amount;
+                    return existing + coinTotal;
                 },
             },
         });

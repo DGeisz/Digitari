@@ -11,12 +11,7 @@ import {
 import { styles } from "./PostStyles";
 import Tier from "../tier/Tier";
 import CoinBox from "../coin_box/CoinBox";
-import {
-    Entypo,
-    FontAwesome,
-    MaterialIcons,
-    Ionicons,
-} from "@expo/vector-icons";
+import { Entypo, MaterialIcons, Ionicons } from "@expo/vector-icons";
 import {
     POST_TYPENAME,
     PostAddOn,
@@ -39,7 +34,7 @@ import { FetchResult } from "@apollo/client/link/core";
 import { MutationFunctionOptions } from "@apollo/client/react/types/types";
 import { DonateToPostData, DonateToPostVariables } from "./gql/Mutations";
 import DonationModal from "./building_blocks/donation_modal/DonationModal";
-import { USER_TYPENAME } from "../../global_types/UserTypes";
+import { DIGIBOLT_PRICE, USER_TYPENAME } from "../../global_types/UserTypes";
 import { challengeCheck } from "../../global_gql/challenge_check/challenge_check";
 import PicModal from "./building_blocks/pic_modal/PicModal";
 import OptionsModal from "./building_blocks/options_modal/OptionsModal";
@@ -51,10 +46,8 @@ import UpdateIndicator from "../../view_tree/main/routes/tab_nav/building_blocks
 import SymbolModal from "./building_blocks/symbol_modal/SymbolModal";
 import LightningFlyer from "./building_blocks/lightning_flyer/LightningFlyer";
 import LikeFlyer from "./building_blocks/like_flyer/LikeFlyer";
-import { createTimeout } from "../../global_utils/TimeoutUtils";
 
 const COMMUNITY_NAME_MAX_LEN = 30;
-const HEART_SIZE = 23;
 
 const BOLT_QUANTA = 500;
 const BOLT_SCALE = 1.2;
@@ -86,8 +79,10 @@ interface Props {
 
 const Post: React.FC<Props> = (props) => {
     const uid = localUid();
-
     const client = useApolloClient();
+    const { id: pid } = props.post;
+
+    const availableBolts = Math.floor(props.userCoin / DIGIBOLT_PRICE);
 
     const [postModalVisible, setPostModalVisible] = useState<boolean>(false);
     const [postModalError, setPostModalError] = useState<string>("");
@@ -110,12 +105,6 @@ const Post: React.FC<Props> = (props) => {
     const dotOpacity = useRef(new Animated.Value(0.5)).current;
 
     const [boltId, setBoltId] = useState<number>(0);
-
-    const [numBolts, setNumBolts] = useState<number>(0);
-
-    const [bulkTimeout, setBulkTimeout] = useState<number | undefined>(
-        undefined
-    );
 
     /*
      * Lightning animation
@@ -229,13 +218,115 @@ const Post: React.FC<Props> = (props) => {
             clearTimeout(errorTimeout);
         }
 
-        const newTimeout = setTimeout(() => {
-            LayoutAnimation.easeInEaseOut();
-            setPostError("");
-            setErrorTimeout(undefined);
-        }, 4000);
+        setErrorTimeout(
+            setTimeout(() => {
+                LayoutAnimation.easeInEaseOut();
+                setPostError("");
+                setErrorTimeout(undefined);
+            }, 4000)
+        );
+    };
 
-        setErrorTimeout(newTimeout);
+    const [numBolts, setNumBolts] = useState<number>(0);
+
+    /*
+     * This is used to give the appearance that
+     * coin has been donated before it has
+     */
+    const [bulkTimeout, setBulkTimeout] = useState<number | undefined>(
+        undefined
+    );
+
+    const tapBolt = async () => {
+        const currentBolts = numBolts + 1;
+
+        if (currentBolts <= availableBolts) {
+            setBoltId(1 + Math.random());
+            setNumBolts(currentBolts);
+
+            if (typeof bulkTimeout !== "undefined") {
+                clearTimeout(bulkTimeout);
+            }
+
+            setBulkTimeout(
+                setTimeout(async () => {
+                    /*
+                     * First immediately set num bolts to
+                     * zero to prepare for the next batch
+                     */
+                    setNumBolts(0);
+
+                    /*
+                     * Then actually handle the mutation
+                     */
+                    !!props.donateToPost &&
+                        (await props.donateToPost({
+                            variables: {
+                                pid: props.post.id,
+                                amount: currentBolts,
+                            },
+                            optimisticResponse: {
+                                donateToPost: {
+                                    uid: localUid(),
+                                    pid,
+                                    tuid: props.post.uid,
+                                    amount: currentBolts,
+                                    name: props.userFirstName,
+                                },
+                            },
+                            update(cache, { data }) {
+                                console.log("So the mutation went through");
+
+                                if (!!data?.donateToPost) {
+                                    console.log("And it was successful");
+
+                                    /*
+                                     * Increase post digicoin
+                                     */
+                                    client.cache.modify({
+                                        id: client.cache.identify({
+                                            __typename: POST_TYPENAME,
+                                            id: props.post.id,
+                                        }),
+                                        fields: {
+                                            coin(existing: number) {
+                                                return (
+                                                    existing +
+                                                    currentBolts *
+                                                        DIGIBOLT_PRICE
+                                                );
+                                            },
+                                        },
+                                    });
+
+                                    cache.modify({
+                                        id: cache.identify({
+                                            __typename: USER_TYPENAME,
+                                            id: uid,
+                                        }),
+                                        fields: {
+                                            coin(existing: number) {
+                                                return (
+                                                    existing -
+                                                    currentBolts *
+                                                        DIGIBOLT_PRICE
+                                                );
+                                            },
+                                            bolts(existing: number) {
+                                                return existing + currentBolts;
+                                            },
+                                        },
+                                    });
+
+                                    challengeCheck(cache);
+                                }
+                            },
+                        }));
+                }, 1000)
+            );
+        } else {
+            setError("You need 10 digicoin to earn a digibolt");
+        }
     };
 
     const donateCoin = async (amount: number) => {
@@ -413,28 +504,28 @@ const Post: React.FC<Props> = (props) => {
                 }}
                 onCancel={() => setPostModalVisible(false)}
             />
-            <DonationModal
-                donateCoin={async (amount) => {
-                    if (tutorialActive) {
-                        if (
-                            tutorialScreen === TutorialScreen.CustomTapLike &&
-                            props.post.id === "tut1"
-                        ) {
-                            customLikeTutorialPost(true);
-                            await donateCoin(amount);
+            {/*<DonationModal*/}
+            {/*    donateCoin={async (amount) => {*/}
+            {/*        if (tutorialActive) {*/}
+            {/*            if (*/}
+            {/*                tutorialScreen === TutorialScreen.CustomTapLike &&*/}
+            {/*                props.post.id === "tut1"*/}
+            {/*            ) {*/}
+            {/*                customLikeTutorialPost(true);*/}
+            {/*                await donateCoin(amount);*/}
 
-                            setTimeout(() => {
-                                advanceTutorial();
-                            }, 700);
-                        }
-                    } else {
-                        await donateCoin(amount);
-                    }
-                }}
-                userCoin={props.userCoin}
-                visible={donationModalVisible}
-                hide={() => setDonationVisible(false)}
-            />
+            {/*                setTimeout(() => {*/}
+            {/*                    advanceTutorial();*/}
+            {/*                }, 700);*/}
+            {/*            }*/}
+            {/*        } else {*/}
+            {/*            await donateCoin(amount);*/}
+            {/*        }*/}
+            {/*    }}*/}
+            {/*    userCoin={props.userCoin}*/}
+            {/*    visible={donationModalVisible}*/}
+            {/*    hide={() => setDonationVisible(false)}*/}
+            {/*/>*/}
             <SymbolModal
                 visible={symbolModalVisible}
                 hide={() => showSymbolModal(false)}
@@ -458,63 +549,51 @@ const Post: React.FC<Props> = (props) => {
                             <Tier size={30} tier={props.post.tier} />
                             <View style={styles.sideBufferDivider} />
                         </View>
-                        <TouchableOpacity
-                            style={styles.sideBufferBottom}
-                            onPress={() => {
-                                setBoltId(1 + Math.random());
-                                setNumBolts(numBolts + 1);
-
-                                if (typeof bulkTimeout !== "undefined") {
-                                    clearTimeout(bulkTimeout);
-                                }
-
-                                setBulkTimeout(
-                                    setTimeout(() => {
-                                        /*
-                                         * TODO: handle bulk operations in here
-                                         */
-
-                                        console.log(
-                                            "Immmmmmmma finished!",
-                                            numBolts
-                                        );
-
-                                        setNumBolts(0);
-                                    }, 1000)
-                                );
-                            }}
-                            activeOpacity={1}
-                        >
-                            <LightningFlyer boltId={boltId} />
-                            <Animated.View
-                                style={{
-                                    transform: [{ scale: boltScale }],
-                                }}
-                            >
+                        {props.post.uid === uid ? (
+                            <View style={styles.sideBufferBottom}>
                                 <MaterialIcons
                                     name="bolt"
                                     size={35}
-                                    color={palette.deepBlue}
+                                    color={palette.lightGray}
                                 />
-                            </Animated.View>
-                            <Animated.View
-                                style={[
-                                    styles.dot,
-                                    {
-                                        opacity: dotOpacity,
-                                        transform: [{ scale: dotScale }],
-                                    },
-                                ]}
-                            />
-                            <Animated.View
-                                style={[
-                                    styles.tapContainer,
-                                    { transform: [{ scale: tapScale }] },
-                                ]}
+                            </View>
+                        ) : (
+                            <TouchableOpacity
+                                style={styles.sideBufferBottom}
+                                onPress={tapBolt}
+                                activeOpacity={1}
                             >
-                                <Text style={styles.tapText}>Tap!</Text>
-                            </Animated.View>
-                        </TouchableOpacity>
+                                <LightningFlyer boltId={boltId} />
+                                <Animated.View
+                                    style={{
+                                        transform: [{ scale: boltScale }],
+                                    }}
+                                >
+                                    <MaterialIcons
+                                        name="bolt"
+                                        size={35}
+                                        color={palette.deepBlue}
+                                    />
+                                </Animated.View>
+                                <Animated.View
+                                    style={[
+                                        styles.dot,
+                                        {
+                                            opacity: dotOpacity,
+                                            transform: [{ scale: dotScale }],
+                                        },
+                                    ]}
+                                />
+                                <Animated.View
+                                    style={[
+                                        styles.tapContainer,
+                                        { transform: [{ scale: tapScale }] },
+                                    ]}
+                                >
+                                    <Text style={styles.tapText}>Tap!</Text>
+                                </Animated.View>
+                            </TouchableOpacity>
+                        )}
                     </View>
                 )}
                 <View style={styles.postMain}>
@@ -686,7 +765,10 @@ const Post: React.FC<Props> = (props) => {
                                             },
                                         ]}
                                     >
-                                        {toRep(props.post.coin)}
+                                        {toRep(
+                                            props.post.coin +
+                                                numBolts * DIGIBOLT_PRICE
+                                        )}
                                     </Text>
                                     <LikeFlyer coinId={boltId} />
                                 </View>
