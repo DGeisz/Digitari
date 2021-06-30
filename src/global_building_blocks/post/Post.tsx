@@ -88,12 +88,9 @@ const Post: React.FC<Props> = (props) => {
     const [postModalError, setPostModalError] = useState<string>("");
     const [postModalLoading, setPostModalLoading] = useState<boolean>(false);
 
-    const [donationModalVisible, setDonationVisible] = useState<boolean>(false);
     const [error, setPostError] = useState<string>("");
 
     const [symbolModalVisible, showSymbolModal] = useState<boolean>(false);
-
-    const [animatedCoinAmount, setCoinAmount] = useState<number>(0);
 
     const [picModalVisible, setPicVisible] = useState<boolean>(false);
 
@@ -203,9 +200,6 @@ const Post: React.FC<Props> = (props) => {
         customLikeTutorialPost,
     } = useContext(TutorialContext);
 
-    const animatedHeight = useRef(new Animated.Value(0)).current;
-    const animatedOpacity = useRef(new Animated.Value(0)).current;
-
     const [errorTimeout, setErrorTimeout] = useState<number | undefined>(
         undefined
     );
@@ -308,6 +302,13 @@ const Post: React.FC<Props> = (props) => {
                                             coin(existing: number) {
                                                 return (
                                                     existing -
+                                                    currentBolts *
+                                                        DIGIBOLT_PRICE
+                                                );
+                                            },
+                                            coinSpent(existing: number) {
+                                                return (
+                                                    existing +
                                                     currentBolts *
                                                         DIGIBOLT_PRICE
                                                 );

@@ -521,16 +521,26 @@ const Convo: React.FC<Props> = (props) => {
                 });
 
                 /*
-                 * Add a transaction indicating this user
-                 * just made some dough
-                 * TODO: Change finish convo transaction message
+                 * Add a transaction
                  */
                 if (!!convoData?.convo) {
+                    let transactionMessage: string;
+
+                    if (uid === convoData.convo.tid) {
+                        if (convoData.convo.sanony) {
+                            transactionMessage = `You successfully finished a convo`;
+                        } else {
+                            transactionMessage = `You successfully finished your convo with ${convoData.convo.sname}`;
+                        }
+                    } else {
+                        transactionMessage = `You successfully finished your convo with ${convoData.convo.tname}`;
+                    }
+
                     const transaction: TransactionType = {
                         tid: uid,
                         time: Date.now().toString(),
                         coin: 0,
-                        message: `Reward for your successful convo with ${convoData.convo.tname}`,
+                        message: transactionMessage,
                         transactionType: TransactionTypesEnum.Convo,
                         data: `${cvid}:${convoData.convo.pid}`,
                     };

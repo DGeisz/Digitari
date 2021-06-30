@@ -11,7 +11,6 @@ import {
     TransactionType,
     TransactionTypesEnum,
 } from "../../../../../../global_types/TransactionTypes";
-import { addNewReceipt } from "../../../../../../global_state/CoinUpdates";
 import { challengeCheck } from "../../../../../../global_gql/challenge_check/challenge_check";
 
 export function onConvoFinished(
@@ -82,43 +81,47 @@ export function onConvoFinished(
 
         const uid = localUid();
 
-        /*
-         * First be sure we're the source of
-         * the convo
-         */
-        if (uid !== convo.tid) {
-            /*
-             * Now that we've established we're the source
-             * we add a transaction accordingly
-             *
-             * TODO: Add better transaction message
-             */
-            const transaction: TransactionType = {
-                tid: uid,
-                time: Date.now().toString(),
-                coin: 0,
-                message: `Reward for your successful convo with ${convo.tname}`,
-                transactionType: TransactionTypesEnum.Convo,
-                data: `${cvid}:${convo.pid}`,
-            };
+        let transactionMessage: string;
 
-            /*
-             * Notify user of new transaction update
-             */
-            cache.modify({
-                id: cache.identify({
-                    __typename: USER_TYPENAME,
-                    id: uid,
-                }),
-                fields: {
-                    newTransactionUpdate() {
-                        return true;
-                    },
-                },
-            });
-
-            addTransaction(transaction, cache);
+        if (uid === convo.tid) {
+            if (convo.sanony) {
+                transactionMessage = `Your convo was successfully finished`;
+            } else {
+                transactionMessage = `${convo.sname} successfully finished your convo`;
+            }
+        } else {
+            transactionMessage = `${convo.tname} successfully finished your convo`;
         }
+
+        /*
+         * Now that we've established we're the source
+         * we add a transaction accordingly
+         */
+        const transaction: TransactionType = {
+            tid: uid,
+            time: Date.now().toString(),
+            coin: 0,
+            message: transactionMessage,
+            transactionType: TransactionTypesEnum.Convo,
+            data: `${cvid}:${convo.pid}`,
+        };
+
+        /*
+         * Notify user of new transaction update
+         */
+        cache.modify({
+            id: cache.identify({
+                __typename: USER_TYPENAME,
+                id: uid,
+            }),
+            fields: {
+                newTransactionUpdate() {
+                    return true;
+                },
+            },
+        });
+
+        addTransaction(transaction, cache);
 
         /*
          * Quick challenge check

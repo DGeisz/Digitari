@@ -115,7 +115,7 @@ const NewPost: React.FC<Props> = (props) => {
      * Target
      */
     const [target, setTarget] = useState<PostTarget>(PostTarget.MyFollowers);
-    const [recipients, setRecipients] = useState<number>(0);
+    const [recipients, setRecipients] = useState<number | undefined>(undefined);
     const recipientsRef = useRef<TextInput>(null);
 
     const uid = localUid();
@@ -205,13 +205,19 @@ const NewPost: React.FC<Props> = (props) => {
                 }),
                 fields: {
                     coin(existing) {
-                        return Math.max(
-                            existing - COST_PER_RECIPIENT * recipients,
-                            0
-                        );
+                        if (!!recipients) {
+                            return Math.max(
+                                existing - COST_PER_RECIPIENT * recipients,
+                                0
+                            );
+                        }
+                        return existing;
                     },
                     coinSpent(existing) {
-                        return existing + COST_PER_RECIPIENT * recipients;
+                        if (!!recipients) {
+                            return existing + COST_PER_RECIPIENT * recipients;
+                        }
+                        return existing;
                     },
                     postCount(existing) {
                         return existing + 1;
@@ -230,6 +236,11 @@ const NewPost: React.FC<Props> = (props) => {
 
         if (!content) {
             setErrorMessage("Enter post content " + content);
+            return;
+        }
+
+        if (typeof recipients === "undefined") {
+            setErrorMessage("Enter recipients");
             return;
         }
 
@@ -265,9 +276,17 @@ const NewPost: React.FC<Props> = (props) => {
         }
 
         /*
-         * Target followers check
+         * Target followers check.  Only allow posting to no-one if it's to
+         * followers, and you have zero followers
          */
-        if (recipients === 0) {
+        if (
+            !(
+                target === PostTarget.MyFollowers &&
+                data.user.followers === 0 &&
+                recipients === 0
+            ) &&
+            recipients < 1
+        ) {
             setErrorMessage("Post to at least one recipient");
             return;
         }
@@ -345,12 +364,9 @@ const NewPost: React.FC<Props> = (props) => {
     /*
      * Tutorial
      */
-    const {
-        tutorialActive,
-        tutorialScreen,
-        advanceTutorial,
-        setPostContent,
-    } = useContext(TutorialContext);
+    const { tutorialActive, tutorialScreen, advanceTutorial } = useContext(
+        TutorialContext
+    );
 
     useEffect(() => {
         if (tutorialActive) {
@@ -362,16 +378,6 @@ const NewPost: React.FC<Props> = (props) => {
                     advanceTutorial();
                 }, 700);
             }
-
-            // if (tutorialScreen === TutorialScreen.InputPostContent) {
-            //     setTimeout(() => {
-            //         !!contentRef.current && contentRef.current.focus();
-            //     }, 700);
-            // } else if (tutorialScreen === TutorialScreen.InputPostRecipients) {
-            //     setTimeout(() => {
-            //         !!recipientsRef.current && recipientsRef.current.focus();
-            //     }, 700);
-            // }
         } else {
             !!contentRef.current && contentRef.current.focus();
         }
@@ -751,7 +757,7 @@ const NewPost: React.FC<Props> = (props) => {
                             ref={recipientsRef}
                             style={styles.recipientsInput}
                             editable={!tutorialActive}
-                            placeholder="How many recipients?"
+                            placeholder="How many people should see this?"
                             onFocus={() =>
                                 setTimeout(() => {
                                     !!scrollRef?.current &&
@@ -770,12 +776,16 @@ const NewPost: React.FC<Props> = (props) => {
                                 const num = parseInt(noCommas);
 
                                 if (isNaN(num)) {
-                                    setRecipients(0);
+                                    setRecipients(undefined);
                                 } else {
                                     setRecipients(num);
                                 }
                             }}
-                            value={!!recipients ? toCommaRep(recipients) : ""}
+                            value={
+                                typeof recipients === "undefined"
+                                    ? ""
+                                    : toCommaRep(recipients)
+                            }
                         />
                     </View>
                     <View style={styles.postFooter}>
@@ -797,7 +807,10 @@ const NewPost: React.FC<Props> = (props) => {
                                     </Text>
                                 </View>
                                 <CoinBox
-                                    amount={COST_PER_RECIPIENT * recipients}
+                                    amount={
+                                        COST_PER_RECIPIENT *
+                                        (!!recipients ? recipients : 0)
+                                    }
                                     fontColor={palette.hardGray}
                                     fontSize={20}
                                     coinSize={25}
