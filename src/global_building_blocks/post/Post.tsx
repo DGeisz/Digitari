@@ -357,10 +357,7 @@ const Post: React.FC<Props> = (props) => {
                 loading={postModalLoading}
                 body={`Use ${toCommaRep(
                     props.post.responseCost
-                )} digibolts to respond to ${props.post.user}? 
-                                \nThe reward for a successful convo is ${
-                                    props.post.convoReward
-                                } digicoin.`}
+                )} digibolts to respond to ${props.post.user}?`}
                 title={"New Response"}
                 error={postModalError}
                 onConfirm={async () => {
@@ -717,12 +714,6 @@ const Post: React.FC<Props> = (props) => {
                                                     ? palette.lightGray
                                                     : palette.beneathTheWaves
                                             }
-                                        />
-                                        <CoinBox
-                                            amount={props.post.convoReward}
-                                            coinSize={17}
-                                            showCoinPlus
-                                            boxColor={palette.lightForestGreen}
                                         />
                                     </View>
                                     <BoltBox

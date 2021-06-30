@@ -12,7 +12,6 @@ export const NEW_RESPONSE_CONVO = gql`
             time
             content
             link
-            convoReward
         }
         cover {
             id

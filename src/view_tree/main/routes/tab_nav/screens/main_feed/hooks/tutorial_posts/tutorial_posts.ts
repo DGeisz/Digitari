@@ -31,7 +31,6 @@ export const zariahPost: PostType = {
     cmid: "yote",
     communityName: "New members",
 
-    convoReward: tier2convoReward(0),
     responseCost: tier2responseCost(0),
 
     coin: 0,

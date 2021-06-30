@@ -21,7 +21,6 @@ export const GET_FEED = gql`
             communityName
 
             # Coin fields
-            convoReward
             responseCost
             coin
 

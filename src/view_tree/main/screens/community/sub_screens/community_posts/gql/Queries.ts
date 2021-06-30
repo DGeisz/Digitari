@@ -33,7 +33,6 @@ export const GET_COMMUNITY_POSTS = gql`
             communityName
 
             # Coin fields
-            convoReward
             responseCost
             coin
             convoCount

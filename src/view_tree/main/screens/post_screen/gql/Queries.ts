@@ -24,7 +24,6 @@ export const POST = gql`
             communityName
 
             # Coin fields
-            convoReward
             responseCost
             coin
 
@@ -73,7 +72,6 @@ export const POST_CONVOS = gql`
 
             targetMsgCount
             responseCost
-            convoReward
         }
     }
 `;

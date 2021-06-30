@@ -62,7 +62,6 @@ export const CONVO_DISMISSED = gql`
 
             targetMsgCount
             responseCost
-            convoReward
         }
     }
 `;
@@ -109,7 +108,6 @@ export const CONVO_BLOCKED = gql`
 
                 targetMsgCount
                 responseCost
-                convoReward
             }
             tid
         }
@@ -157,7 +155,6 @@ export const CONVO_ACTIVATED = gql`
 
             targetMsgCount
             responseCost
-            convoReward
         }
     }
 `;
@@ -203,7 +200,6 @@ export const CONVO_CREATED = gql`
 
             targetMsgCount
             responseCost
-            convoReward
         }
     }
 `;
@@ -250,7 +246,6 @@ export const CONVO_FINISHED = gql`
 
                 targetMsgCount
                 responseCost
-                convoReward
             }
             tid
         }

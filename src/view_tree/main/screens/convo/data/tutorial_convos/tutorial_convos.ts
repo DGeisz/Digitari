@@ -33,6 +33,6 @@ export const zariahConvo: ConvoType = {
     tviewed: true,
 
     targetMsgCount: 0,
-    convoReward: 30,
+    sourceMsgCount: 0,
     responseCost: 10,
 };

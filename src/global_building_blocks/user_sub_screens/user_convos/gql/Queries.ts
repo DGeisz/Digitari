@@ -33,7 +33,6 @@ export const USER_CONVOS = gql`
 
             targetMsgCount
             responseCost
-            convoReward
         }
     }
 `;

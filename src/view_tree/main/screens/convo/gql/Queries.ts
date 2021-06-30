@@ -64,7 +64,6 @@ export const CONVO_POST = gql`
             communityName
 
             # Coin fields
-            convoReward
             responseCost
             coin
 

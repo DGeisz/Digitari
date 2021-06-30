@@ -190,7 +190,6 @@ export const styles = StyleSheet.create({
         ...basicLayouts.grid2,
         borderRightWidth: 1,
         borderRightColor: palette.oceanSurf,
-        marginRight: 2,
         paddingRight: 5,
     },
     responsePulseContainer: {
@@ -198,9 +197,7 @@ export const styles = StyleSheet.create({
         top: -2,
         left: -1,
     },
-    pencil: {
-        marginRight: 5,
-    },
+    pencil: {},
     postConvosContainer: {
         borderTopWidth: 1,
         borderTopColor: palette.softGray,

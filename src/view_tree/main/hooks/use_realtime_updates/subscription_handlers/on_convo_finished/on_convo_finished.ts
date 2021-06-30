@@ -90,20 +90,17 @@ export function onConvoFinished(
             /*
              * Now that we've established we're the source
              * we add a transaction accordingly
+             *
+             * TODO: Add better transaction message
              */
             const transaction: TransactionType = {
                 tid: uid,
                 time: Date.now().toString(),
-                coin: convo.convoReward,
+                coin: 0,
                 message: `Reward for your successful convo with ${convo.tname}`,
                 transactionType: TransactionTypesEnum.Convo,
                 data: `${cvid}:${convo.pid}`,
             };
-
-            /*
-             * Add receipt for animation
-             */
-            addNewReceipt(convo.convoReward);
 
             /*
              * Notify user of new transaction update
@@ -116,9 +113,6 @@ export function onConvoFinished(
                 fields: {
                     newTransactionUpdate() {
                         return true;
-                    },
-                    transTotal(existing) {
-                        return existing + convo.convoReward;
                     },
                 },
             });

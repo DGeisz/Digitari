@@ -228,7 +228,6 @@ const NewResponse: React.FC<Props> = (props) => {
                                       tviewed: false,
 
                                       targetMsgCount: 0,
-                                      convoReward: postData.post.convoReward,
                                       responseCost: postData.post.responseCost,
                                   },
                               }

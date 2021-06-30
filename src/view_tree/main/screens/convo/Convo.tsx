@@ -517,25 +517,19 @@ const Convo: React.FC<Props> = (props) => {
                         successfulConvos(existing) {
                             return existing + 1;
                         },
-                        transTotal(existing) {
-                            if (!!postData?.post) {
-                                return existing + postData.post.convoReward;
-                            }
-
-                            return existing;
-                        },
                     },
                 });
 
                 /*
                  * Add a transaction indicating this user
                  * just made some dough
+                 * TODO: Change finish convo transaction message
                  */
                 if (!!convoData?.convo) {
                     const transaction: TransactionType = {
                         tid: uid,
                         time: Date.now().toString(),
-                        coin: convoData.convo.convoReward,
+                        coin: 0,
                         message: `Reward for your successful convo with ${convoData.convo.tname}`,
                         transactionType: TransactionTypesEnum.Convo,
                         data: `${cvid}:${convoData.convo.pid}`,
@@ -905,25 +899,6 @@ const Convo: React.FC<Props> = (props) => {
                                             goBack={props.navigation.goBack}
                                             cvid={cvid}
                                             pid={pid}
-                                        />
-                                    </View>
-                                </View>
-                                <View style={styles.rewardContainer}>
-                                    <Text>
-                                        {convoData?.convo.sourceMsgCount}{" "}
-                                        {convoData?.convo.targetMsgCount}
-                                    </Text>
-                                    <Text style={styles.rewardText}>
-                                        Reward
-                                    </Text>
-                                    <View style={styles.coinBoxContainer}>
-                                        <CoinBox
-                                            coinSize={20}
-                                            fontSize={14}
-                                            showCoinPlus
-                                            amount={post.convoReward}
-                                            boxColor={palette.lightForestGreen}
-                                            paddingRight={10}
                                         />
                                     </View>
                                 </View>

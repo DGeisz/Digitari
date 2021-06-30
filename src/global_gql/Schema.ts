@@ -93,9 +93,6 @@ export const schema = gql`
         tviewed: Boolean
         targetMsgCount: Int
 
-        # Convo reward is digicoin
-        convoReward: Int
-
         # Response cost is in bolts
         responseCost: Int
     }
@@ -133,7 +130,6 @@ export const schema = gql`
         communityName: String
 
         # Coin fields
-        convoReward: Int
         responseCost: Int
         coin: Int
 

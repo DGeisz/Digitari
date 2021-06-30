@@ -23,7 +23,6 @@ export const tutorialPosts: PostType[] = [
         cmid: "yote",
         communityName: "New members",
 
-        convoReward: 30,
         responseCost: 10,
 
         coin: 43,
@@ -48,7 +47,6 @@ export const tutorialPosts: PostType[] = [
         cmid: "tr",
         communityName: "Doge memes",
 
-        convoReward: 75,
         responseCost: 25,
 
         coin: 475,
