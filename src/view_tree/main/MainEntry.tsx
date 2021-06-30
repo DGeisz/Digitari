@@ -38,6 +38,7 @@ import {
     TutorialContext,
     TutorialScreen,
 } from "../tutorial/context/tutorial_context/TutorialContext";
+import Shop from "./screens/shop/Shop";
 
 const RootStack = createStackNavigator<MainEntryStack>();
 
@@ -208,6 +209,7 @@ const MainEntry: React.FC = () => {
                 initialParams={{ uid: "", name: "" }}
                 options={({ route }) => ({ title: route.params.name })}
             />
+            <RootStack.Screen name={"Shop"} component={Shop} />
             <RootStack.Screen
                 name="NewPost"
                 component={NewPost}

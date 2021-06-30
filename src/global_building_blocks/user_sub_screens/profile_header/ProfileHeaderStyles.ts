@@ -85,7 +85,8 @@ export const styles = StyleSheet.create({
     profileUserText: {
         fontSize: 22,
         fontWeight: "700",
-        color: palette.hardGray,
+        fontFamily: "KaushanScript_400Regular",
+        color: "purple",
     },
     split1Right: {
         ...basicLayouts.grid5,

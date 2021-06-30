@@ -1,5 +1,5 @@
 import React from "react";
-import { Animated, Image, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { toCommaRep, toRep } from "../global_utils/ValueRepUtils";
 import { styles } from "./BoltBoxStyles";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -18,6 +18,8 @@ interface Props {
     paddingVertical?: number;
     paddingRight?: number;
     outOfBolt?: number;
+    moveTextRight?: number;
+    fontWeight?: "bold";
 }
 
 const BoltBox: React.FC<Props> = (props) => {
@@ -45,7 +47,11 @@ const BoltBox: React.FC<Props> = (props) => {
                         styles.boltBoxText,
                         {
                             fontSize: props.fontSize,
+                            fontWeight: props.fontWeight,
                             color: props.fontColor,
+                            transform: !!props.moveTextRight
+                                ? [{ translateX: -1 * props.moveTextRight }]
+                                : undefined,
                         },
                     ]}
                 >

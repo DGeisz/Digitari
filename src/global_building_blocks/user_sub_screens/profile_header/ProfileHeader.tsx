@@ -46,6 +46,7 @@ interface Props {
     openFollows: () => void;
     openReportUser: () => void;
     openSettings: () => void;
+    openShop: () => void;
 }
 
 const ProfileHeader: React.FC<Props> = (props) => {
@@ -181,7 +182,10 @@ const ProfileHeader: React.FC<Props> = (props) => {
                 {!!error && <Text style={styles.followErrorText}>{error}</Text>}
                 {uid === props.user.id && (
                     <View style={styles.shopButtonContainer}>
-                        <TouchableOpacity style={styles.shopButton}>
+                        <TouchableOpacity
+                            style={styles.shopButton}
+                            onPress={props.openShop}
+                        >
                             <MaterialIcons
                                 name="bolt"
                                 size={18}
@@ -371,14 +375,12 @@ const ProfileHeader: React.FC<Props> = (props) => {
                         >
                             <Text style={styles.followNumeralText}>
                                 {toRep(props.user.followers)}
-                                {/*{toRep(100000)}*/}
                                 <Text style={styles.followsText}>
                                     {" Followers"}
                                 </Text>
                             </Text>
                             <Text style={styles.followNumeralText}>
                                 {toRep(props.user.following)}
-                                {/*{toRep(100000)}*/}
                                 <Text style={styles.followingText}>
                                     {" Following"}
                                 </Text>
@@ -387,11 +389,11 @@ const ProfileHeader: React.FC<Props> = (props) => {
                     </View>
                     <View style={styles.split4Right}>
                         <BoltBox
-                            // amount={props.user.bolts}
-                            amount={100000}
+                            amount={props.user.bolts}
                             paddingRight={10}
                             boltSize={25}
                             fontSize={15}
+                            moveTextRight={2}
                         />
                         <CoinBox
                             amount={props.user.coin}

@@ -30,6 +30,7 @@ export type MainEntryStack = {
     User: {
         uid: string;
     };
+    Shop: undefined;
     Follows: {
         uid: string;
         name: string;

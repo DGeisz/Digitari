@@ -71,16 +71,17 @@ const User: React.FC<Props> = (props) => {
                                         uid: data?.user.id,
                                     });
                                 }}
+                                openShop={() => props.navigation.push("Shop")}
                                 user={data.user}
                                 isMe={data?.user.id === uid}
                                 openSettings={() =>
                                     props.navigation.navigate("Settings")
                                 }
-                                openReportUser={() => {
+                                openReportUser={() =>
                                     props.navigation.push("ReportUser", {
                                         uid: data?.user.id,
-                                    });
-                                }}
+                                    })
+                                }
                             />
                         ),
                         headerHeight: 250,

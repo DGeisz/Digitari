@@ -77,6 +77,10 @@ const TabNav: React.FC<Props> = (props) => {
         props.navigation.push("Settings");
     };
 
+    const openShop = () => {
+        props.navigation.push("Shop");
+    };
+
     const { data } = useQuery<GetUpdateFlagsData, GetUpdateFlagsVariables>(
         GET_UPDATE_FLAGS,
         {
@@ -115,6 +119,7 @@ const TabNav: React.FC<Props> = (props) => {
                     openReport,
                     openReportUser,
                     openSettings,
+                    openShop,
                 }}
             >
                 <ChallengeCompleteModal

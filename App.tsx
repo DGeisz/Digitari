@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Platform, UIManager } from "react-native";
 import * as Linking from "expo-linking";
 import { LinkingOptions, NavigationContainer } from "@react-navigation/native";
@@ -15,6 +15,11 @@ import { enableScreens } from "react-native-screens";
 import { useApollo } from "./src/global_gql/hooks/use_apollo/use_apollo";
 import { setStatusBarStyle } from "expo-status-bar";
 import { EventType } from "expo-linking";
+import { Sacramento_400Regular } from "@expo-google-fonts/sacramento";
+import { KaushanScript_400Regular } from "@expo-google-fonts/kaushan-script";
+import { MajorMonoDisplay_400Regular } from "@expo-google-fonts/major-mono-display";
+import { useFonts } from "expo-font";
+import AppLoading from "expo-app-loading";
 
 /*
 * For Info.plist:
@@ -134,6 +139,16 @@ const linking: LinkingOptions = {
 
 export default function App() {
     const client = useApollo();
+
+    const [fontsLoaded] = useFonts({
+        Sacramento_400Regular,
+        KaushanScript_400Regular,
+        MajorMonoDisplay_400Regular,
+    });
+
+    if (!fontsLoaded) {
+        return <AppLoading />;
+    }
 
     return (
         <NavigationContainer linking={linking}>

@@ -2611,6 +2611,21 @@
   dependencies:
     "@types/hammerjs" "^2.0.36"
 
+"@expo-google-fonts/kaushan-script@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/kaushan-script/-/kaushan-script-0.2.0.tgz#787c99482eaa167bfba396a2d5415de0bc07381a"
+  integrity sha512-cPtU4ymdNVsLq+yA8mepXapXK3ZSabChf07KNG/SHVFUOQBvD1sp6e+v6Fh0z2Pw+6tn/3n88hvPQjwtWqYFgw==
+
+"@expo-google-fonts/major-mono-display@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/major-mono-display/-/major-mono-display-0.2.0.tgz#913655b8a7dc4a188a66912ce7c90e4c1770c582"
+  integrity sha512-E+WRXI7B6Irb4EjSOZzV0qF6xNz6kFoy/LwisUPDGUeOaFCeeQde7obqueTA9BYPS5mNRRsVsESWb91p9EaFpA==
+
+"@expo-google-fonts/sacramento@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/sacramento/-/sacramento-0.2.0.tgz#88dfb82d8c329b7e1636561675d96c9ed25f92f6"
+  integrity sha512-Ab9sd3KJs9zeEfN9BvzwF26jS88CzXu88B09+YVL6XbcBClgrtirjuRTggUzTISsRL67hTurCTuEvQy+XoKg9A==
+
 "@expo/babel-preset-cli@0.2.18":
   version "0.2.18"
   resolved "https://registry.yarnpkg.com/@expo/babel-preset-cli/-/babel-preset-cli-0.2.18.tgz#136acf8a0efe259e29ebc614b68552e5acb47d86"
@@ -2734,6 +2749,22 @@
     core-js "^3.6.5"
     deep-equal "^2.0.3"
     fs-extra "^9.0.0"
+    lodash "^4.17.15"
+    pngjs "^5.0.0"
+    xcode "^3.0.0"
+    xml-js "^1.6.11"
+
+"@expo/configure-splash-screen@0.3.4":
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/@expo/configure-splash-screen/-/configure-splash-screen-0.3.4.tgz#b91d8f08fd96272bd3d7aaa9b51d6189b932c7cc"
+  integrity sha512-HsukM03X5/EXSucVsLN/oLqyFq/1jAjpADkgU1HLaezFpkr+TOquI6yDwdDp1450kcm891PE/SYJ+mCdPxzDLw==
+  dependencies:
+    color-string "^1.5.3"
+    commander "^5.1.0"
+    core-js "^3.6.5"
+    deep-equal "^2.0.3"
+    fs-extra "^9.0.0"
+    glob "^7.1.6"
     lodash "^4.17.15"
     pngjs "^5.0.0"
     xcode "^3.0.0"
@@ -6286,6 +6317,13 @@ expect@^25.5.0:
     jest-message-util "^25.5.0"
     jest-regex-util "^25.2.6"
 
+expo-app-loading@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/expo-app-loading/-/expo-app-loading-1.0.3.tgz#35c2dfd71aacd9f5c53777e3ff2ac07549e766df"
+  integrity sha512-zLheUgBCQoyybJrGxw81MWfxvlnHb7zatjLbmkNosqMwqq3MOPC/P4HwF6qYsrVUFO6PIzb4yq3lFO3RkCCfhw==
+  dependencies:
+    expo-splash-screen "~0.10.2"
+
 expo-application@~2.4.1:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/expo-application/-/expo-application-2.4.1.tgz#f8eb4a3a05a0b8a8f38f2e981f587a815945b685"
@@ -6426,6 +6464,13 @@ expo-sms@~8.4.0:
   version "8.4.0"
   resolved "https://registry.yarnpkg.com/expo-sms/-/expo-sms-8.4.0.tgz#11c0dede09a10ffebb83a5f669996ef5ac724a13"
   integrity sha512-x6dItNvvGtPx+PelHV9NQItUr3R6ThXBdJIrZB+FMxPmziqCyDqEqc85Xxdy18xOryX+0ArUdP4PzzHRzLq6CA==
+
+expo-splash-screen@~0.10.2:
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/expo-splash-screen/-/expo-splash-screen-0.10.2.tgz#3e3d7c24c4ed180a60ce3ec64a77eefd04dd0d97"
+  integrity sha512-ngelW7g5yFqk3LWbyLDDxi3LYXEfgGFCJddL/Q8S/C1pMUc5foW2j9i/q+akK8i5mjYtSx3+Bk/qbyX92QIF/w==
+  dependencies:
+    "@expo/configure-splash-screen" "0.3.4"
 
 expo-splash-screen@~0.8.1:
   version "0.8.1"

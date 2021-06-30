@@ -54,6 +54,7 @@ const Profile: React.FC<Props> = (props) => {
         openReport,
         openReportUser,
         openSettings,
+        openShop,
     } = useContext(TabNavContext);
 
     const { tutorialActive, tutorialScreen, setScreen } = useContext(
@@ -127,6 +128,7 @@ const Profile: React.FC<Props> = (props) => {
                                             user.id
                                         )
                                     }
+                                    openShop={openShop}
                                     user={user}
                                     isMe
                                     openSettings={openSettings}
