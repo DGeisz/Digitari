@@ -47,7 +47,6 @@ export const styles = StyleSheet.create({
         paddingBottom: 10,
     },
     leftSplit3: {
-        ...basicLayouts.flexGrid1,
         marginTop: 10,
         flexDirection: "row",
     },
@@ -68,7 +67,7 @@ export const styles = StyleSheet.create({
     },
     leftSplit4: {
         height: 20,
-        marginTop: 2,
+        marginTop: 8,
     },
     statsProgressBar: {
         borderWidth: 1,
@@ -99,9 +98,10 @@ export const styles = StyleSheet.create({
         marginLeft: 10,
     },
     followsCountText: {
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: "700",
         color: palette.hardGray,
+        marginBottom: 5,
     },
     statsFollowsText: {
         fontWeight: "400",

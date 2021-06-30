@@ -12,7 +12,6 @@ interface Props {
     msg: MessageType;
     showUser: boolean;
     showBlockMsg: boolean;
-    blockMessage: string;
     onBlock: () => void;
     animateMsg: boolean;
 }
@@ -106,7 +105,9 @@ export default class LeftConvoMsg extends React.PureComponent<Props, State> {
                                         }
                                         confirmMessage={"Block"}
                                         visible={this.state.blockModalVisible}
-                                        body={this.props.blockMessage}
+                                        body={
+                                            "Block message and decrease both of your rankings?"
+                                        }
                                         title={"Block Message"}
                                         onConfirm={() => {
                                             this.setState({

@@ -14,6 +14,7 @@ import TierInfoModal from "./building_blocks/tier_info_modal/TierInfoModal";
 import { calculateLevelInfo } from "../../../../../global_utils/LevelUtils";
 import TierModal from "../../../profile_header/building_blocks/tier_modal/TierModal";
 import LevelInfoModal from "./building_blocks/level_info_modal/LevelInfoModal";
+import BoltBox from "../../../../../bolt_box/BoltBox";
 
 interface Props {
     user: UserType;
@@ -121,7 +122,13 @@ export default class StatsHeader extends React.PureComponent<Props, State> {
                 </View>
                 <View style={styles.statsRight}>
                     <View style={styles.statsRightTop}>
-                        <Text style={styles.statsWalletText}>Wallet</Text>
+                        <Text style={styles.statsWalletText}>Savings</Text>
+                        <BoltBox
+                            amount={this.props.user.bolts}
+                            boltSize={30}
+                            fontSize={18}
+                            showAbbreviated={false}
+                        />
                         <CoinBox
                             amount={this.props.user.coin}
                             coinSize={30}
@@ -131,17 +138,17 @@ export default class StatsHeader extends React.PureComponent<Props, State> {
                     </View>
                     <View style={styles.statsRightBottom}>
                         <TouchableOpacity onPress={this.props.openFollows}>
+                            <Text style={styles.statsFollowsText}>
+                                Followers
+                            </Text>
                             <Text style={styles.followsCountText}>
                                 {toCommaRep(this.props.user.followers)}
-                                <Text style={styles.statsFollowsText}>
-                                    {" Followers"}
-                                </Text>
+                            </Text>
+                            <Text style={styles.statsFollowsText}>
+                                Following
                             </Text>
                             <Text style={styles.followsCountText}>
                                 {toCommaRep(this.props.user.following)}
-                                <Text style={styles.statsFollowsText}>
-                                    {" Following"}
-                                </Text>
                             </Text>
                         </TouchableOpacity>
                     </View>

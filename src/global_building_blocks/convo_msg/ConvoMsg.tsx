@@ -9,14 +9,12 @@ interface Props {
     showUser: boolean;
     showBlockMsg: boolean;
     onBlock: () => void;
-    blockMessage: string;
     animateMsg: boolean;
 }
 
 export default class ConvoMsg extends React.PureComponent<Props> {
     static defaultProps = {
         onBlock: () => {},
-        blockMessage: "",
     };
 
     render() {
@@ -28,7 +26,6 @@ export default class ConvoMsg extends React.PureComponent<Props> {
                     showBlockMsg={this.props.showBlockMsg}
                     showUser={this.props.showUser}
                     onBlock={this.props.onBlock}
-                    blockMessage={this.props.blockMessage}
                 />
             );
         } else {

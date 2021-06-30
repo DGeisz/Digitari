@@ -11,6 +11,24 @@ export const styles = StyleSheet.create({
         paddingTop: 5,
         paddingBottom: 20,
     },
+    shopButtonContainer: {
+        ...basicLayouts.grid5,
+        paddingVertical: 10,
+    },
+    shopButton: {
+        ...basicLayouts.grid5,
+        flexDirection: "row",
+        backgroundColor: palette.deepBlue,
+        paddingVertical: 8,
+        paddingHorizontal: 4,
+        borderRadius: 10,
+    },
+    shopButtonText: {
+        fontWeight: "bold",
+        color: palette.white,
+        fontSize: 18,
+        marginHorizontal: 3,
+    },
     followErrorText: {
         color: palette.danger,
         paddingBottom: 10,
@@ -106,7 +124,7 @@ export const styles = StyleSheet.create({
     },
     profileSplit3: {
         paddingTop: 20,
-        paddingBottom: 20,
+        paddingBottom: 25,
         paddingRight: 20,
     },
     profileBioText: {
@@ -128,12 +146,13 @@ export const styles = StyleSheet.create({
         ...basicLayouts.flexGrid7,
     },
     followsButton: {
-        flexDirection: "row",
+        // flexDirection: "row",
     },
     followNumeralText: {
         fontWeight: "700",
         color: palette.hardGray,
         marginRight: 8,
+        marginTop: 3,
     },
     followsText: {
         fontWeight: "400",
@@ -141,5 +160,10 @@ export const styles = StyleSheet.create({
     followingText: {
         fontWeight: "400",
     },
-    split4Right: {},
+    split4Right: {
+        ...basicLayouts.grid3,
+        flexDirection: "row",
+        // backgroundColor: "red",
+        transform: [{ translateY: 5 }],
+    },
 });

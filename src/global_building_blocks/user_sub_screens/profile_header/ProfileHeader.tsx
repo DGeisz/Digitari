@@ -16,7 +16,7 @@ import {
 import Tier from "../../tier/Tier";
 import { toCommaRep, toRep } from "../../../global_utils/ValueRepUtils";
 import CoinBox from "../../coin_box/CoinBox";
-import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import { FontAwesome, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { palette } from "../../../global_styles/Palette";
 import BioModal from "./building_blocks/bio_modal/BioModal";
 import { useMutation } from "@apollo/client";
@@ -38,6 +38,7 @@ import {
     TutorialScreen,
 } from "../../../view_tree/tutorial/context/tutorial_context/TutorialContext";
 import UpdateIndicator from "../../../view_tree/main/routes/tab_nav/building_blocks/update_indicator/UpdateIndicator";
+import BoltBox from "../../../bolt_box/BoltBox";
 
 interface Props {
     user: UserType;
@@ -48,7 +49,7 @@ interface Props {
 }
 
 const ProfileHeader: React.FC<Props> = (props) => {
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>("");
     const [loading, setLoading] = useState<boolean>(false);
 
     const [editBioVisible, showEditBio] = useState<boolean>(false);
@@ -178,6 +179,23 @@ const ProfileHeader: React.FC<Props> = (props) => {
                 pointerEvents="box-none"
             >
                 {!!error && <Text style={styles.followErrorText}>{error}</Text>}
+                {uid === props.user.id && (
+                    <View style={styles.shopButtonContainer}>
+                        <TouchableOpacity style={styles.shopButton}>
+                            <MaterialIcons
+                                name="bolt"
+                                size={18}
+                                color={palette.white}
+                            />
+                            <Text style={styles.shopButtonText}>Shop</Text>
+                            <MaterialIcons
+                                name="bolt"
+                                size={18}
+                                color={palette.white}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                )}
                 <View style={styles.profileSplit0} pointerEvents="box-none">
                     <View style={styles.split0Left} pointerEvents="box-none">
                         {!!props.user.imgUrl ? (
@@ -353,12 +371,14 @@ const ProfileHeader: React.FC<Props> = (props) => {
                         >
                             <Text style={styles.followNumeralText}>
                                 {toRep(props.user.followers)}
+                                {/*{toRep(100000)}*/}
                                 <Text style={styles.followsText}>
                                     {" Followers"}
                                 </Text>
                             </Text>
                             <Text style={styles.followNumeralText}>
                                 {toRep(props.user.following)}
+                                {/*{toRep(100000)}*/}
                                 <Text style={styles.followingText}>
                                     {" Following"}
                                 </Text>
@@ -366,6 +386,13 @@ const ProfileHeader: React.FC<Props> = (props) => {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.split4Right}>
+                        <BoltBox
+                            // amount={props.user.bolts}
+                            amount={100000}
+                            paddingRight={10}
+                            boltSize={25}
+                            fontSize={15}
+                        />
                         <CoinBox
                             amount={props.user.coin}
                             coinSize={25}
