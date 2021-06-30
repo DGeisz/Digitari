@@ -6,6 +6,7 @@ export const CONVO_TYPENAME = "Convo";
  * finish the conversation
  */
 export const MESSAGE_COUNT_THRESHOLD = 2;
+export const CONVO_ACTIVATION_COST = 5;
 
 export enum ConvoStatus {
     Deleted = -3,

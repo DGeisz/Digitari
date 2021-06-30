@@ -1,16 +1,13 @@
 import React from "react";
 import { Text, View } from "react-native";
 import {
-    tier2convoReward,
     tier2MinRanking,
     tier2responseCost,
-    tier2Wage,
     TierEnum,
 } from "../../../../../../../global_types/TierTypes";
 import { styles } from "./TierInfoStyles";
 import Tier from "../../../../../../tier/Tier";
-import CoinBox from "../../../../../../coin_box/CoinBox";
-import { palette } from "../../../../../../../global_styles/Palette";
+import BoltBox from "../../../../../../../bolt_box/BoltBox";
 
 interface Props {
     tier: TierEnum;
@@ -24,7 +21,6 @@ const TierInfo: React.FC<Props> = (props) => {
         minRanking >= 0
             ? `${minRanking}+`
             : `(${!isNaN(minRanking) ? minRanking : "-∞"})+`;
-    const tierWage = tier2Wage(props.tier)[1];
 
     return (
         <View style={styles.infoContainer}>
@@ -38,22 +34,10 @@ const TierInfo: React.FC<Props> = (props) => {
             <View style={styles.infoBar}>
                 <View style={styles.singleInfo}>
                     <Text style={styles.infoTitle}>Response cost</Text>
-                    <CoinBox
+                    <BoltBox
                         amount={tier2responseCost(props.tier)}
                         fontSize={infoFontSize}
-                        coinSize={20}
-                        showAbbreviated={false}
-                    />
-                </View>
-                <View style={styles.singleInfo}>
-                    <Text style={styles.infoTitle}>Convo reward</Text>
-                    <CoinBox
-                        boxColor={palette.lightForestGreen}
-                        paddingRight={7}
-                        showCoinPlus
-                        amount={tier2convoReward(props.tier)}
-                        fontSize={infoFontSize}
-                        coinSize={20}
+                        boltSize={20}
                         showAbbreviated={false}
                     />
                 </View>

@@ -6,9 +6,9 @@ import { palette } from "../../../../../../global_styles/Palette";
 import CancelConfirmModal from "../../../../../../global_building_blocks/cancel_confirm_modal/CancelConfirmModal";
 import { toCommaRep } from "../../../../../../global_utils/ValueRepUtils";
 import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
+import { CONVO_ACTIVATION_COST } from "../../../../../../global_types/ConvoTypes";
 
 interface Props {
-    responseCost: number;
     userBolts: number;
     onBlock: () => void;
     onDismiss: () => void;
@@ -69,7 +69,7 @@ export default class ResponseResponse extends React.PureComponent<
                 <CancelConfirmModal
                     visible={this.state.messageVisible}
                     body={`Use ${toCommaRep(
-                        this.props.responseCost
+                        CONVO_ACTIVATION_COST
                     )} digibolts to respond to this convo?`}
                     title="Respond"
                     error={
@@ -78,7 +78,7 @@ export default class ResponseResponse extends React.PureComponent<
                             : undefined
                     }
                     onConfirm={() => {
-                        if (this.props.userBolts < this.props.responseCost) {
+                        if (this.props.userBolts < CONVO_ACTIVATION_COST) {
                             this.setState({ responseError: true });
                         } else {
                             this.setState({

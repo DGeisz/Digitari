@@ -37,6 +37,7 @@ import {
     localUid,
 } from "../../../../global_state/UserState";
 import {
+    CONVO_ACTIVATION_COST,
     CONVO_TYPENAME,
     ConvoStatus,
     ConvoType,
@@ -420,11 +421,7 @@ const Convo: React.FC<Props> = (props) => {
                     }),
                     fields: {
                         bolts(existing) {
-                            if (!!postData?.post) {
-                                return existing - postData.post.responseCost;
-                            } else {
-                                return existing;
-                            }
+                            return existing - CONVO_ACTIVATION_COST;
                         },
                     },
                 });
@@ -1131,7 +1128,6 @@ const Convo: React.FC<Props> = (props) => {
             <>
                 {convoContent}
                 <ResponseResponse
-                    responseCost={post.responseCost}
                     userBolts={userBolts}
                     onBlock={async () => {
                         try {

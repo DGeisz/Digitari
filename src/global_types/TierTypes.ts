@@ -207,16 +207,16 @@ export function tier2responseCost(tier: TierEnum): number {
         case TierEnum.SlightlySmiling:
             return 10;
         case TierEnum.Smiling:
-            return 20;
+            return 15;
         case TierEnum.Grinning:
-            return 40;
+            return 20;
         case TierEnum.Hugging:
-            return 60;
+            return 25;
         case TierEnum.Sunglasses:
-            return 100;
+            return 30;
         case TierEnum.HeartEyes:
-            return 150;
+            return 40;
         case TierEnum.Angel:
-            return 200;
+            return 50;
     }
 }
