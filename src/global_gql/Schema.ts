@@ -33,10 +33,15 @@ export const schema = gql`
 
         # Profile customizations
         nameFont: Int
+        nameFontsPurchased: [Int]
         nameColor: Int
+        nameColorsPurchased: [Int]
         bioFont: Int
+        bioFontsPurchased: [Int]
         bioColor: Int
+        bioColorsPurchased: [Int]
         profileSticker: Int
+        profileStickersPurchased: [Int]
 
         challengeReceipts: [String]
 
