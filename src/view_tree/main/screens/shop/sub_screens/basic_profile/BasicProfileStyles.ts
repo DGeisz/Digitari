@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
         padding: 20,
     },
     basicEntryContainer: {
-        marginBottom: 20,
+        marginBottom: 30,
     },
     entryTitleText: {
         fontWeight: "bold",

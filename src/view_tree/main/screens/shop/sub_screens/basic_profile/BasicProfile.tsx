@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import {
     Image,
     ScrollView,
@@ -13,7 +13,10 @@ import { FontAwesome } from "@expo/vector-icons";
 import { palette } from "../../../../../../global_styles/Palette";
 import LockBuySelect from "../../building_blocks/lock_buy_select/LockBuySelect";
 import { useAuthKeyboardBuffer } from "../../../../../auth/building_blocks/use_auth_keyboard_buffer/UseAuthKeyboardBuffer";
-import { MAX_BIO_LENGTH } from "../../../../../../global_types/UserTypes";
+import {
+    MAX_BIO_LENGTH,
+    MAX_BIO_LINK_LENGTH,
+} from "../../../../../../global_types/UserTypes";
 
 const BasicProfile: React.FC = () => {
     const userBolts = 10;
@@ -23,9 +26,15 @@ const BasicProfile: React.FC = () => {
     const [imgChanged, setImgUrlChanged] = useState<boolean>(false);
 
     const [bio, setBio] = useState<string>("");
+    const [bioChanged, setBioChanged] = useState<boolean>(false);
+
+    const [bioLink, setBioLink] = useState<string>("");
+    const [linkChanged, setLinkChanged] = useState<boolean>(false);
 
     const bufferHeight = useAuthKeyboardBuffer();
     const scrollRef = useRef<ScrollView>(null);
+
+    const [picHeight, setPicHeight] = useState<number>(0);
 
     const selectImage = async () => {
         const {
@@ -52,15 +61,12 @@ const BasicProfile: React.FC = () => {
         }
     };
 
-    useEffect(() => {
-        if (!!bufferHeight) {
-            !!scrollRef.current && scrollRef.current.scrollToEnd();
-        }
-    }, [bufferHeight]);
-
     return (
         <ScrollView ref={scrollRef} style={styles.container}>
-            <View style={styles.basicEntryContainer}>
+            <View
+                style={styles.basicEntryContainer}
+                onLayout={(e) => setPicHeight(e.nativeEvent.layout.height)}
+            >
                 <Text style={styles.entryTitleText}>Profile Pic</Text>
                 <View style={styles.imageSelectorContainer}>
                     {!!imgUrl ? (
@@ -82,9 +88,11 @@ const BasicProfile: React.FC = () => {
                     </TouchableOpacity>
                 </View>
                 <LockBuySelect
+                    active={imgChanged}
                     userBolts={userBolts}
                     description={"set your profile picture"}
                     purchaseTitle={"Set Pic"}
+                    itemTitle={"pic"}
                     price={50}
                     alreadyOwns={false}
                     onSelect={() => {}}
@@ -100,15 +108,26 @@ const BasicProfile: React.FC = () => {
                     value={bio}
                     onChangeText={(text) => {
                         setBio(text.substring(0, MAX_BIO_LENGTH));
+                        !bioChanged && setBioChanged(true);
                     }}
+                    onFocus={() =>
+                        setTimeout(
+                            () =>
+                                !!scrollRef.current &&
+                                scrollRef.current.scrollTo({ y: picHeight }),
+                            20
+                        )
+                    }
                 />
                 <Text style={styles.remainingCharacters}>
                     {MAX_BIO_LENGTH - bio.length}
                 </Text>
                 <LockBuySelect
                     userBolts={userBolts}
+                    active={bioChanged}
                     description={"set your bio"}
                     purchaseTitle={"Set Bio"}
+                    itemTitle={"bio"}
                     price={50}
                     alreadyOwns={false}
                     onSelect={() => {}}
@@ -117,8 +136,39 @@ const BasicProfile: React.FC = () => {
             </View>
             <View style={styles.basicEntryContainer}>
                 <Text style={styles.entryTitleText}>Bio link</Text>
+                <TextInput
+                    style={styles.textInput}
+                    placeholder="Paste link..."
+                    value={bioLink}
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    autoCompleteType="off"
+                    onChangeText={(text) => {
+                        setBioLink(text.substring(0, MAX_BIO_LINK_LENGTH));
+                        !linkChanged && setLinkChanged(true);
+                    }}
+                    onFocus={() =>
+                        setTimeout(
+                            () =>
+                                !!scrollRef.current &&
+                                scrollRef.current.scrollToEnd(),
+                            100
+                        )
+                    }
+                />
+                <LockBuySelect
+                    userBolts={userBolts}
+                    active={linkChanged}
+                    description={"set your bio link"}
+                    purchaseTitle={"Set Link"}
+                    itemTitle="link"
+                    price={50}
+                    alreadyOwns={false}
+                    onSelect={() => {}}
+                    onConfirm={() => {}}
+                />
             </View>
-            <View style={{ height: bufferHeight }} />
+            <View style={{ height: !!bufferHeight ? bufferHeight : 40 }} />
         </ScrollView>
     );
 };

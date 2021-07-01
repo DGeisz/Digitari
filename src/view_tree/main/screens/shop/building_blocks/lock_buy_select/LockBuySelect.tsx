@@ -10,9 +10,13 @@ interface Props {
     userBolts: number;
     price: number;
     purchaseTitle: string;
+    itemTitle?: string;
     description: string;
 
     onConfirm: () => void;
+
+    active?: boolean;
+    inactiveMessage?: string;
 
     /*
      * Indicates whether the user already has this
@@ -115,26 +119,71 @@ const LockBuySelect: React.FC<Props> = (props) => {
                         </View>
                     </View>
                 ) : (
-                    <TouchableOpacity
-                        style={styles.buyButton}
-                        onPress={() => {
-                            LayoutAnimation.easeInEaseOut();
-                            setShowConfirm(true);
-                        }}
-                    >
-                        <View style={styles.buyButtonTextContainer}>
-                            <Text style={styles.buyButtonText}>
-                                {props.purchaseTitle}
+                    <>
+                        <TouchableOpacity
+                            style={[
+                                styles.buyButton,
+                                {
+                                    borderColor: props.active
+                                        ? palette.deepBlue
+                                        : palette.notDeepBlue,
+                                },
+                            ]}
+                            onPress={() => {
+                                if (props.active) {
+                                    LayoutAnimation.easeInEaseOut();
+                                    setShowConfirm(true);
+                                }
+                            }}
+                            activeOpacity={props.active ? 0.5 : 1}
+                        >
+                            <View
+                                style={[
+                                    styles.buyButtonTextContainer,
+                                    {
+                                        borderRightColor: props.active
+                                            ? palette.mediumGray
+                                            : palette.semiSoftGray,
+                                    },
+                                ]}
+                            >
+                                <Text
+                                    style={[
+                                        styles.buyButtonText,
+                                        {
+                                            color: props.active
+                                                ? palette.hardGray
+                                                : palette.semiSoftGray,
+                                        },
+                                    ]}
+                                >
+                                    {props.purchaseTitle}
+                                </Text>
+                            </View>
+                            <BoltBox
+                                amount={props.price}
+                                boltSize={23}
+                                boltColor={
+                                    props.active
+                                        ? palette.deepBlue
+                                        : palette.notDeepBlue
+                                }
+                                fontColor={
+                                    props.active
+                                        ? palette.hardGray
+                                        : palette.semiSoftGray
+                                }
+                                moveTextRight={3}
+                                fontSize={16}
+                                fontWeight="bold"
+                            />
+                        </TouchableOpacity>
+                        {!props.active && (
+                            <Text style={styles.inactiveText}>
+                                Change {props.itemTitle} to activate
                             </Text>
-                        </View>
-                        <BoltBox
-                            amount={props.price}
-                            boltSize={23}
-                            moveTextRight={3}
-                            fontSize={16}
-                            fontWeight="bold"
-                        />
-                    </TouchableOpacity>
+                        )}
+                    </>
                 )}
             </View>
         );
@@ -143,6 +192,9 @@ const LockBuySelect: React.FC<Props> = (props) => {
 
 LockBuySelect.defaultProps = {
     selectTitle: "Select",
+    active: true,
+    inactiveMessage: "",
+    itemTitle: "",
 };
 
 export default LockBuySelect;

@@ -12,6 +12,7 @@ interface Props {
     fontSize?: number;
     fontColor?: string;
     boltSize?: number;
+    boltColor?: string;
     boxColor?: string;
     showBoltPlus?: boolean;
     showAbbreviated?: boolean;
@@ -39,7 +40,13 @@ const BoltBox: React.FC<Props> = (props) => {
             <MaterialIcons
                 name="bolt"
                 size={props.boltSize}
-                color={props.active ? palette.deepBlue : palette.semiSoftGray}
+                color={
+                    !!props.boltColor
+                        ? props.boltColor
+                        : props.active
+                        ? palette.deepBlue
+                        : palette.semiSoftGray
+                }
             />
             {!!props.showAmount ? (
                 <Text

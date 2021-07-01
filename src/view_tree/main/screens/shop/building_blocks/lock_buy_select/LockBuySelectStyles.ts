@@ -100,6 +100,11 @@ export const styles = StyleSheet.create({
     buyButtonText: {
         fontWeight: "bold",
         fontSize: 16,
-        color: palette.hardGray,
+    },
+    inactiveText: {
+        fontSize: 12,
+        fontWeight: "bold",
+        color: palette.lightGray,
+        marginTop: 5,
     },
 });
