@@ -26,9 +26,9 @@ export interface UserType {
     bolts: number;
     imgUrl?: string;
 
-    nameFont: ProfileFonts;
+    nameFont: NameFontsEnum;
     nameColor: ProfileColors;
-    bioFont: ProfileFonts;
+    bioFont: NameFonts;
     bioColor: ProfileColors;
     profileSticker: ProfileStickers;
 
@@ -64,9 +64,70 @@ export interface UserType {
     maxCommunityFollowers: number;
 }
 
-export enum ProfileFonts {
+export enum NameFontsEnum {
     Default,
+    LetterJacket,
+    Galaxy9000,
+    HowdyPartner,
+    FreshmanDorm,
+    ImAPrincess,
+    Ole,
+    CheapHalloweenParty,
+    PassinNotes,
+    Yuck,
+    OldTyme,
+    Arcade,
+    GirlyGirl,
+    RollerSkateDate,
+    WhamBamKablam,
+    Zoom,
+    ZeusRevenge,
+    YuletideBall,
+    GreatGatsby,
 }
+
+export enum NameFonts {
+    Default = "Default",
+    LetterJacket = "Graduate_400Regular",
+    Galaxy9000 = "Orbitron_700Bold",
+    HowdyPartner = "Sancreek_400Regular",
+    FreshmanDorm = "Codystar_400Regular",
+    ImAPrincess = "PrincessSofia_400Regular",
+    Ole = "Frijole_400Regular",
+    CheapHalloweenParty = "Creepster_400Regular",
+    PassinNotes = "HomemadeApple_400Regular",
+    Yuck = "Nosifer_400Regular",
+    OldTyme = "UnifrakturMaguntia_400Regular",
+    Arcade = "PressStart2P_400Regular",
+    GirlyGirl = "Bonbon_400Regular",
+    RollerSkateDate = "BungeeShade_400Regular",
+    WhamBamKablam = "Bangers_400Regular",
+    Zoom = "FasterOne_400Regular",
+    ZeusRevenge = "CaesarDressing_400Regular",
+    YuletideBall = "Ballet_400Regular",
+    GreatGatsby = "Monoton_400Regular",
+}
+
+//         case NameFonts.OldTyme:
+//             return "Old Tyme";
+//         case NameFonts.Arcade:
+//             return "80s Arcade";
+//         case NameFonts.GirlyGirl:
+//             return "Girly Girl";
+//         case NameFonts.RollerSkateDate:
+//             return "Roller Skate Date";
+//         case NameFonts.WhamBamKablam:
+//             return "Wham! Bam! Kablam!";
+//         case NameFonts.Zoom:
+//             return "Zooooom!";
+//         case NameFonts.ZeusRevenge:
+//             return "Zeus' Revenge";
+//         case NameFonts.YuletideBall:
+//             return "Yuletide Ball";
+//         case NameFonts.GreatGatsby:
+//             return "Great frikin' Gatsby";
+//     }
+// }
 
 export enum ProfileColors {
     Default,

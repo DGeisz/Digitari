@@ -17,6 +17,7 @@ import {
     MAX_BIO_LENGTH,
     MAX_BIO_LINK_LENGTH,
 } from "../../../../../../global_types/UserTypes";
+import { shopStyles } from "../../styles/ShopStyles";
 
 const BasicProfile: React.FC = () => {
     const userBolts = 10;
@@ -62,113 +63,119 @@ const BasicProfile: React.FC = () => {
     };
 
     return (
-        <ScrollView ref={scrollRef} style={styles.container}>
-            <View
-                style={styles.basicEntryContainer}
-                onLayout={(e) => setPicHeight(e.nativeEvent.layout.height)}
-            >
-                <Text style={styles.entryTitleText}>Profile Pic</Text>
-                <View style={styles.imageSelectorContainer}>
-                    {!!imgUrl ? (
-                        <Image
-                            source={{ uri: imgUrl }}
-                            style={styles.profilePic}
-                        />
-                    ) : (
-                        <View style={styles.placeHolderPic}>
-                            <FontAwesome
-                                name="user"
-                                color={palette.lightGray}
-                                size={35}
+        <ScrollView ref={scrollRef} style={shopStyles.outerContainer}>
+            <View style={shopStyles.container}>
+                <View
+                    style={styles.basicEntryContainer}
+                    onLayout={(e) => setPicHeight(e.nativeEvent.layout.height)}
+                >
+                    <Text style={styles.entryTitleText}>Profile Pic</Text>
+                    <View style={styles.imageSelectorContainer}>
+                        {!!imgUrl ? (
+                            <Image
+                                source={{ uri: imgUrl }}
+                                style={styles.profilePic}
                             />
-                        </View>
-                    )}
-                    <TouchableOpacity onPress={selectImage}>
-                        <Text style={styles.selectImageText}>Select Image</Text>
-                    </TouchableOpacity>
+                        ) : (
+                            <View style={styles.placeHolderPic}>
+                                <FontAwesome
+                                    name="user"
+                                    color={palette.lightGray}
+                                    size={35}
+                                />
+                            </View>
+                        )}
+                        <TouchableOpacity onPress={selectImage}>
+                            <Text style={styles.selectImageText}>
+                                Select Image
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                    <LockBuySelect
+                        active={imgChanged}
+                        userBolts={userBolts}
+                        description={"set your profile picture"}
+                        purchaseTitle={"Set Pic"}
+                        itemTitle={"pic"}
+                        price={50}
+                        alreadyOwns={false}
+                        onSelect={() => {}}
+                        onConfirm={() => {}}
+                    />
                 </View>
-                <LockBuySelect
-                    active={imgChanged}
-                    userBolts={userBolts}
-                    description={"set your profile picture"}
-                    purchaseTitle={"Set Pic"}
-                    itemTitle={"pic"}
-                    price={50}
-                    alreadyOwns={false}
-                    onSelect={() => {}}
-                    onConfirm={() => {}}
-                />
+                <View style={styles.basicEntryContainer}>
+                    <Text style={styles.entryTitleText}>Bio</Text>
+                    <TextInput
+                        style={styles.textInput}
+                        placeholder="Bio..."
+                        multiline
+                        value={bio}
+                        onChangeText={(text) => {
+                            setBio(text.substring(0, MAX_BIO_LENGTH));
+                            !bioChanged && setBioChanged(true);
+                        }}
+                        onFocus={() =>
+                            setTimeout(
+                                () =>
+                                    !!scrollRef.current &&
+                                    scrollRef.current.scrollTo({
+                                        y: picHeight,
+                                    }),
+                                20
+                            )
+                        }
+                    />
+                    <Text style={styles.remainingCharacters}>
+                        {MAX_BIO_LENGTH - bio.length}
+                    </Text>
+                    <LockBuySelect
+                        userBolts={userBolts}
+                        active={bioChanged}
+                        description={"set your bio"}
+                        purchaseTitle={"Set Bio"}
+                        itemTitle={"bio"}
+                        price={50}
+                        alreadyOwns={false}
+                        onSelect={() => {}}
+                        onConfirm={() => {}}
+                    />
+                </View>
+                <View style={styles.basicEntryContainer}>
+                    <Text style={styles.entryTitleText}>Bio link</Text>
+                    <TextInput
+                        style={styles.textInput}
+                        placeholder="Paste link..."
+                        value={bioLink}
+                        autoCorrect={false}
+                        autoCapitalize="none"
+                        autoCompleteType="off"
+                        onChangeText={(text) => {
+                            setBioLink(text.substring(0, MAX_BIO_LINK_LENGTH));
+                            !linkChanged && setLinkChanged(true);
+                        }}
+                        onFocus={() =>
+                            setTimeout(
+                                () =>
+                                    !!scrollRef.current &&
+                                    scrollRef.current.scrollToEnd(),
+                                100
+                            )
+                        }
+                    />
+                    <LockBuySelect
+                        userBolts={userBolts}
+                        active={linkChanged}
+                        description={"set your bio link"}
+                        purchaseTitle={"Set Link"}
+                        itemTitle="link"
+                        price={50}
+                        alreadyOwns={false}
+                        onSelect={() => {}}
+                        onConfirm={() => {}}
+                    />
+                </View>
+                <View style={{ height: !!bufferHeight ? bufferHeight : 40 }} />
             </View>
-            <View style={styles.basicEntryContainer}>
-                <Text style={styles.entryTitleText}>Bio</Text>
-                <TextInput
-                    style={styles.textInput}
-                    placeholder="Bio..."
-                    multiline
-                    value={bio}
-                    onChangeText={(text) => {
-                        setBio(text.substring(0, MAX_BIO_LENGTH));
-                        !bioChanged && setBioChanged(true);
-                    }}
-                    onFocus={() =>
-                        setTimeout(
-                            () =>
-                                !!scrollRef.current &&
-                                scrollRef.current.scrollTo({ y: picHeight }),
-                            20
-                        )
-                    }
-                />
-                <Text style={styles.remainingCharacters}>
-                    {MAX_BIO_LENGTH - bio.length}
-                </Text>
-                <LockBuySelect
-                    userBolts={userBolts}
-                    active={bioChanged}
-                    description={"set your bio"}
-                    purchaseTitle={"Set Bio"}
-                    itemTitle={"bio"}
-                    price={50}
-                    alreadyOwns={false}
-                    onSelect={() => {}}
-                    onConfirm={() => {}}
-                />
-            </View>
-            <View style={styles.basicEntryContainer}>
-                <Text style={styles.entryTitleText}>Bio link</Text>
-                <TextInput
-                    style={styles.textInput}
-                    placeholder="Paste link..."
-                    value={bioLink}
-                    autoCorrect={false}
-                    autoCapitalize="none"
-                    autoCompleteType="off"
-                    onChangeText={(text) => {
-                        setBioLink(text.substring(0, MAX_BIO_LINK_LENGTH));
-                        !linkChanged && setLinkChanged(true);
-                    }}
-                    onFocus={() =>
-                        setTimeout(
-                            () =>
-                                !!scrollRef.current &&
-                                scrollRef.current.scrollToEnd(),
-                            100
-                        )
-                    }
-                />
-                <LockBuySelect
-                    userBolts={userBolts}
-                    active={linkChanged}
-                    description={"set your bio link"}
-                    purchaseTitle={"Set Link"}
-                    itemTitle="link"
-                    price={50}
-                    alreadyOwns={false}
-                    onSelect={() => {}}
-                    onConfirm={() => {}}
-                />
-            </View>
-            <View style={{ height: !!bufferHeight ? bufferHeight : 40 }} />
         </ScrollView>
     );
 };

@@ -51,7 +51,7 @@ const LockBuySelect: React.FC<Props> = (props) => {
                 </TouchableOpacity>
             </View>
         );
-    } else if (props.userBolts < props.price && false) {
+    } else if (props.userBolts < props.price) {
         return (
             <View style={styles.container}>
                 {lockedError && (

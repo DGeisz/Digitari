@@ -15,11 +15,30 @@ import { enableScreens } from "react-native-screens";
 import { useApollo } from "./src/global_gql/hooks/use_apollo/use_apollo";
 import { setStatusBarStyle } from "expo-status-bar";
 import { EventType } from "expo-linking";
-import { Sacramento_400Regular } from "@expo-google-fonts/sacramento";
-import { KaushanScript_400Regular } from "@expo-google-fonts/kaushan-script";
-import { MajorMonoDisplay_400Regular } from "@expo-google-fonts/major-mono-display";
-import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
+
+/*
+ * Font imports
+ */
+import { useFonts } from "expo-font";
+import { Graduate_400Regular } from "@expo-google-fonts/graduate";
+import { Orbitron_700Bold } from "@expo-google-fonts/orbitron";
+import { Sancreek_400Regular } from "@expo-google-fonts/sancreek";
+import { Codystar_400Regular } from "@expo-google-fonts/codystar";
+import { PrincessSofia_400Regular } from "@expo-google-fonts/princess-sofia";
+import { Frijole_400Regular } from "@expo-google-fonts/frijole";
+import { Creepster_400Regular } from "@expo-google-fonts/creepster";
+import { HomemadeApple_400Regular } from "@expo-google-fonts/homemade-apple";
+import { Nosifer_400Regular } from "@expo-google-fonts/nosifer";
+import { UnifrakturMaguntia_400Regular } from "@expo-google-fonts/unifrakturmaguntia";
+import { PressStart2P_400Regular } from "@expo-google-fonts/press-start-2p";
+import { Bonbon_400Regular } from "@expo-google-fonts/bonbon";
+import { BungeeShade_400Regular } from "@expo-google-fonts/bungee-shade";
+import { Bangers_400Regular } from "@expo-google-fonts/bangers";
+import { FasterOne_400Regular } from "@expo-google-fonts/faster-one";
+import { CaesarDressing_400Regular } from "@expo-google-fonts/caesar-dressing";
+import { Ballet_400Regular } from "@expo-google-fonts/ballet";
+import { Monoton_400Regular } from "@expo-google-fonts/monoton";
 
 /*
 * For Info.plist:
@@ -141,9 +160,24 @@ export default function App() {
     const client = useApollo();
 
     const [fontsLoaded] = useFonts({
-        Sacramento_400Regular,
-        KaushanScript_400Regular,
-        MajorMonoDisplay_400Regular,
+        Graduate_400Regular,
+        Orbitron_700Bold,
+        Sancreek_400Regular,
+        Codystar_400Regular,
+        PrincessSofia_400Regular,
+        Frijole_400Regular,
+        Creepster_400Regular,
+        HomemadeApple_400Regular,
+        Nosifer_400Regular,
+        UnifrakturMaguntia_400Regular,
+        PressStart2P_400Regular,
+        Bonbon_400Regular,
+        BungeeShade_400Regular,
+        Bangers_400Regular,
+        FasterOne_400Regular,
+        CaesarDressing_400Regular,
+        Ballet_400Regular,
+        Monoton_400Regular,
     });
 
     if (!fontsLoaded) {

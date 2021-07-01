@@ -2611,6 +2611,61 @@
   dependencies:
     "@types/hammerjs" "^2.0.36"
 
+"@expo-google-fonts/ballet@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/ballet/-/ballet-0.2.0.tgz#b609bf347b5478d4f6c51bfab42726ff7c3b1386"
+  integrity sha512-L1TVEeqTMfOCXihY8NDgX8n77XmFmL4CjoeVOLm4P7/Jio+/6ZpqBJ1DsIsnpoyJOFbjH9MwBa/pBCQ4mjbfHg==
+
+"@expo-google-fonts/bangers@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/bangers/-/bangers-0.2.0.tgz#ba6bbdb1566800a52a206073832e1663068573ac"
+  integrity sha512-bVFWTRvIhMMGPWM4IOmuH8cPMPYRPjWhFmwRxQAxl95pRCud6FVIMlzHYSCP7DiotabVFnJBXP2Vm6Vd6IWruA==
+
+"@expo-google-fonts/bonbon@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/bonbon/-/bonbon-0.2.0.tgz#a3174cb5c562ea8012fa61333a14b789cc32469d"
+  integrity sha512-75TSNaopxuCEu/NspdSa671sggd9LW39tB/czwxCIriC2TDeJ53UffahS5bSJ8+STxwiDt+vI1ff0oOu7otOJA==
+
+"@expo-google-fonts/bungee-shade@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/bungee-shade/-/bungee-shade-0.2.0.tgz#936aa261cfacb3889b8a7f74f3a562f63f327889"
+  integrity sha512-cMMaGygw+gUQyquHl2GLooCgECSmfVHvoCswOnN1euOhH4VpPN4f8geh19QVXjtkMxNi2u64UnOzvmtuN6VacQ==
+
+"@expo-google-fonts/caesar-dressing@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/caesar-dressing/-/caesar-dressing-0.2.0.tgz#36bb370da75f5016c2cca7c0dde535c4cc0e3ca3"
+  integrity sha512-Nqgzq+Cm8ZzD7VVYoIiOH+WZR/UfGXLAwMvgFB5FBOKmEMK79Ld1hgdoPWK2xCY1RxRFTm6rD/WettecItdXTg==
+
+"@expo-google-fonts/codystar@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/codystar/-/codystar-0.2.0.tgz#63601f8a8d48dc59fb32ca6f5cf31c4586e96f60"
+  integrity sha512-4XRFmm3E1QFhhm2t0d+oIDSkP4op3mAgx+U7630ZCNRYIwMx5U7dgpg2cc76CpUJqxNvYloGkNxlHlGokSb+8Q==
+
+"@expo-google-fonts/creepster@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/creepster/-/creepster-0.2.0.tgz#527c7ffd44289fe10e41cdc171d1d899443e620c"
+  integrity sha512-rDOnVeKEvmSccjkXDaP7IDSmkYbPOnxUsE2b7kqC8Cb0Os+n3HXhuTeSwvYJMecnwv/iN9sAgfXMNBuLLwU7hg==
+
+"@expo-google-fonts/faster-one@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/faster-one/-/faster-one-0.2.0.tgz#0f4d641f0e755c0b15557b6e00c4ffcc7c2930ac"
+  integrity sha512-0QlNSjGl3PEWp5pEduRirw8uZnxjFenO7HJxcs7iPmAmRRvULqWmQ/5O4XUoeaY75xfCf0WsDbKXJeB8V9ckxQ==
+
+"@expo-google-fonts/frijole@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/frijole/-/frijole-0.2.0.tgz#21eea2275c238a56ab6b3789df2c3b479eb81875"
+  integrity sha512-EIeMyB1b8KuTYw3KvYPgpe8aMnLvO/NQg1HQ0R/U4RdZ+E5bDd0yhf+lzgt36JxaaT9q6O4xW7xbEHEj6qMKrw==
+
+"@expo-google-fonts/graduate@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/graduate/-/graduate-0.2.0.tgz#4231b9a4141b20461237affa5522034809a84573"
+  integrity sha512-g7ScpCkV6qGBwm8nAKFjh4GOAPmIZ0az3D/cj4jfuvgl9RPXagPpnWAIrlegCBRXoPw1BJjX71S7G5wYn1R28g==
+
+"@expo-google-fonts/homemade-apple@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/homemade-apple/-/homemade-apple-0.2.0.tgz#502764b1ece25522d99716907cbb07b6cc3c9bfe"
+  integrity sha512-DPdTBnsAYcZnec/Jam/UYjlktgl4Muijga9SHT9ffiP88zRGRC4hh2eYQ7NW8IYnWegGGQej54gn+qpg7TN/hg==
+
 "@expo-google-fonts/kaushan-script@^0.2.0":
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@expo-google-fonts/kaushan-script/-/kaushan-script-0.2.0.tgz#787c99482eaa167bfba396a2d5415de0bc07381a"
@@ -2621,10 +2676,45 @@
   resolved "https://registry.yarnpkg.com/@expo-google-fonts/major-mono-display/-/major-mono-display-0.2.0.tgz#913655b8a7dc4a188a66912ce7c90e4c1770c582"
   integrity sha512-E+WRXI7B6Irb4EjSOZzV0qF6xNz6kFoy/LwisUPDGUeOaFCeeQde7obqueTA9BYPS5mNRRsVsESWb91p9EaFpA==
 
+"@expo-google-fonts/monoton@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/monoton/-/monoton-0.2.0.tgz#02b91818ef610e081c54c130ca33b73568eac7fc"
+  integrity sha512-xF4Wuqal7YVeyCgcXs1xscCsjSRQ2OCBas/Ly9pcJWTNpaiAD1iUvDeQP2v/KUNv/ZfqNsB5LY2gNJQffsNZPg==
+
+"@expo-google-fonts/nosifer@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/nosifer/-/nosifer-0.2.0.tgz#bc490a6537ea25d6d8f3b09e5d93df09b18e4080"
+  integrity sha512-X9yU2OOeCIQ9agFKAu6EBGZLBcsSLtZuBz2sSeJ85OA0G08ghJXr+moul0etocehVnT2FKCemVpZ1zSO2rOh1Q==
+
+"@expo-google-fonts/orbitron@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/orbitron/-/orbitron-0.2.0.tgz#773d2ac08b1d5af9701915d4f16639272e5b40db"
+  integrity sha512-AKAGnlnj+4AFTFHl/Jz4PPzcO0qBcWJAaoKtIac7acaxTgfuoY8+fmXFhe6Hnw51CaVKBEnLHbDA0k9N/u8i5A==
+
+"@expo-google-fonts/press-start-2p@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/press-start-2p/-/press-start-2p-0.2.0.tgz#503956450bb97baa5f3e1f3bbfc24f2134c8ece2"
+  integrity sha512-n3072jsz15NLe5U9E+9bLTyrXfEW6GgfUD+UdenKs9rO/6T4ZvpbXrFZmfm3WbzpwK+H+Q6dQmWL1tAj3t8rtA==
+
+"@expo-google-fonts/princess-sofia@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/princess-sofia/-/princess-sofia-0.2.0.tgz#24e766a10a4b2e2be39d96ce5d4a2ed3d677dd72"
+  integrity sha512-oVwhpqgN3f+Vuk4gGQ3vISwKlrnMh9EJdV+Vglij+ibjXu5YSl/FQwfpuZ/1CFL7ohCz1fbE1OWcvK/ituGH+g==
+
 "@expo-google-fonts/sacramento@^0.2.0":
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@expo-google-fonts/sacramento/-/sacramento-0.2.0.tgz#88dfb82d8c329b7e1636561675d96c9ed25f92f6"
   integrity sha512-Ab9sd3KJs9zeEfN9BvzwF26jS88CzXu88B09+YVL6XbcBClgrtirjuRTggUzTISsRL67hTurCTuEvQy+XoKg9A==
+
+"@expo-google-fonts/sancreek@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/sancreek/-/sancreek-0.2.0.tgz#0f75090504a83a88a2d8b488424d58864f349ab1"
+  integrity sha512-CqDOvmfnkHnnOFLfWf/nfne58wnz/KnlHNHYkBxSw0GYaedY4WtTBJuCnXeU6MoaCfyz7ayxZ+fbCYnARfpdBA==
+
+"@expo-google-fonts/unifrakturmaguntia@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/unifrakturmaguntia/-/unifrakturmaguntia-0.2.0.tgz#aaef0d8849af3651505554099258c31a879bbfff"
+  integrity sha512-6jXYDbs/Gq566MYRbp/Wv1/4/58ge6rVw/tfbaxLxeQ02gjBFcdOr2O5zkGPDwMTemOn9K7stU4t9DEmJWNZ8A==
 
 "@expo/babel-preset-cli@0.2.18":
   version "0.2.18"

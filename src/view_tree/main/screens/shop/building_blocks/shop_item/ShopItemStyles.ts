@@ -1,0 +1,25 @@
+import { StyleSheet } from "react-native";
+import { basicLayouts } from "../../../../../../global_styles/BasicLayouts";
+import { palette } from "../../../../../../global_styles/Palette";
+import { GENERAL_CONTENT_WIDTH } from "../../../../../../global_constants/screen_constants";
+
+export const styles = StyleSheet.create({
+    container: {
+        ...basicLayouts.flexGrid2,
+        backgroundColor: palette.white,
+        width: GENERAL_CONTENT_WIDTH - 40,
+        padding: 10,
+        borderRadius: 20,
+        marginBottom: 10,
+    },
+    childrenContainer: {
+        ...basicLayouts.grid5,
+        marginTop: 25,
+        marginBottom: 10,
+    },
+    title: {
+        fontWeight: "bold",
+        color: palette.deepBlue,
+        fontSize: 17,
+    },
+});
