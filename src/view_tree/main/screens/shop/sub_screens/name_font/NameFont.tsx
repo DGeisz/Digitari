@@ -67,10 +67,7 @@ const NameFont: React.FC = () => {
                             >
                                 <Text
                                     style={[
-                                        nameFontToStyle(
-                                            nameFontEnum2FontName(font)
-                                        ),
-                                        { textAlign: "center" },
+                                        nameFontToStyle(font),
                                         profileColor2Style(
                                             data?.user.nameColor
                                         ),

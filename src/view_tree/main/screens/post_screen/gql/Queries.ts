@@ -10,6 +10,9 @@ export const POST = gql`
             id
             uid
 
+            nameColor
+            nameFont
+
             # Main content
             user
             tier

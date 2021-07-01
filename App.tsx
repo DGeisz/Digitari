@@ -32,7 +32,7 @@ import { HomemadeApple_400Regular } from "@expo-google-fonts/homemade-apple";
 import { Nosifer_400Regular } from "@expo-google-fonts/nosifer";
 import { UnifrakturMaguntia_400Regular } from "@expo-google-fonts/unifrakturmaguntia";
 import { PressStart2P_400Regular } from "@expo-google-fonts/press-start-2p";
-import { Bonbon_400Regular } from "@expo-google-fonts/bonbon";
+import { ButterflyKids_400Regular } from "@expo-google-fonts/butterfly-kids";
 import { BungeeShade_400Regular } from "@expo-google-fonts/bungee-shade";
 import { Bangers_400Regular } from "@expo-google-fonts/bangers";
 import { FasterOne_400Regular } from "@expo-google-fonts/faster-one";
@@ -171,13 +171,13 @@ export default function App() {
         Nosifer_400Regular,
         UnifrakturMaguntia_400Regular,
         PressStart2P_400Regular,
-        Bonbon_400Regular,
         BungeeShade_400Regular,
         Bangers_400Regular,
         FasterOne_400Regular,
         CaesarDressing_400Regular,
         Ballet_400Regular,
         Monoton_400Regular,
+        ButterflyKids_400Regular,
     });
 
     if (!fontsLoaded) {

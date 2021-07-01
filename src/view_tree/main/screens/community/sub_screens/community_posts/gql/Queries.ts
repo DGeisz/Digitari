@@ -19,6 +19,9 @@ export const GET_COMMUNITY_POSTS = gql`
             id
             uid
 
+            nameColor
+            nameFont
+
             # Main content
             user
             tier

@@ -50,6 +50,9 @@ export const CONVO_POST = gql`
             id
             uid
 
+            nameColor
+            nameFont
+
             # Main content
             user
             tier

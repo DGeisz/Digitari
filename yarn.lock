@@ -2621,15 +2621,15 @@
   resolved "https://registry.yarnpkg.com/@expo-google-fonts/bangers/-/bangers-0.2.0.tgz#ba6bbdb1566800a52a206073832e1663068573ac"
   integrity sha512-bVFWTRvIhMMGPWM4IOmuH8cPMPYRPjWhFmwRxQAxl95pRCud6FVIMlzHYSCP7DiotabVFnJBXP2Vm6Vd6IWruA==
 
-"@expo-google-fonts/bonbon@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@expo-google-fonts/bonbon/-/bonbon-0.2.0.tgz#a3174cb5c562ea8012fa61333a14b789cc32469d"
-  integrity sha512-75TSNaopxuCEu/NspdSa671sggd9LW39tB/czwxCIriC2TDeJ53UffahS5bSJ8+STxwiDt+vI1ff0oOu7otOJA==
-
 "@expo-google-fonts/bungee-shade@^0.2.0":
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@expo-google-fonts/bungee-shade/-/bungee-shade-0.2.0.tgz#936aa261cfacb3889b8a7f74f3a562f63f327889"
   integrity sha512-cMMaGygw+gUQyquHl2GLooCgECSmfVHvoCswOnN1euOhH4VpPN4f8geh19QVXjtkMxNi2u64UnOzvmtuN6VacQ==
+
+"@expo-google-fonts/butterfly-kids@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/butterfly-kids/-/butterfly-kids-0.2.0.tgz#190e4be4562356b58165380f10e61bcda56b8362"
+  integrity sha512-79vcx2q1EFZiMjVtHH+xRozEcvFOn/txy9Pvgay+fBeQ8/u3ohJWrUawgXXWiTU/cieWWyk+MBQY/2/7/cZJMg==
 
 "@expo-google-fonts/caesar-dressing@^0.2.0":
   version "0.2.0"
@@ -2666,11 +2666,6 @@
   resolved "https://registry.yarnpkg.com/@expo-google-fonts/homemade-apple/-/homemade-apple-0.2.0.tgz#502764b1ece25522d99716907cbb07b6cc3c9bfe"
   integrity sha512-DPdTBnsAYcZnec/Jam/UYjlktgl4Muijga9SHT9ffiP88zRGRC4hh2eYQ7NW8IYnWegGGQej54gn+qpg7TN/hg==
 
-"@expo-google-fonts/kaushan-script@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@expo-google-fonts/kaushan-script/-/kaushan-script-0.2.0.tgz#787c99482eaa167bfba396a2d5415de0bc07381a"
-  integrity sha512-cPtU4ymdNVsLq+yA8mepXapXK3ZSabChf07KNG/SHVFUOQBvD1sp6e+v6Fh0z2Pw+6tn/3n88hvPQjwtWqYFgw==
-
 "@expo-google-fonts/major-mono-display@^0.2.0":
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@expo-google-fonts/major-mono-display/-/major-mono-display-0.2.0.tgz#913655b8a7dc4a188a66912ce7c90e4c1770c582"
@@ -2700,11 +2695,6 @@
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@expo-google-fonts/princess-sofia/-/princess-sofia-0.2.0.tgz#24e766a10a4b2e2be39d96ce5d4a2ed3d677dd72"
   integrity sha512-oVwhpqgN3f+Vuk4gGQ3vISwKlrnMh9EJdV+Vglij+ibjXu5YSl/FQwfpuZ/1CFL7ohCz1fbE1OWcvK/ituGH+g==
-
-"@expo-google-fonts/sacramento@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@expo-google-fonts/sacramento/-/sacramento-0.2.0.tgz#88dfb82d8c329b7e1636561675d96c9ed25f92f6"
-  integrity sha512-Ab9sd3KJs9zeEfN9BvzwF26jS88CzXu88B09+YVL6XbcBClgrtirjuRTggUzTISsRL67hTurCTuEvQy+XoKg9A==
 
 "@expo-google-fonts/sancreek@^0.2.0":
   version "0.2.0"

@@ -127,6 +127,10 @@ export const schema = gql`
         time: String
         content: String
 
+        # Font
+        nameColor: Int
+        nameFont: Int
+
         # Add on
         addOn: Int
         addOnContent: String

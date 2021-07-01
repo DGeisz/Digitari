@@ -1,94 +1,96 @@
-import { NameFonts } from "../../../../global_types/ShopTypes";
+import { NameFonts, NameFontsEnum } from "../../../../global_types/ShopTypes";
 import { StyleProp, TextStyle } from "react-native";
 
-export function nameFontToProfileStyle(font: NameFonts): StyleProp<TextStyle> {
+export function nameFontToProfileStyle(
+    font: NameFontsEnum
+): StyleProp<TextStyle> {
     switch (font) {
-        case NameFonts.Default:
+        case NameFontsEnum.Default:
             return {
                 fontSize: 22,
                 fontWeight: "bold",
             };
-        case NameFonts.LetterJacket:
+        case NameFontsEnum.LetterJacket:
             return {
                 fontFamily: NameFonts.LetterJacket,
                 fontSize: 22,
             };
-        case NameFonts.Galaxy9000:
+        case NameFontsEnum.Galaxy9000:
             return {
                 fontFamily: NameFonts.Galaxy9000,
                 fontSize: 21,
             };
-        case NameFonts.HowdyPartner:
+        case NameFontsEnum.HowdyPartner:
             return {
                 fontFamily: NameFonts.HowdyPartner,
                 fontSize: 24,
             };
-        case NameFonts.ImAPrincess:
+        case NameFontsEnum.ImAPrincess:
             return {
                 fontFamily: NameFonts.ImAPrincess,
                 fontSize: 23,
             };
-        case NameFonts.Ole:
+        case NameFontsEnum.Ole:
             return {
                 fontFamily: NameFonts.Ole,
                 fontSize: 20,
             };
-        case NameFonts.CheapHalloweenParty:
+        case NameFontsEnum.CheapHalloweenParty:
             return {
                 fontFamily: NameFonts.CheapHalloweenParty,
                 fontSize: 28,
             };
-        case NameFonts.PassinNotes:
+        case NameFontsEnum.PassinNotes:
             return {
                 fontFamily: NameFonts.PassinNotes,
                 fontSize: 22,
             };
-        case NameFonts.Yuck:
+        case NameFontsEnum.Yuck:
             return {
                 fontFamily: NameFonts.Yuck,
                 fontSize: 20,
             };
-        case NameFonts.OldTyme:
+        case NameFontsEnum.OldTyme:
             return {
                 fontFamily: NameFonts.OldTyme,
                 fontSize: 26,
             };
-        case NameFonts.Arcade:
+        case NameFontsEnum.Arcade:
             return {
                 fontFamily: NameFonts.Arcade,
                 fontSize: 14,
             };
-        case NameFonts.GirlyGirl:
+        case NameFontsEnum.GirlyGirl:
             return {
                 fontFamily: NameFonts.GirlyGirl,
-                fontSize: 25,
+                fontSize: 30,
             };
-        case NameFonts.RollerSkateDate:
+        case NameFontsEnum.RollerSkateDate:
             return {
                 fontFamily: NameFonts.RollerSkateDate,
                 fontSize: 21,
             };
-        case NameFonts.WhamBamKablam:
+        case NameFontsEnum.WhamBamKablam:
             return {
                 fontFamily: NameFonts.WhamBamKablam,
                 fontSize: 25,
             };
-        case NameFonts.Zoom:
+        case NameFontsEnum.Zoom:
             return {
                 fontFamily: NameFonts.Zoom,
                 fontSize: 26,
             };
-        case NameFonts.ZeusRevenge:
+        case NameFontsEnum.ZeusRevenge:
             return {
                 fontFamily: NameFonts.ZeusRevenge,
                 fontSize: 26,
             };
-        case NameFonts.YuletideBall:
+        case NameFontsEnum.YuletideBall:
             return {
                 fontFamily: NameFonts.YuletideBall,
                 fontSize: 29,
             };
-        case NameFonts.GreatGatsby:
+        case NameFontsEnum.GreatGatsby:
             return {
                 fontFamily: NameFonts.GreatGatsby,
                 fontSize: 20,

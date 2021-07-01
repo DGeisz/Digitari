@@ -7,8 +7,6 @@ export const palette = {
     // Forest suite
     softestForestGreen: "#effaeb",
     lightForestGreen: "#c1f0af",
-    quasiLightForestGreen: "#81d461",
-    darkForestGreen: "#256b0a",
 
     // Ocean suite
     oceanFroth: "#ebfaf8",
@@ -40,4 +38,28 @@ export const palette = {
     // Other
     linkBlue: "#149cdb",
     googleBlue: "#4285f4",
+
+    // Name font colors
+
+    // Green suite
+    quasiLightForestGreen: "#81d461",
+    darkForestGreen: "#256b0a",
+    terminalGreen: "#39ff14",
+
+    // Red suite
+    bloodStain: "#8a0303",
+    stop: "#f00000",
+    slush: "#FB4F14",
+    salmon: "#fa8072",
+
+    // Purple suite
+    royalty: "#7609ad",
+    blackLight: "#c749f5",
+    teaParty: "#e6affa",
+
+    dollhouse: "#f5006e",
+
+    bronze: "#cd7f32",
+    silver: "#a1a4ab",
+    gold: "#d4af37",
 };

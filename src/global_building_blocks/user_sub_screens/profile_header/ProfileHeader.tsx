@@ -2,7 +2,6 @@ import React, { useContext, useMemo, useState } from "react";
 import {
     ActivityIndicator,
     Image,
-    Keyboard,
     Text,
     TouchableOpacity,
     View,
@@ -18,7 +17,6 @@ import { toCommaRep, toRep } from "../../../global_utils/ValueRepUtils";
 import CoinBox from "../../coin_box/CoinBox";
 import { FontAwesome, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { palette } from "../../../global_styles/Palette";
-import BioModal from "./building_blocks/bio_modal/BioModal";
 import { useMutation } from "@apollo/client";
 import {
     FOLLOW_USER,
@@ -42,7 +40,7 @@ import BoltBox from "../../../bolt_box/BoltBox";
 import { nameFontToProfileStyle } from "./fonts/nameFonts";
 import {
     nameFontEnum2FontName,
-    NameFonts,
+    NameFontsEnum,
     profileColor2Style,
 } from "../../../global_types/ShopTypes";
 
@@ -317,9 +315,7 @@ const ProfileHeader: React.FC<Props> = (props) => {
                                 <Text
                                     style={[
                                         nameFontToProfileStyle(
-                                            nameFontEnum2FontName(
-                                                props.user.nameFont
-                                            )
+                                            props.user.nameFont
                                         ),
                                         profileColor2Style(
                                             props.user.nameColor

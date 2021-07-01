@@ -48,6 +48,7 @@ import { nameFontToPostStyle } from "./fonts/nameFonts";
 import {
     nameFontEnum2FontName,
     NameFontsEnum,
+    profileColor2Style,
 } from "../../global_types/ShopTypes";
 
 const COMMUNITY_NAME_MAX_LEN = 30;
@@ -502,15 +503,11 @@ const Post: React.FC<Props> = (props) => {
                                     <Text
                                         style={[
                                             nameFontToPostStyle(
-                                                /*
-                                                 * TODO: Add font and color properties to posts!*/
-                                                nameFontEnum2FontName(
-                                                    NameFontsEnum.Default
-                                                )
+                                                props.post.nameFont
                                             ),
-                                            {
-                                                color: palette.hardGray,
-                                            },
+                                            profileColor2Style(
+                                                props.post.nameColor
+                                            ),
                                         ]}
                                     >
                                         {props.post.user}

@@ -7,6 +7,9 @@ export const GET_FEED = gql`
             id
             uid
 
+            nameColor
+            nameFont
+
             # Main content
             user
             tier

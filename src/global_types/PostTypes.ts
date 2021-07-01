@@ -1,3 +1,5 @@
+import { NameFonts, NameFontsEnum, ProfileColors } from "./ShopTypes";
+
 export const POST_TYPENAME = "Post";
 
 export const POST_CONTENT_MAX_LEN = 250;
@@ -25,6 +27,9 @@ export interface PostType {
     tier: number;
     time: string;
     content: string;
+
+    nameColor: ProfileColors;
+    nameFont: NameFontsEnum;
 
     addOn: PostAddOn;
     addOnContent: string;
@@ -58,41 +63,3 @@ export interface StrippedPostType {
 export interface GStrippedPostType extends StrippedPostType {
     __typename: string;
 }
-
-export const postExampleNoLink: PostType = {
-    addOn: PostAddOn.Link,
-    // addOnContent: `Hi my name is Jeff and I'm an antelope. Why, you ask, do I mention that? It is my cornerstone, and I'm in love with that fact about myself. and I'm in love with that fact about myself and I'm in love with that fact about myself. h that fact about myself`,
-    // addOnContent:
-    //     "https://d3671gkd53urlb.cloudfront.net/c17c121d-6594-41bf-9d38-37fba3154c99/p-SZF.jpg",
-    addOnContent:
-        "https://www.reddit.com/r/berkeley/comments/mw85w8/best_feeling_ever/",
-    // addOnContent: "https://andrejgajdos.com/how-to-create-a-link-preview/",
-    target: PostTarget.Community,
-    communityName: "This is my community oh yes it is",
-    cmid: "220c250a-6bf4-4929-b55e-da69d97b7a45",
-    id: "asd",
-    uid: "c17c121d-6594-41bf-9d38-37fba3154c99",
-    coin: 40000,
-    content: `Hi my name is Jeff and I'm an antelope. Why, you ask, do I mention that? It is my cornerstone, and I'm in love with that fact about myself. and I'm in love with that fact about myself and I'm in love with that fact about myself. h that fact about myself`,
-    tier: 0,
-    responseCost: 4,
-    time: (1612394591366).toString(),
-    user: "Danny",
-    convoCount: 10,
-    responseCount: 10,
-};
-
-export const exampleStrippedPost: StrippedPostType = {
-    id: "asd",
-    uid: "danny",
-    content: `Hi my name is Jeff and I'm an antelope. Why, you ask, do I mention that? It is my cornerstone, and I'm in love with that fact about myself.`,
-    ranking: 142,
-    time: 1612394591366,
-    user: "Danny",
-    link: "https://expo.io/",
-    convoReward: 200,
-};
-
-export const gExampleStrippedPost = Object.assign({}, exampleStrippedPost, {
-    __typename: "Post",
-});

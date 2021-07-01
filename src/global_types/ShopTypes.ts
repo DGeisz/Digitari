@@ -34,7 +34,7 @@ export enum NameFonts {
     Yuck = "Nosifer_400Regular",
     OldTyme = "UnifrakturMaguntia_400Regular",
     Arcade = "PressStart2P_400Regular",
-    GirlyGirl = "Bonbon_400Regular",
+    GirlyGirl = "ButterflyKids_400Regular",
     RollerSkateDate = "BungeeShade_400Regular",
     WhamBamKablam = "Bangers_400Regular",
     Zoom = "FasterOne_400Regular",
@@ -126,6 +126,20 @@ export function nameFont2Name(font: NameFontsEnum): string {
 }
 export enum ProfileColors {
     Default,
+    BloodStain,
+    Stop,
+    LastSunset,
+    PlasticDollhouse,
+    AlaskanSockeye,
+    DarkForest,
+    AboveTreeline,
+    CrackinGlowSticks,
+    AllHail,
+    BlacklitRave,
+    FirstTeaParty,
+    MadeThePodium,
+    SoClose,
+    ChampionOfTheWorld,
 }
 
 export function profileColor2Style(color: ProfileColors): StyleProp<TextStyle> {
@@ -134,6 +148,97 @@ export function profileColor2Style(color: ProfileColors): StyleProp<TextStyle> {
             return {
                 color: palette.hardGray,
             };
+        case ProfileColors.BloodStain:
+            return {
+                color: palette.bloodStain,
+            };
+        case ProfileColors.Stop:
+            return {
+                color: palette.stop,
+            };
+        case ProfileColors.LastSunset:
+            return {
+                color: palette.slush,
+            };
+        case ProfileColors.PlasticDollhouse:
+            return {
+                color: palette.dollhouse,
+            };
+        case ProfileColors.AlaskanSockeye:
+            return {
+                color: palette.salmon,
+            };
+        case ProfileColors.DarkForest:
+            return {
+                color: palette.darkForestGreen,
+            };
+        case ProfileColors.AboveTreeline:
+            return {
+                color: palette.quasiLightForestGreen,
+            };
+        case ProfileColors.CrackinGlowSticks:
+            return {
+                color: palette.terminalGreen,
+            };
+        case ProfileColors.AllHail:
+            return {
+                color: palette.royalty,
+            };
+        case ProfileColors.BlacklitRave:
+            return {
+                color: palette.blackLight,
+            };
+        case ProfileColors.FirstTeaParty:
+            return {
+                color: palette.teaParty,
+            };
+        case ProfileColors.MadeThePodium:
+            return {
+                color: palette.bronze,
+            };
+        case ProfileColors.SoClose:
+            return {
+                color: palette.silver,
+            };
+        case ProfileColors.ChampionOfTheWorld:
+            return {
+                color: palette.gold,
+            };
+    }
+}
+
+export function profileColor2Name(color: ProfileColors): string {
+    switch (color) {
+        case ProfileColors.Default:
+            return "Default";
+        case ProfileColors.BloodStain:
+            return "Blood Stain";
+        case ProfileColors.Stop:
+            return "STOP";
+        case ProfileColors.LastSunset:
+            return "Last Summer Sunset";
+        case ProfileColors.PlasticDollhouse:
+            return "Plastic Dollhouse";
+        case ProfileColors.AlaskanSockeye:
+            return "Alaskan sockeye";
+        case ProfileColors.DarkForest:
+            return "The Dark Forest";
+        case ProfileColors.AboveTreeline:
+            return "Above Treeline";
+        case ProfileColors.CrackinGlowSticks:
+            return "Crackin' Glow Sticks";
+        case ProfileColors.AllHail:
+            return "All Hail the King";
+        case ProfileColors.BlacklitRave:
+            return "Blacklight Rave";
+        case ProfileColors.FirstTeaParty:
+            return "Your First Tea Party";
+        case ProfileColors.MadeThePodium:
+            return "Made the Podium";
+        case ProfileColors.SoClose:
+            return "So Close";
+        case ProfileColors.ChampionOfTheWorld:
+            return "Champion of the World";
     }
 }
 
