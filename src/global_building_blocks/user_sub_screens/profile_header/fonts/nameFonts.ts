@@ -23,11 +23,6 @@ export function nameFontToProfileStyle(font: NameFonts): StyleProp<TextStyle> {
                 fontFamily: NameFonts.HowdyPartner,
                 fontSize: 24,
             };
-        case NameFonts.FreshmanDorm:
-            return {
-                fontFamily: NameFonts.FreshmanDorm,
-                fontSize: 20,
-            };
         case NameFonts.ImAPrincess:
             return {
                 fontFamily: NameFonts.ImAPrincess,

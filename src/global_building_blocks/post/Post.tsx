@@ -9,8 +9,7 @@ import {
 } from "react-native";
 import { styles } from "./PostStyles";
 import Tier from "../tier/Tier";
-import CoinBox from "../coin_box/CoinBox";
-import { Entypo, MaterialIcons, Ionicons } from "@expo/vector-icons";
+import { Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import {
     POST_TYPENAME,
     PostAddOn,
@@ -45,6 +44,11 @@ import SymbolModal from "./building_blocks/symbol_modal/SymbolModal";
 import LightningFlyer from "./building_blocks/lightning_flyer/LightningFlyer";
 import LikeFlyer from "./building_blocks/like_flyer/LikeFlyer";
 import BoltBox from "../../bolt_box/BoltBox";
+import { nameFontToPostStyle } from "./fonts/nameFonts";
+import {
+    nameFontEnum2FontName,
+    NameFontsEnum,
+} from "../../global_types/ShopTypes";
 
 const COMMUNITY_NAME_MAX_LEN = 30;
 
@@ -495,7 +499,20 @@ const Post: React.FC<Props> = (props) => {
                                     }
                                     activeOpacity={0.5}
                                 >
-                                    <Text style={styles.postUserText}>
+                                    <Text
+                                        style={[
+                                            nameFontToPostStyle(
+                                                /*
+                                                 * TODO: Add font and color properties to posts!*/
+                                                nameFontEnum2FontName(
+                                                    NameFontsEnum.Default
+                                                )
+                                            ),
+                                            {
+                                                color: palette.hardGray,
+                                            },
+                                        ]}
+                                    >
                                         {props.post.user}
                                     </Text>
                                 </TouchableOpacity>

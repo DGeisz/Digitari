@@ -6,7 +6,6 @@ export enum NameFontsEnum {
     LetterJacket,
     Galaxy9000,
     HowdyPartner,
-    FreshmanDorm,
     ImAPrincess,
     Ole,
     CheapHalloweenParty,
@@ -28,7 +27,6 @@ export enum NameFonts {
     LetterJacket = "Graduate_400Regular",
     Galaxy9000 = "Orbitron_700Bold",
     HowdyPartner = "Sancreek_400Regular",
-    FreshmanDorm = "Codystar_400Regular",
     ImAPrincess = "PrincessSofia_400Regular",
     Ole = "Frijole_400Regular",
     CheapHalloweenParty = "Creepster_400Regular",
@@ -55,8 +53,6 @@ export function nameFontEnum2FontName(font: NameFontsEnum): NameFonts {
             return NameFonts.Galaxy9000;
         case NameFontsEnum.HowdyPartner:
             return NameFonts.HowdyPartner;
-        case NameFontsEnum.FreshmanDorm:
-            return NameFonts.FreshmanDorm;
         case NameFontsEnum.ImAPrincess:
             return NameFonts.ImAPrincess;
         case NameFontsEnum.Ole:
@@ -98,8 +94,6 @@ export function nameFont2Name(font: NameFontsEnum): string {
             return "Galaxy 9000";
         case NameFontsEnum.HowdyPartner:
             return "Howdy partner";
-        case NameFontsEnum.FreshmanDorm:
-            return "Freshman dorm";
         case NameFontsEnum.ImAPrincess:
             return "I'm a princess";
         case NameFontsEnum.Ole:
