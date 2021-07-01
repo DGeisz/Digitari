@@ -1,5 +1,5 @@
-import { NameFonts } from "../../../../../../../global_types/UserTypes";
 import { StyleProp, TextStyle } from "react-native";
+import { NameFonts } from "../../../../../../../global_types/ShopTypes";
 
 export function nameFontToStyle(font: NameFonts): StyleProp<TextStyle> {
     switch (font) {
@@ -46,7 +46,7 @@ export function nameFontToStyle(font: NameFonts): StyleProp<TextStyle> {
         case NameFonts.PassinNotes:
             return {
                 fontFamily: NameFonts.PassinNotes,
-                fontSize: 28,
+                fontSize: 30,
             };
         case NameFonts.Yuck:
             return {
@@ -86,7 +86,7 @@ export function nameFontToStyle(font: NameFonts): StyleProp<TextStyle> {
         case NameFonts.ZeusRevenge:
             return {
                 fontFamily: NameFonts.ZeusRevenge,
-                fontSize: 35,
+                fontSize: 38,
             };
         case NameFonts.YuletideBall:
             return {

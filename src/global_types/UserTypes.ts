@@ -1,3 +1,5 @@
+import { NameFonts, NameFontsEnum } from "./ShopTypes";
+
 export const USER_TYPENAME = "User";
 
 export const FOLLOW_USER_PRICE = 200;
@@ -62,93 +64,6 @@ export interface UserType {
 
     communityFollowersChallengeIndex: number;
     maxCommunityFollowers: number;
-}
-
-export enum NameFontsEnum {
-    Default,
-    LetterJacket,
-    Galaxy9000,
-    HowdyPartner,
-    FreshmanDorm,
-    ImAPrincess,
-    Ole,
-    CheapHalloweenParty,
-    PassinNotes,
-    Yuck,
-    OldTyme,
-    Arcade,
-    GirlyGirl,
-    RollerSkateDate,
-    WhamBamKablam,
-    Zoom,
-    ZeusRevenge,
-    YuletideBall,
-    GreatGatsby,
-}
-
-export enum NameFonts {
-    Default = "Default",
-    LetterJacket = "Graduate_400Regular",
-    Galaxy9000 = "Orbitron_700Bold",
-    HowdyPartner = "Sancreek_400Regular",
-    FreshmanDorm = "Codystar_400Regular",
-    ImAPrincess = "PrincessSofia_400Regular",
-    Ole = "Frijole_400Regular",
-    CheapHalloweenParty = "Creepster_400Regular",
-    PassinNotes = "HomemadeApple_400Regular",
-    Yuck = "Nosifer_400Regular",
-    OldTyme = "UnifrakturMaguntia_400Regular",
-    Arcade = "PressStart2P_400Regular",
-    GirlyGirl = "Bonbon_400Regular",
-    RollerSkateDate = "BungeeShade_400Regular",
-    WhamBamKablam = "Bangers_400Regular",
-    Zoom = "FasterOne_400Regular",
-    ZeusRevenge = "CaesarDressing_400Regular",
-    YuletideBall = "Ballet_400Regular",
-    GreatGatsby = "Monoton_400Regular",
-}
-
-export function nameFont2Name(font: NameFonts): string {
-    switch (font) {
-        case NameFonts.Default:
-            return "Default";
-        case NameFonts.LetterJacket:
-            return "Letter Jacket";
-        case NameFonts.Galaxy9000:
-            return "Galaxy 9000";
-        case NameFonts.HowdyPartner:
-            return "Howdy Partner";
-        case NameFonts.FreshmanDorm:
-            return "Freshman Dorm";
-        case NameFonts.ImAPrincess:
-            return "I'm a Princess";
-        case NameFonts.Ole:
-            return "¡Olé!";
-        case NameFonts.CheapHalloweenParty:
-            return "Cheap Halloween Party";
-        case NameFonts.PassinNotes:
-            return "Passin' Notes in Class";
-        case NameFonts.Yuck:
-            return "...yuck?";
-        case NameFonts.OldTyme:
-            return "Old Tyme";
-        case NameFonts.Arcade:
-            return "80s Arcade";
-        case NameFonts.GirlyGirl:
-            return "Girly Girl";
-        case NameFonts.RollerSkateDate:
-            return "Roller Skate Date";
-        case NameFonts.WhamBamKablam:
-            return "Wham! Bam! Kablam!";
-        case NameFonts.Zoom:
-            return "Zooooom!";
-        case NameFonts.ZeusRevenge:
-            return "Zeus' Revenge";
-        case NameFonts.YuletideBall:
-            return "Yuletide Ball";
-        case NameFonts.GreatGatsby:
-            return "Great frikin' Gatsby";
-    }
 }
 
 export enum ProfileColors {

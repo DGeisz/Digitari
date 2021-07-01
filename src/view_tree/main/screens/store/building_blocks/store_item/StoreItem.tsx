@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./StoreItemStyles";
 import CoinBox from "../../../../../../global_building_blocks/coin_box/CoinBox";
-import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import { palette } from "../../../../../../global_styles/Palette";
 
 interface Props {
