@@ -54,7 +54,9 @@ const BoltBox: React.FC<Props> = (props) => {
                         styles.boltBoxText,
                         {
                             fontSize: props.fontSize,
-                            fontWeight: props.fontWeight,
+                            fontWeight: !!props.fontWeight
+                                ? props.fontWeight
+                                : "600",
                             color: props.fontColor,
                             transform: !!props.moveTextRight
                                 ? [{ translateX: -1 * props.moveTextRight }]

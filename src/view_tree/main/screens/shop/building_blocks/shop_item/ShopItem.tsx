@@ -5,6 +5,12 @@ import LockBuySelect from "../lock_buy_select/LockBuySelect";
 
 interface Props {
     title: string;
+    alreadyOwns: boolean;
+    userBolts: number;
+    price: number;
+    purchaseTitle: string;
+    description: string;
+    alreadySelected: boolean;
 }
 
 const ShopItem: React.FC<Props> = (props) => {
@@ -13,12 +19,13 @@ const ShopItem: React.FC<Props> = (props) => {
             <Text style={styles.title}>{props.title}</Text>
             <View style={styles.childrenContainer}>{props.children}</View>
             <LockBuySelect
-                alreadyOwns={false}
-                purchaseTitle={"Buy Font"}
-                userBolts={20}
-                description={"buy font"}
+                alreadySelected={props.alreadySelected}
+                alreadyOwns={props.alreadyOwns}
+                purchaseTitle={props.purchaseTitle}
+                userBolts={props.userBolts}
+                description={props.description}
                 onConfirm={() => {}}
-                price={50}
+                price={props.price}
                 onSelect={() => {}}
             />
         </View>

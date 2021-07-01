@@ -1,3 +1,6 @@
+import { StyleProp, TextStyle } from "react-native";
+import { palette } from "../global_styles/Palette";
+
 export enum NameFontsEnum {
     Default,
     LetterJacket,
@@ -94,17 +97,17 @@ export function nameFont2Name(font: NameFontsEnum): string {
         case NameFontsEnum.Galaxy9000:
             return "Galaxy 9000";
         case NameFontsEnum.HowdyPartner:
-            return "Howdy Partner";
+            return "Howdy partner";
         case NameFontsEnum.FreshmanDorm:
-            return "Freshman Dorm";
+            return "Freshman dorm";
         case NameFontsEnum.ImAPrincess:
-            return "I'm a Princess";
+            return "I'm a princess";
         case NameFontsEnum.Ole:
-            return "¡Olé!";
+            return "Salsa Picante";
         case NameFontsEnum.CheapHalloweenParty:
-            return "Cheap Halloween Party";
+            return "Cheap halloween party";
         case NameFontsEnum.PassinNotes:
-            return "Passin' Notes in Class";
+            return "Passin' notes in class";
         case NameFontsEnum.Yuck:
             return "...yuck?";
         case NameFontsEnum.OldTyme:
@@ -112,7 +115,7 @@ export function nameFont2Name(font: NameFontsEnum): string {
         case NameFontsEnum.Arcade:
             return "80s Arcade";
         case NameFontsEnum.GirlyGirl:
-            return "Girly Girl";
+            return "Girly girl";
         case NameFontsEnum.RollerSkateDate:
             return "Roller Skate Date";
         case NameFontsEnum.WhamBamKablam:
@@ -120,10 +123,26 @@ export function nameFont2Name(font: NameFontsEnum): string {
         case NameFontsEnum.Zoom:
             return "Zooooom!";
         case NameFontsEnum.ZeusRevenge:
-            return "Zeus' Revenge";
+            return "Zeus' revenge";
         case NameFontsEnum.YuletideBall:
-            return "Yuletide Ball";
+            return "Yuletide ball";
         case NameFontsEnum.GreatGatsby:
             return "Great frikin' Gatsby";
     }
+}
+export enum ProfileColors {
+    Default,
+}
+
+export function profileColor2Style(color: ProfileColors): StyleProp<TextStyle> {
+    switch (color) {
+        case ProfileColors.Default:
+            return {
+                color: palette.hardGray,
+            };
+    }
+}
+
+export enum ProfileStickers {
+    Default,
 }

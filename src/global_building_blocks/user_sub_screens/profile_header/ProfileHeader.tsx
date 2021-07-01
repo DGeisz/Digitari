@@ -1,11 +1,11 @@
 import React, { useContext, useMemo, useState } from "react";
 import {
-    View,
+    ActivityIndicator,
     Image,
+    Keyboard,
     Text,
     TouchableOpacity,
-    ActivityIndicator,
-    Keyboard,
+    View,
 } from "react-native";
 import { styles } from "./ProfileHeaderStyles";
 import {
@@ -39,6 +39,12 @@ import {
 } from "../../../view_tree/tutorial/context/tutorial_context/TutorialContext";
 import UpdateIndicator from "../../../view_tree/main/routes/tab_nav/building_blocks/update_indicator/UpdateIndicator";
 import BoltBox from "../../../bolt_box/BoltBox";
+import { nameFontToProfileStyle } from "./fonts/nameFonts";
+import {
+    nameFontEnum2FontName,
+    NameFonts,
+    profileColor2Style,
+} from "../../../global_types/ShopTypes";
 
 interface Props {
     user: UserType;
@@ -216,30 +222,6 @@ const ProfileHeader: React.FC<Props> = (props) => {
                                 />
                             </View>
                         )}
-                        {props.isMe && (
-                            <>
-                                <BioModal
-                                    imgUrl={props.user.imgUrl}
-                                    bio={props.user.bio}
-                                    visible={editBioVisible}
-                                    hideModal={() => {
-                                        showEditBio(false);
-                                        Keyboard.dismiss();
-                                    }}
-                                />
-                                <TouchableOpacity
-                                    onPress={() => {
-                                        if (!tutorialActive) {
-                                            showEditBio(true);
-                                        }
-                                    }}
-                                >
-                                    <Text style={styles.editProfileText}>
-                                        Edit
-                                    </Text>
-                                </TouchableOpacity>
-                            </>
-                        )}
                     </View>
                     <View style={styles.split0Right}>
                         {props.isMe ? (
@@ -332,7 +314,18 @@ const ProfileHeader: React.FC<Props> = (props) => {
                         </TouchableOpacity>
                         <View style={styles.userLevelContainer}>
                             <View style={styles.profileUserBar}>
-                                <Text style={styles.profileUserText}>
+                                <Text
+                                    style={[
+                                        nameFontToProfileStyle(
+                                            nameFontEnum2FontName(
+                                                props.user.nameFont
+                                            )
+                                        ),
+                                        profileColor2Style(
+                                            props.user.nameColor
+                                        ),
+                                    ]}
+                                >
                                     {`${props.user.firstName} ${props.user.lastName}`}
                                 </Text>
                                 <UserOptionsModal

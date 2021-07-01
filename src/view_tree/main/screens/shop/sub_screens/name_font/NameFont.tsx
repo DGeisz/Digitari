@@ -7,9 +7,34 @@ import {
     nameFont2Name,
     nameFontEnum2FontName,
     NameFontsEnum,
+    profileColor2Style,
 } from "../../../../../../global_types/ShopTypes";
+import { localUid } from "../../../../../../global_state/UserState";
+import { useQuery } from "@apollo/client";
+import {
+    GET_USER,
+    GetUserQueryData,
+    GetUserQueryVariables,
+} from "../../../../routes/tab_nav/screens/profile/gql/Queries";
+import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
+import ErrorMessage from "../../../../../../global_building_blocks/error_message/ErrorMessage";
 
 const NameFont: React.FC = () => {
+    const uid = localUid();
+
+    const { data, error, loading, refetch } = useQuery<
+        GetUserQueryData,
+        GetUserQueryVariables
+    >(GET_USER, { variables: { uid } });
+
+    if (!data?.user || loading) {
+        return <LoadingWheel />;
+    }
+
+    if (!!error) {
+        return <ErrorMessage refresh={refetch} />;
+    }
+
     return (
         <ScrollView style={shopStyles.outerContainer}>
             <View style={shopStyles.container}>
@@ -24,25 +49,38 @@ const NameFont: React.FC = () => {
                 </View>
                 {Object.values(NameFontsEnum)
                     .filter((font) => !isNaN(Number(font)))
-                    .map((nameFont) => (
-                        <ShopItem
-                            key={nameFont}
-                            title={nameFont2Name(nameFont as NameFontsEnum)}
-                        >
-                            <Text
-                                style={[
-                                    nameFontToStyle(
-                                        nameFontEnum2FontName(
-                                            nameFont as NameFontsEnum
-                                        )
-                                    ),
-                                    { textAlign: "center" },
-                                ]}
+                    .map((nameFont) => {
+                        const font = nameFont as NameFontsEnum;
+
+                        return (
+                            <ShopItem
+                                key={nameFont}
+                                title={nameFont2Name(font)}
+                                description={"buy font"}
+                                purchaseTitle={"Buy Font"}
+                                price={20}
+                                userBolts={data?.user.bolts}
+                                alreadyOwns={data?.user.nameFontsPurchased.includes(
+                                    font
+                                )}
+                                alreadySelected={data?.user.nameFont === font}
                             >
-                                Danny Geisz
-                            </Text>
-                        </ShopItem>
-                    ))}
+                                <Text
+                                    style={[
+                                        nameFontToStyle(
+                                            nameFontEnum2FontName(font)
+                                        ),
+                                        { textAlign: "center" },
+                                        profileColor2Style(
+                                            data?.user.nameColor
+                                        ),
+                                    ]}
+                                >
+                                    {`${data?.user.firstName} ${data?.user.lastName}`}
+                                </Text>
+                            </ShopItem>
+                        );
+                    })}
             </View>
         </ScrollView>
     );

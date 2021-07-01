@@ -16,11 +16,30 @@ import { useAuthKeyboardBuffer } from "../../../../../auth/building_blocks/use_a
 import {
     MAX_BIO_LENGTH,
     MAX_BIO_LINK_LENGTH,
+    UserType,
 } from "../../../../../../global_types/UserTypes";
 import { shopStyles } from "../../styles/ShopStyles";
+import { localUid } from "../../../../../../global_state/UserState";
+import { useQuery } from "@apollo/client";
+import {
+    GET_USER,
+    GetUserQueryData,
+    GetUserQueryVariables,
+} from "../../../../routes/tab_nav/screens/profile/gql/Queries";
+import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
+import ErrorMessage from "../../../../../../global_building_blocks/error_message/ErrorMessage";
 
-const BasicProfile: React.FC = () => {
-    const userBolts = 10;
+interface Props {
+    user: UserType;
+}
+
+const BasicProfile: React.FC<Props> = (props) => {
+    const uid = localUid();
+
+    const { data, error, loading, refetch } = useQuery<
+        GetUserQueryData,
+        GetUserQueryVariables
+    >(GET_USER, { variables: { uid } });
 
     const [imgUrl, setImgUrl] = useState<string | undefined>();
     const [img, setImg] = useState<File | undefined>();
@@ -62,6 +81,14 @@ const BasicProfile: React.FC = () => {
         }
     };
 
+    if (!data?.user || loading) {
+        return <LoadingWheel />;
+    }
+
+    if (!!error) {
+        return <ErrorMessage refresh={refetch} />;
+    }
+
     return (
         <ScrollView ref={scrollRef} style={shopStyles.outerContainer}>
             <View style={shopStyles.container}>
@@ -93,7 +120,7 @@ const BasicProfile: React.FC = () => {
                     </View>
                     <LockBuySelect
                         active={imgChanged}
-                        userBolts={userBolts}
+                        userBolts={data.user.bolts}
                         description={"set your profile picture"}
                         purchaseTitle={"Set Pic"}
                         itemTitle={"pic"}
@@ -129,7 +156,7 @@ const BasicProfile: React.FC = () => {
                         {MAX_BIO_LENGTH - bio.length}
                     </Text>
                     <LockBuySelect
-                        userBolts={userBolts}
+                        userBolts={data.user.bolts}
                         active={bioChanged}
                         description={"set your bio"}
                         purchaseTitle={"Set Bio"}
@@ -163,7 +190,7 @@ const BasicProfile: React.FC = () => {
                         }
                     />
                     <LockBuySelect
-                        userBolts={userBolts}
+                        userBolts={data.user.bolts}
                         active={linkChanged}
                         description={"set your bio link"}
                         purchaseTitle={"Set Link"}

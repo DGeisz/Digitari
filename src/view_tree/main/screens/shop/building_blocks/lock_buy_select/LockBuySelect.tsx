@@ -23,6 +23,7 @@ interface Props {
      * item
      */
     alreadyOwns: boolean;
+    alreadySelected?: boolean;
     selectTitle?: string;
     onSelect: () => void;
 }
@@ -41,7 +42,13 @@ const LockBuySelect: React.FC<Props> = (props) => {
         }, 4000);
     };
 
-    if (props.alreadyOwns) {
+    if (props.alreadySelected) {
+        return (
+            <View style={styles.container}>
+                <Text style={styles.alreadySelectedText}>Selected ✅</Text>
+            </View>
+        );
+    } else if (props.alreadyOwns) {
         return (
             <View style={styles.container}>
                 <TouchableOpacity style={styles.confirmButton}>
@@ -195,6 +202,7 @@ LockBuySelect.defaultProps = {
     active: true,
     inactiveMessage: "",
     itemTitle: "",
+    alreadySelected: false,
 };
 
 export default LockBuySelect;

@@ -19,6 +19,11 @@ export const styles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 18,
     },
+    alreadySelectedText: {
+        color: palette.lightGray,
+        fontWeight: "bold",
+        fontSize: 18,
+    },
     lockedContainer: {
         ...basicLayouts.grid5,
         paddingHorizontal: 12,

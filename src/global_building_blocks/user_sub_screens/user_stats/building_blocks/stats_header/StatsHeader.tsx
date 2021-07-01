@@ -128,6 +128,7 @@ export default class StatsHeader extends React.PureComponent<Props, State> {
                             boltSize={30}
                             fontSize={18}
                             showAbbreviated={false}
+                            moveTextRight={2}
                         />
                         <CoinBox
                             amount={this.props.user.coin}

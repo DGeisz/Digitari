@@ -8,6 +8,15 @@ import BioColor from "./sub_screens/bio_color/BioColor";
 import ProfileSticker from "./sub_screens/profile_sticker/ProfileSticker";
 import TabLabel from "../../../../global_building_blocks/tab_label/TabLabel";
 import { SCREEN_LARGER_THAN_CONTENT } from "../../../../global_constants/screen_constants";
+import { useQuery } from "@apollo/client";
+import {
+    GET_USER,
+    GetUserQueryData,
+    GetUserQueryVariables,
+} from "../../routes/tab_nav/screens/profile/gql/Queries";
+import { localUid } from "../../../../global_state/UserState";
+import LoadingWheel from "../../../../global_building_blocks/loading_wheel/LoadingWheel";
+import ErrorMessage from "../../../../global_building_blocks/error_message/ErrorMessage";
 
 const ShopTab = createMaterialTopTabNavigator();
 

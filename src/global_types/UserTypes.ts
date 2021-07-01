@@ -1,4 +1,9 @@
-import { NameFonts, NameFontsEnum } from "./ShopTypes";
+import {
+    NameFonts,
+    NameFontsEnum,
+    ProfileColors,
+    ProfileStickers,
+} from "./ShopTypes";
 
 export const USER_TYPENAME = "User";
 
@@ -29,10 +34,15 @@ export interface UserType {
     imgUrl?: string;
 
     nameFont: NameFontsEnum;
+    nameFontsPurchased: NameFontsEnum[];
     nameColor: ProfileColors;
-    bioFont: NameFonts;
+    nameColorsPurchased: ProfileColors[];
+    bioFont: NameFontsEnum;
+    bioFontsPurchased: NameFontsEnum[];
     bioColor: ProfileColors;
+    bioColorsPurchased: ProfileColors[];
     profileSticker: ProfileStickers;
+    profileStickersPurchased: ProfileStickers[];
 
     lastCollectionTime: string;
 
@@ -64,12 +74,4 @@ export interface UserType {
 
     communityFollowersChallengeIndex: number;
     maxCommunityFollowers: number;
-}
-
-export enum ProfileColors {
-    Default,
-}
-
-export enum ProfileStickers {
-    Default,
 }

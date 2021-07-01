@@ -16,6 +16,17 @@ export const GET_USER = gql`
 
             lastCollectionTime
 
+            nameFont
+            nameFontsPurchased
+            nameColor
+            nameColorsPurchased
+            bioFont
+            bioFontsPurchased
+            bioColor
+            bioColorsPurchased
+            profileSticker
+            profileStickersPurchased
+
             amFollowing
             bolts
             newConvoUpdate
