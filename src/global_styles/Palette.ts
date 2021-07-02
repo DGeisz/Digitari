@@ -62,4 +62,9 @@ export const palette = {
     bronze: "#cd7f32",
     silver: "#a1a4ab",
     gold: "#d4af37",
+
+    // Bio font colors
+    formerGlory: "#7c7d19",
+    heartOfTheSea: "#193e7d",
+    pumpkin: "#964906",
 };

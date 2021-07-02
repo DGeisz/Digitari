@@ -97,10 +97,14 @@ const MainEntry: React.FC = () => {
                             },
                         });
                     } catch (_) {
-                        console.log("Already registered, or perhaps error");
+                        if (__DEV__) {
+                            console.log("Already registered, or perhaps error");
+                        }
                     }
                 } catch (e) {
-                    console.log("Error in push registration flow: ", e);
+                    if (__DEV__) {
+                        console.log("Error in push registration flow: ", e);
+                    }
                 }
             })();
         }

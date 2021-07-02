@@ -274,11 +274,7 @@ const Post: React.FC<Props> = (props) => {
                                 },
                             },
                             update(cache, { data }) {
-                                console.log("So the mutation went through");
-
                                 if (!!data?.donateToPost) {
-                                    console.log("And it was successful");
-
                                     /*
                                      * Increase post digicoin
                                      */

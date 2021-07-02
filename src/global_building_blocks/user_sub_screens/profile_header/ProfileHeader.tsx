@@ -39,10 +39,11 @@ import UpdateIndicator from "../../../view_tree/main/routes/tab_nav/building_blo
 import BoltBox from "../../../bolt_box/BoltBox";
 import { nameFontToProfileStyle } from "./fonts/nameFonts";
 import {
-    nameFontEnum2FontName,
-    NameFontsEnum,
+    BioColors,
+    bioColorToStyle,
     profileColor2Style,
 } from "../../../global_types/ShopTypes";
+import { bioFont2Style } from "./fonts/bioFonts";
 
 interface Props {
     user: UserType;
@@ -344,9 +345,16 @@ const ProfileHeader: React.FC<Props> = (props) => {
                 </View>
                 <View style={styles.profileSplit3} pointerEvents="none">
                     {!!props.user.bio ? (
-                        <Text style={styles.profileBioText}>
-                            {props.user.bio}
-                        </Text>
+                        <>
+                            <Text
+                                style={[
+                                    bioFont2Style(props.user.bioFont),
+                                    bioColorToStyle(props.user.bioColor),
+                                ]}
+                            >
+                                {props.user.bio}
+                            </Text>
+                        </>
                     ) : (
                         <Text style={styles.noBioText}>No bio</Text>
                     )}

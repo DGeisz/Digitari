@@ -39,6 +39,14 @@ import { FasterOne_400Regular } from "@expo-google-fonts/faster-one";
 import { CaesarDressing_400Regular } from "@expo-google-fonts/caesar-dressing";
 import { Ballet_400Regular } from "@expo-google-fonts/ballet";
 import { Monoton_400Regular } from "@expo-google-fonts/monoton";
+import { SpecialElite_400Regular } from "@expo-google-fonts/special-elite";
+import { PoiretOne_400Regular } from "@expo-google-fonts/poiret-one";
+import { IndieFlower_400Regular } from "@expo-google-fonts/indie-flower";
+import { Megrim_400Regular } from "@expo-google-fonts/megrim";
+import { CormorantGaramond_400Regular } from "@expo-google-fonts/cormorant-garamond";
+import { BerkshireSwash_400Regular } from "@expo-google-fonts/berkshire-swash";
+import { MacondoSwashCaps_400Regular } from "@expo-google-fonts/macondo-swash-caps";
+import { Quantico_400Regular } from "@expo-google-fonts/quantico";
 
 /*
 * For Info.plist:
@@ -178,6 +186,14 @@ export default function App() {
         Ballet_400Regular,
         Monoton_400Regular,
         ButterflyKids_400Regular,
+        SpecialElite_400Regular,
+        PoiretOne_400Regular,
+        IndieFlower_400Regular,
+        Megrim_400Regular,
+        CormorantGaramond_400Regular,
+        BerkshireSwash_400Regular,
+        MacondoSwashCaps_400Regular,
+        Quantico_400Regular,
     });
 
     if (!fontsLoaded) {

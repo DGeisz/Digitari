@@ -40,6 +40,15 @@ const NameColor: React.FC = () => {
     return (
         <ScrollView style={shopStyles.outerContainer}>
             <View style={shopStyles.container}>
+                <View style={shopStyles.headerContainer}>
+                    <Text style={shopStyles.headerTitle}>Name Color</Text>
+                    <View style={shopStyles.descriptionContainer}>
+                        <Text style={shopStyles.shopDescription}>
+                            The font color used for your name on your profile
+                            and on your posts.
+                        </Text>
+                    </View>
+                </View>
                 {Object.values(ProfileColors)
                     .filter((color) => !isNaN(Number(color)))
                     .map((color) => {
@@ -49,12 +58,14 @@ const NameColor: React.FC = () => {
                             <ShopItem
                                 key={color}
                                 title={profileColor2Name(color)}
-                                description={"buy font"}
-                                purchaseTitle={"Buy Font"}
+                                description={"buy color"}
+                                purchaseTitle={"Buy Color"}
                                 price={20}
                                 userBolts={data?.user.bolts}
-                                alreadyOwns={false}
-                                alreadySelected={false}
+                                alreadyOwns={data?.user.nameColorsPurchased.includes(
+                                    color
+                                )}
+                                alreadySelected={data?.user.nameColor === color}
                             >
                                 <Text
                                     style={[

@@ -1,4 +1,4 @@
-import { StyleProp, TextStyle } from "react-native";
+import { StyleProp, StyleSheet, TextStyle } from "react-native";
 import { palette } from "../global_styles/Palette";
 
 export enum NameFontsEnum {
@@ -239,6 +239,115 @@ export function profileColor2Name(color: ProfileColors): string {
             return "So Close";
         case ProfileColors.ChampionOfTheWorld:
             return "Champion of the World";
+    }
+}
+
+export enum BioFontsEnum {
+    Default,
+    DearDiary,
+    Lemonade,
+    OnceUponATime,
+    Novel,
+    WhenTypewriters,
+    MissionBriefing,
+    MidsummerFantasy,
+    SpiritualSciFi,
+}
+
+export enum BioFonts {
+    Default = "Default",
+    WhenTypewriters = "SpecialElite_400Regular",
+    Lemonade = "PoiretOne_400Regular",
+    OnceUponATime = "BerkshireSwash_400Regular",
+    Novel = "CormorantGaramond_400Regular",
+    DearDiary = "IndieFlower_400Regular",
+    MissionBriefing = "Quantico_400Regular",
+    MidsummerFantasy = "MacondoSwashCaps_400Regular",
+    SpiritualSciFi = "Megrim_400Regular",
+}
+
+export function bioFont2Name(font: BioFontsEnum): string {
+    switch (font) {
+        case BioFontsEnum.Default:
+            return "Default";
+        case BioFontsEnum.WhenTypewriters:
+            return "Grandpa's Typewriter";
+        case BioFontsEnum.Lemonade:
+            return "Lemonade in the Sun Room";
+        case BioFontsEnum.OnceUponATime:
+            return "Once upon a time...";
+        case BioFontsEnum.Novel:
+            return "Novel on a Cloudy Day";
+        case BioFontsEnum.DearDiary:
+            return "Dear Diary";
+        case BioFontsEnum.MissionBriefing:
+            return "Mission Briefing";
+        case BioFontsEnum.MidsummerFantasy:
+            return "Midsummer Fantasy";
+        case BioFontsEnum.SpiritualSciFi:
+            return "Spiritual Sci-Fi";
+    }
+}
+
+export enum BioColors {
+    Default,
+    DarkForest,
+    AllHail,
+    FadingEmbers,
+    BloodStain,
+    FormerGlory,
+    HeartOfTheSea,
+}
+
+export function bioColorToStyle(color: BioColors): StyleProp<TextStyle> {
+    switch (color) {
+        case BioColors.Default:
+            return {
+                color: palette.hardGray,
+            };
+        case BioColors.DarkForest:
+            return {
+                color: palette.darkForestGreen,
+            };
+        case BioColors.AllHail:
+            return {
+                color: palette.royalty,
+            };
+        case BioColors.FadingEmbers:
+            return {
+                color: palette.pumpkin,
+            };
+        case BioColors.BloodStain:
+            return {
+                color: palette.bloodStain,
+            };
+        case BioColors.FormerGlory:
+            return {
+                color: palette.formerGlory,
+            };
+        case BioColors.HeartOfTheSea:
+            return {
+                color: palette.heartOfTheSea,
+            };
+    }
+}
+
+export function bioColor2Name(color: BioColors): string {
+    switch (color) {
+        case BioColors.Default:
+            return "Default";
+        case BioColors.DarkForest:
+            return "The Dark Forest";
+        case BioColors.AllHail:
+            return "All Hail the King";
+        case BioColors.FadingEmbers:
+            return "Fading Embers";
+        case BioColors.BloodStain:
+            return "Blood Stain";
+        case BioColors.FormerGlory:
+            return "Former Glory";
+        case BioColors.HeartOfTheSea:
+            return "Heart of the Sea";
     }
 }
 

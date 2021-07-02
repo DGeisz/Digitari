@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
     Image,
     ScrollView,
@@ -40,6 +40,26 @@ const BasicProfile: React.FC<Props> = (props) => {
         GetUserQueryData,
         GetUserQueryVariables
     >(GET_USER, { variables: { uid } });
+
+    useEffect(() => {
+        if (!!data?.user) {
+            if (!!data.user.imgUrl) {
+                setImgUrl(data.user.imgUrl);
+            }
+
+            if (!!data.user.bio) {
+                setBio(data.user.bio);
+            }
+
+            if (!!data.user.link) {
+                setBioLink(data.user.link);
+            }
+        }
+    }, [
+        !!data?.user ? data.user.imgUrl : "",
+        !!data?.user ? data.user.bio : "",
+        !!data?.user ? data.user.link : "",
+    ]);
 
     const [imgUrl, setImgUrl] = useState<string | undefined>();
     const [img, setImg] = useState<File | undefined>();

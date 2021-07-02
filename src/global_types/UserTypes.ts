@@ -1,4 +1,6 @@
 import {
+    BioColors,
+    BioFontsEnum,
     NameFonts,
     NameFontsEnum,
     ProfileColors,
@@ -37,10 +39,10 @@ export interface UserType {
     nameFontsPurchased: NameFontsEnum[];
     nameColor: ProfileColors;
     nameColorsPurchased: ProfileColors[];
-    bioFont: NameFontsEnum;
-    bioFontsPurchased: NameFontsEnum[];
-    bioColor: ProfileColors;
-    bioColorsPurchased: ProfileColors[];
+    bioFont: BioFontsEnum;
+    bioFontsPurchased: BioFontsEnum[];
+    bioColor: BioColors;
+    bioColorsPurchased: BioColors[];
     profileSticker: ProfileStickers;
     profileStickersPurchased: ProfileStickers[];
 

@@ -71,7 +71,9 @@ const BioModal: React.FC<Props> = (props) => {
                         body: img,
                     })
                         .then(() => {
-                            console.log("Image upload successful!");
+                            if (__DEV__) {
+                                console.log("Image upload successful!");
+                            }
 
                             cache.modify({
                                 id: cache.identify({
@@ -86,7 +88,11 @@ const BioModal: React.FC<Props> = (props) => {
                             });
                         })
                         .catch((e) => {
-                            console.log("Image upload failed: " + e.message);
+                            if (__DEV__) {
+                                console.log(
+                                    "Image upload failed: " + e.message
+                                );
+                            }
                         });
                 }
             }
@@ -140,7 +146,9 @@ const BioModal: React.FC<Props> = (props) => {
                     },
                 },
             }).catch((e) => {
-                console.log("Bio error: ", e);
+                if (__DEV__) {
+                    console.log("Bio error: ", e);
+                }
             });
         }
 
