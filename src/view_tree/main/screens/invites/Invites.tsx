@@ -141,105 +141,106 @@ const Invites: React.FC<Props> = (props) => {
     }
 
     const remainingInvites = !!data?.user ? data.user.remainingInvites : 0;
+    const finalContacts = remainingInvites > 0 && hasAccess ? contacts : [];
 
     return (
         <View style={styles.invitesContainer}>
-            <TouchableOpacity
-                style={styles.invitesHeader}
-                activeOpacity={1}
-                onPress={Keyboard.dismiss}
-            >
-                <Text style={styles.invitesHeaderText}>
-                    Honestly, Digitari is way more fun when all your friends are
-                    on the platform.
-                    {DOUBLE_NEWLINE}
-                    Plus, you get 500 extra digicoin{" "}
-                    <Text style={styles.italics}>for free</Text> when someone
-                    you invite creates an account. {DOUBLE_NEWLINE}
-                    How's that for a good deal? 😉
-                </Text>
-                <Text style={styles.invitesRemaining}>
-                    Remaining invites: {remainingInvites}
-                </Text>
-            </TouchableOpacity>
-            {remainingInvites < 1 ? (
-                <View style={styles.noInvitesContainer}>
-                    <Text style={styles.noInvitesText}>
-                        🎉 You used all your invites! 🎉
-                    </Text>
-                </View>
-            ) : hasAccess ? (
-                <>
-                    <SearchBar
-                        placeholder="Search contacts..."
-                        onChangeText={(text) => {
-                            setSearch(text);
-                        }}
-                        value={search}
-                        containerStyle={styles.searchContainer}
-                        inputContainerStyle={styles.searchInputContainer}
-                        lightTheme
-                    />
-                    <FlatList
-                        data={contacts}
-                        renderItem={({ item }) => (
-                            <InviteUser
-                                contact={item}
-                                genInviteCode={genInviteCode}
+            <FlatList
+                ListHeaderComponent={
+                    <>
+                        <TouchableOpacity
+                            style={styles.invitesHeader}
+                            activeOpacity={1}
+                            onPress={Keyboard.dismiss}
+                        >
+                            <Text style={styles.invitesHeaderText}>
+                                Honestly, Digitari is way more fun when all your
+                                friends are on the platform.
+                                {DOUBLE_NEWLINE}
+                                Plus, you get 500 extra digicoin{" "}
+                                <Text style={styles.italics}>
+                                    for free
+                                </Text>{" "}
+                                when someone you invite creates an account.{" "}
+                                {DOUBLE_NEWLINE}
+                                How's that for a good deal? 😉
+                            </Text>
+                            <Text style={styles.invitesRemaining}>
+                                Remaining invites: {remainingInvites}
+                            </Text>
+                        </TouchableOpacity>
+                        {remainingInvites < 1 ? (
+                            <View style={styles.noInvitesContainer}>
+                                <Text style={styles.noInvitesText}>
+                                    🎉 You used all your invites! 🎉
+                                </Text>
+                            </View>
+                        ) : hasAccess ? (
+                            <SearchBar
+                                placeholder="Search contacts..."
+                                onChangeText={(text) => {
+                                    setSearch(text);
+                                }}
+                                value={search}
+                                containerStyle={styles.searchContainer}
+                                inputContainerStyle={
+                                    styles.searchInputContainer
+                                }
+                                lightTheme
                             />
+                        ) : (
+                            <View style={styles.promptContainer}>
+                                <Text style={styles.promptText}>
+                                    We need your permission to access your
+                                    contacts so that you can invite your friends
+                                </Text>
+                                <TouchableOpacity
+                                    style={styles.promptButton}
+                                    onPress={async () => {
+                                        await Linking.openURL("app-settings:");
+                                    }}
+                                >
+                                    <Text style={styles.promptButtonText}>
+                                        Open settings
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
                         )}
-                        keyExtractor={(item) => item.id}
-                        onScroll={Keyboard.dismiss}
-                        onEndReached={async () => {
-                            if (hasAccess) {
-                                const {
-                                    data,
-                                } = await Contacts.getContactsAsync({
-                                    fields: [
-                                        Contacts.Fields.Name,
-                                        Contacts.Fields.FirstName,
-                                        Contacts.Fields.PhoneNumbers,
-                                        Contacts.Fields.Image,
-                                        Contacts.Fields.ImageAvailable,
-                                    ],
-                                    name: !!search ? search : undefined,
-                                    pageSize,
-                                    pageOffset: offset,
-                                });
+                    </>
+                }
+                data={finalContacts}
+                renderItem={({ item }) => (
+                    <InviteUser contact={item} genInviteCode={genInviteCode} />
+                )}
+                keyExtractor={(item) => item.id}
+                onScroll={Keyboard.dismiss}
+                onEndReached={async () => {
+                    if (hasAccess) {
+                        const { data } = await Contacts.getContactsAsync({
+                            fields: [
+                                Contacts.Fields.Name,
+                                Contacts.Fields.FirstName,
+                                Contacts.Fields.PhoneNumbers,
+                                Contacts.Fields.Image,
+                                Contacts.Fields.ImageAvailable,
+                            ],
+                            name: !!search ? search : undefined,
+                            pageSize,
+                            pageOffset: offset,
+                        });
 
-                                const newContacts = data.filter(
-                                    (contact) => !!contact.name
-                                );
+                        const newContacts = data.filter(
+                            (contact) => !!contact.name
+                        );
 
-                                setOffset(
-                                    (lastOffset) => lastOffset + data.length
-                                );
-                                setContacts((lastContacts) => [
-                                    ...lastContacts,
-                                    ...newContacts,
-                                ]);
-                            }
-                        }}
-                    />
-                </>
-            ) : (
-                <View style={styles.promptContainer}>
-                    <Text style={styles.promptText}>
-                        We need your permission to access your contacts so that
-                        you can invite your friends
-                    </Text>
-                    <TouchableOpacity
-                        style={styles.promptButton}
-                        onPress={async () => {
-                            await Linking.openURL("app-settings:");
-                        }}
-                    >
-                        <Text style={styles.promptButtonText}>
-                            Open settings
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-            )}
+                        setOffset((lastOffset) => lastOffset + data.length);
+                        setContacts((lastContacts) => [
+                            ...lastContacts,
+                            ...newContacts,
+                        ]);
+                    }
+                }}
+            />
         </View>
     );
 };
