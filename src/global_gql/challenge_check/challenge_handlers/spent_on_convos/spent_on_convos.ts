@@ -7,15 +7,15 @@ import {
 } from "../../../../global_types/ChallengeTypes";
 import { localUid } from "../../../../global_state/UserState";
 
-const bronzeCount = 10;
-const silverCount = 100;
-const goldCount = 1000;
-const supremeCount = 10000;
+const bronzeCount = 20;
+const silverCount = 200;
+const goldCount = 2000;
+const supremeCount = 20000;
 
 const bronzeCoin = 250;
 const silverCoin = 500;
 const goldCoin = 5000;
-const supremeCoin = 10000;
+const supremeCoin = 20000;
 
 export function spentOnConvosHandler(user: UserType, cache: ApolloCache<any>) {
     if (user.socChallengeIndex >= 4) {
