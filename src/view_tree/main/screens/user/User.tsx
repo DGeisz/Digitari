@@ -18,7 +18,6 @@ import LoadingWheel from "../../../../global_building_blocks/loading_wheel/Loadi
 import ErrorMessage from "../../../../global_building_blocks/error_message/ErrorMessage";
 import { UserNavProp, UserRouteProp } from "../../MainEntryNavTypes";
 import { localUid } from "../../../../global_state/UserState";
-import { Auth } from "aws-amplify";
 import NewButton from "../../../../global_building_blocks/new_button/NewButton";
 import { styles } from "./UserStyles";
 import { SCREEN_LARGER_THAN_CONTENT } from "../../../../global_constants/screen_constants";
@@ -85,6 +84,7 @@ const User: React.FC<Props> = (props) => {
                             />
                         ),
                         headerHeight: 250,
+                        disableSnap: true,
                     }}
                     tabBarOptions={
                         SCREEN_LARGER_THAN_CONTENT

@@ -131,7 +131,6 @@ export const styles = StyleSheet.create({
     },
     profileSplit3: {
         paddingTop: 20,
-        paddingBottom: 25,
         paddingRight: 20,
     },
     profileBioText: {
@@ -144,7 +143,11 @@ export const styles = StyleSheet.create({
         fontSize: 18,
         lineHeight: 24,
         textAlign: "center",
-        // fontWeight: "bold"
+    },
+    split35: {
+        ...basicLayouts.grid2,
+        flexDirection: "row",
+        paddingBottom: 25,
     },
     linkContainer: {
         marginTop: 10,

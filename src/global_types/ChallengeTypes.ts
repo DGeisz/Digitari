@@ -54,11 +54,9 @@ export function generateChallengeMessage(
                 return `Create ${toCommaRep(amount)} posts`;
             }
         case ChallengeTypes.ReceivedFromConvos:
-            return `Receive ${toCommaRep(
-                amount
-            )} digicoin from likes or responses`;
+            return `Earn ${toCommaRep(amount)} digicoin from your posts`;
         case ChallengeTypes.SpentOnConvos:
-            return `Spend ${toCommaRep(amount)} digicoin on likes or responses`;
+            return `Spend ${toCommaRep(amount)} digicoin on digibolts`;
         case ChallengeTypes.SuccessfulConvos:
             if (amount === 1) {
                 return "Have one successful convo";

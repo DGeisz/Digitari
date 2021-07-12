@@ -148,9 +148,7 @@ const UserPosts: React.FC<Props> = (props) => {
                     openReport={props.openReport}
                 />
             )}
-            keyExtractor={(item, index) =>
-                [item.id, "userPosts", index].join(":")
-            }
+            keyExtractor={(item) => [item.id, "userPosts"].join(":")}
             refreshControl={
                 <RefreshControl
                     refreshing={

@@ -34,7 +34,6 @@ import { tutorialUser } from "./data/tutorial_user/tutorial_user";
 import { UserType } from "../../../../../../global_types/UserTypes";
 import { ProfileNavProp } from "../../TabNavTypes";
 import { zariahPost } from "../main_feed/hooks/tutorial_posts/tutorial_posts";
-import InstructionsModal from "../main_feed/building_blocks/instructions_modal/InstructionsModal";
 
 const Tab = createMaterialCollapsibleTopTabNavigator();
 
@@ -138,6 +137,7 @@ const Profile: React.FC<Props> = (props) => {
                                 />
                             ),
                             headerHeight: 250,
+                            disableSnap: true,
                         }}
                         tabBarOptions={
                             SCREEN_LARGER_THAN_CONTENT

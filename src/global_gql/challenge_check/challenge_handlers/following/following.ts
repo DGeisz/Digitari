@@ -25,10 +25,12 @@ export function followingHandler(user: UserType, cache: ApolloCache<any>) {
     let challengeReceipts: string[] = [];
     let newIndex = 0;
 
+    const adjustedFollowing = user.following - 1;
+
     /*
      * Handle bronze
      */
-    if (user.following >= bronzeCount && user.followingChallengeIndex < 1) {
+    if (adjustedFollowing >= bronzeCount && user.followingChallengeIndex < 1) {
         newIndex = 1;
         challengeReceipts.push(
             [ChallengeTypes.Following, bronzeCount].join(":")
@@ -38,7 +40,7 @@ export function followingHandler(user: UserType, cache: ApolloCache<any>) {
     /*
      * Handle silver
      */
-    if (user.following >= silverCount && user.followingChallengeIndex < 2) {
+    if (adjustedFollowing >= silverCount && user.followingChallengeIndex < 2) {
         newIndex = 2;
         challengeReceipts.push(
             [ChallengeTypes.Following, silverCount].join(":")
@@ -48,7 +50,7 @@ export function followingHandler(user: UserType, cache: ApolloCache<any>) {
     /*
      * Handle gold
      */
-    if (user.following >= goldCount && user.followingChallengeIndex < 3) {
+    if (adjustedFollowing >= goldCount && user.followingChallengeIndex < 3) {
         newIndex = 3;
         challengeReceipts.push([ChallengeTypes.Following, goldCount].join(":"));
     }
@@ -56,7 +58,7 @@ export function followingHandler(user: UserType, cache: ApolloCache<any>) {
     /*
      * Handle supreme
      */
-    if (user.following >= supremeCount && user.followingChallengeIndex < 4) {
+    if (adjustedFollowing >= supremeCount && user.followingChallengeIndex < 4) {
         newIndex = 4;
         challengeReceipts.push(
             [ChallengeTypes.Following, supremeCount].join(":")

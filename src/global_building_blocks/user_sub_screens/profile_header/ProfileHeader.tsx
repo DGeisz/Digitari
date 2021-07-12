@@ -351,23 +351,23 @@ const ProfileHeader: React.FC<Props> = (props) => {
                         </View>
                     </View>
                 </View>
-                <View style={styles.profileSplit3} pointerEvents="box-none">
-                    <View pointerEvents="none">
-                        {!!props.user.bio ? (
-                            <>
-                                <Text
-                                    style={[
-                                        bioFont2Style(props.user.bioFont),
-                                        bioColorToStyle(props.user.bioColor),
-                                    ]}
-                                >
-                                    {props.user.bio}
-                                </Text>
-                            </>
-                        ) : (
-                            <Text style={styles.noBioText}>No bio</Text>
-                        )}
-                    </View>
+                <View style={styles.profileSplit3} pointerEvents="none">
+                    {!!props.user.bio ? (
+                        <>
+                            <Text
+                                style={[
+                                    bioFont2Style(props.user.bioFont),
+                                    bioColorToStyle(props.user.bioColor),
+                                ]}
+                            >
+                                {props.user.bio}
+                            </Text>
+                        </>
+                    ) : (
+                        <Text style={styles.noBioText}>No bio</Text>
+                    )}
+                </View>
+                <View style={styles.split35} pointerEvents="box-none">
                     {!!props.user.link && (
                         <TouchableOpacity
                             style={styles.linkContainer}

@@ -47,7 +47,11 @@ export default class Challenge extends React.PureComponent<Props, State> {
                 progress = this.props.user.followers;
                 break;
             case ChallengeTypes.Following:
-                progress = this.props.user.following;
+                /*
+                 * Adjust for auto follow when account
+                 * was created
+                 */
+                progress = this.props.user.following - 1;
                 break;
             case ChallengeTypes.CommunityFollowers:
                 progress = this.props.user.maxCommunityFollowers;

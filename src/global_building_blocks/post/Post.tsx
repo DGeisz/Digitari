@@ -46,7 +46,6 @@ import LikeFlyer from "./building_blocks/like_flyer/LikeFlyer";
 import { nameFontToPostStyle } from "./fonts/nameFonts";
 import {
     profileColor2Style,
-    ProfileStickers,
     stickerToEmoji,
 } from "../../global_types/ShopTypes";
 import BoltBox from "../bolt_box/BoltBox";
