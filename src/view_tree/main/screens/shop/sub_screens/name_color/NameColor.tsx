@@ -3,7 +3,7 @@ import { ScrollView, Text, View } from "react-native";
 import { shopStyles } from "../../styles/ShopStyles";
 import { palette } from "../../../../../../global_styles/Palette";
 import { localUid } from "../../../../../../global_state/UserState";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import {
     GET_USER,
     GetUserQueryData,
@@ -14,14 +14,22 @@ import ErrorMessage from "../../../../../../global_building_blocks/error_message
 import ShopItem from "../../building_blocks/shop_item/ShopItem";
 import {
     nameColorPrice,
-    nameFontEnum2FontName,
-    NameFontsEnum,
     profileColor2Name,
     profileColor2Style,
     ProfileColors,
+    stickerPrice,
 } from "../../../../../../global_types/ShopTypes";
 import { nameFontToStyle } from "../name_font/fonts/fonts";
 import { DOUBLE_NEWLINE } from "../../../../../../global_utils/StringUtils";
+import {
+    BUY_NAME_COLOR,
+    BuyNameColorData,
+    BuyNameColorsVariables,
+    SELECT_NAME_COLOR,
+    SelectNameColorDate,
+    SelectNameColorVariables,
+} from "./gql/Mutations";
+import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
 
 const NameColor: React.FC = () => {
     const uid = localUid();
@@ -30,6 +38,53 @@ const NameColor: React.FC = () => {
         GetUserQueryData,
         GetUserQueryVariables
     >(GET_USER, { variables: { uid } });
+
+    const [buyColor] = useMutation<BuyNameColorData, BuyNameColorsVariables>(
+        BUY_NAME_COLOR,
+        {
+            update(cache, { data }) {
+                if (typeof data?.buyNameColor === "number") {
+                    cache.modify({
+                        id: cache.identify({
+                            __typename: USER_TYPENAME,
+                            id: uid,
+                        }),
+                        fields: {
+                            nameColorsPurchased(existing) {
+                                return [...existing, data.buyNameColor];
+                            },
+                            bolts(existing) {
+                                return (
+                                    existing - nameColorPrice(data.buyNameColor)
+                                );
+                            },
+                        },
+                    });
+                }
+            },
+        }
+    );
+
+    const [selectColor] = useMutation<
+        SelectNameColorDate,
+        SelectNameColorVariables
+    >(SELECT_NAME_COLOR, {
+        update(cache, { data }) {
+            if (typeof data?.selectNameColor === "number") {
+                cache.modify({
+                    id: cache.identify({
+                        __typename: USER_TYPENAME,
+                        id: uid,
+                    }),
+                    fields: {
+                        nameColor() {
+                            return data.selectNameColor;
+                        },
+                    },
+                });
+            }
+        },
+    });
 
     if (!data?.user || loading) {
         return <LoadingWheel />;
@@ -54,8 +109,8 @@ const NameColor: React.FC = () => {
                 </View>
                 {Object.values(ProfileColors)
                     .filter((color) => !isNaN(Number(color)))
-                    .map((color) => {
-                        color = color as ProfileColors;
+                    .map((fColor) => {
+                        const color = fColor as ProfileColors;
 
                         return (
                             <ShopItem
@@ -69,6 +124,44 @@ const NameColor: React.FC = () => {
                                     color
                                 )}
                                 alreadySelected={data?.user.nameColor === color}
+                                onConfirm={async () => {
+                                    try {
+                                        await buyColor({
+                                            variables: {
+                                                color,
+                                            },
+                                            optimisticResponse: {
+                                                buyNameColor: color,
+                                            },
+                                        });
+                                    } catch (e) {
+                                        if (__DEV__) {
+                                            console.log(
+                                                "Buy name color error",
+                                                e
+                                            );
+                                        }
+                                    }
+                                }}
+                                onSelect={async () => {
+                                    try {
+                                        await selectColor({
+                                            variables: {
+                                                color,
+                                            },
+                                            optimisticResponse: {
+                                                selectNameColor: color,
+                                            },
+                                        });
+                                    } catch (e) {
+                                        if (__DEV__) {
+                                            console.log(
+                                                "Select name color error",
+                                                e
+                                            );
+                                        }
+                                    }
+                                }}
                             >
                                 <Text
                                     style={[

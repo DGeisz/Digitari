@@ -5,6 +5,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { palette } from "../../../../../../global_styles/Palette";
 import { toCommaRep } from "../../../../../../global_utils/ValueRepUtils";
 import BoltBox from "../../../../../../global_building_blocks/bolt_box/BoltBox";
+import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
 
 interface Props {
     userBolts: number;
@@ -12,6 +13,7 @@ interface Props {
     purchaseTitle: string;
     itemTitle?: string;
     description: string;
+    loading?: boolean;
 
     onConfirm: () => void;
 
@@ -42,7 +44,9 @@ const LockBuySelect: React.FC<Props> = (props) => {
         }, 4000);
     };
 
-    if (props.alreadySelected) {
+    if (!!props.loading) {
+        return <LoadingWheel />;
+    } else if (props.alreadySelected) {
         return (
             <View style={styles.container}>
                 <Text style={styles.alreadySelectedText}>Selected ✅</Text>
@@ -51,7 +55,10 @@ const LockBuySelect: React.FC<Props> = (props) => {
     } else if (props.alreadyOwns) {
         return (
             <View style={styles.container}>
-                <TouchableOpacity style={styles.confirmButton}>
+                <TouchableOpacity
+                    style={styles.confirmButton}
+                    onPress={props.onSelect}
+                >
                     <Text style={styles.confirmButtonText}>
                         {props.selectTitle}
                     </Text>

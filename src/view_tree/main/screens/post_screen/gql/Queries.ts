@@ -12,6 +12,7 @@ export const POST = gql`
 
             nameColor
             nameFont
+            sticker
 
             # Main content
             user

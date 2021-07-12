@@ -5,13 +5,12 @@ import ShopItem from "../../building_blocks/shop_item/ShopItem";
 import { nameFontToStyle } from "./fonts/fonts";
 import {
     nameFont2Name,
-    nameFontEnum2FontName,
     nameFontPrice,
     NameFontsEnum,
     profileColor2Style,
 } from "../../../../../../global_types/ShopTypes";
 import { localUid } from "../../../../../../global_state/UserState";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import {
     GET_USER,
     GetUserQueryData,
@@ -19,10 +18,16 @@ import {
 } from "../../../../routes/tab_nav/screens/profile/gql/Queries";
 import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import ErrorMessage from "../../../../../../global_building_blocks/error_message/ErrorMessage";
+import { DOUBLE_NEWLINE } from "../../../../../../global_utils/StringUtils";
 import {
-    DOUBLE_NEWLINE,
-    NEWLINE,
-} from "../../../../../../global_utils/StringUtils";
+    BUY_NAME_FONT,
+    BuyNameFontData,
+    BuyNameFontVariables,
+    SELECT_NAME_FONT,
+    SelectNameFontData,
+    SelectNameFontVariables,
+} from "./gql/Mutations";
+import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
 
 const NameFont: React.FC = () => {
     const uid = localUid();
@@ -31,6 +36,53 @@ const NameFont: React.FC = () => {
         GetUserQueryData,
         GetUserQueryVariables
     >(GET_USER, { variables: { uid } });
+
+    const [buyFont] = useMutation<BuyNameFontData, BuyNameFontVariables>(
+        BUY_NAME_FONT,
+        {
+            update(cache, { data }) {
+                if (typeof data?.buyNameFont === "number") {
+                    cache.modify({
+                        id: cache.identify({
+                            __typename: USER_TYPENAME,
+                            id: uid,
+                        }),
+                        fields: {
+                            nameFontsPurchased(existing) {
+                                return [...existing, data.buyNameFont];
+                            },
+                            bolts(existing) {
+                                return (
+                                    existing - nameFontPrice(data.buyNameFont)
+                                );
+                            },
+                        },
+                    });
+                }
+            },
+        }
+    );
+
+    const [selectFont] = useMutation<
+        SelectNameFontData,
+        SelectNameFontVariables
+    >(SELECT_NAME_FONT, {
+        update(cache, { data }) {
+            if (typeof data?.selectNameFont === "number") {
+                cache.modify({
+                    id: cache.identify({
+                        __typename: USER_TYPENAME,
+                        id: uid,
+                    }),
+                    fields: {
+                        nameFont() {
+                            return data.selectNameFont;
+                        },
+                    },
+                });
+            }
+        },
+    });
 
     if (!data?.user || loading) {
         return <LoadingWheel />;
@@ -71,6 +123,44 @@ const NameFont: React.FC = () => {
                                     font
                                 )}
                                 alreadySelected={data?.user.nameFont === font}
+                                onConfirm={async () => {
+                                    try {
+                                        await buyFont({
+                                            variables: {
+                                                font,
+                                            },
+                                            optimisticResponse: {
+                                                buyNameFont: font,
+                                            },
+                                        });
+                                    } catch (e) {
+                                        if (__DEV__) {
+                                            console.log(
+                                                "Buy name font error",
+                                                e
+                                            );
+                                        }
+                                    }
+                                }}
+                                onSelect={async () => {
+                                    try {
+                                        await selectFont({
+                                            variables: {
+                                                font,
+                                            },
+                                            optimisticResponse: {
+                                                selectNameFont: font,
+                                            },
+                                        });
+                                    } catch (e) {
+                                        if (__DEV__) {
+                                            console.log(
+                                                "Select name font error",
+                                                e
+                                            );
+                                        }
+                                    }
+                                }}
                             >
                                 <Text
                                     style={[

@@ -14,4 +14,7 @@ export function filterEmoji(text: string): string {
 }
 
 export const DOUBLE_NEWLINE = "\n\n";
-export const NEWLINE = "\n";
+
+export function stripUrlScheme(url: string): string {
+    return url.replace(/(^\w+:|^)\/\//, "");
+}

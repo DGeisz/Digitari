@@ -11,6 +11,9 @@ interface Props {
     purchaseTitle: string;
     description: string;
     alreadySelected: boolean;
+    onConfirm: () => void;
+    onSelect: () => void;
+    loading?: boolean;
 }
 
 const ShopItem: React.FC<Props> = (props) => {
@@ -24,9 +27,10 @@ const ShopItem: React.FC<Props> = (props) => {
                 purchaseTitle={props.purchaseTitle}
                 userBolts={props.userBolts}
                 description={props.description}
-                onConfirm={() => {}}
+                onSelect={props.onSelect}
+                onConfirm={props.onConfirm}
                 price={props.price}
-                onSelect={() => {}}
+                loading={props.loading}
             />
         </View>
     );

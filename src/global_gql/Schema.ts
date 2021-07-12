@@ -131,6 +131,9 @@ export const schema = gql`
         nameColor: Int
         nameFont: Int
 
+        # Sticker
+        sticker: Int
+
         # Add on
         addOn: Int
         addOnContent: String
@@ -316,6 +319,26 @@ export const schema = gql`
 
         updateBio(bio: String): User
         updateProfilePic(imgName: String): ImgUrl
+        updateBioLink(link: String): User
+
+        # Shop mutations
+
+        buySticker(sticker: Int!): Int
+        selectSticker(sticker: Int!): Int
+
+        buyNameFont(font: Int!): Int
+        selectNameFont(font: Int!): Int
+
+        buyNameColor(color: Int!): Int
+        selectNameColor(color: Int!): Int
+
+        buyBioFont(font: Int!): Int
+        selectBioFont(font: Int!): Int
+
+        buyBioColor(color: Int!): Int
+        selectBioColor(color: Int!): Int
+
+        # End shop mutations
 
         collectEarnings: EarningsReceipt
 

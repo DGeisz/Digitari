@@ -32,6 +32,11 @@ export const CREATE_POST = gql`
                 time
                 content
 
+                # Shop items
+                nameColor
+                nameFont
+                sticker
+
                 # Add on
                 addOn
                 addOnContent

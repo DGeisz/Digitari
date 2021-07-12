@@ -9,6 +9,7 @@ export const GET_USER_POSTS = gql`
 
             nameColor
             nameFont
+            sticker
 
             # Main content
             user

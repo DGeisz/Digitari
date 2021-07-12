@@ -1,7 +1,7 @@
 import React from "react";
 import { ScrollView, Text, View } from "react-native";
 import { localUid } from "../../../../../../global_state/UserState";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import {
     GET_USER,
     GetUserQueryData,
@@ -15,13 +15,21 @@ import {
     bioColorPrice,
     BioColors,
     bioColorToStyle,
-    BioFontsEnum,
-    ProfileColors,
+    stickerPrice,
 } from "../../../../../../global_types/ShopTypes";
 import ShopItem from "../../building_blocks/shop_item/ShopItem";
 import { bioFont2Style } from "../bio_font/fonts/fonts";
 import { EXAMPLE_BIO } from "../../building_blocks/example_bio/example_bio";
 import { DOUBLE_NEWLINE } from "../../../../../../global_utils/StringUtils";
+import {
+    BUY_BIO_COLOR,
+    BuyBioColorData,
+    BuyBioColorVariables,
+    SELECT_BIO_COLOR,
+    SelectBioColorData,
+    SelectBioColorVariables,
+} from "./gql/Mutation";
+import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
 
 const BioColor: React.FC = () => {
     const uid = localUid();
@@ -30,6 +38,53 @@ const BioColor: React.FC = () => {
         GetUserQueryData,
         GetUserQueryVariables
     >(GET_USER, { variables: { uid } });
+
+    const [buyColor] = useMutation<BuyBioColorData, BuyBioColorVariables>(
+        BUY_BIO_COLOR,
+        {
+            update(cache, { data }) {
+                if (typeof data?.buyBioColor === "number") {
+                    cache.modify({
+                        id: cache.identify({
+                            __typename: USER_TYPENAME,
+                            id: uid,
+                        }),
+                        fields: {
+                            bioColorsPurchased(existing) {
+                                return [...existing, data.buyBioColor];
+                            },
+                            bolts(existing) {
+                                return (
+                                    existing - bioColorPrice(data.buyBioColor)
+                                );
+                            },
+                        },
+                    });
+                }
+            },
+        }
+    );
+
+    const [selectColor] = useMutation<
+        SelectBioColorData,
+        SelectBioColorVariables
+    >(SELECT_BIO_COLOR, {
+        update(cache, { data }) {
+            if (typeof data?.selectBioColor === "number") {
+                cache.modify({
+                    id: cache.identify({
+                        __typename: USER_TYPENAME,
+                        id: uid,
+                    }),
+                    fields: {
+                        bioColor() {
+                            return data.selectBioColor;
+                        },
+                    },
+                });
+            }
+        },
+    });
 
     if (!data?.user || loading) {
         return <LoadingWheel />;
@@ -58,8 +113,8 @@ const BioColor: React.FC = () => {
                 </View>
                 {Object.values(BioColors)
                     .filter((color) => !isNaN(Number(color)))
-                    .map((color) => {
-                        color = color as BioColors;
+                    .map((_color) => {
+                        const color = _color as BioColors;
 
                         return (
                             <ShopItem
@@ -73,6 +128,44 @@ const BioColor: React.FC = () => {
                                     color
                                 )}
                                 alreadySelected={data?.user.bioColor === color}
+                                onConfirm={async () => {
+                                    try {
+                                        await buyColor({
+                                            variables: {
+                                                color,
+                                            },
+                                            optimisticResponse: {
+                                                buyBioColor: color,
+                                            },
+                                        });
+                                    } catch (e) {
+                                        if (__DEV__) {
+                                            console.log(
+                                                "Buy bio color error",
+                                                e
+                                            );
+                                        }
+                                    }
+                                }}
+                                onSelect={async () => {
+                                    try {
+                                        await selectColor({
+                                            variables: {
+                                                color,
+                                            },
+                                            optimisticResponse: {
+                                                selectBioColor: color,
+                                            },
+                                        });
+                                    } catch (e) {
+                                        if (__DEV__) {
+                                            console.log(
+                                                "Select bio color error",
+                                                e
+                                            );
+                                        }
+                                    }
+                                }}
                             >
                                 <Text
                                     style={[

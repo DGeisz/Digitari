@@ -1,4 +1,9 @@
-import { NameFonts, NameFontsEnum, ProfileColors } from "./ShopTypes";
+import {
+    NameFonts,
+    NameFontsEnum,
+    ProfileColors,
+    ProfileStickers,
+} from "./ShopTypes";
 
 export const POST_TYPENAME = "Post";
 
@@ -30,6 +35,7 @@ export interface PostType {
 
     nameColor: ProfileColors;
     nameFont: NameFontsEnum;
+    sticker: ProfileStickers;
 
     addOn: PostAddOn;
     addOnContent: string;

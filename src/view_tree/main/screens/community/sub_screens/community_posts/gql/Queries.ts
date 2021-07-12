@@ -21,6 +21,7 @@ export const GET_COMMUNITY_POSTS = gql`
 
             nameColor
             nameFont
+            sticker
 
             # Main content
             user

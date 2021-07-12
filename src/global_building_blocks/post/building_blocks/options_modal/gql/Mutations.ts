@@ -12,13 +12,16 @@ export const BLOCK_POST = gql`
             time
             content
 
+            nameColor
+            nameFont
+            sticker
+
             addOn
             addOnContent
             target
             cmid
             communityName
 
-            convoReward
             responseCost
             coin
 

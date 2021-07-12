@@ -2,6 +2,7 @@ import React, { useContext, useMemo, useState } from "react";
 import {
     ActivityIndicator,
     Image,
+    Linking,
     Text,
     TouchableOpacity,
     View,
@@ -40,11 +41,11 @@ import { nameFontToProfileStyle } from "./fonts/nameFonts";
 import {
     bioColorToStyle,
     profileColor2Style,
-    ProfileStickers,
     stickerToEmoji,
 } from "../../../global_types/ShopTypes";
 import { bioFont2Style } from "./fonts/bioFonts";
 import BoltBox from "../../bolt_box/BoltBox";
+import { stripUrlScheme } from "../../../global_utils/StringUtils";
 
 interface Props {
     user: UserType;
@@ -187,7 +188,10 @@ const ProfileHeader: React.FC<Props> = (props) => {
             >
                 {!!error && <Text style={styles.followErrorText}>{error}</Text>}
                 {uid === props.user.id && (
-                    <View style={styles.shopButtonContainer}>
+                    <View
+                        style={styles.shopButtonContainer}
+                        pointerEvents="box-none"
+                    >
                         <TouchableOpacity
                             style={styles.shopButton}
                             onPress={props.openShop}
@@ -207,7 +211,7 @@ const ProfileHeader: React.FC<Props> = (props) => {
                     </View>
                 )}
                 <View style={styles.profileSplit0} pointerEvents="box-none">
-                    <View style={styles.split0Left} pointerEvents="box-none">
+                    <View style={styles.split0Left} pointerEvents="none">
                         {!!props.user.imgUrl ? (
                             <Image
                                 style={styles.userImage}
@@ -226,7 +230,7 @@ const ProfileHeader: React.FC<Props> = (props) => {
                             {stickerToEmoji(props.user.profileSticker)}
                         </Text>
                     </View>
-                    <View style={styles.split0Right}>
+                    <View style={styles.split0Right} pointerEvents="box-none">
                         {props.isMe ? (
                             <TouchableOpacity
                                 onPress={() => {
@@ -347,24 +351,44 @@ const ProfileHeader: React.FC<Props> = (props) => {
                         </View>
                     </View>
                 </View>
-                <View style={styles.profileSplit3} pointerEvents="none">
-                    {!!props.user.bio ? (
-                        <>
-                            <Text
-                                style={[
-                                    bioFont2Style(props.user.bioFont),
-                                    bioColorToStyle(props.user.bioColor),
-                                ]}
-                            >
-                                {props.user.bio}
+                <View style={styles.profileSplit3} pointerEvents="box-none">
+                    <View pointerEvents="none">
+                        {!!props.user.bio ? (
+                            <>
+                                <Text
+                                    style={[
+                                        bioFont2Style(props.user.bioFont),
+                                        bioColorToStyle(props.user.bioColor),
+                                    ]}
+                                >
+                                    {props.user.bio}
+                                </Text>
+                            </>
+                        ) : (
+                            <Text style={styles.noBioText}>No bio</Text>
+                        )}
+                    </View>
+                    {!!props.user.link && (
+                        <TouchableOpacity
+                            style={styles.linkContainer}
+                            onPress={async () => {
+                                try {
+                                    await Linking.openURL(props.user.link);
+                                } catch (e) {
+                                    if (__DEV__) {
+                                        console.log("Error opening url:", e);
+                                    }
+                                }
+                            }}
+                        >
+                            <Text numberOfLines={1} style={styles.linkText}>
+                                {stripUrlScheme(props.user.link)}
                             </Text>
-                        </>
-                    ) : (
-                        <Text style={styles.noBioText}>No bio</Text>
+                        </TouchableOpacity>
                     )}
                 </View>
                 <View style={styles.profileSplit4} pointerEvents="box-none">
-                    <View style={styles.split4Left}>
+                    <View style={styles.split4Left} pointerEvents="box-none">
                         <TouchableOpacity
                             style={styles.followsButton}
                             activeOpacity={0.5}

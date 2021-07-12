@@ -9,6 +9,7 @@ export const GET_FEED = gql`
 
             nameColor
             nameFont
+            sticker
 
             # Main content
             user

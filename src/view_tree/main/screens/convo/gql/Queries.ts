@@ -52,6 +52,7 @@ export const CONVO_POST = gql`
 
             nameColor
             nameFont
+            sticker
 
             # Main content
             user

@@ -146,15 +146,20 @@ export const styles = StyleSheet.create({
         textAlign: "center",
         // fontWeight: "bold"
     },
+    linkContainer: {
+        marginTop: 10,
+    },
+    linkText: {
+        color: palette.linkBlue,
+    },
     profileSplit4: {
         flexDirection: "row",
     },
     split4Left: {
-        ...basicLayouts.flexGrid7,
+        ...basicLayouts.flexGrid3,
+        flexDirection: "row",
     },
-    followsButton: {
-        // flexDirection: "row",
-    },
+    followsButton: {},
     followNumeralText: {
         fontWeight: "700",
         color: palette.hardGray,

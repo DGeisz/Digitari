@@ -74,8 +74,14 @@ export default class LinkPreview extends React.PureComponent<Props, State> {
             <TouchableOpacity
                 style={styles.linkPreviewContainer}
                 activeOpacity={0.8}
-                onPress={() => {
-                    Linking.openURL(this.props.url);
+                onPress={async () => {
+                    try {
+                        await Linking.openURL(this.props.url);
+                    } catch (e) {
+                        if (__DEV__) {
+                            console.log("Error opening url:", e);
+                        }
+                    }
                 }}
             >
                 {!!this.state.image && (

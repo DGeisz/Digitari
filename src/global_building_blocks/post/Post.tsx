@@ -506,11 +506,12 @@ const Post: React.FC<Props> = (props) => {
                                             ),
                                         ]}
                                     >
+                                        {/*User and user sticker*/}
                                         {props.post.user}
-                                        {/*TODO: Add profile icon to posts*/}
-                                        {` ${stickerToEmoji(
-                                            ProfileStickers.TRex
-                                        )}`}
+                                        {!!props.post.sticker &&
+                                            ` ${stickerToEmoji(
+                                                props.post.sticker
+                                            )}`}
                                     </Text>
                                 </TouchableOpacity>
                                 <Text style={styles.postDotText}>·</Text>
