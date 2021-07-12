@@ -36,14 +36,13 @@ import {
     TutorialScreen,
 } from "../../../view_tree/tutorial/context/tutorial_context/TutorialContext";
 import UpdateIndicator from "../../../view_tree/main/routes/tab_nav/building_blocks/update_indicator/UpdateIndicator";
-import BoltBox from "../../../bolt_box/BoltBox";
 import { nameFontToProfileStyle } from "./fonts/nameFonts";
 import {
-    BioColors,
     bioColorToStyle,
     profileColor2Style,
 } from "../../../global_types/ShopTypes";
 import { bioFont2Style } from "./fonts/bioFonts";
+import BoltBox from "../../bolt_box/BoltBox";
 
 interface Props {
     user: UserType;

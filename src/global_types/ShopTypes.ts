@@ -1,4 +1,4 @@
-import { StyleProp, StyleSheet, TextStyle } from "react-native";
+import { StyleProp, TextStyle } from "react-native";
 import { palette } from "../global_styles/Palette";
 
 export enum NameFontsEnum {
@@ -124,6 +124,48 @@ export function nameFont2Name(font: NameFontsEnum): string {
             return "Great frikin' Gatsby";
     }
 }
+
+export function nameFontPrice(font: NameFontsEnum): number {
+    switch (font) {
+        case NameFontsEnum.Default:
+            return 0;
+        case NameFontsEnum.LetterJacket:
+            return 30;
+        case NameFontsEnum.Galaxy9000:
+            return 50;
+        case NameFontsEnum.HowdyPartner:
+            return 75;
+        case NameFontsEnum.ImAPrincess:
+            return 125;
+        case NameFontsEnum.Ole:
+            return 200;
+        case NameFontsEnum.CheapHalloweenParty:
+            return 300;
+        case NameFontsEnum.PassinNotes:
+            return 500;
+        case NameFontsEnum.Yuck:
+            return 750;
+        case NameFontsEnum.OldTyme:
+            return 1200;
+        case NameFontsEnum.Arcade:
+            return 2000;
+        case NameFontsEnum.GirlyGirl:
+            return 3000;
+        case NameFontsEnum.WhamBamKablam:
+            return 5000;
+        case NameFontsEnum.RollerSkateDate:
+            return 7500;
+        case NameFontsEnum.Zoom:
+            return 12500;
+        case NameFontsEnum.ZeusRevenge:
+            return 20000;
+        case NameFontsEnum.YuletideBall:
+            return 30000;
+        case NameFontsEnum.GreatGatsby:
+            return 50000;
+    }
+}
+
 export enum ProfileColors {
     Default,
     BloodStain,
@@ -242,6 +284,41 @@ export function profileColor2Name(color: ProfileColors): string {
     }
 }
 
+export function nameColorPrice(color: ProfileColors): number {
+    switch (color) {
+        case ProfileColors.Default:
+            return 0;
+        case ProfileColors.BloodStain:
+            return 20;
+        case ProfileColors.Stop:
+            return 30;
+        case ProfileColors.LastSunset:
+            return 50;
+        case ProfileColors.PlasticDollhouse:
+            return 80;
+        case ProfileColors.AlaskanSockeye:
+            return 125;
+        case ProfileColors.DarkForest:
+            return 200;
+        case ProfileColors.AboveTreeline:
+            return 300;
+        case ProfileColors.CrackinGlowSticks:
+            return 500;
+        case ProfileColors.AllHail:
+            return 900;
+        case ProfileColors.BlacklitRave:
+            return 1500;
+        case ProfileColors.FirstTeaParty:
+            return 2500;
+        case ProfileColors.MadeThePodium:
+            return 4000;
+        case ProfileColors.SoClose:
+            return 6000;
+        case ProfileColors.ChampionOfTheWorld:
+            return 10000;
+    }
+}
+
 export enum BioFontsEnum {
     Default,
     DearDiary,
@@ -286,6 +363,29 @@ export function bioFont2Name(font: BioFontsEnum): string {
             return "Midsummer Fantasy";
         case BioFontsEnum.SpiritualSciFi:
             return "Spiritual Sci-Fi";
+    }
+}
+
+export function bioFontPrice(font: BioFontsEnum): number {
+    switch (font) {
+        case BioFontsEnum.Default:
+            return 0;
+        case BioFontsEnum.DearDiary:
+            return 30;
+        case BioFontsEnum.Lemonade:
+            return 60;
+        case BioFontsEnum.OnceUponATime:
+            return 120;
+        case BioFontsEnum.Novel:
+            return 250;
+        case BioFontsEnum.WhenTypewriters:
+            return 500;
+        case BioFontsEnum.MissionBriefing:
+            return 1200;
+        case BioFontsEnum.MidsummerFantasy:
+            return 2500;
+        case BioFontsEnum.SpiritualSciFi:
+            return 5000;
     }
 }
 
@@ -351,6 +451,228 @@ export function bioColor2Name(color: BioColors): string {
     }
 }
 
+export function bioColorPrice(color: BioColors): number {
+    switch (color) {
+        case BioColors.Default:
+            return 0;
+        case BioColors.DarkForest:
+            return 30;
+        case BioColors.AllHail:
+            return 80;
+        case BioColors.FadingEmbers:
+            return 200;
+        case BioColors.BloodStain:
+            return 500;
+        case BioColors.FormerGlory:
+            return 1500;
+        case BioColors.HeartOfTheSea:
+            return 4000;
+    }
+}
+
 export enum ProfileStickers {
     Default,
+    Ghost,
+    CrossBones,
+    DrumStick,
+    Football,
+    Brain,
+    HatWithBow,
+    Scorpion,
+    Snowflake,
+    Saxophone,
+    TRex,
+    Teddy,
+    Poop,
+    Alien,
+    Salsa,
+    Gains,
+    BaldEagle,
+    Soccer,
+    HappySad,
+    Fire,
+    Violin,
+    RaceCar,
+    Microscope,
+    CrossSwords,
+    Rocket,
+    Champagne,
+    StarMedal,
+}
+
+export function stickerToName(sticker: ProfileStickers): string {
+    switch (sticker) {
+        case ProfileStickers.Default:
+            return "Default";
+        case ProfileStickers.Ghost:
+            return "#boo";
+        case ProfileStickers.CrossBones:
+            return "Ahoy Matey!";
+        case ProfileStickers.DrumStick:
+            return "*snarf*";
+        case ProfileStickers.Football:
+            return "Touchdown!";
+        case ProfileStickers.Brain:
+            return "Big Brain";
+        case ProfileStickers.HatWithBow:
+            return "Day at the Fair";
+        case ProfileStickers.Scorpion:
+            return "Back off";
+        case ProfileStickers.Snowflake:
+            return "Beautiful & Icy";
+        case ProfileStickers.Saxophone:
+            return "Jazz, baby";
+        case ProfileStickers.TRex:
+            return "rawr";
+        case ProfileStickers.Teddy:
+            return "Childhood Nostalgia";
+        case ProfileStickers.Poop:
+            return "hehe";
+        case ProfileStickers.Alien:
+            return "Take me to your leader";
+        case ProfileStickers.Salsa:
+            return "¡Bravo!";
+        case ProfileStickers.Gains:
+            return "GAINZ";
+        case ProfileStickers.BaldEagle:
+            return "Good lookin' Bird";
+        case ProfileStickers.Soccer:
+            return "Gooooooooooooooooal!";
+        case ProfileStickers.HappySad:
+            return "Break a Leg!";
+        case ProfileStickers.Fire:
+            return "You on fire, baby";
+        case ProfileStickers.Violin:
+            return "Refined tastes";
+        case ProfileStickers.RaceCar:
+            return "In the Fast Lane";
+        case ProfileStickers.Microscope:
+            return "New Frontiers";
+        case ProfileStickers.CrossSwords:
+            return "On Guard!";
+        case ProfileStickers.Rocket:
+            return "Among the Stars";
+        case ProfileStickers.Champagne:
+            return "To a Brighter Tomorrow";
+        case ProfileStickers.StarMedal:
+            return "Ain't no Participation Medal";
+    }
+}
+
+export function stickerToEmoji(sticker: ProfileStickers): string {
+    switch (sticker) {
+        case ProfileStickers.Default:
+            return "";
+        case ProfileStickers.Ghost:
+            return "👻";
+        case ProfileStickers.CrossBones:
+            return "☠";
+        case ProfileStickers.DrumStick:
+            return "🍗";
+        case ProfileStickers.Football:
+            return "🏈";
+        case ProfileStickers.Brain:
+            return "🧠";
+        case ProfileStickers.HatWithBow:
+            return "👒";
+        case ProfileStickers.Scorpion:
+            return "🦂";
+        case ProfileStickers.Snowflake:
+            return "❄";
+        case ProfileStickers.Saxophone:
+            return "🎷";
+        case ProfileStickers.TRex:
+            return "🦖";
+        case ProfileStickers.Teddy:
+            return "🧸";
+        case ProfileStickers.Poop:
+            return "💩";
+        case ProfileStickers.Alien:
+            return "👽";
+        case ProfileStickers.Salsa:
+            return "💃";
+        case ProfileStickers.Gains:
+            return "💪";
+        case ProfileStickers.BaldEagle:
+            return "🦅";
+        case ProfileStickers.Soccer:
+            return "⚽";
+        case ProfileStickers.HappySad:
+            return "🎭";
+        case ProfileStickers.Fire:
+            return "🔥";
+        case ProfileStickers.Violin:
+            return "🎻";
+        case ProfileStickers.RaceCar:
+            return "🏎️";
+        case ProfileStickers.Microscope:
+            return "🔬";
+        case ProfileStickers.CrossSwords:
+            return "⚔";
+        case ProfileStickers.Rocket:
+            return "🚀";
+        case ProfileStickers.Champagne:
+            return "🍾";
+        case ProfileStickers.StarMedal:
+            return "🏅";
+    }
+}
+
+export function stickerPrice(sticker: ProfileStickers): number {
+    switch (sticker) {
+        case ProfileStickers.Default:
+            return 0;
+        case ProfileStickers.Ghost:
+            return 20;
+        case ProfileStickers.CrossBones:
+            return 30;
+        case ProfileStickers.DrumStick:
+            return 40;
+        case ProfileStickers.Football:
+            return 60;
+        case ProfileStickers.Brain:
+            return 80;
+        case ProfileStickers.HatWithBow:
+            return 100;
+        case ProfileStickers.Scorpion:
+            return 150;
+        case ProfileStickers.Snowflake:
+            return 200;
+        case ProfileStickers.Saxophone:
+            return 300;
+        case ProfileStickers.TRex:
+            return 400;
+        case ProfileStickers.Teddy:
+            return 600;
+        case ProfileStickers.Poop:
+            return 850;
+        case ProfileStickers.Alien:
+            return 1200;
+        case ProfileStickers.Salsa:
+            return 1600;
+        case ProfileStickers.Gains:
+            return 2300;
+        case ProfileStickers.BaldEagle:
+            return 3300;
+        case ProfileStickers.Soccer:
+            return 4600;
+        case ProfileStickers.HappySad:
+            return 6500;
+        case ProfileStickers.Fire:
+            return 9000;
+        case ProfileStickers.Violin:
+            return 13000;
+        case ProfileStickers.RaceCar:
+            return 18000;
+        case ProfileStickers.Microscope:
+            return 25000;
+        case ProfileStickers.CrossSwords:
+            return 35000;
+        case ProfileStickers.Rocket:
+            return 50000;
+        case ProfileStickers.Champagne:
+            return 70000;
+        case ProfileStickers.StarMedal:
+            return 100000;
+    }
 }

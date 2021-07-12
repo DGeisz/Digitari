@@ -20,6 +20,7 @@ export const shopStyles = StyleSheet.create({
         fontSize: 30,
         fontWeight: "bold",
         color: palette.deepBlue,
+        marginBottom: 5,
     },
     descriptionContainer: {
         ...basicLayouts.flexGrid1,
@@ -29,5 +30,8 @@ export const shopStyles = StyleSheet.create({
         color: palette.hardGray,
         textAlign: "center",
         fontWeight: "500",
+    },
+    shopItalics: {
+        fontStyle: "italic",
     },
 });

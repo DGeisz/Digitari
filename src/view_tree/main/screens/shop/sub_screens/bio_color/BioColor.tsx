@@ -12,6 +12,7 @@ import ErrorMessage from "../../../../../../global_building_blocks/error_message
 import { shopStyles } from "../../styles/ShopStyles";
 import {
     bioColor2Name,
+    bioColorPrice,
     BioColors,
     bioColorToStyle,
     BioFontsEnum,
@@ -20,7 +21,7 @@ import {
 import ShopItem from "../../building_blocks/shop_item/ShopItem";
 import { bioFont2Style } from "../bio_font/fonts/fonts";
 import { EXAMPLE_BIO } from "../../building_blocks/example_bio/example_bio";
-import { palette } from "../../../../../../global_styles/Palette";
+import { DOUBLE_NEWLINE } from "../../../../../../global_utils/StringUtils";
 
 const BioColor: React.FC = () => {
     const uid = localUid();
@@ -45,7 +46,13 @@ const BioColor: React.FC = () => {
                     <Text style={shopStyles.headerTitle}>Bio Color</Text>
                     <View style={shopStyles.descriptionContainer}>
                         <Text style={shopStyles.shopDescription}>
-                            The font color used for your profile bio.
+                            Let's get serious for just a sec.{DOUBLE_NEWLINE}
+                            Do you
+                            <Text style={shopStyles.shopItalics}> need</Text> a
+                            special color for your bio? No. But do you
+                            <Text style={shopStyles.shopItalics}> want</Text> a
+                            special color for your bio?{DOUBLE_NEWLINE}
+                            Why yes, yes you do.
                         </Text>
                     </View>
                 </View>
@@ -58,9 +65,9 @@ const BioColor: React.FC = () => {
                             <ShopItem
                                 key={color}
                                 title={bioColor2Name(color)}
-                                description={"buy color"}
-                                purchaseTitle={"Buy Color"}
-                                price={20}
+                                description={"unlock this color"}
+                                purchaseTitle={"Unlock Color"}
+                                price={bioColorPrice(color)}
                                 userBolts={data?.user.bolts}
                                 alreadyOwns={data?.user.bioColorsPurchased.includes(
                                     color
@@ -69,9 +76,7 @@ const BioColor: React.FC = () => {
                             >
                                 <Text
                                     style={[
-                                        bioFont2Style(
-                                            BioFontsEnum.WhenTypewriters
-                                        ),
+                                        bioFont2Style(data?.user.bioFont),
                                         bioColorToStyle(color),
                                     ]}
                                 >

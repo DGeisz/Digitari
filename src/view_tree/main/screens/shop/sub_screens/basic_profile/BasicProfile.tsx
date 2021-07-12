@@ -14,6 +14,9 @@ import { palette } from "../../../../../../global_styles/Palette";
 import LockBuySelect from "../../building_blocks/lock_buy_select/LockBuySelect";
 import { useAuthKeyboardBuffer } from "../../../../../auth/building_blocks/use_auth_keyboard_buffer/UseAuthKeyboardBuffer";
 import {
+    CHANGE_BIO_PRICE,
+    CHANGE_LINK_PRICE,
+    CHANGE_PROFILE_PIC_PRICE,
     MAX_BIO_LENGTH,
     MAX_BIO_LINK_LENGTH,
     UserType,
@@ -144,7 +147,7 @@ const BasicProfile: React.FC<Props> = (props) => {
                         description={"set your profile picture"}
                         purchaseTitle={"Set Pic"}
                         itemTitle={"pic"}
-                        price={50}
+                        price={CHANGE_PROFILE_PIC_PRICE}
                         alreadyOwns={false}
                         onSelect={() => {}}
                         onConfirm={() => {}}
@@ -181,7 +184,7 @@ const BasicProfile: React.FC<Props> = (props) => {
                         description={"set your bio"}
                         purchaseTitle={"Set Bio"}
                         itemTitle={"bio"}
-                        price={50}
+                        price={CHANGE_BIO_PRICE}
                         alreadyOwns={false}
                         onSelect={() => {}}
                         onConfirm={() => {}}
@@ -215,7 +218,7 @@ const BasicProfile: React.FC<Props> = (props) => {
                         description={"set your bio link"}
                         purchaseTitle={"Set Link"}
                         itemTitle="link"
-                        price={50}
+                        price={CHANGE_LINK_PRICE}
                         alreadyOwns={false}
                         onSelect={() => {}}
                         onConfirm={() => {}}

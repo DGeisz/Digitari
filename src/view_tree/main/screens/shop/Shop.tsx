@@ -47,6 +47,15 @@ const Shop: React.FC = () => {
                 }}
             />
             <ShopTab.Screen
+                name="ProfileSticker"
+                component={ProfileSticker}
+                options={{
+                    tabBarLabel: ({ color }) => (
+                        <TabLabel title={"Profile Icon"} color={color} />
+                    ),
+                }}
+            />
+            <ShopTab.Screen
                 name="NameFont"
                 component={NameFont}
                 options={{
@@ -79,15 +88,6 @@ const Shop: React.FC = () => {
                 options={{
                     tabBarLabel: ({ color }) => (
                         <TabLabel title={"Bio Color"} color={color} />
-                    ),
-                }}
-            />
-            <ShopTab.Screen
-                name="ProfileSticker"
-                component={ProfileSticker}
-                options={{
-                    tabBarLabel: ({ color }) => (
-                        <TabLabel title={"Profile Sticker"} color={color} />
                     ),
                 }}
             />

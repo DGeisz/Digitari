@@ -29,6 +29,7 @@ import {
     GenInviteCodeVariables,
 } from "./gql/Mutations";
 import { USER_TYPENAME } from "../../../../global_types/UserTypes";
+import { DOUBLE_NEWLINE } from "../../../../global_utils/StringUtils";
 
 const pageSize = 30;
 
@@ -149,8 +150,13 @@ const Invites: React.FC<Props> = (props) => {
                 onPress={Keyboard.dismiss}
             >
                 <Text style={styles.invitesHeaderText}>
-                    Invite your friends to join Digitari and earn 500 digicoin
-                    every time someone you invite creates an account!
+                    Honestly, Digitari is way more fun when all your friends are
+                    on the platform.
+                    {DOUBLE_NEWLINE}
+                    Plus, you get 500 extra digicoin{" "}
+                    <Text style={styles.italics}>for free</Text> when someone
+                    you invite creates an account. {DOUBLE_NEWLINE}
+                    How's that for a good deal? 😉
                 </Text>
                 <Text style={styles.invitesRemaining}>
                     Remaining invites: {remainingInvites}

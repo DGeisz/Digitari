@@ -1,9 +1,9 @@
 import React from "react";
 import { Text, View } from "react-native";
-import { toCommaRep, toRep } from "../global_utils/ValueRepUtils";
 import { styles } from "./BoltBoxStyles";
 import { MaterialIcons } from "@expo/vector-icons";
-import { palette } from "../global_styles/Palette";
+import { palette } from "../../global_styles/Palette";
+import { toCommaRep, toRep } from "../../global_utils/ValueRepUtils";
 
 interface Props {
     amount: number;

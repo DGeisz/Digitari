@@ -7,7 +7,7 @@ import {
 } from "../../../../../../../global_types/TierTypes";
 import { styles } from "./TierInfoStyles";
 import Tier from "../../../../../../tier/Tier";
-import BoltBox from "../../../../../../../bolt_box/BoltBox";
+import BoltBox from "../../../../../../bolt_box/BoltBox";
 
 interface Props {
     tier: TierEnum;

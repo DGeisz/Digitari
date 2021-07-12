@@ -61,6 +61,7 @@ export const styles = StyleSheet.create({
         fontWeight: "bold",
         color: palette.danger,
         marginBottom: 10,
+        textAlign: "center",
     },
     confirmContainer: {
         ...basicLayouts.grid5,

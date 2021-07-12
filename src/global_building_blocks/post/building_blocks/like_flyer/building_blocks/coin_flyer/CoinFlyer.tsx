@@ -69,7 +69,7 @@ const CoinFlyer: React.FC<Props> = (props) => {
                 },
             ]}
         >
-            <CoinBox amount={10} showCoinPlus coinSize={20} />
+            <CoinBox amount={10} showCoinPlus coinSize={20} active={false} />
         </Animated.View>
     );
 };

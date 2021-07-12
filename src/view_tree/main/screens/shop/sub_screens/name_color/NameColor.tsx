@@ -13,6 +13,7 @@ import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel
 import ErrorMessage from "../../../../../../global_building_blocks/error_message/ErrorMessage";
 import ShopItem from "../../building_blocks/shop_item/ShopItem";
 import {
+    nameColorPrice,
     nameFontEnum2FontName,
     NameFontsEnum,
     profileColor2Name,
@@ -20,6 +21,7 @@ import {
     ProfileColors,
 } from "../../../../../../global_types/ShopTypes";
 import { nameFontToStyle } from "../name_font/fonts/fonts";
+import { DOUBLE_NEWLINE } from "../../../../../../global_utils/StringUtils";
 
 const NameColor: React.FC = () => {
     const uid = localUid();
@@ -44,8 +46,9 @@ const NameColor: React.FC = () => {
                     <Text style={shopStyles.headerTitle}>Name Color</Text>
                     <View style={shopStyles.descriptionContainer}>
                         <Text style={shopStyles.shopDescription}>
-                            The font color used for your name on your profile
-                            and on your posts.
+                            I think we can agree your profile could use some
+                            more color. {DOUBLE_NEWLINE}I wonder where we should
+                            put it...😉
                         </Text>
                     </View>
                 </View>
@@ -58,9 +61,9 @@ const NameColor: React.FC = () => {
                             <ShopItem
                                 key={color}
                                 title={profileColor2Name(color)}
-                                description={"buy color"}
-                                purchaseTitle={"Buy Color"}
-                                price={20}
+                                description={"unlock this color"}
+                                purchaseTitle={"Unlock Color"}
+                                price={nameColorPrice(color)}
                                 userBolts={data?.user.bolts}
                                 alreadyOwns={data?.user.nameColorsPurchased.includes(
                                     color

@@ -13,11 +13,13 @@ import { shopStyles } from "../../styles/ShopStyles";
 import {
     bioColorToStyle,
     bioFont2Name,
+    bioFontPrice,
     BioFontsEnum,
 } from "../../../../../../global_types/ShopTypes";
 import ShopItem from "../../building_blocks/shop_item/ShopItem";
 import { bioFont2Style } from "./fonts/fonts";
 import { EXAMPLE_BIO } from "../../building_blocks/example_bio/example_bio";
+import { DOUBLE_NEWLINE } from "../../../../../../global_utils/StringUtils";
 
 const BioFont: React.FC = () => {
     const uid = localUid();
@@ -42,7 +44,9 @@ const BioFont: React.FC = () => {
                     <Text style={shopStyles.headerTitle}>Bio Font</Text>
                     <View style={shopStyles.descriptionContainer}>
                         <Text style={shopStyles.shopDescription}>
-                            The font used for your profile bio.
+                            Frankly, picking fonts is way more fun than it has
+                            any right to be.{DOUBLE_NEWLINE}
+                            Why stop with just your name?
                         </Text>
                     </View>
                 </View>
@@ -55,9 +59,9 @@ const BioFont: React.FC = () => {
                             <ShopItem
                                 key={font}
                                 title={bioFont2Name(font)}
-                                description={"buy font"}
-                                purchaseTitle={"Buy Font"}
-                                price={20}
+                                description={"unlock this font"}
+                                purchaseTitle={"Unlock Font"}
+                                price={bioFontPrice(font)}
                                 userBolts={data?.user.bolts}
                                 alreadyOwns={data?.user.bioFontsPurchased.includes(
                                     font

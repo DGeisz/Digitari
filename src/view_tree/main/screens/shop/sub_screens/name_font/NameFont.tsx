@@ -6,6 +6,7 @@ import { nameFontToStyle } from "./fonts/fonts";
 import {
     nameFont2Name,
     nameFontEnum2FontName,
+    nameFontPrice,
     NameFontsEnum,
     profileColor2Style,
 } from "../../../../../../global_types/ShopTypes";
@@ -18,6 +19,10 @@ import {
 } from "../../../../routes/tab_nav/screens/profile/gql/Queries";
 import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import ErrorMessage from "../../../../../../global_building_blocks/error_message/ErrorMessage";
+import {
+    DOUBLE_NEWLINE,
+    NEWLINE,
+} from "../../../../../../global_utils/StringUtils";
 
 const NameFont: React.FC = () => {
     const uid = localUid();
@@ -42,8 +47,10 @@ const NameFont: React.FC = () => {
                     <Text style={shopStyles.headerTitle}>Name Font</Text>
                     <View style={shopStyles.descriptionContainer}>
                         <Text style={shopStyles.shopDescription}>
-                            The font used for your name on your profile and on
-                            your posts.
+                            Want people to forget your name? Of course you
+                            don't.{DOUBLE_NEWLINE}
+                            Lucky for you, here are some juicy fonts to keep
+                            that from ever happening.
                         </Text>
                     </View>
                 </View>
@@ -56,9 +63,9 @@ const NameFont: React.FC = () => {
                             <ShopItem
                                 key={nameFont}
                                 title={nameFont2Name(font)}
-                                description={"buy font"}
-                                purchaseTitle={"Buy Font"}
-                                price={20}
+                                description={"unlock this font"}
+                                purchaseTitle={"Unlock Font"}
+                                price={nameFontPrice(font)}
                                 userBolts={data?.user.bolts}
                                 alreadyOwns={data?.user.nameFontsPurchased.includes(
                                     font

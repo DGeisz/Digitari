@@ -13,12 +13,16 @@ export const styles = StyleSheet.create({
     invitesHeaderText: {
         color: palette.deepBlue,
         fontWeight: "500",
-        fontSize: 18,
+        fontSize: 16,
         marginBottom: 8,
+    },
+    italics: {
+        fontStyle: "italic",
     },
     invitesRemaining: {
         fontWeight: "bold",
         color: palette.lightGray,
+        fontSize: 13,
     },
     noInvitesContainer: {
         ...basicLayouts.grid2,

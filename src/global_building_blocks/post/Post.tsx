@@ -43,13 +43,9 @@ import UpdateIndicator from "../../view_tree/main/routes/tab_nav/building_blocks
 import SymbolModal from "./building_blocks/symbol_modal/SymbolModal";
 import LightningFlyer from "./building_blocks/lightning_flyer/LightningFlyer";
 import LikeFlyer from "./building_blocks/like_flyer/LikeFlyer";
-import BoltBox from "../../bolt_box/BoltBox";
 import { nameFontToPostStyle } from "./fonts/nameFonts";
-import {
-    nameFontEnum2FontName,
-    NameFontsEnum,
-    profileColor2Style,
-} from "../../global_types/ShopTypes";
+import { profileColor2Style } from "../../global_types/ShopTypes";
+import BoltBox from "../bolt_box/BoltBox";
 
 const COMMUNITY_NAME_MAX_LEN = 30;
 

@@ -12,3 +12,6 @@ export function capitalizeWord(
 export function filterEmoji(text: string): string {
     return text.replace(/[^\p{L}\p{N}\p{P}\p{Z}]/gu, "");
 }
+
+export const DOUBLE_NEWLINE = "\n\n";
+export const NEWLINE = "\n";

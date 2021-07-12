@@ -4,7 +4,7 @@ import { styles } from "./LockBuySelectStyles";
 import { MaterialIcons } from "@expo/vector-icons";
 import { palette } from "../../../../../../global_styles/Palette";
 import { toCommaRep } from "../../../../../../global_utils/ValueRepUtils";
-import BoltBox from "../../../../../../bolt_box/BoltBox";
+import BoltBox from "../../../../../../global_building_blocks/bolt_box/BoltBox";
 
 interface Props {
     userBolts: number;
@@ -83,7 +83,9 @@ const LockBuySelect: React.FC<Props> = (props) => {
                             size={24}
                             color={palette.mediumGray}
                         />
-                        <Text style={styles.lockedPrice}>{props.price}</Text>
+                        <Text style={styles.lockedPrice}>
+                            {toCommaRep(props.price)}
+                        </Text>
                     </View>
                     <MaterialIcons
                         name="lock"
@@ -169,6 +171,7 @@ const LockBuySelect: React.FC<Props> = (props) => {
                             </View>
                             <BoltBox
                                 amount={props.price}
+                                showAbbreviated={false}
                                 boltSize={23}
                                 boltColor={
                                     props.active

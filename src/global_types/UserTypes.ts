@@ -15,6 +15,10 @@ export const DIGIBOLT_PRICE = 10;
 export const MAX_BIO_LENGTH = 200;
 export const MAX_BIO_LINK_LENGTH = 1000;
 
+export const CHANGE_BIO_PRICE = 50;
+export const CHANGE_PROFILE_PIC_PRICE = 100;
+export const CHANGE_LINK_PRICE = 200;
+
 export interface UserType {
     id: string;
     firstName: string;

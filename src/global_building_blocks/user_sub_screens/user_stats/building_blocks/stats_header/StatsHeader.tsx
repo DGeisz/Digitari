@@ -14,7 +14,7 @@ import TierInfoModal from "./building_blocks/tier_info_modal/TierInfoModal";
 import { calculateLevelInfo } from "../../../../../global_utils/LevelUtils";
 import TierModal from "../../../profile_header/building_blocks/tier_modal/TierModal";
 import LevelInfoModal from "./building_blocks/level_info_modal/LevelInfoModal";
-import BoltBox from "../../../../../bolt_box/BoltBox";
+import BoltBox from "../../../../bolt_box/BoltBox";
 
 interface Props {
     user: UserType;
