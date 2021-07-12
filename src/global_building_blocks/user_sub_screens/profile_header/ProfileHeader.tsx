@@ -40,6 +40,8 @@ import { nameFontToProfileStyle } from "./fonts/nameFonts";
 import {
     bioColorToStyle,
     profileColor2Style,
+    ProfileStickers,
+    stickerToEmoji,
 } from "../../../global_types/ShopTypes";
 import { bioFont2Style } from "./fonts/bioFonts";
 import BoltBox from "../../bolt_box/BoltBox";
@@ -220,6 +222,9 @@ const ProfileHeader: React.FC<Props> = (props) => {
                                 />
                             </View>
                         )}
+                        <Text style={styles.profileIcon}>
+                            {stickerToEmoji(props.user.profileSticker)}
+                        </Text>
                     </View>
                     <View style={styles.split0Right}>
                         {props.isMe ? (

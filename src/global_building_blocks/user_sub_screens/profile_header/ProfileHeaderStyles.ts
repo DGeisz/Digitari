@@ -60,8 +60,15 @@ export const styles = StyleSheet.create({
         width: profilePicSideLength,
         borderRadius: 30,
     },
-    split0Right: {
+    split0Center: {
         ...basicLayouts.grid5,
+    },
+    profileIcon: {
+        marginLeft: 5,
+        fontSize: 45,
+    },
+    split0Right: {
+        ...basicLayouts.flexGrid6,
     },
     profileSplit1: {
         flexDirection: "row",
