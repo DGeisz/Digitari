@@ -23,7 +23,7 @@ import {
 import { QUERY_TYPENAME } from "../../../../global_gql/Schema";
 import LoadingWheel from "../../../loading_wheel/LoadingWheel";
 import { USER_TYPENAME } from "../../../../global_types/UserTypes";
-import { optionsStyles } from "../../../../global_styles/OptionsModalStyles";
+import { modalStyles } from "../../../../global_styles/OptionsModalStyles";
 import { palette } from "../../../../global_styles/Palette";
 import * as Linking from "expo-linking";
 import { TutorialContext } from "../../../../view_tree/tutorial/context/tutorial_context/TutorialContext";
@@ -145,7 +145,7 @@ const OptionsModal: React.FC<Props> = (props) => {
     return (
         <>
             <TouchableOpacity
-                style={optionsStyles.iconContainer}
+                style={modalStyles.iconContainer}
                 onPress={() => !tutorialActive && setOptionsVisible(true)}
             >
                 <Entypo
@@ -158,23 +158,23 @@ const OptionsModal: React.FC<Props> = (props) => {
             Main options modal
             */}
             <Modal isVisible={optionsVisible}>
-                <View style={optionsStyles.modalOuterContainer}>
-                    <View style={optionsStyles.modalContainer}>
-                        <View style={optionsStyles.modalHeader}>
-                            <Text style={optionsStyles.modalHeaderText}>
+                <View style={modalStyles.modalOuterContainer}>
+                    <View style={modalStyles.modalContainer}>
+                        <View style={modalStyles.modalHeader}>
+                            <Text style={modalStyles.modalHeaderText}>
                                 Post options
                             </Text>
                         </View>
                         {props.canBlock && (
-                            <Text style={optionsStyles.modalInfoText}>
+                            <Text style={modalStyles.modalInfoText}>
                                 Block posts you don't like, report posts you
                                 believe violate Digitari content policies.
                             </Text>
                         )}
-                        <View style={optionsStyles.optionsContainer}>
+                        <View style={modalStyles.optionsContainer}>
                             {props.canBlock && (
                                 <TouchableOpacity
-                                    style={optionsStyles.optionContainer}
+                                    style={modalStyles.optionContainer}
                                     onPress={() => {
                                         setOptionsVisible(false);
 
@@ -184,37 +184,37 @@ const OptionsModal: React.FC<Props> = (props) => {
                                     }}
                                 >
                                     <BlockedSymbol size={15} />
-                                    <Text style={optionsStyles.blockText}>
+                                    <Text style={modalStyles.blockText}>
                                         Block post
                                     </Text>
                                 </TouchableOpacity>
                             )}
                             <TouchableOpacity
-                                style={optionsStyles.optionContainer}
+                                style={modalStyles.optionContainer}
                                 onPress={() => {
                                     setOptionsVisible(false);
                                     props.openReport(pid);
                                 }}
                             >
-                                <Text style={optionsStyles.reportText}>
+                                <Text style={modalStyles.reportText}>
                                     Report post
                                 </Text>
                             </TouchableOpacity>
                             <TouchableOpacity
-                                style={optionsStyles.optionContainer}
+                                style={modalStyles.optionContainer}
                                 onPress={async () => {
                                     await Share.share({
                                         message: `${prefix}post/${props.post.id}`,
                                     });
                                 }}
                             >
-                                <Text style={optionsStyles.shareText}>
+                                <Text style={modalStyles.shareText}>
                                     Share post
                                 </Text>
                             </TouchableOpacity>
                             {canDelete && (
                                 <TouchableOpacity
-                                    style={optionsStyles.optionContainer}
+                                    style={modalStyles.optionContainer}
                                     onPress={() => {
                                         setOptionsVisible(false);
 
@@ -223,18 +223,18 @@ const OptionsModal: React.FC<Props> = (props) => {
                                         }, 700);
                                     }}
                                 >
-                                    <Text style={optionsStyles.deleteText}>
+                                    <Text style={modalStyles.deleteText}>
                                         Delete post
                                     </Text>
                                 </TouchableOpacity>
                             )}
                         </View>
-                        <View style={optionsStyles.modalFooter}>
+                        <View style={modalStyles.modalFooter}>
                             <TouchableOpacity
-                                style={optionsStyles.closeButton}
+                                style={modalStyles.closeButton}
                                 onPress={() => setOptionsVisible(false)}
                             >
-                                <Text style={optionsStyles.closeButtonText}>
+                                <Text style={modalStyles.closeButtonText}>
                                     Cancel
                                 </Text>
                             </TouchableOpacity>
@@ -247,12 +247,12 @@ const OptionsModal: React.FC<Props> = (props) => {
             */}
             {props.canBlock && (
                 <Modal isVisible={blockVisible}>
-                    <View style={optionsStyles.modalOuterContainer}>
-                        <View style={optionsStyles.modalContainer}>
-                            <View style={optionsStyles.modalHeader}>
+                    <View style={modalStyles.modalOuterContainer}>
+                        <View style={modalStyles.modalContainer}>
+                            <View style={modalStyles.modalHeader}>
                                 <Text
                                     style={[
-                                        optionsStyles.modalHeaderText,
+                                        modalStyles.modalHeaderText,
                                         { color: palette.warning },
                                     ]}
                                 >
@@ -260,31 +260,31 @@ const OptionsModal: React.FC<Props> = (props) => {
                                 </Text>
                             </View>
                             {!!blockError && (
-                                <Text style={optionsStyles.modalErrorText}>
+                                <Text style={modalStyles.modalErrorText}>
                                     {blockError}
                                 </Text>
                             )}
-                            <Text style={optionsStyles.modalInfoText}>
+                            <Text style={modalStyles.modalInfoText}>
                                 Blocking this post will remove it from your
                                 feed, and also decrease both the poster's
                                 ranking and your ranking.
                             </Text>
-                            <View style={optionsStyles.modalFooter}>
+                            <View style={modalStyles.modalFooter}>
                                 {blockLoading ? (
                                     <LoadingWheel />
                                 ) : (
                                     <TouchableOpacity
-                                        style={optionsStyles.blockButton}
+                                        style={modalStyles.blockButton}
                                         onPress={blockPost}
                                     >
                                         <View
                                             style={
-                                                optionsStyles.blockButtonTextContainer
+                                                modalStyles.blockButtonTextContainer
                                             }
                                         >
                                             <Text
                                                 style={
-                                                    optionsStyles.blockButtonText
+                                                    modalStyles.blockButtonText
                                                 }
                                             >
                                                 Block
@@ -299,10 +299,10 @@ const OptionsModal: React.FC<Props> = (props) => {
                                     </TouchableOpacity>
                                 )}
                                 <TouchableOpacity
-                                    style={optionsStyles.closeButton}
+                                    style={modalStyles.closeButton}
                                     onPress={() => setBlockVisible(false)}
                                 >
-                                    <Text style={optionsStyles.closeButtonText}>
+                                    <Text style={modalStyles.closeButtonText}>
                                         Cancel
                                     </Text>
                                 </TouchableOpacity>
@@ -316,45 +316,41 @@ const OptionsModal: React.FC<Props> = (props) => {
             */}
             {canDelete && (
                 <Modal isVisible={deleteVisible}>
-                    <View style={optionsStyles.modalOuterContainer}>
-                        <View style={optionsStyles.modalContainer}>
-                            <View style={optionsStyles.modalHeader}>
+                    <View style={modalStyles.modalOuterContainer}>
+                        <View style={modalStyles.modalContainer}>
+                            <View style={modalStyles.modalHeader}>
                                 <Text
                                     style={[
-                                        optionsStyles.modalHeaderText,
+                                        modalStyles.modalHeaderText,
                                         { color: palette.danger },
                                     ]}
                                 >
                                     Delete post
                                 </Text>
                             </View>
-                            <Text style={optionsStyles.modalInfoText}>
+                            <Text style={modalStyles.modalInfoText}>
                                 Are you sure you want to delete this post? All
                                 convos associated with this post will also be
                                 deleted.
                             </Text>
-                            <View style={optionsStyles.modalFooter}>
-                                <View style={optionsStyles.footerBar}>
+                            <View style={modalStyles.modalFooter}>
+                                <View style={modalStyles.footerBar}>
                                     <TouchableOpacity
-                                        style={optionsStyles.closeButton}
+                                        style={modalStyles.closeButton}
                                         onPress={() => setDeleteVisible(false)}
                                     >
                                         <Text
-                                            style={
-                                                optionsStyles.closeButtonText
-                                            }
+                                            style={modalStyles.closeButtonText}
                                         >
                                             Cancel
                                         </Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
-                                        style={optionsStyles.deleteButton}
+                                        style={modalStyles.deleteButton}
                                         onPress={deletePost}
                                     >
                                         <Text
-                                            style={
-                                                optionsStyles.deleteButtonText
-                                            }
+                                            style={modalStyles.deleteButtonText}
                                         >
                                             Delete
                                         </Text>

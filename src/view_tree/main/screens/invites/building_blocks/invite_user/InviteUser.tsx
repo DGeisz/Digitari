@@ -5,7 +5,7 @@ import { styles } from "./InviteUserStyles";
 import { FontAwesome } from "@expo/vector-icons";
 import { palette } from "../../../../../../global_styles/Palette";
 import Modal from "react-native-modal";
-import { optionsStyles } from "../../../../../../global_styles/OptionsModalStyles";
+import { modalStyles } from "../../../../../../global_styles/OptionsModalStyles";
 import { capitalizeWord } from "../../../../../../global_utils/StringUtils";
 import * as SMS from "expo-sms";
 import { FetchResult } from "@apollo/client";
@@ -77,20 +77,20 @@ export default class InviteUser extends React.PureComponent<Props, State> {
         return (
             <>
                 <Modal isVisible={this.state.multiVisible}>
-                    <View style={optionsStyles.modalOuterContainer}>
-                        <View style={optionsStyles.modalContainer}>
-                            <View style={optionsStyles.modalHeader}>
-                                <Text style={optionsStyles.modalHeaderText}>
+                    <View style={modalStyles.modalOuterContainer}>
+                        <View style={modalStyles.modalContainer}>
+                            <View style={modalStyles.modalHeader}>
+                                <Text style={modalStyles.modalHeaderText}>
                                     Invite {contact.firstName}
                                 </Text>
                             </View>
                             {this.state.error && (
-                                <Text style={optionsStyles.modalErrorText}>
+                                <Text style={modalStyles.modalErrorText}>
                                     Hmm, something went wrong. Give us a sec and
                                     try again
                                 </Text>
                             )}
-                            <View style={optionsStyles.optionsContainer}>
+                            <View style={modalStyles.optionsContainer}>
                                 {!!contact.phoneNumbers &&
                                     contact.phoneNumbers.map(
                                         (phoneNumber, index) => {
@@ -98,7 +98,7 @@ export default class InviteUser extends React.PureComponent<Props, State> {
                                                 <TouchableOpacity
                                                     key={`${this.props.contact.id}:${index}`}
                                                     style={
-                                                        optionsStyles.optionContainer
+                                                        modalStyles.optionContainer
                                                     }
                                                     onPress={async () =>
                                                         await sendCode(
@@ -135,12 +135,12 @@ export default class InviteUser extends React.PureComponent<Props, State> {
                                         }
                                     )}
                             </View>
-                            <View style={optionsStyles.modalFooter}>
+                            <View style={modalStyles.modalFooter}>
                                 {this.state.loading ? (
                                     <LoadingWheel />
                                 ) : (
                                     <TouchableOpacity
-                                        style={optionsStyles.closeButton}
+                                        style={modalStyles.closeButton}
                                         onPress={() =>
                                             this.setState({
                                                 multiVisible: false,
@@ -148,9 +148,7 @@ export default class InviteUser extends React.PureComponent<Props, State> {
                                         }
                                     >
                                         <Text
-                                            style={
-                                                optionsStyles.closeButtonText
-                                            }
+                                            style={modalStyles.closeButtonText}
                                         >
                                             Cancel
                                         </Text>
@@ -161,29 +159,27 @@ export default class InviteUser extends React.PureComponent<Props, State> {
                     </View>
                 </Modal>
                 <Modal isVisible={this.state.standardVisible}>
-                    <View style={optionsStyles.modalOuterContainer}>
-                        <View style={optionsStyles.modalContainer}>
-                            <View style={optionsStyles.modalHeader}>
-                                <Text style={optionsStyles.modalHeaderText}>
+                    <View style={modalStyles.modalOuterContainer}>
+                        <View style={modalStyles.modalContainer}>
+                            <View style={modalStyles.modalHeader}>
+                                <Text style={modalStyles.modalHeaderText}>
                                     Invite {contact.firstName}?
                                 </Text>
                             </View>
                             {this.state.error && (
-                                <Text style={optionsStyles.modalErrorText}>
+                                <Text style={modalStyles.modalErrorText}>
                                     Hmm, something went wrong. Give us a sec and
                                     try again
                                 </Text>
                             )}
-                            <View style={optionsStyles.modalFooter}>
-                                <View style={optionsStyles.footerBar}>
+                            <View style={modalStyles.modalFooter}>
+                                <View style={modalStyles.footerBar}>
                                     {this.state.loading ? (
                                         <LoadingWheel />
                                     ) : (
                                         <>
                                             <TouchableOpacity
-                                                style={
-                                                    optionsStyles.closeButton
-                                                }
+                                                style={modalStyles.closeButton}
                                                 onPress={() =>
                                                     this.setState({
                                                         standardVisible: false,
@@ -192,16 +188,14 @@ export default class InviteUser extends React.PureComponent<Props, State> {
                                             >
                                                 <Text
                                                     style={
-                                                        optionsStyles.closeButtonText
+                                                        modalStyles.closeButtonText
                                                     }
                                                 >
                                                     Cancel
                                                 </Text>
                                             </TouchableOpacity>
                                             <TouchableOpacity
-                                                style={
-                                                    optionsStyles.submitButton
-                                                }
+                                                style={modalStyles.submitButton}
                                                 onPress={async () => {
                                                     if (
                                                         !!contact.phoneNumbers &&
@@ -224,7 +218,7 @@ export default class InviteUser extends React.PureComponent<Props, State> {
                                             >
                                                 <Text
                                                     style={
-                                                        optionsStyles.submitButtonText
+                                                        modalStyles.submitButtonText
                                                     }
                                                 >
                                                     Send invite

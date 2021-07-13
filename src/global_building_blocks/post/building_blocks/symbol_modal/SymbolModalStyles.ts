@@ -37,6 +37,9 @@ export const styles = StyleSheet.create({
         ...basicLayouts.grid8,
         flexDirection: "row",
     },
+    coinContainer: {
+        transform: [{ translateX: 5 }],
+    },
     colon: {
         fontWeight: "bold",
         color: palette.hardGray,

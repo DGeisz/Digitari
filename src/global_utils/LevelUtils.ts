@@ -36,6 +36,16 @@ export function calculateLevelInfo(
             goalAccumulation = 500;
         } else if (level === 100) {
             goalAccumulation = 1000;
+        } else if (level === 150) {
+            goalAccumulation = 5000;
+        } else if (level === 200) {
+            goalAccumulation = 10000;
+        } else if (level === 300) {
+            goalAccumulation = 20000;
+        } else if (level === 400) {
+            goalAccumulation = 50000;
+        } else if (level === 500) {
+            goalAccumulation = 100000;
         }
     }
 }

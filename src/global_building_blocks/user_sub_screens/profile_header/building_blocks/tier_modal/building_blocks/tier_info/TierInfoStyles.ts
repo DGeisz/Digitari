@@ -7,8 +7,8 @@ export const styles = StyleSheet.create({
         // ...basicLayouts.grid2,
         // flexDirection: "row",
         paddingVertical: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: palette.softGray,
+        borderTopWidth: 1,
+        borderTopColor: palette.softGray,
     },
     infoRight: {
         ...basicLayouts.grid2,

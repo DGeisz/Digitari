@@ -46,6 +46,10 @@ import {
 import { bioFont2Style } from "./fonts/bioFonts";
 import BoltBox from "../../bolt_box/BoltBox";
 import { stripUrlScheme } from "../../../global_utils/StringUtils";
+import LevelInfoModal from "../user_stats/building_blocks/stats_header/building_blocks/level_info_modal/LevelInfoModal";
+import RankingModal from "./building_blocks/ranking_modal/RankingModal";
+import DigicoinModal from "./building_blocks/digicoin_modal/DigicoinModal";
+import BoltsModal from "./building_blocks/bolts_modal/BoltsModal";
 
 interface Props {
     user: UserType;
@@ -60,8 +64,12 @@ const ProfileHeader: React.FC<Props> = (props) => {
     const [error, setError] = useState<string | null>("");
     const [loading, setLoading] = useState<boolean>(false);
 
-    const [editBioVisible, showEditBio] = useState<boolean>(false);
     const [tierModalVisible, showTierModal] = useState<boolean>(false);
+    const [levelModalVisible, showLevelModal] = useState<boolean>(false);
+    const [rankingModalVisible, showRankingModal] = useState<boolean>(false);
+
+    const [coinModalVisible, showCoinModal] = useState<boolean>(false);
+    const [boltModalVisible, showBoltModal] = useState<boolean>(false);
 
     const uid = localUid();
 
@@ -339,14 +347,31 @@ const ProfileHeader: React.FC<Props> = (props) => {
                                 />
                             </View>
                             <View style={styles.statsContainer}>
-                                <Text style={styles.profileRankingText}>
-                                    {`Ranking: ${toCommaRep(
-                                        props.user.ranking
-                                    )}`}
-                                </Text>
-                                <Text style={styles.profileLevelText}>
-                                    {`Level: ${toCommaRep(level)}`}
-                                </Text>
+                                <RankingModal
+                                    visible={rankingModalVisible}
+                                    hide={() => showRankingModal(false)}
+                                />
+                                <TouchableOpacity
+                                    onPress={() => showRankingModal(true)}
+                                >
+                                    <Text style={styles.profileRankingText}>
+                                        {`Ranking: ${toCommaRep(
+                                            props.user.ranking
+                                        )}`}
+                                    </Text>
+                                </TouchableOpacity>
+                                <LevelInfoModal
+                                    user={props.user}
+                                    visible={levelModalVisible}
+                                    hide={() => showLevelModal(false)}
+                                />
+                                <TouchableOpacity
+                                    onPress={() => showLevelModal(true)}
+                                >
+                                    <Text style={styles.profileLevelText}>
+                                        {`Level: ${toCommaRep(level)}`}
+                                    </Text>
+                                </TouchableOpacity>
                             </View>
                         </View>
                     </View>
@@ -413,18 +438,30 @@ const ProfileHeader: React.FC<Props> = (props) => {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.split4Right}>
-                        <BoltBox
-                            amount={props.user.bolts}
-                            paddingRight={10}
-                            boltSize={25}
-                            fontSize={15}
-                            moveTextRight={2}
+                        <BoltsModal
+                            visible={boltModalVisible}
+                            hide={() => showBoltModal(false)}
                         />
-                        <CoinBox
-                            amount={props.user.coin}
-                            coinSize={25}
-                            fontSize={15}
+                        <TouchableOpacity onPress={() => showBoltModal(true)}>
+                            <BoltBox
+                                amount={props.user.bolts}
+                                paddingRight={10}
+                                boltSize={25}
+                                fontSize={15}
+                                moveTextRight={2}
+                            />
+                        </TouchableOpacity>
+                        <DigicoinModal
+                            visible={coinModalVisible}
+                            hide={() => showCoinModal(false)}
                         />
+                        <TouchableOpacity onPress={() => showCoinModal(true)}>
+                            <CoinBox
+                                amount={props.user.coin}
+                                coinSize={25}
+                                fontSize={15}
+                            />
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>

@@ -69,6 +69,16 @@ export const styles = StyleSheet.create({
         height: 20,
         marginTop: 8,
     },
+    iconContainer: {
+        paddingLeft: 6,
+    },
+    icon: {
+        transform: [
+            {
+                translateY: -1,
+            },
+        ],
+    },
     statsProgressBar: {
         borderWidth: 1,
         borderColor: palette.deepBlue,

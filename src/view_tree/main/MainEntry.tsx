@@ -221,13 +221,13 @@ const MainEntry: React.FC = () => {
             />
             <RootStack.Screen
                 name="Invite"
-                options={{ title: "Invite your friends" }}
+                options={{ title: "Invite the Fam" }}
                 component={Invites}
             />
             <RootStack.Screen
                 name="Store"
                 component={Store}
-                options={{ headerRight: () => null, title: "Get more coins!" }}
+                options={{ headerRight: () => null, title: "The Stash 🤫" }}
             />
             {/*
              * Reporting

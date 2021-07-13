@@ -47,6 +47,7 @@ import { CormorantGaramond_400Regular } from "@expo-google-fonts/cormorant-garam
 import { BerkshireSwash_400Regular } from "@expo-google-fonts/berkshire-swash";
 import { MacondoSwashCaps_400Regular } from "@expo-google-fonts/macondo-swash-caps";
 import { Quantico_400Regular } from "@expo-google-fonts/quantico";
+import { userPost2BoltCount } from "./src/global_building_blocks/post/utils/bolt_utils";
 
 /*
 * For Info.plist:
@@ -166,6 +167,21 @@ const linking: LinkingOptions = {
 
 export default function App() {
     const client = useApollo();
+
+    useEffect(() => {
+        let total = 0;
+
+        let max = 10000;
+
+        for (let i = 0; i < max; i++) {
+            total += userPost2BoltCount(
+                Math.random().toString(),
+                Math.random().toString()
+            );
+        }
+
+        console.log("This is total: ", total / max);
+    }, []);
 
     const [fontsLoaded] = useFonts({
         Graduate_400Regular,

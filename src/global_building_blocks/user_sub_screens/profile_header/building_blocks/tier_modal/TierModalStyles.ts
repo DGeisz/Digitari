@@ -26,7 +26,17 @@ export const styles = StyleSheet.create({
     modalHeaderText: {
         fontWeight: "bold",
         fontSize: 23,
+        color: palette.deepBlue,
+    },
+    explanationContainer: {
+        marginVertical: 10,
+    },
+    explanationText: {
+        fontSize: 15,
         color: palette.hardGray,
+    },
+    boldText: {
+        fontWeight: "bold",
     },
     modalFooter: {
         ...basicLayouts.grid5,

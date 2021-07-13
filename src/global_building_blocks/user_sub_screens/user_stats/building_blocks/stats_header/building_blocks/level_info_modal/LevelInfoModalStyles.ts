@@ -30,7 +30,7 @@ export const styles = StyleSheet.create({
         ...basicLayouts.grid2,
     },
     headerTitle: {
-        fontSize: 20,
+        fontSize: 23,
         fontWeight: "bold",
         color: palette.deepBlue,
         marginBottom: 10,
@@ -38,6 +38,9 @@ export const styles = StyleSheet.create({
     headerBody: {
         fontSize: 16,
         color: palette.hardGray,
+    },
+    boldText: {
+        fontWeight: "bold",
     },
     modalFooter: {
         ...basicLayouts.grid5,

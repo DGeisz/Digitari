@@ -22,18 +22,19 @@ const SymbolModal: React.FC<Props> = (props) => {
                     <View style={styles.symExpContainer}>
                         <View style={styles.symExpLeft}>
                             <View style={styles.symColonContainer}>
-                                <CoinBox
-                                    active={false}
-                                    showAmount={false}
-                                    coinSize={30}
-                                />
+                                <View style={styles.coinContainer}>
+                                    <CoinBox
+                                        active={false}
+                                        showAmount={false}
+                                        coinSize={30}
+                                    />
+                                </View>
                                 <Text style={styles.colon}>{" : "}</Text>
                             </View>
                         </View>
                         <View style={styles.symExpRight}>
                             <Text style={styles.symExpText}>
-                                This is the amount of digicoin this post has
-                                earned
+                                The amount of digicoin this post has earned
                             </Text>
                         </View>
                     </View>
@@ -50,8 +51,8 @@ const SymbolModal: React.FC<Props> = (props) => {
                         </View>
                         <View style={styles.symExpRight}>
                             <Text style={styles.symExpText}>
-                                This is the number of convos that have been
-                                created about this post
+                                The number of convos that have been created
+                                about this post
                             </Text>
                         </View>
                     </View>

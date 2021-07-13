@@ -1,9 +1,4 @@
-import {
-    NameFonts,
-    NameFontsEnum,
-    ProfileColors,
-    ProfileStickers,
-} from "./ShopTypes";
+import { NameFontsEnum, ProfileColors, ProfileStickers } from "./ShopTypes";
 
 export const POST_TYPENAME = "Post";
 
@@ -11,6 +6,8 @@ export const POST_CONTENT_MAX_LEN = 250;
 export const POST_ADD_ON_CONTENT_MAX_LEN = 10000;
 export const COST_PER_RECIPIENT = 10;
 export const POST_BLOCK_COST = 200;
+
+export const BOLT_HASH_SEED = "Digibolts";
 
 export enum PostAddOn {
     None,

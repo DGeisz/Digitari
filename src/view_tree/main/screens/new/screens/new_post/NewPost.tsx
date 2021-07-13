@@ -772,7 +772,7 @@ const NewPost: React.FC<Props> = (props) => {
                             }}
                             keyboardType="numeric"
                             onChangeText={(raw) => {
-                                const noCommas = raw.replace(/,/g, "");
+                                const noCommas = raw.replace(/\D/g, "");
                                 const num = parseInt(noCommas);
 
                                 if (isNaN(num)) {

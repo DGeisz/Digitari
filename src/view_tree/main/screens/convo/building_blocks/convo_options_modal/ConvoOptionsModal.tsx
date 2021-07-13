@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Text, TouchableOpacity, View, Share } from "react-native";
 import Modal from "react-native-modal";
-import { optionsStyles } from "../../../../../../global_styles/OptionsModalStyles";
+import { modalStyles } from "../../../../../../global_styles/OptionsModalStyles";
 import { Entypo } from "@expo/vector-icons";
 import { palette } from "../../../../../../global_styles/Palette";
 import {
@@ -82,7 +82,7 @@ const ConvoOptionsModal: React.FC<Props> = (props) => {
     return (
         <>
             <TouchableOpacity
-                style={optionsStyles.iconContainer}
+                style={modalStyles.iconContainer}
                 onPress={() => !tutorialActive && setOptionsVisible(true)}
             >
                 <Entypo
@@ -92,40 +92,40 @@ const ConvoOptionsModal: React.FC<Props> = (props) => {
                 />
             </TouchableOpacity>
             <Modal isVisible={optionsVisible}>
-                <View style={optionsStyles.modalOuterContainer}>
-                    <View style={optionsStyles.modalContainer}>
-                        <View style={optionsStyles.modalHeader}>
-                            <Text style={optionsStyles.modalHeaderText}>
+                <View style={modalStyles.modalOuterContainer}>
+                    <View style={modalStyles.modalContainer}>
+                        <View style={modalStyles.modalHeader}>
+                            <Text style={modalStyles.modalHeaderText}>
                                 Convo options
                             </Text>
                         </View>
-                        <View style={optionsStyles.optionsContainer}>
+                        <View style={modalStyles.optionsContainer}>
                             <TouchableOpacity
-                                style={optionsStyles.optionContainer}
+                                style={modalStyles.optionContainer}
                                 onPress={() => {
                                     setOptionsVisible(false);
                                     props.openReportConvo();
                                 }}
                             >
-                                <Text style={optionsStyles.reportText}>
+                                <Text style={modalStyles.reportText}>
                                     Report convo
                                 </Text>
                             </TouchableOpacity>
                             <TouchableOpacity
-                                style={optionsStyles.optionContainer}
+                                style={modalStyles.optionContainer}
                                 onPress={async () => {
                                     await Share.share({
                                         message: `${prefix}convo/${props.cvid}/${props.pid}`,
                                     });
                                 }}
                             >
-                                <Text style={optionsStyles.shareText}>
+                                <Text style={modalStyles.shareText}>
                                     Share convo
                                 </Text>
                             </TouchableOpacity>
                             {isParticipant && (
                                 <TouchableOpacity
-                                    style={optionsStyles.optionContainer}
+                                    style={modalStyles.optionContainer}
                                     onPress={() => {
                                         setOptionsVisible(false);
 
@@ -134,18 +134,18 @@ const ConvoOptionsModal: React.FC<Props> = (props) => {
                                         }, 700);
                                     }}
                                 >
-                                    <Text style={optionsStyles.deleteText}>
+                                    <Text style={modalStyles.deleteText}>
                                         Delete convo
                                     </Text>
                                 </TouchableOpacity>
                             )}
                         </View>
-                        <View style={optionsStyles.modalFooter}>
+                        <View style={modalStyles.modalFooter}>
                             <TouchableOpacity
-                                style={optionsStyles.closeButton}
+                                style={modalStyles.closeButton}
                                 onPress={() => setOptionsVisible(false)}
                             >
-                                <Text style={optionsStyles.closeButtonText}>
+                                <Text style={modalStyles.closeButtonText}>
                                     Cancel
                                 </Text>
                             </TouchableOpacity>
@@ -155,43 +155,39 @@ const ConvoOptionsModal: React.FC<Props> = (props) => {
             </Modal>
             {isParticipant && (
                 <Modal isVisible={deleteVisible}>
-                    <View style={optionsStyles.modalOuterContainer}>
-                        <View style={optionsStyles.modalContainer}>
-                            <View style={optionsStyles.modalHeader}>
+                    <View style={modalStyles.modalOuterContainer}>
+                        <View style={modalStyles.modalContainer}>
+                            <View style={modalStyles.modalHeader}>
                                 <Text
                                     style={[
-                                        optionsStyles.modalHeaderText,
+                                        modalStyles.modalHeaderText,
                                         { color: palette.danger },
                                     ]}
                                 >
                                     Delete convo
                                 </Text>
                             </View>
-                            <Text style={optionsStyles.modalInfoText}>
+                            <Text style={modalStyles.modalInfoText}>
                                 Are you sure you want to delete this convo?
                             </Text>
-                            <View style={optionsStyles.modalFooter}>
-                                <View style={optionsStyles.footerBar}>
+                            <View style={modalStyles.modalFooter}>
+                                <View style={modalStyles.footerBar}>
                                     <TouchableOpacity
-                                        style={optionsStyles.closeButton}
+                                        style={modalStyles.closeButton}
                                         onPress={() => setDeleteVisible(false)}
                                     >
                                         <Text
-                                            style={
-                                                optionsStyles.closeButtonText
-                                            }
+                                            style={modalStyles.closeButtonText}
                                         >
                                             Cancel
                                         </Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
-                                        style={optionsStyles.deleteButton}
+                                        style={modalStyles.deleteButton}
                                         onPress={deleteConvo}
                                     >
                                         <Text
-                                            style={
-                                                optionsStyles.deleteButtonText
-                                            }
+                                            style={modalStyles.deleteButtonText}
                                         >
                                             Delete
                                         </Text>

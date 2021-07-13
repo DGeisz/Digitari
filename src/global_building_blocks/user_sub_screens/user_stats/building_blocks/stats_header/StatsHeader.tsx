@@ -15,6 +15,8 @@ import { calculateLevelInfo } from "../../../../../global_utils/LevelUtils";
 import TierModal from "../../../profile_header/building_blocks/tier_modal/TierModal";
 import LevelInfoModal from "./building_blocks/level_info_modal/LevelInfoModal";
 import BoltBox from "../../../../bolt_box/BoltBox";
+import { FontAwesome } from "@expo/vector-icons";
+import { palette } from "../../../../../global_styles/Palette";
 
 interface Props {
     user: UserType;
@@ -25,6 +27,7 @@ interface State {
     fillWidth: number;
     tookWidth: boolean;
     showTierModal: boolean;
+    levelModalVisible: boolean;
 }
 
 export default class StatsHeader extends React.PureComponent<Props, State> {
@@ -32,6 +35,7 @@ export default class StatsHeader extends React.PureComponent<Props, State> {
         fillWidth: 0,
         tookWidth: false,
         showTierModal: false,
+        levelModalVisible: false,
     };
 
     render() {
@@ -89,7 +93,26 @@ export default class StatsHeader extends React.PureComponent<Props, State> {
                                 )}`}
                             </Text>
                         </View>
-                        <LevelInfoModal user={this.props.user} />
+                        <LevelInfoModal
+                            user={this.props.user}
+                            visible={this.state.levelModalVisible}
+                            hide={() =>
+                                this.setState({ levelModalVisible: false })
+                            }
+                        />
+                        <TouchableOpacity
+                            style={styles.iconContainer}
+                            onPress={() =>
+                                this.setState({ levelModalVisible: true })
+                            }
+                        >
+                            <FontAwesome
+                                name="info"
+                                style={styles.icon}
+                                color={palette.deepBlue}
+                                size={18}
+                            />
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.leftSplit4}>
                         <View

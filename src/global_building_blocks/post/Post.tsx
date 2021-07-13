@@ -49,6 +49,7 @@ import {
     stickerToEmoji,
 } from "../../global_types/ShopTypes";
 import BoltBox from "../bolt_box/BoltBox";
+import { userPost2BoltCount } from "./utils/bolt_utils";
 
 const COMMUNITY_NAME_MAX_LEN = 30;
 
@@ -520,6 +521,9 @@ const Post: React.FC<Props> = (props) => {
                                     )}
                                 </Text>
                             </View>
+                            <Text>
+                                {userPost2BoltCount(uid, props.post.id)}
+                            </Text>
                             <View style={styles.postHeaderBottom}>
                                 {props.post.target ===
                                 PostTarget.MyFollowers ? (

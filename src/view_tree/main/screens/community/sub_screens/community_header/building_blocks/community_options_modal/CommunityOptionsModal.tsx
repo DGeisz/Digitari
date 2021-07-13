@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Text, TouchableOpacity, View, Share } from "react-native";
-import { optionsStyles } from "../../../../../../../../global_styles/OptionsModalStyles";
+import { modalStyles } from "../../../../../../../../global_styles/OptionsModalStyles";
 import { Entypo } from "@expo/vector-icons";
 import { palette } from "../../../../../../../../global_styles/Palette";
 import Modal from "react-native-modal";
@@ -19,7 +19,7 @@ const CommunityOptionsModal: React.FC<Props> = (props) => {
     return (
         <>
             <TouchableOpacity
-                style={optionsStyles.userIconContainer}
+                style={modalStyles.userIconContainer}
                 onPress={() => setOptionsVisible(true)}
             >
                 <Entypo
@@ -29,45 +29,45 @@ const CommunityOptionsModal: React.FC<Props> = (props) => {
                 />
             </TouchableOpacity>
             <Modal isVisible={optionsVisible}>
-                <View style={optionsStyles.modalOuterContainer}>
-                    <View style={optionsStyles.modalContainer}>
-                        <View style={optionsStyles.modalHeader}>
-                            <Text style={optionsStyles.modalHeaderText}>
+                <View style={modalStyles.modalOuterContainer}>
+                    <View style={modalStyles.modalContainer}>
+                        <View style={modalStyles.modalHeader}>
+                            <Text style={modalStyles.modalHeaderText}>
                                 Community options
                             </Text>
                         </View>
 
-                        <View style={optionsStyles.optionsContainer}>
+                        <View style={modalStyles.optionsContainer}>
                             <TouchableOpacity
-                                style={optionsStyles.optionContainer}
+                                style={modalStyles.optionContainer}
                                 onPress={() => {
                                     setOptionsVisible(false);
                                     props.openReportCommunity();
                                 }}
                             >
-                                <Text style={optionsStyles.reportText}>
+                                <Text style={modalStyles.reportText}>
                                     Report community
                                 </Text>
                             </TouchableOpacity>
                             <TouchableOpacity
-                                style={optionsStyles.optionContainer}
+                                style={modalStyles.optionContainer}
                                 onPress={async () => {
                                     await Share.share({
                                         message: `${prefix}community/${props.cmid}`,
                                     });
                                 }}
                             >
-                                <Text style={optionsStyles.shareText}>
+                                <Text style={modalStyles.shareText}>
                                     Share community
                                 </Text>
                             </TouchableOpacity>
                         </View>
-                        <View style={optionsStyles.modalFooter}>
+                        <View style={modalStyles.modalFooter}>
                             <TouchableOpacity
-                                style={optionsStyles.closeButton}
+                                style={modalStyles.closeButton}
                                 onPress={() => setOptionsVisible(false)}
                             >
-                                <Text style={optionsStyles.closeButtonText}>
+                                <Text style={modalStyles.closeButtonText}>
                                     Cancel
                                 </Text>
                             </TouchableOpacity>

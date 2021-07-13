@@ -1,16 +1,17 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./LevelInfoModalStyles";
-import { FontAwesome } from "@expo/vector-icons";
-import { palette } from "../../../../../../../global_styles/Palette";
 import { localUid } from "../../../../../../../global_state/UserState";
 import { UserType } from "../../../../../../../global_types/UserTypes";
 import Modal from "react-native-modal";
 import { calculateLevelInfo } from "../../../../../../../global_utils/LevelUtils";
 import { toCommaRep } from "../../../../../../../global_utils/ValueRepUtils";
+import { DOUBLE_NEWLINE } from "../../../../../../../global_utils/StringUtils";
 
 interface Props {
     user: UserType;
+    visible: boolean;
+    hide: () => void;
 }
 
 const LevelInfoModal: React.FC<Props> = (props) => {
@@ -22,42 +23,34 @@ const LevelInfoModal: React.FC<Props> = (props) => {
         [props.user.coinSpent]
     );
 
-    const [visible, setVisible] = useState<boolean>(false);
-
     return (
         <>
-            <TouchableOpacity
-                style={styles.iconContainer}
-                onPress={() => setVisible(true)}
-            >
-                <FontAwesome
-                    name="info"
-                    style={styles.icon}
-                    color={palette.deepBlue}
-                    size={18}
-                />
-            </TouchableOpacity>
-            <Modal isVisible={visible}>
+            <Modal isVisible={props.visible}>
                 <View style={styles.modalOuterContainer}>
                     <View style={styles.modalContainer}>
                         <View style={styles.modalHeader}>
                             <Text style={styles.headerTitle}>Level</Text>
                         </View>
                         <Text style={styles.headerBody}>
-                            {`To level up in Digitari, you need to spend digicoin on posts, convos, likes, etc.
-                            \nRight now ${
-                                isMe ? "you are" : "this user is"
-                            } at level ${level}. To reach level ${level + 1}, ${
-                                isMe ? "you need" : "this user needs"
-                            } to spend ${toCommaRep(
-                                levelGoal - levelProgress
-                            )} more digicoin.
-                            `}
+                            If you want to flex on the haters, you need to level
+                            up.{DOUBLE_NEWLINE}
+                            And to level up, you need to spend digicoin on posts
+                            or digibolts.{DOUBLE_NEWLINE}
+                            Right now {isMe ? "you are" : "this user is"} at
+                            level {toCommaRep(level)}.{" "}
+                            <Text style={styles.boldText}>
+                                To reach level {toCommaRep(level + 1)},
+                                {isMe ? " you need" : " this user needs"} to
+                                spend {toCommaRep(levelGoal - levelProgress)}{" "}
+                                more digicoin.{" "}
+                            </Text>
+                            {DOUBLE_NEWLINE}
+                            {isMe ? `Go get em', tiger.` : ""}
                         </Text>
                         <View style={styles.modalFooter}>
                             <TouchableOpacity
                                 style={styles.closeButton}
-                                onPress={() => setVisible(false)}
+                                onPress={props.hide}
                             >
                                 <Text style={styles.closeButtonText}>
                                     Close

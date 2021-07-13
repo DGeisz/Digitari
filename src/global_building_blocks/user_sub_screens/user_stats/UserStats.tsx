@@ -63,17 +63,17 @@ const UserStats: React.FC<Props> = (props) => {
             <Divider />
             <View style={styles.statsContainer}>
                 <UserStat
-                    title={"Digicoin spent"}
+                    title={"Total digicoin spent"}
                     quantity={props.user.coinSpent}
                     showCoin
                 />
                 <UserStat
-                    title={"Digicoin received through likes or responses"}
+                    title={"Digicoin earned from posts"}
                     quantity={props.user.receivedFromConvos}
                     showCoin
                 />
                 <UserStat
-                    title={"Digicoin spent on likes or responses"}
+                    title={"Digicoin spent on digibolts"}
                     quantity={props.user.spentOnConvos}
                     showCoin
                 />

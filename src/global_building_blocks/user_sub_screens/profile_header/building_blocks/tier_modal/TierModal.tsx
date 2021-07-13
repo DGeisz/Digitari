@@ -8,6 +8,7 @@ import {
     TutorialContext,
     TutorialScreen,
 } from "../../../../../view_tree/tutorial/context/tutorial_context/TutorialContext";
+import { DOUBLE_NEWLINE } from "../../../../../global_utils/StringUtils";
 
 interface Props {
     visible: boolean;
@@ -27,6 +28,20 @@ const TierModal: React.FC<Props> = (props) => {
                         <Text style={styles.modalHeaderText}>Tiers</Text>
                     </View>
                     <ScrollView>
+                        <View style={styles.explanationContainer}>
+                            <Text style={styles.explanationText}>
+                                Your tier basically shows the world whether
+                                you're nice or a total troll.{DOUBLE_NEWLINE}
+                                Your ranking qualifies you for different tiers,
+                                so{" "}
+                                <Text style={styles.boldText}>
+                                    to increase your tier, you gotta boost your
+                                    ranking.
+                                </Text>
+                                {DOUBLE_NEWLINE}
+                                Here are the 10 tiers:
+                            </Text>
+                        </View>
                         <TierInfo tier={TierEnum.Angel} />
                         <TierInfo tier={TierEnum.HeartEyes} />
                         <TierInfo tier={TierEnum.Sunglasses} />

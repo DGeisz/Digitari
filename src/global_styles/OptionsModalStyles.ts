@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import { palette } from "./Palette";
 import { basicLayouts } from "./BasicLayouts";
 
-export const optionsStyles = StyleSheet.create({
+export const modalStyles = StyleSheet.create({
     iconContainer: {
         paddingLeft: 20,
         paddingBottom: 10,
@@ -23,6 +23,10 @@ export const optionsStyles = StyleSheet.create({
         ...basicLayouts.grid2,
         paddingBottom: 10,
     },
+    headerBar: {
+        ...basicLayouts.grid5,
+        flexDirection: "row",
+    },
     modalHeaderText: {
         fontWeight: "bold",
         color: palette.deepBlue,
@@ -38,6 +42,14 @@ export const optionsStyles = StyleSheet.create({
         textAlign: "center",
         color: palette.hardGray,
         marginBottom: 10,
+    },
+    modalMainText: {
+        color: palette.hardGray,
+        marginBottom: 10,
+        fontSize: 16,
+    },
+    boldText: {
+        fontWeight: "bold",
     },
     optionsContainer: {
         borderTopColor: palette.softGray,
