@@ -126,6 +126,7 @@ export const schema = gql`
         tier: Int
         time: String
         content: String
+        boltsBought: Int
 
         # Font
         nameColor: Int

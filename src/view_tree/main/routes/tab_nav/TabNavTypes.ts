@@ -1,7 +1,7 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 
 export type TabNavTab = {
-    MainFeed: undefined;
+    MainFeed: undefined | { screen: string };
     Convos: undefined;
     Search: undefined;
     Wallet: undefined;

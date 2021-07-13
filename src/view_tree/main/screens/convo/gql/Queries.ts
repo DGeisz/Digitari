@@ -59,6 +59,7 @@ export const CONVO_POST = gql`
             tier
             time
             content
+            boltsBought
 
             # Add on
             addOn

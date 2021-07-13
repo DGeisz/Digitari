@@ -16,6 +16,7 @@ export const GET_FEED = gql`
             tier
             time
             content
+            boltsBought
 
             # Add on
             addOn

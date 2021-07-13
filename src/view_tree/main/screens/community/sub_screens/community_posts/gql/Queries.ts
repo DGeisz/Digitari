@@ -28,6 +28,7 @@ export const GET_COMMUNITY_POSTS = gql`
             tier
             time
             content
+            boltsBought
 
             # Add on
             addOn

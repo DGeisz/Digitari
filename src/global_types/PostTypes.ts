@@ -29,6 +29,7 @@ export interface PostType {
     tier: number;
     time: string;
     content: string;
+    boltsBought?: number;
 
     nameColor: ProfileColors;
     nameFont: NameFontsEnum;

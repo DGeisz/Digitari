@@ -16,6 +16,7 @@ export const GET_USER_POSTS = gql`
             tier
             time
             content
+            boltsBought
 
             # Add on
             addOn

@@ -14,6 +14,4 @@ export function userPost2BoltCount(uid: string, pid: string): number {
         1000;
 
     return Math.floor(Math.cbrt(MAX_VAL ** 3 * (uniform - 1)) + MAX_VAL) + 1;
-
-    // return uniform ** 2;
 }

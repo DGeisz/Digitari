@@ -198,12 +198,9 @@ const Post: React.FC<Props> = (props) => {
         return animation.stop;
     }, []);
 
-    const {
-        tutorialActive,
-        tutorialScreen,
-        advanceTutorial,
-        customLikeTutorialPost,
-    } = useContext(TutorialContext);
+    const { tutorialActive, tutorialScreen, advanceTutorial } = useContext(
+        TutorialContext
+    );
 
     const [errorTimeout, setErrorTimeout] = useState<number | undefined>(
         undefined
@@ -237,97 +234,106 @@ const Post: React.FC<Props> = (props) => {
     );
 
     const tapBolt = async () => {
-        const currentBolts = numBolts + 1;
+        if (props.post.uid !== uid && remainingBolts > 0) {
+            const currentBolts = numBolts + 1;
 
-        if (currentBolts <= availableBolts) {
-            setBoltId(1 + Math.random());
-            setNumBolts(currentBolts);
+            if (currentBolts <= availableBolts) {
+                setBoltId(1 + Math.random());
+                setNumBolts(currentBolts);
 
-            if (typeof bulkTimeout !== "undefined") {
-                clearTimeout(bulkTimeout);
-            }
+                if (typeof bulkTimeout !== "undefined") {
+                    clearTimeout(bulkTimeout);
+                }
 
-            setBulkTimeout(
-                setTimeout(async () => {
-                    /*
-                     * First immediately set num bolts to
-                     * zero to prepare for the next batch
-                     */
-                    setNumBolts(0);
+                setBulkTimeout(
+                    setTimeout(async () => {
+                        /*
+                         * First immediately set num bolts to
+                         * zero to prepare for the next batch
+                         */
+                        setNumBolts(0);
 
-                    /*
-                     * Then actually handle the mutation
-                     */
-                    !!props.donateToPost &&
-                        (await props.donateToPost({
-                            variables: {
-                                pid: props.post.id,
-                                amount: currentBolts,
-                            },
-                            optimisticResponse: {
-                                donateToPost: {
-                                    uid: localUid(),
-                                    pid,
-                                    tuid: props.post.uid,
+                        /*
+                         * Then actually handle the mutation
+                         */
+                        !!props.donateToPost &&
+                            (await props.donateToPost({
+                                variables: {
+                                    pid: props.post.id,
                                     amount: currentBolts,
-                                    name: props.userFirstName,
                                 },
-                            },
-                            update(cache, { data }) {
-                                if (!!data?.donateToPost) {
-                                    /*
-                                     * Increase post digicoin
-                                     */
-                                    client.cache.modify({
-                                        id: client.cache.identify({
-                                            __typename: POST_TYPENAME,
-                                            id: props.post.id,
-                                        }),
-                                        fields: {
-                                            coin(existing: number) {
-                                                return (
-                                                    existing +
-                                                    currentBolts *
-                                                        DIGIBOLT_PRICE
-                                                );
+                                optimisticResponse: {
+                                    donateToPost: {
+                                        uid: localUid(),
+                                        pid,
+                                        tuid: props.post.uid,
+                                        amount: currentBolts,
+                                        name: props.userFirstName,
+                                    },
+                                },
+                                update(cache, { data }) {
+                                    if (!!data?.donateToPost) {
+                                        /*
+                                         * Increase post digicoin
+                                         */
+                                        client.cache.modify({
+                                            id: client.cache.identify({
+                                                __typename: POST_TYPENAME,
+                                                id: props.post.id,
+                                            }),
+                                            fields: {
+                                                coin(existing: number) {
+                                                    return (
+                                                        existing +
+                                                        currentBolts *
+                                                            DIGIBOLT_PRICE
+                                                    );
+                                                },
+                                                boltsBought(existing: number) {
+                                                    return (
+                                                        existing + currentBolts
+                                                    );
+                                                },
                                             },
-                                        },
-                                    });
+                                        });
 
-                                    cache.modify({
-                                        id: cache.identify({
-                                            __typename: USER_TYPENAME,
-                                            id: uid,
-                                        }),
-                                        fields: {
-                                            coin(existing: number) {
-                                                return (
-                                                    existing -
-                                                    currentBolts *
-                                                        DIGIBOLT_PRICE
-                                                );
+                                        cache.modify({
+                                            id: cache.identify({
+                                                __typename: USER_TYPENAME,
+                                                id: uid,
+                                            }),
+                                            fields: {
+                                                coin(existing: number) {
+                                                    return (
+                                                        existing -
+                                                        currentBolts *
+                                                            DIGIBOLT_PRICE
+                                                    );
+                                                },
+                                                coinSpent(existing: number) {
+                                                    return (
+                                                        existing +
+                                                        currentBolts *
+                                                            DIGIBOLT_PRICE
+                                                    );
+                                                },
+                                                bolts(existing: number) {
+                                                    return (
+                                                        existing + currentBolts
+                                                    );
+                                                },
                                             },
-                                            coinSpent(existing: number) {
-                                                return (
-                                                    existing +
-                                                    currentBolts *
-                                                        DIGIBOLT_PRICE
-                                                );
-                                            },
-                                            bolts(existing: number) {
-                                                return existing + currentBolts;
-                                            },
-                                        },
-                                    });
+                                        });
 
-                                    challengeCheck(cache);
-                                }
-                            },
-                        }));
-                }, 1000)
-            );
-        } else {
-            setError("You need 10 digicoin to earn a digibolt");
+                                        challengeCheck(cache);
+                                    }
+                                },
+                            }));
+                    }, 1000)
+                );
+            } else {
+                setError("You need 10 digicoin to get a digibolt");
+            }
         }
     };
 
@@ -342,6 +348,15 @@ const Post: React.FC<Props> = (props) => {
         } else {
             communityName = props.post.communityName;
         }
+    }
+
+    let remainingBolts: number;
+
+    if (!!props.post.boltsBought) {
+        remainingBolts =
+            userPost2BoltCount(uid, pid) - props.post.boltsBought - numBolts;
+    } else {
+        remainingBolts = userPost2BoltCount(uid, pid) - numBolts;
     }
 
     return (
@@ -437,51 +452,59 @@ const Post: React.FC<Props> = (props) => {
                             <Tier size={30} tier={props.post.tier} />
                             <View style={styles.sideBufferDivider} />
                         </View>
-                        {props.post.uid === uid ? (
-                            <View style={styles.sideBufferBottom}>
+                        <TouchableOpacity
+                            style={styles.sideBufferBottom}
+                            onPress={tapBolt}
+                            activeOpacity={1}
+                        >
+                            <LightningFlyer boltId={boltId} />
+                            {props.post.uid === uid || remainingBolts < 1 ? (
                                 <MaterialIcons
                                     name="bolt"
                                     size={35}
                                     color={palette.lightGray}
                                 />
-                            </View>
-                        ) : (
-                            <TouchableOpacity
-                                style={styles.sideBufferBottom}
-                                onPress={tapBolt}
-                                activeOpacity={1}
-                            >
-                                <LightningFlyer boltId={boltId} />
-                                <Animated.View
-                                    style={{
-                                        transform: [{ scale: boltScale }],
-                                    }}
-                                >
-                                    <MaterialIcons
-                                        name="bolt"
-                                        size={35}
-                                        color={palette.deepBlue}
+                            ) : (
+                                <>
+                                    <Animated.View
+                                        style={{
+                                            transform: [{ scale: boltScale }],
+                                        }}
+                                    >
+                                        <BoltBox
+                                            amount={remainingBolts}
+                                            boltSize={35}
+                                            fontColor={palette.deepBlue}
+                                            fontSize={22}
+                                            moveTextRight={7}
+                                        />
+                                    </Animated.View>
+                                    <Animated.View
+                                        style={[
+                                            styles.dot,
+                                            {
+                                                opacity: dotOpacity,
+                                                transform: [
+                                                    { scale: dotScale },
+                                                ],
+                                            },
+                                        ]}
                                     />
-                                </Animated.View>
-                                <Animated.View
-                                    style={[
-                                        styles.dot,
-                                        {
-                                            opacity: dotOpacity,
-                                            transform: [{ scale: dotScale }],
-                                        },
-                                    ]}
-                                />
-                                <Animated.View
-                                    style={[
-                                        styles.tapContainer,
-                                        { transform: [{ scale: tapScale }] },
-                                    ]}
-                                >
-                                    <Text style={styles.tapText}>Tap!</Text>
-                                </Animated.View>
-                            </TouchableOpacity>
-                        )}
+                                    <Animated.View
+                                        style={[
+                                            styles.tapContainer,
+                                            {
+                                                transform: [
+                                                    { scale: tapScale },
+                                                ],
+                                            },
+                                        ]}
+                                    >
+                                        <Text style={styles.tapText}>Tap!</Text>
+                                    </Animated.View>
+                                </>
+                            )}
+                        </TouchableOpacity>
                     </View>
                 )}
                 <View style={styles.postMain}>
@@ -521,9 +544,6 @@ const Post: React.FC<Props> = (props) => {
                                     )}
                                 </Text>
                             </View>
-                            <Text>
-                                {userPost2BoltCount(uid, props.post.id)}
-                            </Text>
                             <View style={styles.postHeaderBottom}>
                                 {props.post.target ===
                                 PostTarget.MyFollowers ? (
