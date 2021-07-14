@@ -1,13 +1,12 @@
 import React from "react";
-import { View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { instructionStyles } from "../../global_styles/InstructionStyles";
-import TutorialFooter from "./TutorialFooter";
 
 interface Props {
-    goBack?: () => void;
-    showGoBack?: boolean;
     top: boolean;
+    onPress: () => void;
+    footerText?: string;
 }
 
 const TutorialModal: React.FC<Props> = (props) => {
@@ -29,10 +28,16 @@ const TutorialModal: React.FC<Props> = (props) => {
             >
                 <View style={instructionStyles.innerContainer}>
                     {props.children}
-                    <TutorialFooter
-                        goBack={props.goBack}
-                        showGoBack={props.showGoBack}
-                    />
+                    <View style={instructionStyles.footerContainer}>
+                        <TouchableOpacity
+                            style={instructionStyles.button}
+                            onPress={props.onPress}
+                        >
+                            <Text style={instructionStyles.buttonText}>
+                                {props.footerText}
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         </View>
@@ -40,7 +45,7 @@ const TutorialModal: React.FC<Props> = (props) => {
 };
 
 TutorialModal.defaultProps = {
-    showGoBack: true,
+    footerText: "Ok!",
 };
 
 export default TutorialModal;

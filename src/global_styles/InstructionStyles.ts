@@ -42,8 +42,7 @@ export const instructionStyles = StyleSheet.create({
         fontWeight: "bold",
     },
     footerContainer: {
-        ...basicLayouts.grid2,
-        flexDirection: "row",
+        ...basicLayouts.grid5,
         marginTop: 20,
     },
     footerText: {

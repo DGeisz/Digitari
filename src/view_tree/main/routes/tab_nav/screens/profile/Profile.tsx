@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import { basicLayouts } from "../../../../../../global_styles/BasicLayouts";
 import TabLabel from "../../../../../../global_building_blocks/tab_label/TabLabel";
@@ -27,6 +27,7 @@ import {
     firstTimeOpeningApp,
     openedAppFirstTime,
 } from "../../../../../../global_state/FirstImpressionsState";
+import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
 
 const Tab = createMaterialCollapsibleTopTabNavigator();
 
@@ -48,6 +49,8 @@ const Profile: React.FC<Props> = (props) => {
         openSettings,
         openShop,
     } = useContext(TabNavContext);
+
+    const [modalVisible, showModal] = useState<boolean>(true);
 
     /*
      * If this is the first time opening
@@ -87,6 +90,10 @@ const Profile: React.FC<Props> = (props) => {
     if (!!user) {
         return (
             <>
+                <InstructionsModal
+                    visible={modalVisible}
+                    hideModal={() => showModal(false)}
+                />
                 <View style={basicLayouts.flexGrid1}>
                     <Tab.Navigator
                         collapsibleOptions={{

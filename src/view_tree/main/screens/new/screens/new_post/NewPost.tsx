@@ -370,6 +370,7 @@ const NewPost: React.FC<Props> = (props) => {
                         <TextInput
                             ref={contentRef}
                             keyboardType="twitter"
+                            autoFocus
                             style={styles.contentInput}
                             placeholder="What's on your mind?"
                             multiline
