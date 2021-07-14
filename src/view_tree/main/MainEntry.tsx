@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import TabNav from "./routes/tab_nav/TabNav";
 import Convo from "./screens/convo/Convo";
 import NewResponse from "./screens/new_response/NewResponse";
@@ -39,6 +39,7 @@ import {
     TutorialScreen,
 } from "../tutorial/context/tutorial_context/TutorialContext";
 import Shop from "./screens/shop/Shop";
+import { LastPostsFetchContext } from "./context/last_fetch_time_context";
 
 const RootStack = createStackNavigator<MainEntryStack>();
 
@@ -54,6 +55,13 @@ const MainEntry: React.FC = () => {
     const [registerPush] = useMutation<RegisterPushData, RegisterPushVariables>(
         REGISTER_PUSH
     );
+
+    /*
+     * Make "global" state for last posts
+     * fetch time so all the different posts
+     * queries are in sync
+     */
+    const [lastPostsFetchTime, setLastPostsFetchTime] = useState<number>(0);
 
     /*
      * Register for push notifications
@@ -131,164 +139,185 @@ const MainEntry: React.FC = () => {
     }, [tutorialActive, tutorialScreen]);
 
     return (
-        <RootStack.Navigator
-            initialRouteName="TabNav"
-            screenOptions={({ navigation }) => ({
-                headerTruncatedBackTitle: "",
-                headerBackTitle: "",
-                headerRight: () => (
-                    <TouchableOpacity
-                        style={styles.coinContainer}
-                        onPress={() => {
-                            if (!tutorialActive) {
-                                navigation.navigate("Store");
-                            }
-                        }}
-                    >
-                        <Text style={styles.coinText}>+</Text>
-                        <Image
-                            source={require("../../../assets/coin.png")}
-                            style={styles.coin}
-                        />
-                    </TouchableOpacity>
-                ),
-            })}
+        <LastPostsFetchContext.Provider
+            value={{
+                lastPostsFetchTime,
+                setLastPostsFetchTime,
+            }}
         >
-            <RootStack.Screen
-                name="TabNav"
-                component={TabNav}
-                options={({ route, navigation }) => {
-                    return {
-                        headerTitle: getTabNavHeaderTitle(route),
-                        headerLeft: () => (
-                            <TouchableOpacity
-                                onPress={() => {
-                                    if (!tutorialActive) {
-                                        navigation.navigate("Invite");
-                                    }
-                                }}
-                            >
-                                <Text style={styles.inviteText}>+ Invite</Text>
-                            </TouchableOpacity>
-                        ),
-                    };
-                }}
-            />
-            <RootStack.Screen
-                name="Convo"
-                component={Convo}
-                options={({ route }) => ({
-                    animationEnabled: !route.params.noAnimation,
+            <RootStack.Navigator
+                initialRouteName="TabNav"
+                screenOptions={({ navigation }) => ({
+                    headerTruncatedBackTitle: "",
+                    headerBackTitle: "",
+                    headerRight: () => (
+                        <TouchableOpacity
+                            style={styles.coinContainer}
+                            onPress={() => {
+                                if (!tutorialActive) {
+                                    navigation.navigate("Store");
+                                }
+                            }}
+                        >
+                            <Text style={styles.coinText}>+</Text>
+                            <Image
+                                source={require("../../../assets/coin.png")}
+                                style={styles.coin}
+                            />
+                        </TouchableOpacity>
+                    ),
                 })}
-            />
-            <RootStack.Screen
-                name="NewResponse"
-                component={NewResponse}
-                options={{ title: "New Response" }}
-                initialParams={{ tname: "", pid: "", responseCost: 0 }}
-            />
-            <RootStack.Screen
-                name="PostScreen"
-                component={PostScreen}
-                options={{ title: "Post" }}
-            />
-            <RootStack.Screen
-                name="NewCommunity"
-                options={{ title: "New Community" }}
-                component={NewCommunity}
-            />
-            <RootStack.Screen
-                name="Community"
-                component={Community}
-                initialParams={{ cmid: "" }}
-            />
-            <RootStack.Screen
-                name="User"
-                component={User}
-                initialParams={{ uid: "" }}
-            />
-            <RootStack.Screen
-                name="Follows"
-                component={Follows}
-                initialParams={{ uid: "", name: "" }}
-                options={({ route }) => ({ title: route.params.name })}
-            />
-            <RootStack.Screen name={"Shop"} component={Shop} />
-            <RootStack.Screen
-                name="NewPost"
-                component={NewPost}
-                options={{ title: "New Post" }}
-            />
-            <RootStack.Screen
-                name="Invite"
-                options={{ title: "Invite the Fam" }}
-                component={Invites}
-            />
-            <RootStack.Screen
-                name="Store"
-                component={Store}
-                options={{ headerRight: () => null, title: "The Stash 🤫" }}
-            />
-            {/*
-             * Reporting
-             */}
-            <RootStack.Screen
-                name="ReportPost"
-                component={ReportPost}
-                options={{ title: "Report post", headerRight: () => null }}
-            />
-            <RootStack.Screen
-                name="ReportConvo"
-                component={ReportConvo}
-                options={{ title: "Report convo", headerRight: () => null }}
-            />
-            <RootStack.Screen
-                name="ReportUser"
-                component={ReportUser}
-                options={{ title: "Report user", headerRight: () => null }}
-            />
-            <RootStack.Screen
-                name="ReportCommunity"
-                component={ReportCommunity}
-                options={{ title: "Report community", headerRight: () => null }}
-            />
-            {/*
+            >
+                <RootStack.Screen
+                    name="TabNav"
+                    component={TabNav}
+                    options={({ route, navigation }) => {
+                        return {
+                            headerTitle: getTabNavHeaderTitle(route),
+                            headerLeft: () => (
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        if (!tutorialActive) {
+                                            navigation.navigate("Invite");
+                                        }
+                                    }}
+                                >
+                                    <Text style={styles.inviteText}>
+                                        + Invite
+                                    </Text>
+                                </TouchableOpacity>
+                            ),
+                        };
+                    }}
+                />
+                <RootStack.Screen
+                    name="Convo"
+                    component={Convo}
+                    options={({ route }) => ({
+                        animationEnabled: !route.params.noAnimation,
+                    })}
+                />
+                <RootStack.Screen
+                    name="NewResponse"
+                    component={NewResponse}
+                    options={{ title: "New Response" }}
+                    initialParams={{ tname: "", pid: "", responseCost: 0 }}
+                />
+                <RootStack.Screen
+                    name="PostScreen"
+                    component={PostScreen}
+                    options={{ title: "Post" }}
+                />
+                <RootStack.Screen
+                    name="NewCommunity"
+                    options={{ title: "New Community" }}
+                    component={NewCommunity}
+                />
+                <RootStack.Screen
+                    name="Community"
+                    component={Community}
+                    initialParams={{ cmid: "" }}
+                />
+                <RootStack.Screen
+                    name="User"
+                    component={User}
+                    initialParams={{ uid: "" }}
+                />
+                <RootStack.Screen
+                    name="Follows"
+                    component={Follows}
+                    initialParams={{ uid: "", name: "" }}
+                    options={({ route }) => ({ title: route.params.name })}
+                />
+                <RootStack.Screen name={"Shop"} component={Shop} />
+                <RootStack.Screen
+                    name="NewPost"
+                    component={NewPost}
+                    options={{ title: "New Post" }}
+                />
+                <RootStack.Screen
+                    name="Invite"
+                    options={{ title: "Invite the Fam" }}
+                    component={Invites}
+                />
+                <RootStack.Screen
+                    name="Store"
+                    component={Store}
+                    options={{ headerRight: () => null, title: "The Stash 🤫" }}
+                />
+                {/*
+                 * Reporting
+                 */}
+                <RootStack.Screen
+                    name="ReportPost"
+                    component={ReportPost}
+                    options={{ title: "Report post", headerRight: () => null }}
+                />
+                <RootStack.Screen
+                    name="ReportConvo"
+                    component={ReportConvo}
+                    options={{ title: "Report convo", headerRight: () => null }}
+                />
+                <RootStack.Screen
+                    name="ReportUser"
+                    component={ReportUser}
+                    options={{ title: "Report user", headerRight: () => null }}
+                />
+                <RootStack.Screen
+                    name="ReportCommunity"
+                    component={ReportCommunity}
+                    options={{
+                        title: "Report community",
+                        headerRight: () => null,
+                    }}
+                />
+                {/*
             Settings
             */}
-            <RootStack.Screen
-                name="Settings"
-                component={Settings}
-                options={{ headerRight: () => null }}
-            />
-            <RootStack.Screen
-                name="Password"
-                options={{ title: "Change password", headerRight: () => null }}
-                component={Password}
-            />
-            <RootStack.Screen
-                name="PasswordChanged"
-                options={{ title: "Success!", headerRight: () => null }}
-                component={PasswordChanged}
-            />
-            <RootStack.Screen
-                name="DeleteAccount"
-                options={{ title: "Delete account", headerRight: () => null }}
-                component={DeleteAccount}
-            />
-            <RootStack.Screen
-                name="PrivacyPolicy"
-                options={{ title: "Privacy policy", headerRight: () => null }}
-                component={PrivacyPolicy}
-            />
-            <RootStack.Screen
-                name="TermsAndConditions"
-                options={{
-                    title: "Terms & Conditions",
-                    headerRight: () => null,
-                }}
-                component={TermsAndConditions}
-            />
-        </RootStack.Navigator>
+                <RootStack.Screen
+                    name="Settings"
+                    component={Settings}
+                    options={{ headerRight: () => null }}
+                />
+                <RootStack.Screen
+                    name="Password"
+                    options={{
+                        title: "Change password",
+                        headerRight: () => null,
+                    }}
+                    component={Password}
+                />
+                <RootStack.Screen
+                    name="PasswordChanged"
+                    options={{ title: "Success!", headerRight: () => null }}
+                    component={PasswordChanged}
+                />
+                <RootStack.Screen
+                    name="DeleteAccount"
+                    options={{
+                        title: "Delete account",
+                        headerRight: () => null,
+                    }}
+                    component={DeleteAccount}
+                />
+                <RootStack.Screen
+                    name="PrivacyPolicy"
+                    options={{
+                        title: "Privacy policy",
+                        headerRight: () => null,
+                    }}
+                    component={PrivacyPolicy}
+                />
+                <RootStack.Screen
+                    name="TermsAndConditions"
+                    options={{
+                        title: "Terms & Conditions",
+                        headerRight: () => null,
+                    }}
+                    component={TermsAndConditions}
+                />
+            </RootStack.Navigator>
+        </LastPostsFetchContext.Provider>
     );
 };
 

@@ -447,8 +447,14 @@ const Post: React.FC<Props> = (props) => {
                 }
             >
                 {!props.stripped && (
-                    <View style={styles.postSideBuffer}>
-                        <View style={styles.sideBufferTop}>
+                    <View
+                        style={styles.postSideBuffer}
+                        pointerEvents={"box-none"}
+                    >
+                        <View
+                            style={styles.sideBufferTop}
+                            pointerEvents={"none"}
+                        >
                             <Tier size={30} tier={props.post.tier} />
                             <View style={styles.sideBufferDivider} />
                         </View>

@@ -40,6 +40,7 @@ import {
 } from "../../../global_types/TransactionTypes";
 import { USER_TYPENAME } from "../../../global_types/UserTypes";
 import { addTransaction } from "../../../view_tree/main/hooks/use_realtime_updates/subscription_handlers/utils/cache_utils";
+import { LastPostsFetchContext } from "../../../view_tree/main/context/last_fetch_time_context";
 
 const nextPostsReward = 40;
 
@@ -78,8 +79,6 @@ const UserPosts: React.FC<Props> = (props) => {
         DONATE_TO_POST
     );
 
-    const [lastFetchTime, setLastFetch] = useState<number>(Date.now());
-
     const { tutorialActive } = useContext(TutorialContext);
 
     const scrollPropsAndRef = useCollapsibleScene(props.routeKey);
@@ -93,8 +92,12 @@ const UserPosts: React.FC<Props> = (props) => {
         ? data.userPosts.filter((post) => !!post)
         : [];
 
+    const { lastPostsFetchTime, setLastPostsFetchTime } = useContext(
+        LastPostsFetchContext
+    );
+
     useEffect(() => {
-        setLastFetch(Date.now());
+        setLastPostsFetchTime(Date.now());
     }, [finalFeed.length]);
 
     const { cache } = useApolloClient();
@@ -199,7 +202,7 @@ const UserPosts: React.FC<Props> = (props) => {
                         {!!finalFeed.length &&
                             (finalFeed.length !== fetchMoreLen ? (
                                 <CoinCountdown
-                                    referenceTime={lastFetchTime}
+                                    referenceTime={lastPostsFetchTime}
                                     onNextPosts={async () => {
                                         const lastTime =
                                             finalFeed[finalFeed.length - 1]

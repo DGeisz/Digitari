@@ -262,6 +262,7 @@ export const schema = gql`
         following(sid: ID!, lastTime: String, entityType: Int): [FollowEntity]
         postResponseCheck(pid: ID): Boolean
         transactions(lastTime: String): [Transaction]
+        allPosts(lastTime: String, skipReward: Boolean): [Post]
 
         validInviteCode(code: String): Boolean
     }

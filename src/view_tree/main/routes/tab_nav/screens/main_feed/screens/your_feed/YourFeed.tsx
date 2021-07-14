@@ -89,7 +89,6 @@ const YourFeed: React.FC<Props> = (props) => {
         openUser,
         openNewMessage,
         openReport,
-        openConvo,
     } = useContext(TabNavContext);
 
     const { data, error, networkStatus, refetch, fetchMore } = useQuery<
@@ -206,251 +205,200 @@ const YourFeed: React.FC<Props> = (props) => {
         return <ErrorMessage refresh={selfRefetch} />;
     }
 
-    return (
-        <>
-            {/*<InstructionsModal*/}
-            {/*    navigate2Wallet={() =>*/}
-            {/*        setTimeout(() => props.navigation.navigate("Wallet"), 700)*/}
-            {/*    }*/}
-            {/*    nav2NewPost={() => {*/}
-            {/*        setTimeout(openNew, 700);*/}
-            {/*    }}*/}
-            {/*    navToFirstConvo={() => {*/}
-            {/*        setTimeout(() => {*/}
-            {/*            openNewMessage(*/}
-            {/*                zariahPost.user,*/}
-            {/*                zariahPost.id,*/}
-            {/*                zariahPost.responseCost*/}
-            {/*            );*/}
-            {/*            openConvo("tutConvo0", zariahPost.id);*/}
-            {/*            setScreen(TutorialScreen.ExplainSuccess);*/}
-            {/*        }, 700);*/}
-            {/*    }}*/}
-            {/*/>*/}
-            {finalFeed.length === 0 ? (
-                <View style={styles.noFeedContainer}>
-                    <Text style={styles.noFeedText}>
-                        Follow some users or communities to start receiving a
-                        feed!{"\n\n"}
-                        You can still earn digicoin by viewing user or community
-                        posts.
-                    </Text>
-                    <TouchableOpacity
-                        onPress={() => {
-                            !!refetch && refetch();
-                        }}
-                    >
-                        <Text style={styles.refreshText}>Refresh</Text>
-                    </TouchableOpacity>
-                </View>
-            ) : (
-                <FlatList
-                    ref={listRef}
-                    ListHeaderComponent={
-                        SCREEN_LARGER_THAN_CONTENT ? (
-                            <View style={globalScreenStyles.headerBuffer} />
-                        ) : null
-                    }
-                    data={finalFeed}
-                    renderItem={({ item }) => (
-                        <Post
-                            userCoin={userCoin}
-                            userBolts={userBolts}
-                            userFirstName={userFirstName}
-                            openUser={openUser}
-                            openCommunity={openCommunity}
-                            openPost={openPost}
-                            onMessage={openNewMessage}
-                            post={item}
-                            feedPost
-                            donateToPost={donateToPost}
-                            openReport={openReport}
-                        />
-                    )}
-                    keyExtractor={(item, index) =>
-                        [item.id, "feed", index].join(":")
-                    }
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={
-                                networkStatus === NetworkStatus.refetch ||
-                                stillSpin
-                            }
-                            onRefresh={() => {
-                                setStillSpin(true);
-
-                                setTimeout(() => {
-                                    setStillSpin(false);
-                                }, 1000);
-
-                                if (!tutorialActive) {
-                                    setFetchMoreLen(0);
-                                    refetch && refetch();
-                                }
-                            }}
-                            colors={[
-                                palette.deepBlue,
-                                palette.darkForestGreen,
-                                palette.oceanSurf,
-                            ]}
-                            tintColor={palette.deepBlue}
-                        />
-                    }
-                    ListFooterComponent={() => {
-                        return networkStatus === NetworkStatus.fetchMore ? (
-                            <LoadingWheel />
-                        ) : (
-                            <>
-                                {(() => {
-                                    if (tutorialActive) {
-                                        if (
-                                            tutorialScreen ===
-                                                TutorialScreen.ExplainFeedReward ||
-                                            tutorialScreen ===
-                                                TutorialScreen.CollectFeedReward
-                                        ) {
-                                            return (
-                                                <CoinCountdown
-                                                    referenceTime={
-                                                        lastFetchTime
-                                                    }
-                                                    onNextPosts={() => {
-                                                        addNewReceipt(
-                                                            nextPostsReward
-                                                        );
-
-                                                        advanceTutorial();
-
-                                                        setTimeout(
-                                                            advanceTutorial,
-                                                            1000
-                                                        );
-                                                    }}
-                                                    amount={nextPostsReward}
-                                                    accelerate
-                                                />
-                                            );
-                                        }
-                                    } else {
-                                        return finalFeed.length !==
-                                            fetchMoreLen &&
-                                            !!finalFeed.length ? (
-                                            <CoinCountdown
-                                                referenceTime={lastFetchTime}
-                                                onNextPosts={async () => {
-                                                    const lastTime =
-                                                        finalFeed[
-                                                            finalFeed.length - 1
-                                                        ].time;
-                                                    const ffLen =
-                                                        finalFeed.length;
-
-                                                    setFetchMoreLen(ffLen);
-
-                                                    const transaction: TransactionType = {
-                                                        tid: localUid(),
-                                                        time: Date.now().toString(),
-                                                        coin: nextPostsReward,
-                                                        message: "Viewed feed",
-                                                        transactionType:
-                                                            TransactionTypesEnum.Post,
-                                                        data: "",
-                                                        __typename: TRANSACTION_TYPENAME,
-                                                    };
-
-                                                    /*
-                                                     * Add receipt for animation
-                                                     */
-                                                    addNewReceipt(
-                                                        nextPostsReward
-                                                    );
-
-                                                    /*
-                                                     * Notify user of new transaction update
-                                                     */
-                                                    cache.modify({
-                                                        id: cache.identify({
-                                                            __typename: USER_TYPENAME,
-                                                            id: localUid(),
-                                                        }),
-                                                        fields: {
-                                                            newTransactionUpdate() {
-                                                                return true;
-                                                            },
-                                                            transTotal(
-                                                                existing
-                                                            ) {
-                                                                return (
-                                                                    existing +
-                                                                    nextPostsReward
-                                                                );
-                                                            },
-                                                        },
-                                                    });
-
-                                                    addTransaction(
-                                                        transaction,
-                                                        cache
-                                                    );
-
-                                                    !!fetchMore &&
-                                                        (await fetchMore({
-                                                            variables: {
-                                                                lastTime,
-                                                            },
-                                                        }));
-                                                }}
-                                                showSkip
-                                                onSkip={async () => {
-                                                    const lastTime =
-                                                        finalFeed[
-                                                            finalFeed.length - 1
-                                                        ].time;
-                                                    const ffLen =
-                                                        finalFeed.length;
-
-                                                    setFetchMoreLen(ffLen);
-
-                                                    !!fetchMore &&
-                                                        (await fetchMore({
-                                                            variables: {
-                                                                lastTime,
-                                                                skipReward: true,
-                                                            },
-                                                        }));
-                                                }}
-                                                amount={nextPostsReward}
-                                            />
-                                        ) : (
-                                            <View
-                                                style={styles.noFeedContainer}
-                                            >
-                                                <Text style={styles.noFeedText}>
-                                                    Your feed is all out of
-                                                    posts!
-                                                    {"\n\n"}
-                                                    Follow more users or
-                                                    communities to receive more
-                                                    posts in your feed.
-                                                    {"\n\n"}
-                                                    You can still earn digicoin
-                                                    by viewing user or community
-                                                    posts.
-                                                </Text>
-                                            </View>
-                                        );
-                                    }
-                                })()}
-                                <View
-                                    style={globalScreenStyles.listFooterBuffer}
-                                />
-                            </>
-                        );
-                    }}
+    return finalFeed.length === 0 ? (
+        <View style={styles.noFeedContainer}>
+            <Text style={styles.noFeedText}>
+                Follow some users or communities to start receiving a feed!
+                {"\n\n"}
+                You can still earn digicoin by viewing user or community posts.
+            </Text>
+            <TouchableOpacity
+                onPress={() => {
+                    !!refetch && refetch();
+                }}
+            >
+                <Text style={styles.refreshText}>Refresh</Text>
+            </TouchableOpacity>
+        </View>
+    ) : (
+        <FlatList
+            ref={listRef}
+            ListHeaderComponent={
+                SCREEN_LARGER_THAN_CONTENT ? (
+                    <View style={globalScreenStyles.headerBuffer} />
+                ) : null
+            }
+            data={finalFeed}
+            renderItem={({ item }) => (
+                <Post
+                    userCoin={userCoin}
+                    userBolts={userBolts}
+                    userFirstName={userFirstName}
+                    openUser={openUser}
+                    openCommunity={openCommunity}
+                    openPost={openPost}
+                    onMessage={openNewMessage}
+                    post={item}
+                    feedPost
+                    donateToPost={donateToPost}
+                    openReport={openReport}
                 />
             )}
-            <NewButton openNew={openNew} />
-        </>
+            keyExtractor={(item, index) => [item.id, "feed", index].join(":")}
+            refreshControl={
+                <RefreshControl
+                    refreshing={
+                        networkStatus === NetworkStatus.refetch || stillSpin
+                    }
+                    onRefresh={() => {
+                        setStillSpin(true);
+
+                        setTimeout(() => {
+                            setStillSpin(false);
+                        }, 1000);
+
+                        if (!tutorialActive) {
+                            setFetchMoreLen(0);
+                            refetch && refetch();
+                        }
+                    }}
+                    colors={[
+                        palette.deepBlue,
+                        palette.darkForestGreen,
+                        palette.oceanSurf,
+                    ]}
+                    tintColor={palette.deepBlue}
+                />
+            }
+            ListFooterComponent={() => {
+                return networkStatus === NetworkStatus.fetchMore ? (
+                    <LoadingWheel />
+                ) : (
+                    <>
+                        {(() => {
+                            if (tutorialActive) {
+                                if (
+                                    tutorialScreen ===
+                                        TutorialScreen.ExplainFeedReward ||
+                                    tutorialScreen ===
+                                        TutorialScreen.CollectFeedReward
+                                ) {
+                                    return (
+                                        <CoinCountdown
+                                            referenceTime={lastFetchTime}
+                                            onNextPosts={() => {
+                                                addNewReceipt(nextPostsReward);
+
+                                                advanceTutorial();
+
+                                                setTimeout(
+                                                    advanceTutorial,
+                                                    1000
+                                                );
+                                            }}
+                                            amount={nextPostsReward}
+                                            accelerate
+                                        />
+                                    );
+                                }
+                            } else {
+                                return finalFeed.length !== fetchMoreLen &&
+                                    !!finalFeed.length ? (
+                                    <CoinCountdown
+                                        referenceTime={lastFetchTime}
+                                        onNextPosts={async () => {
+                                            const lastTime =
+                                                finalFeed[finalFeed.length - 1]
+                                                    .time;
+                                            const ffLen = finalFeed.length;
+
+                                            setFetchMoreLen(ffLen);
+
+                                            const transaction: TransactionType = {
+                                                tid: localUid(),
+                                                time: Date.now().toString(),
+                                                coin: nextPostsReward,
+                                                message: "Viewed feed",
+                                                transactionType:
+                                                    TransactionTypesEnum.Post,
+                                                data: "",
+                                                __typename: TRANSACTION_TYPENAME,
+                                            };
+
+                                            /*
+                                             * Add receipt for animation
+                                             */
+                                            addNewReceipt(nextPostsReward);
+
+                                            /*
+                                             * Notify user of new transaction update
+                                             */
+                                            cache.modify({
+                                                id: cache.identify({
+                                                    __typename: USER_TYPENAME,
+                                                    id: localUid(),
+                                                }),
+                                                fields: {
+                                                    newTransactionUpdate() {
+                                                        return true;
+                                                    },
+                                                    transTotal(existing) {
+                                                        return (
+                                                            existing +
+                                                            nextPostsReward
+                                                        );
+                                                    },
+                                                },
+                                            });
+
+                                            addTransaction(transaction, cache);
+
+                                            !!fetchMore &&
+                                                (await fetchMore({
+                                                    variables: {
+                                                        lastTime,
+                                                    },
+                                                }));
+                                        }}
+                                        showSkip
+                                        onSkip={async () => {
+                                            const lastTime =
+                                                finalFeed[finalFeed.length - 1]
+                                                    .time;
+                                            const ffLen = finalFeed.length;
+
+                                            setFetchMoreLen(ffLen);
+
+                                            !!fetchMore &&
+                                                (await fetchMore({
+                                                    variables: {
+                                                        lastTime,
+                                                        skipReward: true,
+                                                    },
+                                                }));
+                                        }}
+                                        amount={nextPostsReward}
+                                    />
+                                ) : (
+                                    <View style={styles.noFeedContainer}>
+                                        <Text style={styles.noFeedText}>
+                                            Your feed is all out of posts!
+                                            {"\n\n"}
+                                            Follow more users or communities to
+                                            receive more posts in your feed.
+                                            {"\n\n"}
+                                            You can still earn digicoin by
+                                            viewing user or community posts.
+                                        </Text>
+                                    </View>
+                                );
+                            }
+                        })()}
+                        <View style={globalScreenStyles.listFooterBuffer} />
+                    </>
+                );
+            }}
+        />
     );
 };
 

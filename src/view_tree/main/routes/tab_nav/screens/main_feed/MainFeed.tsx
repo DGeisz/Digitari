@@ -75,6 +75,8 @@ interface Props {
 const MainFeed: React.FC<Props> = (props) => {
     const [feedType, setFeed] = useState<FeedType>(FeedType.YourFeed);
 
+    const { openNew } = useContext(TabNavContext);
+
     return (
         <FeedContext.Provider
             value={{
@@ -134,6 +136,7 @@ const MainFeed: React.FC<Props> = (props) => {
                     <Tab.Screen name={"AllPosts"} component={AllPosts} />
                 </Tab.Navigator>
             </View>
+            <NewButton openNew={openNew} />
         </FeedContext.Provider>
     );
 
