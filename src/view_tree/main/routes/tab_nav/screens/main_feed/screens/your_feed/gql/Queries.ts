@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { PostType } from "../../../../../../../global_types/PostTypes";
+import { PostType } from "../../../../../../../../../global_types/PostTypes";
 
 export const GET_FEED = gql`
     query GetFeed($lastTime: String, $skipReward: Boolean) {

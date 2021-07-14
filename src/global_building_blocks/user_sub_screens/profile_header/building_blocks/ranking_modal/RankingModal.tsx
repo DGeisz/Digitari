@@ -20,12 +20,9 @@ const RankingModal: React.FC<Props> = (props) => {
                     <Text style={modalStyles.modalMainText}>
                         You increase your Digitari ranking by being a good
                         person. Isn't that fun! 😊 {DOUBLE_NEWLINE}
-                        More specifically,{" "}
-                        <Text style={modalStyles.boldText}>
-                            your ranking goes up when you have good interactions
-                            with other people
-                        </Text>{" "}
-                        on Digitari. {DOUBLE_NEWLINE}
+                        More specifically, your ranking goes up when you have
+                        good interactions with other people on Digitari.{" "}
+                        {DOUBLE_NEWLINE}
                         For the exact calculation of your ranking, hit the info
                         button next to "Tier Breakdown" under your "Stats" tab.
                     </Text>

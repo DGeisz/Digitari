@@ -7,7 +7,6 @@ export const tierBarStyles = StyleSheet.create({
         paddingVertical: 10,
         borderBottomWidth: 1,
         borderBottomColor: palette.softGray,
-        // marginBottom: 20,
     },
     tierBarContainer: {
         flexDirection: "row",

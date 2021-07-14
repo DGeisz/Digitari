@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Entypo, FontAwesome, Ionicons } from "@expo/vector-icons";
 import MainFeed from "./screens/main_feed/MainFeed";
 import Wallet from "./screens/wallet/Wallet";
@@ -21,10 +21,7 @@ import {
 } from "./gql/Queries";
 import CoinIndicator from "./building_blocks/coin_indicator/CoinIndicator";
 import ChallengeCompleteModal from "./building_blocks/challenge_complete_modal/ChallengeCompleteModal";
-import {
-    TutorialContext,
-    TutorialScreen,
-} from "../../../tutorial/context/tutorial_context/TutorialContext";
+import { firstTimeOpeningApp } from "../../../../global_state/FirstImpressionsState";
 
 const Tab = createBottomTabNavigator<TabNavTab>();
 
@@ -90,13 +87,6 @@ const TabNav: React.FC<Props> = (props) => {
         }
     );
 
-    /*
-     * Handle opening the tutorial
-     */
-    const { tutorialActive, tutorialScreen, advanceTutorial } = useContext(
-        TutorialContext
-    );
-
     let newConvoUpdate = false;
     let newTransactionUpdate = false;
 
@@ -130,7 +120,9 @@ const TabNav: React.FC<Props> = (props) => {
                     }}
                 />
                 <Tab.Navigator
-                    initialRouteName={"MainFeed"}
+                    initialRouteName={
+                        firstTimeOpeningApp() ? "Profile" : "MainFeed"
+                    }
                     tabBarOptions={{
                         showLabel: false,
                         inactiveTintColor: "gray",
@@ -142,18 +134,6 @@ const TabNav: React.FC<Props> = (props) => {
                         options={{
                             tabBarIcon: ({ color, size }) => (
                                 <View style={styles.iconContainer}>
-                                    {(() => {
-                                        if (tutorialActive) {
-                                            if (
-                                                tutorialScreen ===
-                                                    TutorialScreen.TapHome ||
-                                                tutorialScreen ===
-                                                    TutorialScreen.BackToFeed
-                                            ) {
-                                                return <UpdateIndicator />;
-                                            }
-                                        }
-                                    })()}
                                     <Entypo
                                         name="home"
                                         size={size}
@@ -162,18 +142,6 @@ const TabNav: React.FC<Props> = (props) => {
                                 </View>
                             ),
                         }}
-                        listeners={{
-                            tabPress: (e) => {
-                                if (
-                                    tutorialActive &&
-                                    tutorialScreen === TutorialScreen.TapHome
-                                ) {
-                                    advanceTutorial();
-                                } else if (tutorialActive) {
-                                    e.preventDefault();
-                                }
-                            },
-                        }}
                     />
                     <Tab.Screen
                         name="Convos"
@@ -181,15 +149,7 @@ const TabNav: React.FC<Props> = (props) => {
                         options={{
                             tabBarIcon: ({ color, size }) => (
                                 <View style={styles.iconContainer}>
-                                    {(() => {
-                                        if (!tutorialActive) {
-                                            return (
-                                                newConvoUpdate && (
-                                                    <UpdateIndicator />
-                                                )
-                                            );
-                                        }
-                                    })()}
+                                    {newConvoUpdate && <UpdateIndicator />}
                                     <Ionicons
                                         name={"ios-chatbubbles"}
                                         size={size}
@@ -197,13 +157,6 @@ const TabNav: React.FC<Props> = (props) => {
                                     />
                                 </View>
                             ),
-                        }}
-                        listeners={{
-                            tabPress: (e) => {
-                                if (tutorialActive) {
-                                    e.preventDefault();
-                                }
-                            },
                         }}
                     />
                     <Tab.Screen
@@ -218,13 +171,6 @@ const TabNav: React.FC<Props> = (props) => {
                                 />
                             ),
                         }}
-                        listeners={{
-                            tabPress: (e) => {
-                                if (tutorialActive) {
-                                    e.preventDefault();
-                                }
-                            },
-                        }}
                     />
                     <Tab.Screen
                         name="Wallet"
@@ -233,26 +179,9 @@ const TabNav: React.FC<Props> = (props) => {
                             tabBarIcon: ({ color, size }) => {
                                 return (
                                     <View>
-                                        {(() => {
-                                            if (
-                                                !tutorialActive &&
-                                                newTransactionUpdate
-                                            ) {
-                                                return <UpdateIndicator />;
-                                            } else if (
-                                                tutorialActive &&
-                                                (tutorialScreen ===
-                                                    TutorialScreen.PromptOpenWallet ||
-                                                    tutorialScreen ===
-                                                        TutorialScreen.TapWallet)
-                                                // tutorialScreen ===
-                                                //     TutorialScreen.OpenWalletPrompt ||
-                                                // tutorialScreen ===
-                                                //     TutorialScreen.TapWallet
-                                            ) {
-                                                return <UpdateIndicator />;
-                                            }
-                                        })()}
+                                        {newTransactionUpdate && (
+                                            <UpdateIndicator />
+                                        )}
                                         <Entypo
                                             name="wallet"
                                             size={size}
@@ -261,18 +190,6 @@ const TabNav: React.FC<Props> = (props) => {
                                         <CoinIndicator />
                                     </View>
                                 );
-                            },
-                        }}
-                        listeners={{
-                            tabPress: (e) => {
-                                if (
-                                    tutorialActive &&
-                                    tutorialScreen === TutorialScreen.TapWallet
-                                ) {
-                                    advanceTutorial();
-                                } else if (tutorialActive) {
-                                    e.preventDefault();
-                                }
                             },
                         }}
                     />
@@ -287,13 +204,6 @@ const TabNav: React.FC<Props> = (props) => {
                                     color={color}
                                 />
                             ),
-                        }}
-                        listeners={{
-                            tabPress: (e) => {
-                                if (tutorialActive) {
-                                    e.preventDefault();
-                                }
-                            },
                         }}
                     />
                 </Tab.Navigator>

@@ -32,10 +32,6 @@ import TierModal from "./building_blocks/tier_modal/TierModal";
 import { challengeCheck } from "../../../global_gql/challenge_check/challenge_check";
 import { calculateLevelInfo } from "../../../global_utils/LevelUtils";
 import UserOptionsModal from "./building_blocks/user_options_modal/UserOptionsModal";
-import {
-    TutorialContext,
-    TutorialScreen,
-} from "../../../view_tree/tutorial/context/tutorial_context/TutorialContext";
 import UpdateIndicator from "../../../view_tree/main/routes/tab_nav/building_blocks/update_indicator/UpdateIndicator";
 import { nameFontToProfileStyle } from "./fonts/nameFonts";
 import {
@@ -186,8 +182,6 @@ const ProfileHeader: React.FC<Props> = (props) => {
         }
     );
 
-    const { tutorialActive, tutorialScreen } = useContext(TutorialContext);
-
     return (
         <View pointerEvents="box-none">
             <View
@@ -240,13 +234,7 @@ const ProfileHeader: React.FC<Props> = (props) => {
                     </View>
                     <View style={styles.split0Right} pointerEvents="box-none">
                         {props.isMe ? (
-                            <TouchableOpacity
-                                onPress={() => {
-                                    if (!tutorialActive) {
-                                        props.openSettings();
-                                    }
-                                }}
-                            >
+                            <TouchableOpacity onPress={props.openSettings}>
                                 <Ionicons
                                     name="settings"
                                     size={24}
@@ -319,12 +307,6 @@ const ProfileHeader: React.FC<Props> = (props) => {
                             activeOpacity={0.5}
                             onPress={() => showTierModal(true)}
                         >
-                            {tutorialActive &&
-                                tutorialScreen === TutorialScreen.TapTier && (
-                                    <View style={styles.pulseContainer}>
-                                        <UpdateIndicator dotSize={4} />
-                                    </View>
-                                )}
                             <Tier size={40} ranking={props.user.ranking} />
                         </TouchableOpacity>
                         <View style={styles.userLevelContainer}>
@@ -417,11 +399,7 @@ const ProfileHeader: React.FC<Props> = (props) => {
                         <TouchableOpacity
                             style={styles.followsButton}
                             activeOpacity={0.5}
-                            onPress={() => {
-                                if (!tutorialActive) {
-                                    props.openFollows();
-                                }
-                            }}
+                            onPress={props.openFollows}
                         >
                             <Text style={styles.followNumeralText}>
                                 {toRep(props.user.followers)}

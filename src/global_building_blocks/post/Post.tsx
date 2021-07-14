@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
     Animated,
     Image,
@@ -35,11 +35,6 @@ import { DIGIBOLT_PRICE, USER_TYPENAME } from "../../global_types/UserTypes";
 import { challengeCheck } from "../../global_gql/challenge_check/challenge_check";
 import PicModal from "./building_blocks/pic_modal/PicModal";
 import OptionsModal from "./building_blocks/options_modal/OptionsModal";
-import {
-    TutorialContext,
-    TutorialScreen,
-} from "../../view_tree/tutorial/context/tutorial_context/TutorialContext";
-import UpdateIndicator from "../../view_tree/main/routes/tab_nav/building_blocks/update_indicator/UpdateIndicator";
 import SymbolModal from "./building_blocks/symbol_modal/SymbolModal";
 import LightningFlyer from "./building_blocks/lightning_flyer/LightningFlyer";
 import LikeFlyer from "./building_blocks/like_flyer/LikeFlyer";
@@ -198,10 +193,6 @@ const Post: React.FC<Props> = (props) => {
         return animation.stop;
     }, []);
 
-    const { tutorialActive, tutorialScreen, advanceTutorial } = useContext(
-        TutorialContext
-    );
-
     const [errorTimeout, setErrorTimeout] = useState<number | undefined>(
         undefined
     );
@@ -329,7 +320,7 @@ const Post: React.FC<Props> = (props) => {
                                     }
                                 },
                             }));
-                    }, 1000)
+                    }, 600)
                 );
             } else {
                 setError("You need 10 digicoin to get a digibolt");
@@ -380,16 +371,7 @@ const Post: React.FC<Props> = (props) => {
                 onConfirm={async () => {
                     setPostModalLoading(true);
 
-                    if (tutorialActive) {
-                        !!props.onMessage &&
-                            props.onMessage(
-                                props.post.user,
-                                props.post.id,
-                                props.post.responseCost
-                            );
-
-                        setTimeout(advanceTutorial, 500);
-                    } else if (props.userBolts < props.post.responseCost) {
+                    if (props.userBolts < props.post.responseCost) {
                         setPostModalError("You don't have enough digibolts!");
                     } else {
                         try {
@@ -440,7 +422,6 @@ const Post: React.FC<Props> = (props) => {
                 ]}
                 activeOpacity={1}
                 onPress={() =>
-                    !tutorialActive &&
                     props.postIsLink &&
                     !!props.openPost &&
                     props.openPost(props.post.id)
@@ -520,7 +501,6 @@ const Post: React.FC<Props> = (props) => {
                             <View style={styles.postHeaderTop}>
                                 <TouchableOpacity
                                     onPress={() =>
-                                        !tutorialActive &&
                                         props.openUser(props.post.uid)
                                     }
                                     activeOpacity={0.5}
@@ -571,7 +551,6 @@ const Post: React.FC<Props> = (props) => {
                                         style={styles.communityTargetButton}
                                         activeOpacity={0.5}
                                         onPress={() =>
-                                            !tutorialActive &&
                                             !!props.post.cmid &&
                                             props.openCommunity(props.post.cmid)
                                         }
@@ -713,18 +692,8 @@ const Post: React.FC<Props> = (props) => {
                                         uid === props.post.uid ? 1 : 0.5
                                     }
                                     onPress={() => {
-                                        if (tutorialActive) {
-                                            if (
-                                                props.post.id === "tut0" &&
-                                                tutorialScreen ===
-                                                    TutorialScreen.TapRespond
-                                            ) {
-                                                setPostModalVisible(true);
-                                            }
-                                        } else {
-                                            uid !== props.post.uid &&
-                                                setPostModalVisible(true);
-                                        }
+                                        uid !== props.post.uid &&
+                                            setPostModalVisible(true);
                                     }}
                                 >
                                     <View
@@ -738,18 +707,6 @@ const Post: React.FC<Props> = (props) => {
                                                 : {},
                                         ]}
                                     >
-                                        {tutorialActive &&
-                                            tutorialScreen ===
-                                                TutorialScreen.TapRespond &&
-                                            props.post.id === "tut0" && (
-                                                <View
-                                                    style={
-                                                        styles.responsePulseContainer
-                                                    }
-                                                >
-                                                    <UpdateIndicator />
-                                                </View>
-                                            )}
                                         <Entypo
                                             name="pencil"
                                             size={24}

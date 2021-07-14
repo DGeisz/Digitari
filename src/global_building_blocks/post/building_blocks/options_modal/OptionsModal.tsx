@@ -26,7 +26,6 @@ import { USER_TYPENAME } from "../../../../global_types/UserTypes";
 import { modalStyles } from "../../../../global_styles/OptionsModalStyles";
 import { palette } from "../../../../global_styles/Palette";
 import * as Linking from "expo-linking";
-import { TutorialContext } from "../../../../view_tree/tutorial/context/tutorial_context/TutorialContext";
 
 const prefix = Linking.createURL("/");
 
@@ -140,13 +139,11 @@ const OptionsModal: React.FC<Props> = (props) => {
         deletePostMutation().then();
     };
 
-    const { tutorialActive } = useContext(TutorialContext);
-
     return (
         <>
             <TouchableOpacity
                 style={modalStyles.iconContainer}
-                onPress={() => !tutorialActive && setOptionsVisible(true)}
+                onPress={() => setOptionsVisible(true)}
             >
                 <Entypo
                     name="dots-three-horizontal"

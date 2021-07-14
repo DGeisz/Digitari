@@ -10,7 +10,6 @@ import {
     useMutation,
     useQuery,
 } from "@apollo/client";
-import { GET_FEED, GetFeedData, GetFeedVariables } from "../../gql/Queries";
 import {
     GET_USER,
     GetUserQueryData,
@@ -21,11 +20,6 @@ import {
     DonateToPostData,
     DonateToPostVariables,
 } from "../../../../../../../../global_building_blocks/post/gql/Mutations";
-import {
-    TutorialContext,
-    TutorialScreen,
-} from "../../../../../../../tutorial/context/tutorial_context/TutorialContext";
-import { useTutorialPosts } from "../../hooks/tutorial_posts/tutorial_posts";
 import {
     FlatList,
     RefreshControl,
@@ -52,6 +46,7 @@ import { addTransaction } from "../../../../../../hooks/use_realtime_updates/sub
 import NewButton from "../../../../../../../../global_building_blocks/new_button/NewButton";
 import { YourFeedNavProp } from "../../MainFeedNavTypes";
 import { FeedContext, FeedType } from "../../MainFeedContext";
+import { GET_FEED, GetFeedData, GetFeedVariables } from "./gql/Queries";
 
 const nextPostsReward = 80;
 
@@ -84,7 +79,6 @@ const YourFeed: React.FC<Props> = (props) => {
 
     const {
         openPost,
-        openNew,
         openCommunity,
         openUser,
         openNewMessage,
@@ -116,77 +110,24 @@ const YourFeed: React.FC<Props> = (props) => {
     const [fetchMoreLen, setFetchMoreLen] = useState<number>(0);
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
-    const {
-        tutorialActive,
-        tutorialScreen,
-        advanceTutorial,
-        setScreen,
-    } = useContext(TutorialContext);
-    const tutPosts = useTutorialPosts();
-
     const listRef = useRef<FlatList>(null);
-
-    // useEffect(() => {
-    //     return props.navigation.addListener("focus", async () => {
-    //         if (tutorialActive && tutorialScreen === TutorialScreen.PopToFeed) {
-    //             await createTimeout(1000);
-    //
-    //             for (const coin of [10, 10, 10, 10, 30, 80]) {
-    //                 addNewReceipt(coin);
-    //                 await createTimeout(80);
-    //             }
-    //
-    //             await createTimeout(1000);
-    //             advanceTutorial();
-    //         }
-    //     });
-    // }, [tutorialActive, tutorialScreen]);
 
     const [lastFetchTime, setLastFetch] = useState<number>(Date.now());
 
-    const finalFeed = tutorialActive
-        ? tutPosts
-        : !!data?.feed
-        ? data.feed.filter((post) => !!post)
-        : [];
-
-    // const userCoin = tutorialActive
-    //     ? 400
-    //     : !!selfData?.user
-    //     ? selfData.user.coin
-    //     : 0;
+    const finalFeed = !!data?.feed ? data.feed.filter((post) => !!post) : [];
 
     const userCoin = !!selfData?.user ? selfData.user.coin : 0;
     const userBolts = !!selfData?.user ? selfData.user.bolts : 0;
 
     const firstName = localFirstName();
 
-    const userFirstName = tutorialActive
-        ? firstName
-        : !!selfData?.user
+    const userFirstName = !!selfData?.user
         ? selfData.user.firstName
         : firstName;
 
     useEffect(() => {
         setLastFetch(Date.now());
     }, [finalFeed.length]);
-    //
-    // useEffect(() => {
-    //     if (tutorialActive) {
-    //         if (tutorialScreen === TutorialScreen.ExplainFeedReward) {
-    //             setLastFetch(Date.now());
-    //             setTimeout(() => {
-    //                 !!listRef.current && listRef.current.scrollToEnd();
-    //             }, 500);
-    //         } else if (tutorialScreen === TutorialScreen.LikeFirstPost) {
-    //             !!listRef.current &&
-    //                 listRef.current.scrollToOffset({
-    //                     offset: 0,
-    //                     animated: true,
-    //                 });
-    //         }
-    //     }
-    // }, [tutorialActive, tutorialScreen]);
 
     const { cache } = useApolloClient();
 
@@ -257,10 +198,7 @@ const YourFeed: React.FC<Props> = (props) => {
                             setStillSpin(false);
                         }, 1000);
 
-                        if (!tutorialActive) {
-                            setFetchMoreLen(0);
-                            refetch && refetch();
-                        }
+                        !!fetchMoreLen && setFetchMoreLen(0);
                     }}
                     colors={[
                         palette.deepBlue,
@@ -276,123 +214,96 @@ const YourFeed: React.FC<Props> = (props) => {
                 ) : (
                     <>
                         {(() => {
-                            if (tutorialActive) {
-                                if (
-                                    tutorialScreen ===
-                                        TutorialScreen.ExplainFeedReward ||
-                                    tutorialScreen ===
-                                        TutorialScreen.CollectFeedReward
-                                ) {
-                                    return (
-                                        <CoinCountdown
-                                            referenceTime={lastFetchTime}
-                                            onNextPosts={() => {
-                                                addNewReceipt(nextPostsReward);
+                            return finalFeed.length !== fetchMoreLen &&
+                                !!finalFeed.length ? (
+                                <CoinCountdown
+                                    referenceTime={lastFetchTime}
+                                    onNextPosts={async () => {
+                                        const lastTime =
+                                            finalFeed[finalFeed.length - 1]
+                                                .time;
+                                        const ffLen = finalFeed.length;
 
-                                                advanceTutorial();
+                                        setFetchMoreLen(ffLen);
 
-                                                setTimeout(
-                                                    advanceTutorial,
-                                                    1000
-                                                );
-                                            }}
-                                            amount={nextPostsReward}
-                                            accelerate
-                                        />
-                                    );
-                                }
-                            } else {
-                                return finalFeed.length !== fetchMoreLen &&
-                                    !!finalFeed.length ? (
-                                    <CoinCountdown
-                                        referenceTime={lastFetchTime}
-                                        onNextPosts={async () => {
-                                            const lastTime =
-                                                finalFeed[finalFeed.length - 1]
-                                                    .time;
-                                            const ffLen = finalFeed.length;
+                                        const transaction: TransactionType = {
+                                            tid: localUid(),
+                                            time: Date.now().toString(),
+                                            coin: nextPostsReward,
+                                            message: "Viewed feed",
+                                            transactionType:
+                                                TransactionTypesEnum.Post,
+                                            data: "",
+                                            __typename: TRANSACTION_TYPENAME,
+                                        };
 
-                                            setFetchMoreLen(ffLen);
+                                        /*
+                                         * Add receipt for animation
+                                         */
+                                        addNewReceipt(nextPostsReward);
 
-                                            const transaction: TransactionType = {
-                                                tid: localUid(),
-                                                time: Date.now().toString(),
-                                                coin: nextPostsReward,
-                                                message: "Viewed feed",
-                                                transactionType:
-                                                    TransactionTypesEnum.Post,
-                                                data: "",
-                                                __typename: TRANSACTION_TYPENAME,
-                                            };
-
-                                            /*
-                                             * Add receipt for animation
-                                             */
-                                            addNewReceipt(nextPostsReward);
-
-                                            /*
-                                             * Notify user of new transaction update
-                                             */
-                                            cache.modify({
-                                                id: cache.identify({
-                                                    __typename: USER_TYPENAME,
-                                                    id: localUid(),
-                                                }),
-                                                fields: {
-                                                    newTransactionUpdate() {
-                                                        return true;
-                                                    },
-                                                    transTotal(existing) {
-                                                        return (
-                                                            existing +
-                                                            nextPostsReward
-                                                        );
-                                                    },
+                                        /*
+                                         * Notify user of new transaction update
+                                         */
+                                        cache.modify({
+                                            id: cache.identify({
+                                                __typename: USER_TYPENAME,
+                                                id: localUid(),
+                                            }),
+                                            fields: {
+                                                newTransactionUpdate() {
+                                                    return true;
                                                 },
-                                            });
+                                                transTotal(existing) {
+                                                    return (
+                                                        existing +
+                                                        nextPostsReward
+                                                    );
+                                                },
+                                            },
+                                        });
 
-                                            addTransaction(transaction, cache);
+                                        addTransaction(transaction, cache);
 
-                                            !!fetchMore &&
-                                                (await fetchMore({
-                                                    variables: {
-                                                        lastTime,
-                                                    },
-                                                }));
-                                        }}
-                                        showSkip
-                                        onSkip={async () => {
-                                            const lastTime =
-                                                finalFeed[finalFeed.length - 1]
-                                                    .time;
-                                            const ffLen = finalFeed.length;
+                                        !!fetchMore &&
+                                            (await fetchMore({
+                                                variables: {
+                                                    lastTime,
+                                                },
+                                            }));
+                                    }}
+                                    showSkip
+                                    onSkip={async () => {
+                                        const lastTime =
+                                            finalFeed[finalFeed.length - 1]
+                                                .time;
+                                        const ffLen = finalFeed.length;
 
-                                            setFetchMoreLen(ffLen);
+                                        setFetchMoreLen(ffLen);
 
-                                            !!fetchMore &&
-                                                (await fetchMore({
-                                                    variables: {
-                                                        lastTime,
-                                                        skipReward: true,
-                                                    },
-                                                }));
-                                        }}
-                                        amount={nextPostsReward}
-                                    />
-                                ) : (
-                                    <View style={styles.noFeedContainer}>
-                                        <Text style={styles.noFeedText}>
-                                            Your feed is all out of posts!
-                                            {"\n\n"}
-                                            Follow more users or communities to
-                                            receive more posts in your feed.
-                                            {"\n\n"}
-                                            You can still earn digicoin by
-                                            viewing user or community posts.
-                                        </Text>
-                                    </View>
-                                );
-                            }
+                                        !!fetchMore &&
+                                            (await fetchMore({
+                                                variables: {
+                                                    lastTime,
+                                                    skipReward: true,
+                                                },
+                                            }));
+                                    }}
+                                    amount={nextPostsReward}
+                                />
+                            ) : (
+                                <View style={styles.noFeedContainer}>
+                                    <Text style={styles.noFeedText}>
+                                        Your feed is all out of posts!
+                                        {"\n\n"}
+                                        Follow more users or communities to
+                                        receive more posts in your feed.
+                                        {"\n\n"}
+                                        You can still earn digicoin by viewing
+                                        user or community posts.
+                                    </Text>
+                                </View>
+                            );
                         })()}
                         <View style={globalScreenStyles.listFooterBuffer} />
                     </>

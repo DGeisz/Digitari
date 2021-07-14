@@ -1,11 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import * as Linking from "expo-linking";
 import { Text, TouchableOpacity, View, Share } from "react-native";
 import { modalStyles } from "../../../../../global_styles/OptionsModalStyles";
 import { Entypo } from "@expo/vector-icons";
 import { palette } from "../../../../../global_styles/Palette";
 import Modal from "react-native-modal";
-import { TutorialContext } from "../../../../../view_tree/tutorial/context/tutorial_context/TutorialContext";
 
 const prefix = Linking.createURL("/");
 
@@ -17,16 +16,12 @@ interface Props {
 const UserOptionsModal: React.FC<Props> = (props) => {
     const [optionsVisible, setOptionsVisible] = useState<boolean>(false);
 
-    const { tutorialActive } = useContext(TutorialContext);
-
     return (
         <>
             <TouchableOpacity
                 style={modalStyles.userIconContainer}
                 onPress={() => {
-                    if (!tutorialActive) {
-                        setOptionsVisible(true);
-                    }
+                    setOptionsVisible(true);
                 }}
             >
                 <Entypo

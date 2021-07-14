@@ -129,18 +129,7 @@ const MessageInput: React.FC<Props> = ({
                     }}
                 >
                     <View
-                        style={
-                            // {
-                            // position: "absolute",
-                            // left: 0,
-                            // right: 0,
-                            // bottom: 0,
-                            // top: 0,
-                            // top: 20,
-                            // height: childHeight,
-                            // }
-                            basicLayouts.flexGrid1
-                        }
+                        style={basicLayouts.flexGrid1}
                         pointerEvents="box-none"
                     >
                         {children}

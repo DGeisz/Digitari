@@ -10,5 +10,5 @@ export const FeedContext = createContext<{
     setType: (feedType: FeedType) => void;
 }>({
     feedType: FeedType.AllPosts,
-    setType: (feedType) => {},
+    setType: () => {},
 });

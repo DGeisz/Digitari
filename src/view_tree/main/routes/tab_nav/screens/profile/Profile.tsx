@@ -18,22 +18,15 @@ import UserPosts from "../../../../../../global_building_blocks/user_sub_screens
 import UserConvos from "../../../../../../global_building_blocks/user_sub_screens/user_convos/UserConvos";
 import UserChallenges from "../../../../../../global_building_blocks/user_sub_screens/user_challenges/UserChallenges";
 import UserStats from "../../../../../../global_building_blocks/user_sub_screens/user_stats/UserStats";
-import {
-    localFirstName,
-    localLastName,
-    localUid,
-} from "../../../../../../global_state/UserState";
+import { localUid } from "../../../../../../global_state/UserState";
 import { styles } from "./ProfileStyles";
 import { SCREEN_LARGER_THAN_CONTENT } from "../../../../../../global_constants/screen_constants";
-import InstructionModal from "./building_blocks/instruction_modal/InstructionModal";
-import {
-    TutorialContext,
-    TutorialScreen,
-} from "../../../../../tutorial/context/tutorial_context/TutorialContext";
-import { tutorialUser } from "./data/tutorial_user/tutorial_user";
 import { UserType } from "../../../../../../global_types/UserTypes";
 import { ProfileNavProp } from "../../TabNavTypes";
-import { zariahPost } from "../main_feed/hooks/tutorial_posts/tutorial_posts";
+import {
+    firstTimeOpeningApp,
+    openedAppFirstTime,
+} from "../../../../../../global_state/FirstImpressionsState";
 
 const Tab = createMaterialCollapsibleTopTabNavigator();
 
@@ -56,18 +49,18 @@ const Profile: React.FC<Props> = (props) => {
         openShop,
     } = useContext(TabNavContext);
 
-    const { tutorialActive, tutorialScreen, setScreen } = useContext(
-        TutorialContext
-    );
-
+    /*
+     * If this is the first time opening
+     * the app, mark this has been done
+     */
     useEffect(() => {
-        if (
-            tutorialActive &&
-            tutorialScreen === TutorialScreen.ExplainChallenges
-        ) {
-            props.navigation.navigate("Profile", { screen: "UserChallenges" });
+        if (firstTimeOpeningApp()) {
+            openedAppFirstTime();
         }
-    }, [tutorialActive, tutorialScreen]);
+        // else {
+        //     removeAppFirstTime();
+        // }
+    }, []);
 
     const uid = localUid();
 
@@ -81,41 +74,19 @@ const Profile: React.FC<Props> = (props) => {
         },
     });
 
-    if (
-        !tutorialActive &&
-        !data?.user &&
-        networkStatus === NetworkStatus.loading
-    ) {
+    if (!data?.user && networkStatus === NetworkStatus.loading) {
         return <LoadingWheel />;
     }
 
-    if (!tutorialActive && error) {
+    if (!!error) {
         return <ErrorMessage refresh={refetch} />;
     }
 
-    const user: UserType | undefined = tutorialActive
-        ? Object.assign(tutorialUser, {
-              firstName: localFirstName(),
-              lastName: localLastName(),
-          })
-        : data?.user;
+    const user: UserType | undefined = data?.user;
 
     if (!!user) {
         return (
             <>
-                <InstructionModal
-                    navToFirstConvo={() => {
-                        setTimeout(() => {
-                            openNewMessage(
-                                zariahPost.user,
-                                zariahPost.id,
-                                zariahPost.responseCost
-                            );
-                            openConvo("tutConvo0", zariahPost.id);
-                            setScreen(TutorialScreen.ExplainSuccess);
-                        }, 700);
-                    }}
-                />
                 <View style={basicLayouts.flexGrid1}>
                     <Tab.Navigator
                         collapsibleOptions={{
@@ -242,7 +213,7 @@ const Profile: React.FC<Props> = (props) => {
         return (
             <View style={styles.noUserContainer}>
                 <Text style={styles.noUserText}>
-                    Your profile isn't set up yet
+                    Hmm... It appears your profile isn't set up yet.
                 </Text>
             </View>
         );

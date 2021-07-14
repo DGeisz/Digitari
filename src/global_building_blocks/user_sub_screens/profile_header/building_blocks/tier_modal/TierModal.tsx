@@ -1,13 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
 import Modal from "react-native-modal";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./TierModalStyles";
 import TierInfo from "./building_blocks/tier_info/TierInfo";
 import { TierEnum } from "../../../../../global_types/TierTypes";
-import {
-    TutorialContext,
-    TutorialScreen,
-} from "../../../../../view_tree/tutorial/context/tutorial_context/TutorialContext";
 import { DOUBLE_NEWLINE } from "../../../../../global_utils/StringUtils";
 
 interface Props {
@@ -16,10 +12,6 @@ interface Props {
 }
 
 const TierModal: React.FC<Props> = (props) => {
-    const { tutorialActive, tutorialScreen, advanceTutorial } = useContext(
-        TutorialContext
-    );
-
     return (
         <Modal isVisible={props.visible}>
             <View style={styles.modalOuterContainer}>
@@ -33,11 +25,8 @@ const TierModal: React.FC<Props> = (props) => {
                                 Your tier basically shows the world whether
                                 you're nice or a total troll.{DOUBLE_NEWLINE}
                                 Your ranking qualifies you for different tiers,
-                                so{" "}
-                                <Text style={styles.boldText}>
-                                    to increase your tier, you gotta boost your
-                                    ranking.
-                                </Text>
+                                so to increase your tier, you gotta boost your
+                                ranking.
                                 {DOUBLE_NEWLINE}
                                 Here are the 10 tiers:
                             </Text>
@@ -56,18 +45,7 @@ const TierModal: React.FC<Props> = (props) => {
                     <View style={styles.modalFooter}>
                         <TouchableOpacity
                             style={styles.closeButton}
-                            onPress={() => {
-                                props.hide();
-
-                                if (
-                                    tutorialActive &&
-                                    tutorialScreen === TutorialScreen.TapTier
-                                ) {
-                                    setTimeout(() => {
-                                        advanceTutorial();
-                                    }, 500);
-                                }
-                            }}
+                            onPress={props.hide}
                         >
                             <Text style={styles.closeButtonText}>Close</Text>
                         </TouchableOpacity>

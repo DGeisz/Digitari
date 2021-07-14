@@ -27,21 +27,11 @@ const DigicoinModal: React.FC<Props> = (props) => {
                     <Text style={modalStyles.modalMainText}>
                         Digicoin is, well, everything.
                         {DOUBLE_NEWLINE}
-                        <Text style={modalStyles.boldText}>
-                            Wanna to get famous?
-                        </Text>{" "}
-                        Digicoin will get you there. Just create a post to
-                        unlock the power of the coin.
+                        Wanna get famous? Digicoin will get you there. Just
+                        create a post to unlock the power of the coin.
                         {DOUBLE_NEWLINE}
-                        If you're new,{" "}
-                        <Text style={modalStyles.boldText}>
-                            invite your friends
-                        </Text>{" "}
-                        and{" "}
-                        <Text style={modalStyles.boldText}>
-                            complete challenges{" "}
-                        </Text>
-                        to earn a ton of coin.
+                        If you're new, invite your friends and complete
+                        challenges to earn a ton of coin.
                     </Text>
                     <View style={modalStyles.modalFooter}>
                         <TouchableOpacity

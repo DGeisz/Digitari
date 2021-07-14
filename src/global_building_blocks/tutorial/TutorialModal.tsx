@@ -1,13 +1,10 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import { View } from "react-native";
-import { instructionStyles } from "../../../../global_styles/InstructionStyles";
-import TutorialFooter from "../../../../global_building_blocks/tutorial/TutorialFooter";
-import { TutorialScreen } from "../../context/tutorial_context/TutorialContext";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { instructionStyles } from "../../global_styles/InstructionStyles";
+import TutorialFooter from "./TutorialFooter";
 
 interface Props {
-    content: ReactNode;
-    goBackScreen: TutorialScreen;
     goBack?: () => void;
     showGoBack?: boolean;
     top: boolean;
@@ -31,9 +28,8 @@ const TutorialModal: React.FC<Props> = (props) => {
                 ]}
             >
                 <View style={instructionStyles.innerContainer}>
-                    {props.content}
+                    {props.children}
                     <TutorialFooter
-                        goBackScreen={props.goBackScreen}
                         goBack={props.goBack}
                         showGoBack={props.showGoBack}
                     />

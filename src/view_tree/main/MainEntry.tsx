@@ -34,10 +34,6 @@ import { styles } from "./MainEntryStyles";
 import Store from "./screens/store/Store";
 import PrivacyPolicy from "./screens/settings/screens/privacy_policy/PrivacyPolicy";
 import TermsAndConditions from "./screens/settings/screens/terms_and_conditions/TermsAndConditions";
-import {
-    TutorialContext,
-    TutorialScreen,
-} from "../tutorial/context/tutorial_context/TutorialContext";
 import Shop from "./screens/shop/Shop";
 import { LastPostsFetchContext } from "./context/last_fetch_time_context";
 
@@ -125,19 +121,6 @@ const MainEntry: React.FC = () => {
         }
     }, []);
 
-    /*
-     * Handle the tutorial
-     */
-    const { tutorialActive, tutorialScreen, setTutorialActive } = useContext(
-        TutorialContext
-    );
-
-    useEffect(() => {
-        if (tutorialActive && tutorialScreen === TutorialScreen.Finish) {
-            setTutorialActive(false);
-        }
-    }, [tutorialActive, tutorialScreen]);
-
     return (
         <LastPostsFetchContext.Provider
             value={{
@@ -154,9 +137,7 @@ const MainEntry: React.FC = () => {
                         <TouchableOpacity
                             style={styles.coinContainer}
                             onPress={() => {
-                                if (!tutorialActive) {
-                                    navigation.navigate("Store");
-                                }
+                                navigation.navigate("Store");
                             }}
                         >
                             <Text style={styles.coinText}>+</Text>
@@ -177,9 +158,7 @@ const MainEntry: React.FC = () => {
                             headerLeft: () => (
                                 <TouchableOpacity
                                     onPress={() => {
-                                        if (!tutorialActive) {
-                                            navigation.navigate("Invite");
-                                        }
+                                        navigation.navigate("Invite");
                                     }}
                                 >
                                     <Text style={styles.inviteText}>

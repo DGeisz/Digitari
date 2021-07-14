@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
     Image,
     ScrollView,
@@ -51,13 +51,6 @@ import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
 import InfoModal from "./building_blocks/info_modal/InfoModal";
 import LinkPreview from "../../../../../../global_building_blocks/link_preview/LinkPreview";
 import { challengeCheck } from "../../../../../../global_gql/challenge_check/challenge_check";
-import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
-import {
-    TutorialContext,
-    TutorialScreen,
-} from "../../../../../tutorial/context/tutorial_context/TutorialContext";
-import { tutorialUser } from "../../../../routes/tab_nav/screens/profile/data/tutorial_user/tutorial_user";
-import { tutorialCommunity } from "./data/tutorial_community/tutorial_community";
 
 interface Props {
     navigation: NewPostNavProp;
@@ -230,10 +223,6 @@ const NewPost: React.FC<Props> = (props) => {
     });
 
     const post = async () => {
-        if (tutorialActive) {
-            return;
-        }
-
         if (!content) {
             setErrorMessage("Enter post content " + content);
             return;
@@ -361,73 +350,25 @@ const NewPost: React.FC<Props> = (props) => {
      */
     const bufferHeight = useAuthKeyboardBuffer();
 
-    /*
-     * Tutorial
-     */
-    const { tutorialActive, tutorialScreen, advanceTutorial } = useContext(
-        TutorialContext
-    );
-
-    useEffect(() => {
-        if (tutorialActive) {
-            setTarget(PostTarget.Community);
-
-            if (tutorialScreen === TutorialScreen.ReturnToFeed) {
-                setTimeout(() => {
-                    props.navigation.goBack();
-                    advanceTutorial();
-                }, 700);
-            }
-        } else {
-            !!contentRef.current && contentRef.current.focus();
-        }
-
-        const callback = (e: any) => {
-            if (tutorialActive) {
-                if (
-                    tutorialScreen !== TutorialScreen.IntroduceDigicoin &&
-                    tutorialScreen !== TutorialScreen.ReturnToFeed
-                ) {
-                    e.preventDefault();
-                }
-            }
-        };
-
-        return props.navigation.addListener("beforeRemove", callback);
-    }, [tutorialActive, tutorialScreen]);
-
-    if (!tutorialActive && loading && !data?.user) {
+    if (loading && !data?.user) {
         return <LoadingWheel />;
     }
 
-    if (!tutorialActive && error) {
+    if (!!error) {
         return <ErrorMessage refresh={refetch} />;
     }
 
-    const user = tutorialActive ? tutorialUser : data?.user;
-    const community = tutorialActive
-        ? tutorialCommunity
-        : postCommData?.community;
+    const user = data?.user;
+    const community = postCommData?.community;
 
     if (!!user) {
         return (
             <>
-                <InstructionsModal
-                    goBack={() => {
-                        setTimeout(() => props.navigation.goBack(), 700);
-                    }}
-                />
                 <ScrollView style={styles.newPostContainer} ref={scrollRef}>
                     <View style={styles.postFieldContainer}>
                         <Text style={styles.fieldTitle}>Post</Text>
                         <TextInput
                             ref={contentRef}
-                            editable={!tutorialActive}
-                            onBlur={() => {
-                                if (tutorialActive && content.length > 10) {
-                                    advanceTutorial();
-                                }
-                            }}
                             keyboardType="twitter"
                             style={styles.contentInput}
                             placeholder="What's on your mind?"
@@ -454,9 +395,7 @@ const NewPost: React.FC<Props> = (props) => {
                                         ? styles.activeOption
                                         : styles.inactiveOption
                                 }
-                                onPress={() =>
-                                    !tutorialActive && setAddOn(PostAddOn.None)
-                                }
+                                onPress={() => setAddOn(PostAddOn.None)}
                             >
                                 <Text
                                     style={
@@ -474,9 +413,7 @@ const NewPost: React.FC<Props> = (props) => {
                                         ? styles.activeOption
                                         : styles.inactiveOption
                                 }
-                                onPress={() =>
-                                    !tutorialActive && setAddOn(PostAddOn.Text)
-                                }
+                                onPress={() => setAddOn(PostAddOn.Text)}
                             >
                                 <Text
                                     style={
@@ -494,9 +431,7 @@ const NewPost: React.FC<Props> = (props) => {
                                         ? styles.activeOption
                                         : styles.inactiveOption
                                 }
-                                onPress={() =>
-                                    !tutorialActive && setAddOn(PostAddOn.Image)
-                                }
+                                onPress={() => setAddOn(PostAddOn.Image)}
                             >
                                 <Text
                                     style={
@@ -514,9 +449,7 @@ const NewPost: React.FC<Props> = (props) => {
                                         ? styles.activeOption
                                         : styles.inactiveOption
                                 }
-                                onPress={() =>
-                                    !tutorialActive && setAddOn(PostAddOn.Link)
-                                }
+                                onPress={() => setAddOn(PostAddOn.Link)}
                             >
                                 <Text
                                     style={
@@ -642,8 +575,7 @@ const NewPost: React.FC<Props> = (props) => {
                                         : styles.inactiveOption
                                 }
                                 onPress={() => {
-                                    !tutorialActive &&
-                                        setTarget(PostTarget.MyFollowers);
+                                    setTarget(PostTarget.MyFollowers);
                                 }}
                             >
                                 <Text
@@ -725,7 +657,6 @@ const NewPost: React.FC<Props> = (props) => {
                                 <TouchableOpacity
                                     style={styles.createCommunityButton}
                                     onPress={() =>
-                                        !tutorialActive &&
                                         props.navigation.navigate(
                                             "NewCommunity"
                                         )
@@ -756,7 +687,6 @@ const NewPost: React.FC<Props> = (props) => {
                         <TextInput
                             ref={recipientsRef}
                             style={styles.recipientsInput}
-                            editable={!tutorialActive}
                             placeholder="How many people should see this?"
                             onFocus={() =>
                                 setTimeout(() => {
@@ -764,12 +694,6 @@ const NewPost: React.FC<Props> = (props) => {
                                         scrollRef.current.scrollToEnd();
                                 }, 100)
                             }
-                            onBlur={() => {
-                                if (tutorialActive) {
-                                    setRecipients(20);
-                                    advanceTutorial();
-                                }
-                            }}
                             keyboardType="numeric"
                             onChangeText={(raw) => {
                                 const noCommas = raw.replace(/\D/g, "");

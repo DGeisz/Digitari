@@ -17,7 +17,6 @@ import {
     DeleteConvoVariables,
 } from "./gql/Mutations";
 import * as Linking from "expo-linking";
-import { TutorialContext } from "../../../../../tutorial/context/tutorial_context/TutorialContext";
 
 const prefix = Linking.createURL("/");
 
@@ -77,13 +76,11 @@ const ConvoOptionsModal: React.FC<Props> = (props) => {
         setDeleteVisible(false);
     };
 
-    const { tutorialActive } = useContext(TutorialContext);
-
     return (
         <>
             <TouchableOpacity
                 style={modalStyles.iconContainer}
-                onPress={() => !tutorialActive && setOptionsVisible(true)}
+                onPress={() => setOptionsVisible(true)}
             >
                 <Entypo
                     name="dots-three-horizontal"

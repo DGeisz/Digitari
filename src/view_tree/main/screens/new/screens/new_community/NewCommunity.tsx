@@ -8,16 +8,11 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
-import { Input } from "react-native-elements";
 import { styles } from "./NewCommunityStyles";
 import { palette } from "../../../../../../global_styles/Palette";
-import { basicLayouts } from "../../../../../../global_styles/BasicLayouts";
 import CoinBox from "../../../../../../global_building_blocks/coin_box/CoinBox";
-import { StoreObject, useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import {
-    CREATE_COMMUNITY_CHECK,
-    CreateCommunityCheckQueryData,
-    CreateCommunityCheckQueryVariables,
     USER_COIN_CHECK,
     UserCoinCheckData,
     UserCoinCheckVariables,

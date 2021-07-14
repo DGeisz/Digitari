@@ -7,7 +7,6 @@ import { Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./TransactionStyles";
 import { millisToRep } from "../../../../../../../../global_utils/TimeRepUtils";
 import CoinBox from "../../../../../../../../global_building_blocks/coin_box/CoinBox";
-import { TutorialContext } from "../../../../../../../tutorial/context/tutorial_context/TutorialContext";
 
 interface Props {
     transaction: TransactionType;
@@ -19,8 +18,6 @@ interface Props {
 }
 
 const Transaction: React.FC<Props> = (props) => {
-    const { tutorialActive } = useContext(TutorialContext);
-
     return (
         <TouchableOpacity
             activeOpacity={0.5}
@@ -29,23 +26,19 @@ const Transaction: React.FC<Props> = (props) => {
                 { borderBottomWidth: props.showBottomBorder ? 1 : 0 },
             ]}
             onPress={() => {
-                if (!tutorialActive) {
-                    switch (props.transaction.transactionType) {
-                        case TransactionTypesEnum.User:
-                            return props.openUser(props.transaction.data);
-                        case TransactionTypesEnum.Convo:
-                            const [cvid, pid] = props.transaction.data.split(
-                                ":"
-                            );
+                switch (props.transaction.transactionType) {
+                    case TransactionTypesEnum.User:
+                        return props.openUser(props.transaction.data);
+                    case TransactionTypesEnum.Convo:
+                        const [cvid, pid] = props.transaction.data.split(":");
 
-                            if (!!cvid && !!pid) {
-                                return props.openConvo(cvid, pid);
-                            }
+                        if (!!cvid && !!pid) {
+                            return props.openConvo(cvid, pid);
+                        }
 
-                            break;
-                        case TransactionTypesEnum.Challenge:
-                            return props.openChallenges();
-                    }
+                        break;
+                    case TransactionTypesEnum.Challenge:
+                        return props.openChallenges();
                 }
             }}
         >
@@ -60,10 +53,7 @@ const Transaction: React.FC<Props> = (props) => {
                 />
             </View>
             <View style={styles.messageContainer}>
-                <Text
-                    style={styles.messageText}
-                    numberOfLines={tutorialActive ? 2 : 3}
-                >
+                <Text style={styles.messageText} numberOfLines={3}>
                     {props.transaction.message}
                 </Text>
             </View>

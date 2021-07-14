@@ -37,14 +37,11 @@ const LevelInfoModal: React.FC<Props> = (props) => {
                             And to level up, you need to spend digicoin on posts
                             or digibolts.{DOUBLE_NEWLINE}
                             Right now {isMe ? "you are" : "this user is"} at
-                            level {toCommaRep(level)}.{" "}
-                            <Text style={styles.boldText}>
-                                To reach level {toCommaRep(level + 1)},
-                                {isMe ? " you need" : " this user needs"} to
-                                spend {toCommaRep(levelGoal - levelProgress)}{" "}
-                                more digicoin.{" "}
-                            </Text>
-                            {DOUBLE_NEWLINE}
+                            level {toCommaRep(level)}. To reach level{" "}
+                            {toCommaRep(level + 1)},
+                            {isMe ? " you need" : " this user needs"} to spend{" "}
+                            {toCommaRep(levelGoal - levelProgress)} more
+                            digicoin. {DOUBLE_NEWLINE}
                             {isMe ? `Go get em', tiger.` : ""}
                         </Text>
                         <View style={styles.modalFooter}>

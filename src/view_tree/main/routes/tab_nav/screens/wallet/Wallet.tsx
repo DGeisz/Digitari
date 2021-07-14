@@ -43,12 +43,6 @@ import {
     GetUpdateFlagsVariables,
 } from "../../gql/Queries";
 import { useIsFocused } from "@react-navigation/native";
-import InstructionModal from "./building_blocks/instruction_modal/InstructionModal";
-import {
-    TutorialContext,
-    TutorialScreen,
-} from "../../../../../tutorial/context/tutorial_context/TutorialContext";
-import { useTutorialWallet } from "./hooks/use_tutorial_wallet/use_tutorial_wallet";
 
 interface Props {
     navigation: WalletNavProp;
@@ -113,7 +107,7 @@ const Wallet: React.FC<Props> = (props) => {
                         },
                     });
 
-                    const _ = cache.modify({
+                    cache.modify({
                         id: cache.identify({
                             __typename: USER_TYPENAME,
                             id: uid,
@@ -257,27 +251,19 @@ const Wallet: React.FC<Props> = (props) => {
         ).start();
     }, []);
 
-    const { tutorialActive, tutorialScreen, advanceTutorial } = useContext(
-        TutorialContext
-    );
-
-    const tutorialWallet = useTutorialWallet();
-
     if (
-        !tutorialActive &&
-        ((!collectionData?.user &&
-            collectionStatus === NetworkStatus.loading) ||
-            (!transData?.transactions &&
-                transNetworkStatus === NetworkStatus.loading))
+        (!collectionData?.user && collectionStatus === NetworkStatus.loading) ||
+        (!transData?.transactions &&
+            transNetworkStatus === NetworkStatus.loading)
     ) {
         return <LoadingWheel />;
     }
 
-    if (!tutorialActive && !!transError) {
+    if (!!transError) {
         return <ErrorMessage refresh={transRefetch} />;
     }
 
-    if (!tutorialActive && !!collectionError) {
+    if (!!collectionError) {
         return <ErrorMessage refresh={collectionRefetch} />;
     }
 
@@ -285,34 +271,18 @@ const Wallet: React.FC<Props> = (props) => {
     let finalFeed: TransactionType[] = [];
     let lastCollectionTime: number = 0;
 
-    if (tutorialActive) {
-        total = tutorialWallet.accumulation;
-
-        finalFeed = tutorialWallet.transactions;
-    } else {
-        if (!!collectionData?.user) {
-            total = collectionData.user.transTotal;
-        }
-
-        finalFeed = !!transData?.transactions ? transData.transactions : [];
-
-        lastCollectionTime = !!collectionData?.user
-            ? parseInt(collectionData.user.lastCollectionTime)
-            : 0;
+    if (!!collectionData?.user) {
+        total = collectionData.user.transTotal;
     }
+
+    finalFeed = !!transData?.transactions ? transData.transactions : [];
+
+    lastCollectionTime = !!collectionData?.user
+        ? parseInt(collectionData.user.lastCollectionTime)
+        : 0;
 
     return (
         <>
-            <InstructionModal
-                navigateToProfile={() =>
-                    setTimeout(() => props.navigation.navigate("Profile"), 700)
-                }
-                openNewPost={() => setTimeout(openNew, 700)}
-                nav2MainFeed={() =>
-                    setTimeout(() => props.navigation.navigate("MainFeed"), 700)
-                }
-                resetCollectTrans={tutorialWallet.resetCollectTrans}
-            />
             <View style={basicLayouts.flexGrid1}>
                 <FlatList
                     ref={listRef}
@@ -370,46 +340,24 @@ const Wallet: React.FC<Props> = (props) => {
                                                 /*
                                                  * Handle the tutorial scenario
                                                  */
-                                                if (tutorialActive) {
-                                                    if (
-                                                        tutorialScreen ===
-                                                        TutorialScreen.CollectCoin
-                                                    ) {
-                                                        shockTheNation();
-                                                        setAnimationCoinAmount(
-                                                            total
-                                                        );
+                                                shockTheNation();
+                                                setAnimationCoinAmount(total);
 
-                                                        tutorialWallet.collectTransactions();
-
-                                                        setTimeout(
-                                                            () =>
-                                                                advanceTutorial(),
-                                                            700
-                                                        );
-                                                    }
-                                                } else {
-                                                    shockTheNation();
-                                                    setAnimationCoinAmount(
-                                                        total
-                                                    );
-
-                                                    /*
-                                                     * Otherwise, handle typical collection mutation
-                                                     */
-                                                    try {
-                                                        await collectEarnings({
-                                                            optimisticResponse: {
-                                                                collectEarnings: {
-                                                                    coin: total,
-                                                                    time: Date.now().toString(),
-                                                                },
+                                                /*
+                                                 * Otherwise, handle typical collection mutation
+                                                 */
+                                                try {
+                                                    await collectEarnings({
+                                                        optimisticResponse: {
+                                                            collectEarnings: {
+                                                                coin: total,
+                                                                time: Date.now().toString(),
                                                             },
-                                                        });
+                                                        },
+                                                    });
 
-                                                        await collectionRefetch();
-                                                    } catch (_) {}
-                                                }
+                                                    await collectionRefetch();
+                                                } catch (_) {}
                                             }
                                         }}
                                     >

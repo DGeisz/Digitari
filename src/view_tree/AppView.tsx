@@ -30,10 +30,6 @@ import Constants from "expo-constants";
 import type { IAPQueryResponse, InAppPurchase } from "expo-in-app-purchases";
 import { USER_TYPENAME } from "../global_types/UserTypes";
 import { ProductId, products } from "../global_types/IapTypes";
-import {
-    TutorialContext,
-    useTutorialContextValues,
-} from "./tutorial/context/tutorial_context/TutorialContext";
 
 LogBox.ignoreAllLogs();
 
@@ -145,8 +141,6 @@ const AppView: React.FC = () => {
     const [checkedAuth, setCheckAuth] = useState<boolean>(false);
     const [fetchedUser, setFetchedUser] = useState<boolean>(false);
 
-    const tutorialContextValues = useTutorialContextValues();
-
     const [retryCount, setRetryCount] = useState<number>(0);
 
     const [splashHidden, setSplashHidden] = useState<boolean>(false);
@@ -240,14 +234,11 @@ const AppView: React.FC = () => {
                             if (!!createUserData?.createUser) {
                                 setFetchedUser(true);
                             }
-
-                            tutorialContextValues.setTutorialActive(true);
                         } catch (e) {
                             console.error("Create user error: ", e);
                         }
                     } else {
                         setFetchedUser(true);
-                        tutorialContextValues.setTutorialActive(false);
                     }
 
                     const { data: hidData } = await client.query<HidData>({
@@ -278,11 +269,7 @@ const AppView: React.FC = () => {
             </View>
         );
     } else if (fetchedUser && authenticated) {
-        return (
-            <TutorialContext.Provider value={tutorialContextValues}>
-                <MainEntry />
-            </TutorialContext.Provider>
-        );
+        return <MainEntry />;
     } else {
         return <AuthEntry />;
     }

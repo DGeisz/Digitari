@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
     FlatList,
     RefreshControl,
@@ -27,15 +27,10 @@ import Post from "../../../../global_building_blocks/post/Post";
 import Tier from "../../../../global_building_blocks/tier/Tier";
 import UserLabel from "../../../../global_building_blocks/convo_cover/building_blocks/user_label/UserLabel";
 import { millisToRep } from "../../../../global_utils/TimeRepUtils";
-import CoinBox from "../../../../global_building_blocks/coin_box/CoinBox";
 import { palette } from "../../../../global_styles/Palette";
 import ConvoMsg from "../../../../global_building_blocks/convo_msg/ConvoMsg";
 import ResponseResponse from "./building_blocks/response_response/ResponseResponse";
-import {
-    localFirstName,
-    localHid,
-    localUid,
-} from "../../../../global_state/UserState";
+import { localHid, localUid } from "../../../../global_state/UserState";
 import {
     CONVO_ACTIVATION_COST,
     CONVO_TYPENAME,
@@ -91,15 +86,8 @@ import {
 import { addTransaction } from "../../hooks/use_realtime_updates/subscription_handlers/utils/cache_utils";
 import { challengeCheck } from "../../../../global_gql/challenge_check/challenge_check";
 import ConvoOptionsModal from "./building_blocks/convo_options_modal/ConvoOptionsModal";
-import {
-    TutorialContext,
-    TutorialScreen,
-} from "../../../tutorial/context/tutorial_context/TutorialContext";
 import { PostType } from "../../../../global_types/PostTypes";
-import { zariahPost } from "../../routes/tab_nav/screens/main_feed/hooks/tutorial_posts/tutorial_posts";
 import { MessageType } from "../../../../global_types/MessageTypes";
-import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
-import { useZariahConvo } from "./hooks/zariah_convo/zariah_convo";
 import {
     GET_USER,
     GetUserQueryData,
@@ -127,40 +115,6 @@ const Convo: React.FC<Props> = (props) => {
     const [error, setError] = useState<string>("");
 
     /*
-     * Handling tutorial if necessary
-     */
-    const {
-        tutorialActive,
-        tutorialScreen,
-        setTutConvoMessages,
-        advanceTutorial,
-    } = useContext(TutorialContext);
-
-    const { messages: zariahMessages, convo: zariahConvo } = useZariahConvo();
-    const fetchPolicy = tutorialActive ? "cache-only" : undefined;
-
-    useEffect(() => {
-        if (tutorialScreen === TutorialScreen.PopToFeed) {
-            setTimeout(() => {
-                // props.navigation.popToTop();
-                props.navigation.navigate("TabNav", { screen: "Profile" });
-
-                setTimeout(advanceTutorial, 700);
-            }, 700);
-        }
-
-        return props.navigation.addListener("beforeRemove", (e) => {
-            if (
-                tutorialActive &&
-                tutorialScreen !== TutorialScreen.PromptResponseMessage &&
-                tutorialScreen !== TutorialScreen.PopToFeed
-            ) {
-                e.preventDefault();
-            }
-        });
-    }, [tutorialActive, tutorialScreen]);
-
-    /*
      * Queries
      */
     const {
@@ -172,7 +126,6 @@ const Convo: React.FC<Props> = (props) => {
         variables: {
             pid: props.route.params.pid,
         },
-        fetchPolicy,
     });
 
     const {
@@ -184,7 +137,6 @@ const Convo: React.FC<Props> = (props) => {
         variables: {
             cvid: cvid,
         },
-        fetchPolicy,
     });
 
     const {
@@ -197,7 +149,6 @@ const Convo: React.FC<Props> = (props) => {
         variables: {
             cvid: cvid,
         },
-        fetchPolicy,
     });
 
     const { data: selfData } = useQuery<
@@ -660,18 +611,6 @@ const Convo: React.FC<Props> = (props) => {
         MAX_CONVO_MESSAGES_PER_PAGE - 5
     );
 
-    useEffect(() => {
-        if (
-            tutorialScreen === TutorialScreen.ExplainFinish ||
-            tutorialScreen === TutorialScreen.ExplainSuccess
-        ) {
-            setTimeout(
-                () => !!scrollRef.current && scrollRef.current.scrollToEnd(),
-                500
-            );
-        }
-    }, [tutorialScreen, scrollRef]);
-
     const [animateMessages, setAnimateMessages] = useState<boolean>(false);
 
     useEffect(() => {
@@ -686,53 +625,41 @@ const Convo: React.FC<Props> = (props) => {
     let post: PostType;
     let messages: MessageType[];
 
-    if (tutorialActive) {
-        convo = zariahConvo;
-        post = zariahPost;
-        messages = zariahMessages;
-
-        participant = true;
-    } else {
-        if (!!postError) {
-            return <ErrorMessage refresh={postRefetch} />;
-        }
-
-        if (!!convoError) {
-            return <ErrorMessage refresh={convoRefetch} />;
-        }
-
-        if (!!messagesError) {
-            return <ErrorMessage refresh={messagesRefetch} />;
-        }
-
-        if (
-            (!postData?.post && postLoading) ||
-            (!convoData?.convo && convoLoading) ||
-            networkStatus === NetworkStatus.loading ||
-            networkStatus === NetworkStatus.setVariables ||
-            networkStatus === NetworkStatus.fetchMore
-        ) {
-            return <LoadingWheel />;
-        }
-
-        if (
-            !messagesData?.convoMessages ||
-            !postData?.post ||
-            !convoData?.convo
-        ) {
-            return (
-                <View style={styles.noConvoContainer}>
-                    <Text style={styles.noConvoText}>
-                        This convo no longer exists
-                    </Text>
-                </View>
-            );
-        }
-
-        convo = convoData.convo;
-        post = postData.post;
-        messages = messagesData.convoMessages;
+    if (!!postError) {
+        return <ErrorMessage refresh={postRefetch} />;
     }
+
+    if (!!convoError) {
+        return <ErrorMessage refresh={convoRefetch} />;
+    }
+
+    if (!!messagesError) {
+        return <ErrorMessage refresh={messagesRefetch} />;
+    }
+
+    if (
+        (!postData?.post && postLoading) ||
+        (!convoData?.convo && convoLoading) ||
+        networkStatus === NetworkStatus.loading ||
+        networkStatus === NetworkStatus.setVariables ||
+        networkStatus === NetworkStatus.fetchMore
+    ) {
+        return <LoadingWheel />;
+    }
+
+    if (!messagesData?.convoMessages || !postData?.post || !convoData?.convo) {
+        return (
+            <View style={styles.noConvoContainer}>
+                <Text style={styles.noConvoText}>
+                    This convo no longer exists
+                </Text>
+            </View>
+        );
+    }
+
+    convo = convoData.convo;
+    post = postData.post;
+    messages = messagesData.convoMessages;
 
     /*
      * Get fields necessary to render the conversation
@@ -756,14 +683,6 @@ const Convo: React.FC<Props> = (props) => {
      */
     const convoContent = (
         <>
-            <InstructionsModal
-                goBack={() => {
-                    setTimeout(() => {
-                        props.navigation.goBack();
-                        setTutConvoMessages([]);
-                    }, 700);
-                }}
-            />
             <FlatList
                 ref={scrollRef}
                 contentContainerStyle={styles.convoListContainer}
@@ -845,13 +764,12 @@ const Convo: React.FC<Props> = (props) => {
                                         <TouchableOpacity
                                             onPress={() => {
                                                 if (!sanony) {
-                                                    !tutorialActive &&
-                                                        props.navigation.navigate(
-                                                            "User",
-                                                            {
-                                                                uid: sid,
-                                                            }
-                                                        );
+                                                    props.navigation.navigate(
+                                                        "User",
+                                                        {
+                                                            uid: sid,
+                                                        }
+                                                    );
                                                 }
                                             }}
                                             activeOpacity={sanony ? 1 : 0.5}
@@ -870,13 +788,12 @@ const Convo: React.FC<Props> = (props) => {
                                         />
                                         <TouchableOpacity
                                             onPress={() => {
-                                                !tutorialActive &&
-                                                    props.navigation.navigate(
-                                                        "User",
-                                                        {
-                                                            uid: tid,
-                                                        }
-                                                    );
+                                                props.navigation.navigate(
+                                                    "User",
+                                                    {
+                                                        uid: tid,
+                                                    }
+                                                );
                                             }}
                                             activeOpacity={0.5}
                                         >
@@ -974,11 +891,7 @@ const Convo: React.FC<Props> = (props) => {
                                     return (
                                         <PendingFinishFooter
                                             onFinish={async () => {
-                                                if (tutorialActive) {
-                                                    advanceTutorial();
-                                                } else {
-                                                    await finishConvo();
-                                                }
+                                                await finishConvo();
                                             }}
                                             finishMessage={
                                                 "Finish convo and collect reward?"
@@ -1060,14 +973,6 @@ const Convo: React.FC<Props> = (props) => {
 
         return (
             <MessageInput
-                blockInput={
-                    tutorialActive &&
-                    tutorialScreen !== TutorialScreen.ZariahBackNForth
-                }
-                autoFocus={
-                    tutorialActive &&
-                    tutorialScreen === TutorialScreen.ZariahBackNForth
-                }
                 onKeyboardShow={() => {
                     setTimeout(() => {
                         !!scrollRef.current && scrollRef.current.scrollToEnd();
@@ -1078,45 +983,26 @@ const Convo: React.FC<Props> = (props) => {
                     }, 500);
                 }}
                 onSend={async (message) => {
-                    if (tutorialActive) {
-                        if (
-                            tutorialScreen === TutorialScreen.ZariahBackNForth
-                        ) {
-                            setTutConvoMessages((messages) => [
-                                ...messages,
-                                {
-                                    id: "tutMsg2",
-                                    anonymous: false,
+                    try {
+                        await createMessage({
+                            variables: {
+                                cvid: cvid,
+                                message,
+                            },
+                            optimisticResponse: {
+                                createMessage: {
+                                    id: cvid,
+                                    anonymous: mAnony,
                                     content: message,
                                     time: Date.now().toString(),
-                                    uid,
-                                    tid: "z",
-                                    user: localFirstName(),
+                                    uid: mUid,
+                                    tid: mTid,
+                                    user: mUser,
                                 },
-                            ]);
-                        }
-                    } else {
-                        try {
-                            await createMessage({
-                                variables: {
-                                    cvid: cvid,
-                                    message,
-                                },
-                                optimisticResponse: {
-                                    createMessage: {
-                                        id: cvid,
-                                        anonymous: mAnony,
-                                        content: message,
-                                        time: Date.now().toString(),
-                                        uid: mUid,
-                                        tid: mTid,
-                                        user: mUser,
-                                    },
-                                },
-                            });
-                        } catch (e) {
-                            console.log("Send error: ", e);
-                        }
+                            },
+                        });
+                    } catch (e) {
+                        console.log("Send error: ", e);
                     }
                 }}
             >

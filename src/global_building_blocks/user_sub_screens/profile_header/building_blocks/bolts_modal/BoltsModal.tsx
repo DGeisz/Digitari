@@ -36,10 +36,12 @@ const BoltsModal: React.FC<Props> = (props) => {
                     <Text style={modalStyles.modalMainText}>
                         Digibolts add extra pizazz to Digitari 🥳
                         {DOUBLE_NEWLINE}
-                        Use digibolts to unlock profile customizations in the
-                        shop or respond to posts. {DOUBLE_NEWLINE}
-                        To get your hands on some digibolts, you need to grab
-                        them from posts.
+                        Each post has a couple digibolts that you can pick up,
+                        so head over to your feed to get your hands on these bad
+                        boys.
+                        {DOUBLE_NEWLINE}
+                        Use digibolts to unlock items in the shop or respond to
+                        posts!
                     </Text>
                     <View style={modalStyles.modalFooter}>
                         <TouchableOpacity

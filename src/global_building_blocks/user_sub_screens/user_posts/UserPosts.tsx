@@ -30,7 +30,6 @@ import {
 } from "../../../view_tree/main/routes/tab_nav/screens/profile/gql/Queries";
 import { localUid } from "../../../global_state/UserState";
 import { SCREEN_LARGER_THAN_CONTENT } from "../../../global_constants/screen_constants";
-import { TutorialContext } from "../../../view_tree/tutorial/context/tutorial_context/TutorialContext";
 import CoinCountdown from "../../coin_countdown/CoinCountdown";
 import { addNewReceipt } from "../../../global_state/CoinUpdates";
 import {
@@ -79,16 +78,12 @@ const UserPosts: React.FC<Props> = (props) => {
         DONATE_TO_POST
     );
 
-    const { tutorialActive } = useContext(TutorialContext);
-
     const scrollPropsAndRef = useCollapsibleScene(props.routeKey);
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
     const [fetchMoreLen, setFetchMoreLen] = useState<number>(0);
 
-    const finalFeed = tutorialActive
-        ? []
-        : !!data?.userPosts
+    const finalFeed = !!data?.userPosts
         ? data.userPosts.filter((post) => !!post)
         : [];
 
@@ -111,14 +106,13 @@ const UserPosts: React.FC<Props> = (props) => {
             {...scrollPropsAndRef}
             ListHeaderComponent={() => {
                 if (
-                    !tutorialActive &&
                     !data?.userPosts &&
                     networkStatus === NetworkStatus.loading
                 ) {
                     return <LoadingWheel />;
                 }
 
-                if (!tutorialActive && error) {
+                if (!!error) {
                     return <ErrorMessage refresh={refetch} />;
                 }
 

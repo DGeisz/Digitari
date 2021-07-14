@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./SettingsStyles";
 import { Auth } from "aws-amplify";
@@ -12,10 +12,6 @@ import {
     DeletePushData,
     DeletePushVariables,
 } from "./gql/Mutations";
-import {
-    TutorialContext,
-    TutorialScreen,
-} from "../../../tutorial/context/tutorial_context/TutorialContext";
 
 interface Props {
     navigation: SettingsNavProp;
@@ -27,8 +23,6 @@ const Settings: React.FC<Props> = (props) => {
     const [deletePush] = useMutation<DeletePushData, DeletePushVariables>(
         DELETE_PUSH
     );
-
-    const { setTutorialActive, setScreen } = useContext(TutorialContext);
 
     const client = useApolloClient();
 
@@ -130,21 +124,6 @@ const Settings: React.FC<Props> = (props) => {
                     >
                         <Text style={styles.settingsRowText}>
                             Privacy Policy
-                        </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => {
-                            setTutorialActive(true);
-                            setScreen(TutorialScreen.Welcome);
-
-                            props.navigation.navigate("TabNav", {
-                                screen: "MainFeed",
-                            });
-                        }}
-                        style={styles.settingsRow}
-                    >
-                        <Text style={styles.settingsRowText}>
-                            Open tutorial
                         </Text>
                     </TouchableOpacity>
                     <TouchableOpacity

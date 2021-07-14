@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Keyboard, Text, TouchableOpacity, View } from "react-native";
 import {
     NewResponseNavProp,
@@ -23,11 +23,6 @@ import {
 } from "./gql/Mutations";
 import LoadingWheel from "../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import { challengeCheck } from "../../../../global_gql/challenge_check/challenge_check";
-import {
-    TutorialContext,
-    TutorialScreen,
-} from "../../../tutorial/context/tutorial_context/TutorialContext";
-import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
 import {
     CONVO,
     CONVO_MESSAGES,
@@ -148,121 +143,67 @@ const NewResponse: React.FC<Props> = (props) => {
         },
     });
 
-    const {
-        tutorialActive,
-        tutorialScreen,
-        setTutConvoMessages,
-        advanceTutorial,
-    } = useContext(TutorialContext);
-
     const onSend = async (text: string) => {
-        if (tutorialActive) {
-            setTutConvoMessages([
-                {
-                    id: "tutMsg0",
-                    anonymous: false,
-                    content: text,
-                    time: Date.now().toString(),
-                    uid,
-                    tid: "z",
-                    user: firstName,
+        try {
+            const now = Date.now().toString();
+
+            console.log(
+                "Do I have necessary data? ",
+                !!postData?.post && !!userData?.user
+            );
+
+            await createConvo({
+                variables: {
+                    pid,
+                    anonymous: anony,
+                    message: text,
                 },
-            ]);
-
-            props.navigation.navigate("Convo", {
-                cvid: "tutConvo0",
-                pid: "tut0",
-            });
-
-            advanceTutorial();
-        } else {
-            try {
-                const now = Date.now().toString();
-
-                console.log(
-                    "Do I have necessary data? ",
+                optimisticResponse:
                     !!postData?.post && !!userData?.user
-                );
+                        ? {
+                              createConvo: {
+                                  id: Math.floor(
+                                      100 * Math.random()
+                                  ).toString(),
+                                  pid,
+                                  cmid: !!postData.post.cmid
+                                      ? postData.post.cmid
+                                      : "",
 
-                await createConvo({
-                    variables: {
-                        pid,
-                        anonymous: anony,
-                        message: text,
-                    },
-                    optimisticResponse:
-                        !!postData?.post && !!userData?.user
-                            ? {
-                                  createConvo: {
-                                      id: Math.floor(
-                                          100 * Math.random()
-                                      ).toString(),
-                                      pid,
-                                      cmid: !!postData.post.cmid
-                                          ? postData.post.cmid
-                                          : "",
+                                  status: ConvoStatus.New,
+                                  initialTime: now,
+                                  initialMsg: text,
 
-                                      status: ConvoStatus.New,
-                                      initialTime: now,
-                                      initialMsg: text,
+                                  lastTime: now,
+                                  lastMsg: text,
 
-                                      lastTime: now,
-                                      lastMsg: text,
+                                  sid: anony ? hid : uid,
+                                  stier: ranking2Tier(userData.user.ranking),
+                                  sranking: userData.user.ranking,
+                                  sname: anony ? "" : firstName,
+                                  sanony: anony,
+                                  sviewed: true,
+                                  sourceMsgCount: 1,
 
-                                      sid: anony ? hid : uid,
-                                      stier: ranking2Tier(
-                                          userData.user.ranking
-                                      ),
-                                      sranking: userData.user.ranking,
-                                      sname: anony ? "" : firstName,
-                                      sanony: anony,
-                                      sviewed: true,
-                                      sourceMsgCount: 1,
+                                  tid: postData.post.uid,
+                                  ttier: postData.post.tier,
+                                  tranking: tier2MinRanking(postData.post.tier),
+                                  tname: postData.post.user,
+                                  tviewed: false,
 
-                                      tid: postData.post.uid,
-                                      ttier: postData.post.tier,
-                                      tranking: tier2MinRanking(
-                                          postData.post.tier
-                                      ),
-                                      tname: postData.post.user,
-                                      tviewed: false,
-
-                                      targetMsgCount: 0,
-                                      responseCost: postData.post.responseCost,
-                                  },
-                              }
-                            : undefined,
-                });
-            } catch (e) {
-                console.log("Send error", e);
-            }
+                                  targetMsgCount: 0,
+                                  responseCost: postData.post.responseCost,
+                              },
+                          }
+                        : undefined,
+            });
+        } catch (e) {
+            console.log("Send error", e);
         }
     };
 
-    useEffect(() => {
-        return props.navigation.addListener("beforeRemove", (e) => {
-            if (
-                tutorialActive &&
-                tutorialScreen !== TutorialScreen.RespondToPost &&
-                tutorialScreen !== TutorialScreen.PopToFeed
-            ) {
-                e.preventDefault();
-            }
-        });
-    }, [tutorialActive, tutorialScreen]);
-
     return (
         <>
-            <InstructionsModal
-                goBack={() =>
-                    setTimeout(() => {
-                        props.navigation.goBack();
-                        props.navigation.navigate("TabNav", {
-                            screen: "MainFeed",
-                        });
-                    }, 500)
-                }
-            />
             <TouchableOpacity
                 style={basicLayouts.flexGrid1}
                 onPress={Keyboard.dismiss}
@@ -299,7 +240,7 @@ const NewResponse: React.FC<Props> = (props) => {
                             styles.postAsChoice,
                             anony ? { backgroundColor: palette.deepBlue } : {},
                         ]}
-                        onPress={() => !tutorialActive && setAnony(true)}
+                        onPress={() => setAnony(true)}
                     >
                         <MaterialCommunityIcons
                             name="incognito"
@@ -311,14 +252,7 @@ const NewResponse: React.FC<Props> = (props) => {
                 {loading ? (
                     <LoadingWheel />
                 ) : (
-                    <MessageInput
-                        autoFocus={
-                            !tutorialActive ||
-                            tutorialScreen === TutorialScreen.InputResponse
-                        }
-                        onSend={onSend}
-                        onChangeText={setContent}
-                    />
+                    <MessageInput onSend={onSend} onChangeText={setContent} />
                 )}
             </TouchableOpacity>
         </>

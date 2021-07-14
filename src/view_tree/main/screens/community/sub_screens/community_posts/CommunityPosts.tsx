@@ -17,7 +17,6 @@ import {
     GET_COMMUNITY_POSTS,
     GetCommunityPostsData,
     GetCommunityPostsVariables,
-    MAX_COMMUNITY_POSTS_PER_PAGE,
 } from "./gql/Queries";
 import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import ErrorMessage from "../../../../../../global_building_blocks/error_message/ErrorMessage";

@@ -8,5 +8,3 @@ export type MainFeedTab = {
 
 export type YourFeedNavProp = StackNavigationProp<MainFeedTab, "YourFeed">;
 export type AllPostsNavProp = StackNavigationProp<MainFeedTab, "AllPosts">;
-
-export type YourFeedRouteProp = RouteProp<MainFeedTab, "YourFeed">;
