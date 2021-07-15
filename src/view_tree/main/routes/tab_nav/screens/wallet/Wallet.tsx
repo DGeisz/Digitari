@@ -43,6 +43,7 @@ import {
     GetUpdateFlagsVariables,
 } from "../../gql/Queries";
 import { useIsFocused } from "@react-navigation/native";
+import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
 
 interface Props {
     navigation: WalletNavProp;
@@ -283,6 +284,7 @@ const Wallet: React.FC<Props> = (props) => {
 
     return (
         <>
+            <InstructionsModal hideModal={() => {}} visible={true} />
             <View style={basicLayouts.flexGrid1}>
                 <FlatList
                     ref={listRef}

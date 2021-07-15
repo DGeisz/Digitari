@@ -28,10 +28,13 @@ const DigicoinModal: React.FC<Props> = (props) => {
                         Digicoin is, well, everything.
                         {DOUBLE_NEWLINE}
                         Wanna get famous? Digicoin will get you there. Just
-                        create a post to unlock the power of the coin.
+                        create a post to unlock the true power of the coin.
                         {DOUBLE_NEWLINE}
-                        If you're new, invite your friends and complete
-                        challenges to earn a ton of coin.
+                        As you'll quickly figure out, there are a bunch of ways
+                        to earn coin.
+                        {DOUBLE_NEWLINE}
+                        If you're new, the easiest way to make bank is to invite
+                        your friends and complete challenges.
                     </Text>
                     <View style={modalStyles.modalFooter}>
                         <TouchableOpacity

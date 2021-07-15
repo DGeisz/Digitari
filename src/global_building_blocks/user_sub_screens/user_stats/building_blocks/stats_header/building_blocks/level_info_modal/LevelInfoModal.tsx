@@ -34,8 +34,8 @@ const LevelInfoModal: React.FC<Props> = (props) => {
                         <Text style={styles.headerBody}>
                             If you want to flex on the haters, you need to level
                             up.{DOUBLE_NEWLINE}
-                            And to level up, you need to spend digicoin on posts
-                            or digibolts.{DOUBLE_NEWLINE}
+                            And to level up, you need to spend digicoin on
+                            posts.{DOUBLE_NEWLINE}
                             Right now {isMe ? "you are" : "this user is"} at
                             level {toCommaRep(level)}. To reach level{" "}
                             {toCommaRep(level + 1)},

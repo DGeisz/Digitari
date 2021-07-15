@@ -5,6 +5,7 @@ import { instructionStyles } from "../../../../../../../../global_styles/Instruc
 import Modal from "react-native-modal";
 import { DOUBLE_NEWLINE } from "../../../../../../../../global_utils/StringUtils";
 import { tier2Emoji } from "../../../../../../../../global_types/TierTypes";
+import { openedFirstProfile } from "../../../../../../../../global_state/FirstImpressionsState";
 
 enum Screens {
     Welcome,
@@ -54,10 +55,10 @@ const InstructionsModal: React.FC<Props> = (props) => {
                     footerText="Next"
                 >
                     <Text style={instructionStyles.instructionText}>
-                        Poke around to get a feel for the platform.{" "}
+                        Poke around to get a feel for the platform!{" "}
                         {DOUBLE_NEWLINE}
-                        The Shop is a pretty good place to start to learn what
-                        you can unlock in Digitari.
+                        The Shop is a pretty good place to start because you'll
+                        learn what you can unlock in Digitari.
                     </Text>
                 </TutorialModal>
             );
@@ -69,6 +70,7 @@ const InstructionsModal: React.FC<Props> = (props) => {
                     onPress={() => {
                         LayoutAnimation.easeInEaseOut();
                         props.hideModal();
+                        openedFirstProfile();
                     }}
                 >
                     <Text style={instructionStyles.instructionText}>

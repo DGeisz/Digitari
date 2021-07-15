@@ -56,7 +56,7 @@ export const styles = StyleSheet.create({
     },
     dot: {
         position: "absolute",
-        top: 10,
+        top: 12,
         backgroundColor: palette.deepBlue,
         borderRadius: 50,
         height: 20,

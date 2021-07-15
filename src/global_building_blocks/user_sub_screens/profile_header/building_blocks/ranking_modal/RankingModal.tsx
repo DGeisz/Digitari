@@ -23,8 +23,9 @@ const RankingModal: React.FC<Props> = (props) => {
                         More specifically, your ranking goes up when you have
                         good interactions with other people on Digitari.{" "}
                         {DOUBLE_NEWLINE}
-                        For the exact calculation of your ranking, hit the info
-                        button next to "Tier Breakdown" under your "Stats" tab.
+                        For the exact calculation of your ranking, go to your
+                        "Stats" tab and hit the info button next to "Tier
+                        Breakdown."
                     </Text>
                     <View style={modalStyles.modalFooter}>
                         <TouchableOpacity

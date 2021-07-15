@@ -24,18 +24,16 @@ import { SCREEN_LARGER_THAN_CONTENT } from "../../../../../../global_constants/s
 import { UserType } from "../../../../../../global_types/UserTypes";
 import { ProfileNavProp } from "../../TabNavTypes";
 import {
+    firstProfile,
     firstTimeOpeningApp,
     openedAppFirstTime,
+    openedFirstProfile,
 } from "../../../../../../global_state/FirstImpressionsState";
 import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
 
 const Tab = createMaterialCollapsibleTopTabNavigator();
 
-interface Props {
-    navigation: ProfileNavProp;
-}
-
-const Profile: React.FC<Props> = (props) => {
+const Profile: React.FC = () => {
     const {
         openNew,
         openFollows,
@@ -50,7 +48,9 @@ const Profile: React.FC<Props> = (props) => {
         openShop,
     } = useContext(TabNavContext);
 
-    const [modalVisible, showModal] = useState<boolean>(true);
+    const [instructionsModalVisible, showInstructionsModal] = useState<boolean>(
+        firstProfile()
+    );
 
     /*
      * If this is the first time opening
@@ -91,8 +91,10 @@ const Profile: React.FC<Props> = (props) => {
         return (
             <>
                 <InstructionsModal
-                    visible={modalVisible}
-                    hideModal={() => showModal(false)}
+                    visible={instructionsModalVisible}
+                    hideModal={() => {
+                        showInstructionsModal(false);
+                    }}
                 />
                 <View style={basicLayouts.flexGrid1}>
                     <Tab.Navigator
