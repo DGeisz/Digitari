@@ -153,9 +153,11 @@ const YourFeed: React.FC<Props> = (props) => {
     return finalFeed.length === 0 ? (
         <View style={styles.noFeedContainer}>
             <Text style={styles.noFeedText}>
-                Follow some users or communities to start receiving a feed!
+                Follow some users or communities to start receiving their new
+                posts in your feed!
                 {"\n\n"}
-                You can still earn digicoin by viewing user or community posts.
+                If you're looking to make some extra digibolts, just hit up "All
+                Posts."
             </Text>
             <TouchableOpacity
                 onPress={() => {

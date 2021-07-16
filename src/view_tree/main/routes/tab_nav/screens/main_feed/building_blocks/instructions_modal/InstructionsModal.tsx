@@ -1,15 +1,19 @@
 import React, { useState } from "react";
-import { LayoutAnimation, Text } from "react-native";
+import { LayoutAnimation, Text, View } from "react-native";
 import TutorialModal from "../../../../../../../../global_building_blocks/tutorial/TutorialModal";
 import { instructionStyles } from "../../../../../../../../global_styles/InstructionStyles";
-import Modal from "react-native-modal";
 import { DOUBLE_NEWLINE } from "../../../../../../../../global_utils/StringUtils";
-import { tier2Emoji } from "../../../../../../../../global_types/TierTypes";
-import { openedFirstProfile } from "../../../../../../../../global_state/FirstImpressionsState";
+import {
+    openedFirstFeed,
+    openedFirstWallet,
+} from "../../../../../../../../global_state/FirstImpressionsState";
+import Modal from "react-native-modal";
+import BoltBox from "../../../../../../../../global_building_blocks/bolt_box/BoltBox";
+import { palette } from "../../../../../../../../global_styles/Palette";
 
 enum Screens {
-    Welcome,
-    PokeInstruct,
+    Intro,
+    PromptAllPosts,
 }
 
 interface Props {
@@ -18,50 +22,54 @@ interface Props {
 }
 
 const InstructionsModal: React.FC<Props> = (props) => {
-    const [screen, setScreen] = useState<Screens>(Screens.Welcome);
+    const [screen, setScreen] = useState<Screens>(Screens.Intro);
 
     let modalContent;
-
     switch (screen) {
-        case Screens.Welcome:
+        case Screens.Intro:
             modalContent = (
                 <TutorialModal
                     top={false}
                     onPress={() => {
                         LayoutAnimation.easeInEaseOut();
-                        setScreen(Screens.PokeInstruct);
+                        setScreen(Screens.PromptAllPosts);
                     }}
-                    footerText="Next"
+                    footerText={"Next"}
                 >
                     <Text style={instructionStyles.instructionText}>
-                        Welcome to Digitari! 🎉{DOUBLE_NEWLINE}
-                        Ready to experience this glorious fusion of social media
-                        and video game? {DOUBLE_NEWLINE}
-                        Of course you are, you beautiful stallion. Let's rock 'n
-                        roll, baby 🤘
+                        Here's your feed! {DOUBLE_NEWLINE}
+                        ...or what will be your feed. {DOUBLE_NEWLINE}
+                        Once you follow other users or communities you'll start
+                        receiving their new posts here.
                     </Text>
                 </TutorialModal>
             );
             break;
-        case Screens.PokeInstruct:
+        case Screens.PromptAllPosts:
             modalContent = (
                 <TutorialModal
                     top={false}
                     onPress={() => {
                         LayoutAnimation.easeInEaseOut();
                         props.hideModal();
-                        openedFirstProfile();
+                        openedFirstFeed();
                     }}
-                    footerText="Next"
                 >
                     <Text style={instructionStyles.instructionText}>
-                        Poke around to get a feel for the platform!{" "}
-                        {DOUBLE_NEWLINE}
-                        The Shop is a pretty good place to start because you'll
-                        learn what you can unlock.
+                        For now, head over to "All Posts" and tap the first
+                        digibolt you see.
                     </Text>
+                    <View style={instructionStyles.contentContainer}>
+                        <BoltBox
+                            boltColor={palette.white}
+                            amount={0}
+                            showAmount={false}
+                            boltSize={40}
+                        />
+                    </View>
                 </TutorialModal>
             );
+            break;
     }
 
     return (

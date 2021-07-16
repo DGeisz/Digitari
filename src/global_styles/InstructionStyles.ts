@@ -105,4 +105,8 @@ export const instructionStyles = StyleSheet.create({
         fontSize: 20,
         fontWeight: "bold",
     },
+    contentContainer: {
+        ...basicLayouts.grid2,
+        marginTop: 10,
+    },
 });

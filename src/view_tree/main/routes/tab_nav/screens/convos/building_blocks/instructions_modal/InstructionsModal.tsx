@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import { LayoutAnimation, Text } from "react-native";
-import TutorialModal from "../../../../../../../../global_building_blocks/tutorial/TutorialModal";
-import { instructionStyles } from "../../../../../../../../global_styles/InstructionStyles";
 import Modal from "react-native-modal";
+import { instructionStyles } from "../../../../../../../../global_styles/InstructionStyles";
+import TutorialModal from "../../../../../../../../global_building_blocks/tutorial/TutorialModal";
+import { LayoutAnimation, Text } from "react-native";
 import { DOUBLE_NEWLINE } from "../../../../../../../../global_utils/StringUtils";
-import { tier2Emoji } from "../../../../../../../../global_types/TierTypes";
-import { openedFirstProfile } from "../../../../../../../../global_state/FirstImpressionsState";
+import {
+    openedFirstConvos,
+    openedFirstWallet,
+} from "../../../../../../../../global_state/FirstImpressionsState";
 
 enum Screens {
-    Welcome,
-    PokeInstruct,
+    Intro,
+    ExplainConvo,
 }
 
 interface Props {
@@ -18,52 +20,50 @@ interface Props {
 }
 
 const InstructionsModal: React.FC<Props> = (props) => {
-    const [screen, setScreen] = useState<Screens>(Screens.Welcome);
+    const [screen, setScreen] = useState<Screens>(Screens.Intro);
 
     let modalContent;
-
     switch (screen) {
-        case Screens.Welcome:
+        case Screens.Intro:
             modalContent = (
                 <TutorialModal
                     top={false}
                     onPress={() => {
                         LayoutAnimation.easeInEaseOut();
-                        setScreen(Screens.PokeInstruct);
+                        setScreen(Screens.ExplainConvo);
                     }}
-                    footerText="Next"
+                    footerText={"Next"}
                 >
                     <Text style={instructionStyles.instructionText}>
-                        Welcome to Digitari! 🎉{DOUBLE_NEWLINE}
-                        Ready to experience this glorious fusion of social media
-                        and video game? {DOUBLE_NEWLINE}
-                        Of course you are, you beautiful stallion. Let's rock 'n
-                        roll, baby 🤘
+                        These are your Convos! {DOUBLE_NEWLINE}
+                        When people respond to your posts, it'll show up under
+                        "New." {DOUBLE_NEWLINE}
+                        Your ongoing Convos with people will show up under
+                        "Active."
                     </Text>
                 </TutorialModal>
             );
             break;
-        case Screens.PokeInstruct:
+        case Screens.ExplainConvo:
             modalContent = (
                 <TutorialModal
                     top={false}
                     onPress={() => {
                         LayoutAnimation.easeInEaseOut();
                         props.hideModal();
-                        openedFirstProfile();
+                        openedFirstConvos();
                     }}
-                    footerText="Next"
                 >
                     <Text style={instructionStyles.instructionText}>
-                        Poke around to get a feel for the platform!{" "}
-                        {DOUBLE_NEWLINE}
-                        The Shop is a pretty good place to start because you'll
-                        learn what you can unlock.
+                        If you're wondering what Convos are, they're how people
+                        interact on Digitari. {DOUBLE_NEWLINE}
+                        Convos are like halfway between a DM and a comments
+                        section. Just open any post with responses to see how
+                        they work.
                     </Text>
                 </TutorialModal>
             );
     }
-
     return (
         <Modal isVisible={props.visible} style={instructionStyles.modal}>
             {modalContent}

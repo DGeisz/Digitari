@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import NewConvos from "./sub_screens/new_convos/NewConvos";
 import ActiveConvos from "./sub_screens/active_convos/ActiveConvos";
@@ -16,6 +16,8 @@ import {
 } from "../../gql/Queries";
 import { useIsFocused } from "@react-navigation/native";
 import { ConvosNavProp } from "../../TabNavTypes";
+import { firstConvos } from "../../../../../../global_state/FirstImpressionsState";
+import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
 
 interface Props {
     navigation: ConvosNavProp;
@@ -27,6 +29,10 @@ const Convos: React.FC<Props> = (props) => {
     const uid = localUid();
 
     const { openNew } = useContext(TabNavContext);
+
+    const [instructionsVisible, showInstructions] = useState<boolean>(
+        firstConvos()
+    );
 
     const [viewConvosScreen] = useMutation<ViewConvosData>(VIEWED_CONVOS, {
         optimisticResponse: {
@@ -78,6 +84,10 @@ const Convos: React.FC<Props> = (props) => {
 
     return (
         <>
+            <InstructionsModal
+                hideModal={() => showInstructions(false)}
+                visible={instructionsVisible}
+            />
             <Tab.Navigator>
                 <Tab.Screen
                     name="NewConvos"

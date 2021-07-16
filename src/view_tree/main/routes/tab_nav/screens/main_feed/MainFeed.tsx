@@ -9,6 +9,8 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import { MainFeedTab } from "./MainFeedNavTypes";
 import AllPosts from "./screens/all_posts/AllPosts";
 import { FeedContext, FeedType } from "./MainFeedContext";
+import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
+import { firstFeed } from "../../../../../../global_state/FirstImpressionsState";
 
 const Tab = createMaterialTopTabNavigator<MainFeedTab>();
 
@@ -17,6 +19,10 @@ const MainFeed: React.FC = () => {
 
     const { openNew } = useContext(TabNavContext);
 
+    const [instructionsVisible, showInstructions] = useState<boolean>(
+        firstFeed()
+    );
+
     return (
         <FeedContext.Provider
             value={{
@@ -24,6 +30,10 @@ const MainFeed: React.FC = () => {
                 setType: (feedType1) => setFeed(feedType1),
             }}
         >
+            <InstructionsModal
+                hideModal={() => showInstructions(false)}
+                visible={instructionsVisible}
+            />
             <View style={styles.feedContainer}>
                 <View style={styles.selectBar}>
                     <TouchableOpacity
@@ -43,7 +53,7 @@ const MainFeed: React.FC = () => {
                                     : {},
                             ]}
                         >
-                            Your feed
+                            Your Feed
                         </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -68,7 +78,7 @@ const MainFeed: React.FC = () => {
                     </TouchableOpacity>
                 </View>
                 <Tab.Navigator
-                    tabBar={(e) => {
+                    tabBar={() => {
                         return <View />;
                     }}
                 >

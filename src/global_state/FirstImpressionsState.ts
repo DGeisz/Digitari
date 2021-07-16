@@ -92,3 +92,49 @@ export function openedFirstWallet() {
 export function removeFirstWallet() {
     AsyncStorage.removeItem(FIRST_WALLET_KEY).then();
 }
+
+/*
+ * State for first time in convos
+ */
+export const firstConvos = makeVar<boolean>(true);
+
+const FIRST_CONVOS = "FIRST_CONVOS";
+
+AsyncStorage.getItem(FIRST_CONVOS).then((raw) => {
+    if (!!raw) {
+        // firstConvos(JSON.parse(raw));
+    }
+});
+
+export function openedFirstConvos() {
+    firstConvos(false);
+    AsyncStorage.setItem(FIRST_CONVOS, JSON.stringify(false)).then();
+}
+
+// DEV fn
+export function removeFirstConvos() {
+    AsyncStorage.removeItem(FIRST_CONVOS).then();
+}
+
+/*
+ * State for first feed
+ */
+export const firstFeed = makeVar<boolean>(true);
+
+const FIRST_FEED = "FIRST_FEED";
+
+AsyncStorage.getItem(FIRST_FEED).then((raw) => {
+    if (!!raw) {
+        firstFeed(JSON.parse(raw));
+    }
+});
+
+export function openedFirstFeed() {
+    firstFeed(false);
+    AsyncStorage.setItem(FIRST_FEED, JSON.stringify(false)).then();
+}
+
+// Dev fn
+export function removeFirstFeed() {
+    AsyncStorage.removeItem(FIRST_FEED).then();
+}

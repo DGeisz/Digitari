@@ -22,12 +22,10 @@ import { localUid } from "../../../../../../global_state/UserState";
 import { styles } from "./ProfileStyles";
 import { SCREEN_LARGER_THAN_CONTENT } from "../../../../../../global_constants/screen_constants";
 import { UserType } from "../../../../../../global_types/UserTypes";
-import { ProfileNavProp } from "../../TabNavTypes";
 import {
     firstProfile,
     firstTimeOpeningApp,
     openedAppFirstTime,
-    openedFirstProfile,
 } from "../../../../../../global_state/FirstImpressionsState";
 import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
 
