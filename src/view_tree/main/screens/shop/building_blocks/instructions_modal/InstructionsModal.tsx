@@ -25,8 +25,8 @@ const InstructionsModal: React.FC<Props> = (props) => {
                 <Text style={instructionStyles.instructionText}>
                     Welcome to the Shop, my friend!
                     {DOUBLE_NEWLINE}
-                    Use digibolts you've collected from posts to unlock all
-                    sorts of goodies and profile customizations in the Shop.
+                    Use digibolts you've collected from posts to upgrade your
+                    account and unlock all sorts of profile customizations.
                 </Text>
             </TutorialModal>
         </Modal>

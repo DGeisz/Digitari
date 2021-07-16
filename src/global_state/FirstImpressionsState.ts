@@ -10,7 +10,7 @@ const FIRST_OPEN_KEY = "FIRST_OPEN_KEY";
 
 AsyncStorage.getItem(FIRST_OPEN_KEY).then((raw) => {
     if (!!raw) {
-        firstTimeOpeningApp(JSON.parse(raw));
+        // firstTimeOpeningApp(JSON.parse(raw));
     }
 });
 
@@ -33,7 +33,7 @@ const FIRST_PROFILE_KEY = "FIRST_PROFILE_KEY";
 
 AsyncStorage.getItem(FIRST_PROFILE_KEY).then((raw) => {
     if (!!raw) {
-        firstProfile(JSON.parse(raw));
+        // firstProfile(JSON.parse(raw));
     }
 });
 
@@ -56,7 +56,7 @@ const FIRST_SHOP_KEY = "FIRST_SHOP_KEY";
 
 AsyncStorage.getItem(FIRST_SHOP_KEY).then((raw) => {
     if (!!raw) {
-        firstShop(JSON.parse(raw));
+        // firstShop(JSON.parse(raw));
     }
 });
 
@@ -79,7 +79,7 @@ const FIRST_WALLET_KEY = "FIRST_WALLET_KEY";
 
 AsyncStorage.getItem(FIRST_WALLET_KEY).then((raw) => {
     if (!!raw) {
-        firstWallet(JSON.parse(raw));
+        // firstWallet(JSON.parse(raw));
     }
 });
 

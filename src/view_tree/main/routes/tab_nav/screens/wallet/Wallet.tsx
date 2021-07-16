@@ -45,6 +45,7 @@ import {
 import { useIsFocused } from "@react-navigation/native";
 import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
 import { millisToCountdown } from "../../../../../../global_utils/TimeRepUtils";
+import { firstWallet } from "../../../../../../global_state/FirstImpressionsState";
 
 const MIN_FILLER_WIDTH = 5;
 
@@ -60,6 +61,10 @@ const Wallet: React.FC<Props> = (props) => {
 
     const [barWidth, setBarWidth] = useState<number>(0);
     const [currentTime, setCurrentTime] = useState<number>(Date.now());
+
+    const [instructionsVisible, showInstructions] = useState<boolean>(
+        firstWallet()
+    );
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -279,7 +284,12 @@ const Wallet: React.FC<Props> = (props) => {
 
     return (
         <>
-            <InstructionsModal hideModal={() => {}} visible={false} />
+            <InstructionsModal
+                hideModal={() => {
+                    showInstructions(false);
+                }}
+                visible={instructionsVisible}
+            />
             <View style={basicLayouts.flexGrid1}>
                 <FlatList
                     ref={listRef}
