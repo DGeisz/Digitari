@@ -320,7 +320,7 @@ const Post: React.FC<Props> = (props) => {
                                     }
                                 },
                             }));
-                    }, 600)
+                    }, 500)
                 );
             } else {
                 setError("You need 10 digicoin to get a digibolt");

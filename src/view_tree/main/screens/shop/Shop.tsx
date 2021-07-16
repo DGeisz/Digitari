@@ -10,6 +10,7 @@ import TabLabel from "../../../../global_building_blocks/tab_label/TabLabel";
 import { SCREEN_LARGER_THAN_CONTENT } from "../../../../global_constants/screen_constants";
 import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
 import { firstShop } from "../../../../global_state/FirstImpressionsState";
+import WalletShopPage from "./sub_screens/wallet/Wallet";
 
 const ShopTab = createMaterialTopTabNavigator();
 
@@ -45,6 +46,15 @@ const Shop: React.FC = () => {
                     options={{
                         tabBarLabel: ({ color }) => (
                             <TabLabel title={"Basic Profile"} color={color} />
+                        ),
+                    }}
+                />
+                <ShopTab.Screen
+                    name="Wallet"
+                    component={WalletShopPage}
+                    options={{
+                        tabBarLabel: ({ color }) => (
+                            <TabLabel title={"Wallet"} color={color} />
                         ),
                     }}
                 />

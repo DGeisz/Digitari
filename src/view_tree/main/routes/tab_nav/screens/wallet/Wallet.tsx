@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
     Animated,
     Easing,
@@ -44,6 +44,13 @@ import {
 } from "../../gql/Queries";
 import { useIsFocused } from "@react-navigation/native";
 import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
+import {
+    millisInDay,
+    millisInHour,
+    millisToCountdown,
+} from "../../../../../../global_utils/TimeRepUtils";
+
+const MIN_FILLER_WIDTH = 5;
 
 interface Props {
     navigation: WalletNavProp;
@@ -52,6 +59,17 @@ interface Props {
 const Wallet: React.FC<Props> = (props) => {
     const uid = localUid();
     const { openNew, openConvo, openUser } = useContext(TabNavContext);
+
+    const [barWidth, setBarWidth] = useState<number>(0);
+    const [currentTime, setCurrentTime] = useState<number>(Date.now());
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentTime(Date.now());
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, []);
 
     /*
      * Queries
@@ -269,11 +287,25 @@ const Wallet: React.FC<Props> = (props) => {
     }
 
     let total = 0;
+    let maxWallet = 100;
+    let walletBonusEnd = 0;
+
     let finalFeed: TransactionType[] = [];
     let lastCollectionTime: number = 0;
 
     if (!!collectionData?.user) {
-        total = collectionData.user.transTotal;
+        maxWallet = collectionData.user.maxWallet;
+        walletBonusEnd = parseInt(collectionData.user.walletBonusEnd);
+
+        if (walletBonusEnd > currentTime) {
+            total = collectionData.user.transTotal;
+        } else {
+            if (collectionData.user.transTotal > maxWallet) {
+                total = maxWallet;
+            } else {
+                total = collectionData.user.transTotal;
+            }
+        }
     }
 
     finalFeed = !!transData?.transactions ? transData.transactions : [];
@@ -284,7 +316,7 @@ const Wallet: React.FC<Props> = (props) => {
 
     return (
         <>
-            <InstructionsModal hideModal={() => {}} visible={true} />
+            <InstructionsModal hideModal={() => {}} visible={false} />
             <View style={basicLayouts.flexGrid1}>
                 <FlatList
                     ref={listRef}
@@ -298,13 +330,108 @@ const Wallet: React.FC<Props> = (props) => {
                                     </Text>
                                 </View>
                                 <View style={styles.entryContainer}>
-                                    <Text style={styles.totalTitle}>Total</Text>
-                                    <CoinBox
-                                        amount={total}
-                                        coinSize={30}
-                                        fontSize={20}
-                                        showAbbreviated={false}
-                                    />
+                                    {walletBonusEnd > currentTime ? (
+                                        <View
+                                            style={styles.bonusOuterContainer}
+                                        >
+                                            <View
+                                                style={
+                                                    styles.bonusInnerContainer
+                                                }
+                                            >
+                                                <Text style={styles.bonusTitle}>
+                                                    Infinite Wallet
+                                                </Text>
+                                                <Text
+                                                    style={
+                                                        styles.bonusTimeRemaining
+                                                    }
+                                                >
+                                                    {millisToCountdown(
+                                                        walletBonusEnd -
+                                                            currentTime
+                                                    )}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                    ) : (
+                                        <>
+                                            <View style={styles.barHeader}>
+                                                <View
+                                                    style={styles.barHeaderLeft}
+                                                >
+                                                    <Text
+                                                        style={
+                                                            styles.maxCapacityText
+                                                        }
+                                                    >
+                                                        Max:
+                                                    </Text>
+                                                    <CoinBox
+                                                        coinSize={15}
+                                                        amount={maxWallet}
+                                                        showAbbreviated={false}
+                                                        fontColor={
+                                                            palette.mediumGray
+                                                        }
+                                                    />
+                                                </View>
+                                                <View
+                                                    style={
+                                                        styles.barHeaderRight
+                                                    }
+                                                >
+                                                    <TouchableOpacity
+                                                        style={
+                                                            styles.upgradeButton
+                                                        }
+                                                    >
+                                                        <Text
+                                                            style={
+                                                                styles.upgradeText
+                                                            }
+                                                        >
+                                                            Upgrade
+                                                        </Text>
+                                                    </TouchableOpacity>
+                                                </View>
+                                            </View>
+                                            <View
+                                                style={styles.totalBar}
+                                                onLayout={(e) =>
+                                                    setBarWidth(
+                                                        e.nativeEvent.layout
+                                                            .width
+                                                    )
+                                                }
+                                            >
+                                                <View
+                                                    style={[
+                                                        styles.barFiller,
+                                                        {
+                                                            width:
+                                                                (total /
+                                                                    maxWallet) *
+                                                                    (barWidth -
+                                                                        MIN_FILLER_WIDTH) +
+                                                                MIN_FILLER_WIDTH,
+                                                        },
+                                                    ]}
+                                                />
+                                            </View>
+                                        </>
+                                    )}
+                                    <View style={styles.totalContainer}>
+                                        <Text style={styles.totalTitle}>
+                                            Total:
+                                        </Text>
+                                        <CoinBox
+                                            amount={total}
+                                            coinSize={30}
+                                            fontSize={20}
+                                            showAbbreviated={false}
+                                        />
+                                    </View>
                                 </View>
                                 <View style={styles.earningsFooter}>
                                     <Animated.View

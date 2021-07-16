@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { LayoutAnimation, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./LockBuySelectStyles";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -33,16 +33,34 @@ interface Props {
 const LockBuySelect: React.FC<Props> = (props) => {
     const [lockedError, setLockedError] = useState<boolean>(false);
     const [showConfirm, setShowConfirm] = useState<boolean>(false);
+    const [currentTimeout, setCurrentTimeout] = useState<number | null>(null);
 
     const activateLockedError = () => {
         LayoutAnimation.easeInEaseOut();
         setLockedError(true);
 
-        setTimeout(() => {
-            LayoutAnimation.easeInEaseOut();
-            setLockedError(false);
-        }, 4000);
+        if (!!currentTimeout) {
+            clearTimeout(currentTimeout);
+        }
+
+        setCurrentTimeout(
+            setTimeout(() => {
+                LayoutAnimation.easeInEaseOut();
+                setLockedError(false);
+            }, 4000)
+        );
     };
+
+    useEffect(() => {
+        return () =>
+            setCurrentTimeout((timeout) => {
+                if (!!timeout) {
+                    clearTimeout(timeout);
+                }
+
+                return null;
+            });
+    }, []);
 
     if (!!props.loading) {
         return <LoadingWheel />;

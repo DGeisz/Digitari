@@ -12,6 +12,34 @@ export const shopStyles = StyleSheet.create({
         alignSelf: "center",
         padding: 20,
     },
+    basicEntryContainer: {
+        marginBottom: 30,
+    },
+    entryTitleText: {
+        fontWeight: "bold",
+        color: palette.deepBlue,
+        fontSize: 16,
+    },
+    entryDescription: {
+        marginTop: 20,
+        alignSelf: "center",
+        textAlign: "center",
+        fontSize: 15,
+        color: palette.hardGray,
+    },
+    entrySeparator: {
+        borderBottomWidth: 1,
+        borderBottomColor: palette.softGray,
+        marginBottom: 20,
+    },
+    entryBigDescription: {
+        fontSize: 17,
+        fontWeight: "bold",
+    },
+    boldBlue: {
+        fontWeight: "bold",
+        color: palette.deepBlue,
+    },
     headerContainer: {
         ...basicLayouts.grid2,
         marginBottom: 20,

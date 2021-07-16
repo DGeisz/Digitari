@@ -63,6 +63,9 @@ export const palette = {
     silver: "#a1a4ab",
     gold: "#d4af37",
 
+    darkGold: "#bf9c2a",
+    goldFlake: "#faefca",
+
     // Bio font colors
     formerGlory: "#7c7d19",
     heartOfTheSea: "#193e7d",

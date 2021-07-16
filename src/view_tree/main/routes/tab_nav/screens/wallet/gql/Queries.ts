@@ -8,6 +8,8 @@ export const LAST_COLLECTION_TIME = gql`
             lastCollectionTime
             transTotal
             ranking
+            walletBonusEnd
+            maxWallet
         }
     }
 `;
@@ -17,6 +19,8 @@ export interface LastCollectionTimeData {
         lastCollectionTime: string;
         ranking: number;
         transTotal: number;
+        maxWallet: number;
+        walletBonusEnd: string;
     };
 }
 

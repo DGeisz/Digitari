@@ -28,6 +28,9 @@ export const GET_USER = gql`
             profileSticker
             profileStickersPurchased
 
+            walletBonusEnd
+            maxWallet
+
             amFollowing
             bolts
             newConvoUpdate

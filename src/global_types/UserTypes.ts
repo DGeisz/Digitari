@@ -19,6 +19,8 @@ export const CHANGE_BIO_PRICE = 50;
 export const CHANGE_PROFILE_PIC_PRICE = 100;
 export const CHANGE_LINK_PRICE = 200;
 
+export const BOOST_WALLET_PRICE = 1000;
+
 export interface UserType {
     id: string;
     firstName: string;
@@ -38,6 +40,9 @@ export interface UserType {
     coin: number;
     bolts: number;
     imgUrl?: string;
+
+    walletBonusEnd: string;
+    maxWallet: number;
 
     nameFont: NameFontsEnum;
     nameFontsPurchased: NameFontsEnum[];

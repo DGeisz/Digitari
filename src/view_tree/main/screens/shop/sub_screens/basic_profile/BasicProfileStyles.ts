@@ -6,14 +6,6 @@ import { GENERAL_CONTENT_WIDTH } from "../../../../../../global_constants/screen
 const imageSize = 100;
 
 export const styles = StyleSheet.create({
-    basicEntryContainer: {
-        marginBottom: 30,
-    },
-    entryTitleText: {
-        fontWeight: "bold",
-        color: palette.deepBlue,
-        fontSize: 16,
-    },
     imageSelectorContainer: {
         ...basicLayouts.grid2,
         paddingTop: 20,

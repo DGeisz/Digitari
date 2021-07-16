@@ -31,6 +31,10 @@ export const schema = gql`
         coin: Int
         bolts: Int
 
+        # For wallet
+        maxWallet: Int
+        walletBonusEnd: String
+
         # Profile customizations
         nameFont: Int
         nameFontsPurchased: [Int]

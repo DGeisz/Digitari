@@ -248,10 +248,10 @@ const BasicProfile: React.FC<Props> = (props) => {
         <ScrollView ref={scrollRef} style={shopStyles.outerContainer}>
             <View style={shopStyles.container}>
                 <View
-                    style={styles.basicEntryContainer}
+                    style={shopStyles.basicEntryContainer}
                     onLayout={(e) => setPicHeight(e.nativeEvent.layout.height)}
                 >
-                    <Text style={styles.entryTitleText}>Profile Pic</Text>
+                    <Text style={shopStyles.entryTitleText}>Profile Pic</Text>
                     <View style={styles.imageSelectorContainer}>
                         {!!imgUrl ? (
                             <Image
@@ -305,8 +305,8 @@ const BasicProfile: React.FC<Props> = (props) => {
                         onSelect={() => {}}
                     />
                 </View>
-                <View style={styles.basicEntryContainer}>
-                    <Text style={styles.entryTitleText}>Bio</Text>
+                <View style={shopStyles.basicEntryContainer}>
+                    <Text style={shopStyles.entryTitleText}>Bio</Text>
                     <TextInput
                         style={styles.textInput}
                         placeholder="Bio..."
@@ -366,8 +366,8 @@ const BasicProfile: React.FC<Props> = (props) => {
                         }}
                     />
                 </View>
-                <View style={styles.basicEntryContainer}>
-                    <Text style={styles.entryTitleText}>Bio link</Text>
+                <View style={shopStyles.basicEntryContainer}>
+                    <Text style={shopStyles.entryTitleText}>Bio link</Text>
                     <TextInput
                         style={styles.textInput}
                         placeholder="Paste link..."

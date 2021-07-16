@@ -29,10 +29,72 @@ export const styles = StyleSheet.create({
         marginBottom: 10,
         marginHorizontal: 20,
     },
+    bonusOuterContainer: {
+        ...basicLayouts.grid2,
+    },
+    bonusInnerContainer: {
+        ...basicLayouts.grid2,
+        backgroundColor: palette.goldFlake,
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        borderRadius: 10,
+    },
+    bonusTitle: {
+        color: palette.darkGold,
+        fontWeight: "bold",
+        marginBottom: 5,
+    },
+    bonusTimeRemaining: {
+        color: palette.darkGold,
+        fontWeight: "bold",
+        fontSize: 20,
+    },
     entryTitle: {
         fontWeight: "bold",
         color: palette.hardGray,
         marginBottom: 5,
+    },
+    barHeader: {
+        flexDirection: "row",
+    },
+    barHeaderLeft: {
+        ...basicLayouts.flexGrid2,
+        flexDirection: "row",
+    },
+    maxCapacityText: {
+        marginLeft: 5,
+        fontWeight: "bold",
+        fontSize: 12,
+        color: palette.mediumGray,
+    },
+    barHeaderRight: {
+        ...basicLayouts.flexGrid6,
+    },
+    upgradeButton: {
+        marginRight: 5,
+    },
+    upgradeText: {
+        fontSize: 12,
+        fontWeight: "bold",
+        color: palette.deepBlue,
+    },
+    totalBar: {
+        ...basicLayouts.flexGrid1,
+        height: 15,
+        backgroundColor: palette.heavySoap,
+        borderColor: palette.mediumGray,
+        borderWidth: 1,
+        borderRadius: 10,
+        overflow: "hidden",
+    },
+    barFiller: {
+        ...basicLayouts.flexGrid1,
+        backgroundColor: palette.deepBlue,
+    },
+    totalContainer: {
+        ...basicLayouts.grid5,
+        marginTop: 10,
+        flexDirection: "row",
     },
     totalTitle: {
         fontWeight: "bold",

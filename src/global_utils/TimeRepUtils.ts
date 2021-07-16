@@ -35,10 +35,13 @@ export function millisToCountdown(millis: number): string {
     millis -= min * millisInMinute;
     const sec = Math.floor(millis / millisInSecond);
 
+    const minZero = min < 10 ? "0" : "";
+    const secZero = sec < 10 ? "0" : "";
+
     if (!!hours) {
-        return `${hours}:${min}:${sec}`;
+        return `${hours}:${minZero}${min}:${secZero}${sec}`;
     } else if (!!min) {
-        return `${min}:${sec}`;
+        return `${min}:${secZero}${sec}`;
     }
 
     return `${sec}`;

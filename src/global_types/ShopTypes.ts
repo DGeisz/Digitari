@@ -262,7 +262,7 @@ export function profileColor2Name(color: ProfileColors): string {
         case ProfileColors.PlasticDollhouse:
             return "Plastic Dollhouse";
         case ProfileColors.AlaskanSockeye:
-            return "Alaskan sockeye";
+            return "Alaskan Sockeye";
         case ProfileColors.DarkForest:
             return "The Dark Forest";
         case ProfileColors.AboveTreeline:
