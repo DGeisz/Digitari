@@ -194,9 +194,18 @@ const ProfileHeader: React.FC<Props> = (props) => {
                         style={styles.shopButtonContainer}
                         pointerEvents="box-none"
                     >
+                        {/*
+                            IMPORTANT!!!
+
+                            Keep onPress={() => props.openShop()}
+                            instead of onPress={props.openShop}
+                            otherwise the press event will be passed
+                            to openShop and used inappropriately, which
+                            causes a big ol' bug
+                            */}
                         <TouchableOpacity
                             style={styles.shopButton}
-                            onPress={props.openShop}
+                            onPress={() => props.openShop()}
                         >
                             <MaterialIcons
                                 name="bolt"

@@ -329,6 +329,9 @@ export const schema = gql`
 
         # Shop mutations
 
+        boostWallet: Boolean
+        upgradeWallet: User
+
         buySticker(sticker: Int!): Int
         selectSticker(sticker: Int!): Int
 

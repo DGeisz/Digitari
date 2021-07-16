@@ -34,7 +34,16 @@ export const shopStyles = StyleSheet.create({
     },
     entryBigDescription: {
         fontSize: 17,
+        textAlign: "center",
+        color: palette.hardGray,
         fontWeight: "bold",
+    },
+    entryItemContainer: {
+        ...basicLayouts.grid2,
+        marginTop: 20,
+        backgroundColor: palette.white,
+        padding: 20,
+        borderRadius: 20,
     },
     boldBlue: {
         fontWeight: "bold",

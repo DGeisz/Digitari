@@ -11,7 +11,7 @@ interface TabNavActions {
     openReport: (pid: string) => void;
     openReportUser: (uid: string) => void;
     openSettings: () => void;
-    openShop: () => void;
+    openShop: (screen?: string) => void;
 }
 
 export const TabNavContext = React.createContext<TabNavActions>({

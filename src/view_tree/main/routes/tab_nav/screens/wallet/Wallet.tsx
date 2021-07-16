@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
     Animated,
     Easing,
@@ -44,11 +44,7 @@ import {
 } from "../../gql/Queries";
 import { useIsFocused } from "@react-navigation/native";
 import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
-import {
-    millisInDay,
-    millisInHour,
-    millisToCountdown,
-} from "../../../../../../global_utils/TimeRepUtils";
+import { millisToCountdown } from "../../../../../../global_utils/TimeRepUtils";
 
 const MIN_FILLER_WIDTH = 5;
 
@@ -58,7 +54,9 @@ interface Props {
 
 const Wallet: React.FC<Props> = (props) => {
     const uid = localUid();
-    const { openNew, openConvo, openUser } = useContext(TabNavContext);
+    const { openNew, openConvo, openUser, openShop } = useContext(
+        TabNavContext
+    );
 
     const [barWidth, setBarWidth] = useState<number>(0);
     const [currentTime, setCurrentTime] = useState<number>(Date.now());
@@ -384,6 +382,9 @@ const Wallet: React.FC<Props> = (props) => {
                                                     <TouchableOpacity
                                                         style={
                                                             styles.upgradeButton
+                                                        }
+                                                        onPress={() =>
+                                                            openShop("Wallet")
                                                         }
                                                     >
                                                         <Text

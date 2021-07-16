@@ -74,8 +74,14 @@ const TabNav: React.FC<Props> = (props) => {
         props.navigation.push("Settings");
     };
 
-    const openShop = () => {
-        props.navigation.push("Shop");
+    const openShop = (screen?: string) => {
+        if (!!screen) {
+            props.navigation.push("Shop", {
+                screen,
+            });
+        } else {
+            props.navigation.push("Shop");
+        }
     };
 
     const { data } = useQuery<GetUpdateFlagsData, GetUpdateFlagsVariables>(
