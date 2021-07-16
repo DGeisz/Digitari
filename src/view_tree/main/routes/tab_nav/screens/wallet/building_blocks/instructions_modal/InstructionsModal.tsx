@@ -56,7 +56,7 @@ const InstructionsModal: React.FC<Props> = (props) => {
                 >
                     <Text style={instructionStyles.instructionText}>
                         As a welcoming gift, you get 48 hours of an infinite
-                        wallet! 🎉 {DOUBLE_NEWLINE}
+                        wallet! 🎁 {DOUBLE_NEWLINE}
                         After that, your wallet's max capacity goes down to 100
                         coin, but you can upgrade it in the Shop.
                     </Text>
@@ -75,7 +75,7 @@ const InstructionsModal: React.FC<Props> = (props) => {
                 >
                     <Text style={instructionStyles.instructionText}>
                         Looks like you earned 1,000 coin for joining Digitari!
-                        That's nice of us 😉{DOUBLE_NEWLINE}
+                        How nice of us 😉{DOUBLE_NEWLINE}
                         Hit "Collect" to collect your coin.
                     </Text>
                 </TutorialModal>

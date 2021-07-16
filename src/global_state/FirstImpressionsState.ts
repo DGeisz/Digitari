@@ -10,7 +10,7 @@ const FIRST_OPEN_KEY = "FIRST_OPEN_KEY";
 
 AsyncStorage.getItem(FIRST_OPEN_KEY).then((raw) => {
     if (!!raw) {
-        // firstTimeOpeningApp(JSON.parse(raw));
+        firstTimeOpeningApp(JSON.parse(raw));
     }
 });
 
@@ -33,7 +33,7 @@ const FIRST_PROFILE_KEY = "FIRST_PROFILE_KEY";
 
 AsyncStorage.getItem(FIRST_PROFILE_KEY).then((raw) => {
     if (!!raw) {
-        // firstProfile(JSON.parse(raw));
+        firstProfile(JSON.parse(raw));
     }
 });
 
@@ -125,7 +125,7 @@ const FIRST_FEED = "FIRST_FEED";
 
 AsyncStorage.getItem(FIRST_FEED).then((raw) => {
     if (!!raw) {
-        firstFeed(JSON.parse(raw));
+        // firstFeed(JSON.parse(raw));
     }
 });
 
@@ -137,4 +137,27 @@ export function openedFirstFeed() {
 // Dev fn
 export function removeFirstFeed() {
     AsyncStorage.removeItem(FIRST_FEED).then();
+}
+
+/*
+ * State for first bolt
+ */
+export const firstBolt = makeVar<boolean>(true);
+
+const FIRST_BOLT = "FIRST_BOLT";
+
+AsyncStorage.getItem(FIRST_BOLT).then((raw) => {
+    if (!!raw) {
+        // firstBolt(JSON.parse(raw))
+    }
+});
+
+export function tappedFirstBolt() {
+    firstBolt(false);
+    AsyncStorage.setItem(FIRST_BOLT, JSON.stringify(false)).then();
+}
+
+// Dev fn
+export function removeFirstBolt() {
+    AsyncStorage.removeItem(FIRST_BOLT).then();
 }
