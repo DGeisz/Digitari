@@ -100,10 +100,14 @@ export async function onDonationReceived(
                     return true;
                 },
                 receivedFromConvos(existing) {
-                    return existing + coinTotal;
+                    existing = parseInt(existing);
+
+                    return (existing + coinTotal).toString();
                 },
                 transTotal(existing) {
-                    return existing + coinTotal;
+                    existing = parseInt(existing);
+
+                    return (existing + coinTotal).toString();
                 },
             },
         });

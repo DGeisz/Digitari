@@ -28,10 +28,12 @@ export function receivedFromConvosHandler(
     let challengeReceipts: string[] = [];
     let newIndex = 0;
 
+    const receivedFromConvos = parseInt(user.receivedFromConvos);
+
     /*
      * Handle bronze
      */
-    if (user.receivedFromConvos >= bronzeCount && user.rfcChallengeIndex < 1) {
+    if (receivedFromConvos >= bronzeCount && user.rfcChallengeIndex < 1) {
         newIndex = 1;
         challengeReceipts.push(
             [ChallengeTypes.ReceivedFromConvos, bronzeCount].join(":")
@@ -41,7 +43,7 @@ export function receivedFromConvosHandler(
     /*
      * Handle silver
      */
-    if (user.receivedFromConvos >= silverCount && user.rfcChallengeIndex < 2) {
+    if (receivedFromConvos >= silverCount && user.rfcChallengeIndex < 2) {
         newIndex = 2;
         challengeReceipts.push(
             [ChallengeTypes.ReceivedFromConvos, silverCount].join(":")
@@ -51,7 +53,7 @@ export function receivedFromConvosHandler(
     /*
      * Handle gold
      */
-    if (user.receivedFromConvos >= goldCount && user.rfcChallengeIndex < 3) {
+    if (receivedFromConvos >= goldCount && user.rfcChallengeIndex < 3) {
         newIndex = 3;
         challengeReceipts.push(
             [ChallengeTypes.ReceivedFromConvos, goldCount].join(":")
@@ -61,7 +63,7 @@ export function receivedFromConvosHandler(
     /*
      * Handle supreme
      */
-    if (user.receivedFromConvos >= supremeCount && user.rfcChallengeIndex < 4) {
+    if (receivedFromConvos >= supremeCount && user.rfcChallengeIndex < 4) {
         newIndex = 4;
         challengeReceipts.push(
             [ChallengeTypes.ReceivedFromConvos, supremeCount].join(":")

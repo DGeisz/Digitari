@@ -83,7 +83,6 @@ const Wallet: React.FC<Props> = (props) => {
             variables: {
                 uid,
             },
-            fetchPolicy: "cache-and-network",
             notifyOnNetworkStatusChange: true,
         }
     );
@@ -115,29 +114,22 @@ const Wallet: React.FC<Props> = (props) => {
                 if (!!data?.collectEarnings) {
                     cache.modify({
                         id: cache.identify({
-                            __typename: QUERY_TYPENAME,
-                        }),
-                        fields: {
-                            transactionAccumulation() {
-                                return 0;
-                            },
-                        },
-                    });
-
-                    cache.modify({
-                        id: cache.identify({
                             __typename: USER_TYPENAME,
                             id: uid,
                         }),
                         fields: {
                             coin(existing) {
-                                return existing + data.collectEarnings.coin;
+                                existing = parseInt(existing);
+
+                                return (
+                                    existing + data.collectEarnings.coin
+                                ).toString();
                             },
                             lastCollectionTime() {
                                 return data.collectEarnings.time;
                             },
                             transTotal() {
-                                return 0;
+                                return "0";
                             },
                         },
                     });
@@ -239,35 +231,6 @@ const Wallet: React.FC<Props> = (props) => {
         });
     };
 
-    /*
-     * Tier wage pulse
-     */
-    const tierWageOpacity = useRef(new Animated.Value(1)).current;
-
-    useEffect(() => {
-        Animated.loop(
-            Animated.sequence([
-                Animated.timing(tierWageOpacity, {
-                    toValue: 0,
-                    easing: Easing.sin,
-                    useNativeDriver: true,
-                    duration: 800,
-                }),
-                Animated.timing(tierWageOpacity, {
-                    toValue: 1,
-                    easing: Easing.sin,
-                    useNativeDriver: true,
-                    duration: 800,
-                }),
-                Animated.timing(tierWageOpacity, {
-                    toValue: 1,
-                    useNativeDriver: true,
-                    duration: 2000,
-                }),
-            ])
-        ).start();
-    }, []);
-
     if (
         (!collectionData?.user && collectionStatus === NetworkStatus.loading) ||
         (!transData?.transactions &&
@@ -292,16 +255,18 @@ const Wallet: React.FC<Props> = (props) => {
     let lastCollectionTime: number = 0;
 
     if (!!collectionData?.user) {
-        maxWallet = collectionData.user.maxWallet;
+        maxWallet = parseInt(collectionData.user.maxWallet);
         walletBonusEnd = parseInt(collectionData.user.walletBonusEnd);
 
+        const transTotal = parseInt(collectionData.user.transTotal);
+
         if (walletBonusEnd > currentTime) {
-            total = collectionData.user.transTotal;
+            total = transTotal;
         } else {
-            if (collectionData.user.transTotal > maxWallet) {
+            if (transTotal > maxWallet) {
                 total = maxWallet;
             } else {
-                total = collectionData.user.transTotal;
+                total = transTotal;
             }
         }
     }

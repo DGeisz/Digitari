@@ -294,24 +294,36 @@ const Post: React.FC<Props> = (props) => {
                                                 id: uid,
                                             }),
                                             fields: {
-                                                coin(existing: number) {
+                                                coin(existing) {
+                                                    existing = parseInt(
+                                                        existing
+                                                    );
+
                                                     return (
                                                         existing -
                                                         currentBolts *
                                                             DIGIBOLT_PRICE
-                                                    );
+                                                    ).toString();
                                                 },
-                                                coinSpent(existing: number) {
+                                                coinSpent(existing) {
+                                                    existing = parseInt(
+                                                        existing
+                                                    );
+
                                                     return (
                                                         existing +
                                                         currentBolts *
                                                             DIGIBOLT_PRICE
-                                                    );
+                                                    ).toString();
                                                 },
-                                                bolts(existing: number) {
+                                                bolts(existing) {
+                                                    existing = parseInt(
+                                                        existing
+                                                    );
+
                                                     return (
                                                         existing + currentBolts
-                                                    );
+                                                    ).toString();
                                                 },
                                             },
                                         });

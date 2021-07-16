@@ -95,7 +95,10 @@ const AppView: React.FC = () => {
                                 The mutation will return true if the iap was accepted
                                  */
                                 if (!!processData?.processIap) {
-                                    finishTransactionAsync(purchase, true);
+                                    finishTransactionAsync(
+                                        purchase,
+                                        true
+                                    ).then();
 
                                     client.cache.modify({
                                         id: client.cache.identify({
@@ -104,15 +107,19 @@ const AppView: React.FC = () => {
                                         }),
                                         fields: {
                                             coin(existing) {
+                                                existing = parseInt(existing);
+
                                                 const amount =
                                                     products[
                                                         purchase.productId as ProductId
                                                     ];
 
                                                 if (!!amount) {
-                                                    return existing + amount;
+                                                    return (
+                                                        existing + amount
+                                                    ).toString();
                                                 } else {
-                                                    return existing;
+                                                    return existing.toString();
                                                 }
                                             },
                                         },

@@ -35,7 +35,7 @@ const StatsHeader: React.FC<Props> = (props) => {
     const [boltsModalVisible, showBoltsModal] = useState<boolean>(false);
 
     const [level, levelGoal, levelProgress] = calculateLevelInfo(
-        props.user.coinSpent
+        parseInt(props.user.coinSpent)
     );
 
     return (
@@ -130,7 +130,7 @@ const StatsHeader: React.FC<Props> = (props) => {
                     />
                     <TouchableOpacity onPress={() => showBoltsModal(true)}>
                         <BoltBox
-                            amount={props.user.bolts}
+                            amount={parseInt(props.user.bolts)}
                             boltSize={30}
                             fontSize={18}
                             showAbbreviated={false}
@@ -143,7 +143,7 @@ const StatsHeader: React.FC<Props> = (props) => {
                     />
                     <TouchableOpacity onPress={() => showCoinModal(true)}>
                         <CoinBox
-                            amount={props.user.coin}
+                            amount={parseInt(props.user.coin)}
                             coinSize={30}
                             fontSize={18}
                             showAbbreviated={false}

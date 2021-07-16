@@ -19,7 +19,7 @@ const LevelInfoModal: React.FC<Props> = (props) => {
     const isMe = uid === props.user.id;
 
     const [level, levelGoal, levelProgress] = useMemo<[number, number, number]>(
-        () => calculateLevelInfo(props.user.coinSpent),
+        () => calculateLevelInfo(parseInt(props.user.coinSpent)),
         [props.user.coinSpent]
     );
 

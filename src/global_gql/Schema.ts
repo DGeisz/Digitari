@@ -13,7 +13,7 @@ export const schema = gql`
         timeCreated: String
         imgUrl: String
         remainingInvites: Int
-        transTotal: Int
+        transTotal: String
 
         lastCollectionTime: String
 
@@ -28,11 +28,11 @@ export const schema = gql`
         ranking: Int
         blocked: Int
         beenBlocked: Int
-        coin: Int
-        bolts: Int
+        coin: String
+        bolts: String
 
         # For wallet
-        maxWallet: Int
+        maxWallet: String
         walletBonusEnd: String
 
         # Profile customizations
@@ -49,13 +49,13 @@ export const schema = gql`
 
         challengeReceipts: [String]
 
-        coinSpent: Int
+        coinSpent: String
 
         # Fields for challenges
-        receivedFromConvos: Int
+        receivedFromConvos: String
         rfcChallengeIndex: Int
 
-        spentOnConvos: Int
+        spentOnConvos: String
         socChallengeIndex: Int
 
         successfulConvos: Int

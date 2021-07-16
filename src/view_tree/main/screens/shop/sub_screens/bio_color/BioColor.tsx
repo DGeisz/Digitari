@@ -54,9 +54,11 @@ const BioColor: React.FC = () => {
                                 return [...existing, data.buyBioColor];
                             },
                             bolts(existing) {
+                                existing = parseInt(existing);
+
                                 return (
                                     existing - bioColorPrice(data.buyBioColor)
-                                );
+                                ).toString();
                             },
                         },
                     });
@@ -123,7 +125,7 @@ const BioColor: React.FC = () => {
                                 description={"unlock this color"}
                                 purchaseTitle={"Unlock Color"}
                                 price={bioColorPrice(color)}
-                                userBolts={data?.user.bolts}
+                                userBolts={parseInt(data?.user.bolts)}
                                 alreadyOwns={data?.user.bioColorsPurchased.includes(
                                     color
                                 )}

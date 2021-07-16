@@ -53,17 +53,17 @@ const UserStats: React.FC<Props> = (props) => {
             <View style={styles.statsContainer}>
                 <UserStat
                     title={"Total digicoin spent"}
-                    quantity={props.user.coinSpent}
+                    quantity={parseInt(props.user.coinSpent)}
                     showCoin
                 />
                 <UserStat
                     title={"Digicoin earned from posts"}
-                    quantity={props.user.receivedFromConvos}
+                    quantity={parseInt(props.user.receivedFromConvos)}
                     showCoin
                 />
                 <UserStat
                     title={"Digicoin spent on digibolts"}
-                    quantity={props.user.spentOnConvos}
+                    quantity={parseInt(props.user.spentOnConvos)}
                     showCoin
                 />
                 <UserStat

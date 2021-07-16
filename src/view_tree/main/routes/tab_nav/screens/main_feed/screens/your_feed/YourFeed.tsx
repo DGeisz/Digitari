@@ -116,8 +116,12 @@ const YourFeed: React.FC<Props> = (props) => {
 
     const finalFeed = !!data?.feed ? data.feed.filter((post) => !!post) : [];
 
-    const userCoin = !!selfData?.user ? selfData.user.coin : 0;
-    const userBolts = !!selfData?.user ? selfData.user.bolts : 0;
+    const userCoin: number = !!selfData?.user
+        ? parseInt(selfData.user.coin)
+        : 0;
+    const userBolts: number = !!selfData?.user
+        ? parseInt(selfData.user.bolts)
+        : 0;
 
     const firstName = localFirstName();
 
@@ -255,10 +259,14 @@ const YourFeed: React.FC<Props> = (props) => {
                                                     return true;
                                                 },
                                                 transTotal(existing) {
+                                                    existing = parseInt(
+                                                        existing
+                                                    );
+
                                                     return (
                                                         existing +
                                                         nextPostsReward
-                                                    );
+                                                    ).toString();
                                                 },
                                             },
                                         });

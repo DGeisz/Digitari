@@ -97,8 +97,12 @@ const UserPosts: React.FC<Props> = (props) => {
 
     const { cache } = useApolloClient();
 
-    const userCoin = !!selfData?.user ? selfData.user.coin : 0;
-    const userBolts = !!selfData?.user ? selfData.user.bolts : 0;
+    const userCoin: number = !!selfData?.user
+        ? parseInt(selfData.user.coin)
+        : 0;
+    const userBolts: number = !!selfData?.user
+        ? parseInt(selfData.user.bolts)
+        : 0;
     const userFirstName = !!selfData?.user ? selfData.user.firstName : "";
 
     return (
@@ -234,10 +238,13 @@ const UserPosts: React.FC<Props> = (props) => {
                                                     return true;
                                                 },
                                                 transTotal(existing) {
-                                                    return (
-                                                        existing +
-                                                        nextPostsReward
+                                                    const total = parseInt(
+                                                        existing
                                                     );
+
+                                                    return (
+                                                        total + nextPostsReward
+                                                    ).toString();
                                                 },
                                             },
                                         });

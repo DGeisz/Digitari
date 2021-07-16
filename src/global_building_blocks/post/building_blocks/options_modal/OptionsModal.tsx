@@ -125,7 +125,9 @@ const OptionsModal: React.FC<Props> = (props) => {
         }
     );
 
-    const userCoin = !!userData?.user ? userData.user.coin : 0;
+    const userCoin: number = !!userData?.user
+        ? parseInt(userData.user.coin)
+        : 0;
 
     const blockPost = () => {
         if (userCoin < POST_BLOCK_COST) {

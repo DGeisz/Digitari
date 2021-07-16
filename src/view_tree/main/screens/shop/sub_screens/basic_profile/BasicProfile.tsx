@@ -122,7 +122,9 @@ const BasicProfile: React.FC<Props> = (props) => {
                                 return data.updateBio.bio;
                             },
                             bolts(existing) {
-                                return existing - CHANGE_BIO_PRICE;
+                                existing = parseInt(existing);
+
+                                return (existing - CHANGE_BIO_PRICE).toString();
                             },
                         },
                     });
@@ -148,7 +150,9 @@ const BasicProfile: React.FC<Props> = (props) => {
                             return data.updateBioLink.link;
                         },
                         bolts(existing) {
-                            return existing - CHANGE_LINK_PRICE;
+                            existing = parseInt(existing);
+
+                            return (existing - CHANGE_LINK_PRICE).toString();
                         },
                     },
                 });
@@ -187,9 +191,11 @@ const BasicProfile: React.FC<Props> = (props) => {
                                         return data.updateProfilePic.url;
                                     },
                                     bolts(existing) {
+                                        existing = parseInt(existing);
+
                                         return (
                                             existing - CHANGE_PROFILE_PIC_PRICE
-                                        );
+                                        ).toString();
                                     },
                                 },
                             });
@@ -276,7 +282,7 @@ const BasicProfile: React.FC<Props> = (props) => {
                     <LockBuySelect
                         active={imgChanged}
                         loading={imgLoading}
-                        userBolts={data.user.bolts}
+                        userBolts={parseInt(data.user.bolts)}
                         description={"set your profile picture"}
                         purchaseTitle={"Set Pic"}
                         itemTitle={"pic"}
@@ -331,7 +337,7 @@ const BasicProfile: React.FC<Props> = (props) => {
                         {MAX_BIO_LENGTH - bio.length}
                     </Text>
                     <LockBuySelect
-                        userBolts={data.user.bolts}
+                        userBolts={parseInt(data.user.bolts)}
                         active={bioChanged}
                         description={"set your bio"}
                         purchaseTitle={"Set Bio"}
@@ -389,7 +395,7 @@ const BasicProfile: React.FC<Props> = (props) => {
                         }
                     />
                     <LockBuySelect
-                        userBolts={data.user.bolts}
+                        userBolts={parseInt(data.user.bolts)}
                         active={linkChanged}
                         loading={linkLoading}
                         description={"set your bio link"}

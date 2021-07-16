@@ -12,7 +12,7 @@ export const USER_COIN = gql`
 export interface UserCoinData {
     user: {
         id: string;
-        coin: number;
+        coin: string;
     };
 }
 

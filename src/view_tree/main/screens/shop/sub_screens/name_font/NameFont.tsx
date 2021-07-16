@@ -52,9 +52,11 @@ const NameFont: React.FC = () => {
                                 return [...existing, data.buyNameFont];
                             },
                             bolts(existing) {
+                                existing = parseInt(existing);
+
                                 return (
                                     existing - nameFontPrice(data.buyNameFont)
-                                );
+                                ).toString();
                             },
                         },
                     });
@@ -118,7 +120,7 @@ const NameFont: React.FC = () => {
                                 description={"unlock this font"}
                                 purchaseTitle={"Unlock Font"}
                                 price={nameFontPrice(font)}
-                                userBolts={data?.user.bolts}
+                                userBolts={parseInt(data?.user.bolts)}
                                 alreadyOwns={data?.user.nameFontsPurchased.includes(
                                     font
                                 )}

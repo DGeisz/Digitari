@@ -88,7 +88,12 @@ const NewResponse: React.FC<Props> = (props) => {
                     }),
                     fields: {
                         bolts(existing) {
-                            return Math.max(existing - responseCost, 0);
+                            existing = parseInt(existing);
+
+                            return Math.max(
+                                existing - responseCost,
+                                0
+                            ).toString();
                         },
                     },
                 });

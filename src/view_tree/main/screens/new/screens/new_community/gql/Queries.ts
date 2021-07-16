@@ -12,7 +12,7 @@ export const USER_COIN_CHECK = gql`
 export interface UserCoinCheckData {
     user: {
         id: string;
-        coin: number;
+        coin: string;
     };
 }
 
@@ -31,7 +31,7 @@ export const CREATE_COMMUNITY_CHECK = gql`
 
 export interface CreateCommunityCheckQueryData {
     createCommunityCoinCheck: {
-        coin: number;
+        coin: string;
         price: number;
     };
 }

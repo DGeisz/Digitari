@@ -32,10 +32,10 @@ export default class Challenge extends React.PureComponent<Props, State> {
 
         switch (this.props.challenge.stat) {
             case ChallengeTypes.ReceivedFromConvos:
-                progress = this.props.user.receivedFromConvos;
+                progress = parseInt(this.props.user.receivedFromConvos);
                 break;
             case ChallengeTypes.SpentOnConvos:
-                progress = this.props.user.spentOnConvos;
+                progress = parseInt(this.props.user.spentOnConvos);
                 break;
             case ChallengeTypes.PostCount:
                 progress = this.props.user.postCount;

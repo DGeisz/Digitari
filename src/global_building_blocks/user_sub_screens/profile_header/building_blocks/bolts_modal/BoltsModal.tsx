@@ -2,7 +2,6 @@ import React from "react";
 import Modal from "react-native-modal";
 import { Text, TouchableOpacity, View } from "react-native";
 import { modalStyles } from "../../../../../global_styles/OptionsModalStyles";
-import CoinBox from "../../../../coin_box/CoinBox";
 import { DOUBLE_NEWLINE } from "../../../../../global_utils/StringUtils";
 import BoltBox from "../../../../bolt_box/BoltBox";
 

@@ -198,19 +198,28 @@ const NewPost: React.FC<Props> = (props) => {
                 }),
                 fields: {
                     coin(existing) {
+                        existing = parseInt(existing);
+
                         if (!!recipients) {
                             return Math.max(
                                 existing - COST_PER_RECIPIENT * recipients,
                                 0
-                            );
+                            ).toString();
                         }
-                        return existing;
+
+                        return existing.toString();
                     },
                     coinSpent(existing) {
+                        existing = parseInt(existing);
+
                         if (!!recipients) {
-                            return existing + COST_PER_RECIPIENT * recipients;
+                            return (
+                                existing +
+                                COST_PER_RECIPIENT * recipients
+                            ).toString();
                         }
-                        return existing;
+
+                        return existing.toString();
                     },
                     postCount(existing) {
                         return existing + 1;
@@ -259,8 +268,10 @@ const NewPost: React.FC<Props> = (props) => {
             return;
         }
 
-        if (data.user.coin < COST_PER_RECIPIENT * recipients) {
-            setErrorMessage(`You only have ${toCommaRep(data.user.coin)} coin`);
+        if (parseInt(data.user.coin) < COST_PER_RECIPIENT * recipients) {
+            setErrorMessage(
+                `You only have ${toCommaRep(parseInt(data.user.coin))} coin`
+            );
             return;
         }
 

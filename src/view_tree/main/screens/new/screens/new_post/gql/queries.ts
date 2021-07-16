@@ -13,7 +13,7 @@ export const GET_SELF = gql`
 export interface GetSelfData {
     user: {
         followers: number;
-        coin: number;
+        coin: string;
     };
 }
 

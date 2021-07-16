@@ -18,8 +18,8 @@ export interface LastCollectionTimeData {
     user: {
         lastCollectionTime: string;
         ranking: number;
-        transTotal: number;
-        maxWallet: number;
+        transTotal: string;
+        maxWallet: string;
         walletBonusEnd: string;
     };
 }

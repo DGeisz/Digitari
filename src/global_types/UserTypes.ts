@@ -37,12 +37,14 @@ export interface UserType {
     ranking: number;
     blocked: number;
     beenBlocked: number;
-    coin: number;
-    bolts: number;
+    coin: string;
+    bolts: string;
+    transTotal: string;
+
     imgUrl?: string;
 
     walletBonusEnd: string;
-    maxWallet: number;
+    maxWallet: string;
 
     nameFont: NameFontsEnum;
     nameFontsPurchased: NameFontsEnum[];
@@ -62,13 +64,13 @@ export interface UserType {
 
     challengeReceipts: string[];
 
-    coinSpent: number;
+    coinSpent: string;
 
     // Challenge fields
-    receivedFromConvos: number;
+    receivedFromConvos: string;
     rfcChallengeIndex: number;
 
-    spentOnConvos: number;
+    spentOnConvos: string;
     socChallengeIndex: number;
 
     successfulConvos: number;

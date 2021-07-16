@@ -38,22 +38,6 @@ export function addTransaction(
     cache: ApolloCache<any>
 ) {
     /*
-     * Check if we need to increment the transactions accumulation
-     */
-    if (newTransaction.coin > 0) {
-        cache.modify({
-            id: cache.identify({
-                __typename: QUERY_TYPENAME,
-            }),
-            fields: {
-                transactionAccumulation(existing) {
-                    return existing + newTransaction.coin;
-                },
-            },
-        });
-    }
-
-    /*
      * Now handle adding a transaction
      */
     const transData = cache.readQuery<TransactionsData, TransactionsVariables>({

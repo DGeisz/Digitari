@@ -70,7 +70,7 @@ const ProfileHeader: React.FC<Props> = (props) => {
     const uid = localUid();
 
     const [level] = useMemo<[number, number, number]>(
-        () => calculateLevelInfo(props.user.coinSpent),
+        () => calculateLevelInfo(parseInt(props.user.coinSpent)),
         [props.user.coinSpent]
     );
 
@@ -101,10 +101,12 @@ const ProfileHeader: React.FC<Props> = (props) => {
                                 return existing + 1;
                             },
                             coin(existing) {
+                                existing = parseInt(existing);
+
                                 return Math.max(
                                     existing - FOLLOW_USER_PRICE,
                                     0
-                                );
+                                ).toString();
                             },
                         },
                     });
@@ -431,7 +433,7 @@ const ProfileHeader: React.FC<Props> = (props) => {
                         />
                         <TouchableOpacity onPress={() => showBoltModal(true)}>
                             <BoltBox
-                                amount={props.user.bolts}
+                                amount={parseInt(props.user.bolts)}
                                 paddingRight={10}
                                 boltSize={25}
                                 fontSize={15}
@@ -444,7 +446,7 @@ const ProfileHeader: React.FC<Props> = (props) => {
                         />
                         <TouchableOpacity onPress={() => showCoinModal(true)}>
                             <CoinBox
-                                amount={props.user.coin}
+                                amount={parseInt(props.user.coin)}
                                 coinSize={25}
                                 fontSize={15}
                             />

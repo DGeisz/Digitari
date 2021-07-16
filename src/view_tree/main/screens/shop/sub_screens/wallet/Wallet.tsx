@@ -113,7 +113,9 @@ const WalletShopPage: React.FC = () => {
 
     const boostEnd = parseInt(data.user.walletBonusEnd);
 
-    const [nextPrice, nextSize] = calculateWalletUpgrade(data.user.maxWallet);
+    const [nextPrice, nextSize] = calculateWalletUpgrade(
+        parseInt(data.user.maxWallet)
+    );
 
     return (
         <ScrollView style={shopStyles.outerContainer}>
@@ -137,7 +139,7 @@ const WalletShopPage: React.FC = () => {
                             alreadyOwns={false}
                             purchaseTitle={"Upgrade"}
                             loading={upgradeLoading}
-                            userBolts={data.user.bolts}
+                            userBolts={parseInt(data.user.bolts)}
                             description={"upgrade your wallet"}
                             price={nextPrice}
                             onSelect={() => {}}
@@ -196,7 +198,7 @@ const WalletShopPage: React.FC = () => {
                                 alreadyOwns={false}
                                 loading={boostLoading}
                                 purchaseTitle={"Boost"}
-                                userBolts={data.user.bolts}
+                                userBolts={parseInt(data.user.bolts)}
                                 description={"boost your wallet"}
                                 onConfirm={async () => {
                                     setBoostLoading(true);

@@ -54,7 +54,11 @@ const BioFont: React.FC = () => {
                                 return [...existing, data.buyBioFont];
                             },
                             bolts(existing) {
-                                return existing - bioFontPrice(data.buyBioFont);
+                                existing = parseInt(existing);
+
+                                return (
+                                    existing - bioFontPrice(data.buyBioFont)
+                                ).toString();
                             },
                         },
                     });
@@ -117,7 +121,7 @@ const BioFont: React.FC = () => {
                                 description={"unlock this font"}
                                 purchaseTitle={"Unlock Font"}
                                 price={bioFontPrice(font)}
-                                userBolts={data?.user.bolts}
+                                userBolts={parseInt(data?.user.bolts)}
                                 alreadyOwns={data?.user.bioFontsPurchased.includes(
                                     font
                                 )}

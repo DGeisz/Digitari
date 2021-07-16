@@ -68,10 +68,12 @@ const NewCommunity: React.FC<Props> = (props) => {
                     }),
                     fields: {
                         coin(existing) {
+                            existing = parseInt(existing);
+
                             return Math.max(
                                 existing - CREATE_COMMUNITY_PRICE,
                                 0
-                            );
+                            ).toString();
                         },
                     },
                 });
@@ -133,7 +135,7 @@ const NewCommunity: React.FC<Props> = (props) => {
 
     return (
         <ScrollView ref={scrollViewRef}>
-            {!!data && data.user.coin >= CREATE_COMMUNITY_PRICE ? (
+            {!!data && parseInt(data.user.coin) >= CREATE_COMMUNITY_PRICE ? (
                 <TouchableOpacity
                     activeOpacity={1}
                     style={styles.newCommunityContainer}

@@ -117,10 +117,14 @@ export function onConvoCreated(
                     return true;
                 },
                 receivedFromConvos(existing) {
-                    return existing + convo.responseCost;
+                    existing = parseInt(existing);
+
+                    return (existing + convo.responseCost).toString();
                 },
                 transTotal(existing) {
-                    return existing + convo.responseCost;
+                    existing = parseInt(existing);
+
+                    return (existing + convo.responseCost).toString();
                 },
             },
         });

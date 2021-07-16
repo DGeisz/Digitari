@@ -160,7 +160,9 @@ const Convo: React.FC<Props> = (props) => {
         },
     });
 
-    const userBolts = !!selfData?.user ? selfData.user.bolts : 0;
+    const userBolts: number = !!selfData?.user
+        ? parseInt(selfData.user.bolts)
+        : 0;
 
     /*
      * Mutations
@@ -372,7 +374,11 @@ const Convo: React.FC<Props> = (props) => {
                     }),
                     fields: {
                         bolts(existing) {
-                            return existing - CONVO_ACTIVATION_COST;
+                            existing = parseInt(existing);
+
+                            return (
+                                existing - CONVO_ACTIVATION_COST
+                            ).toString();
                         },
                     },
                 });

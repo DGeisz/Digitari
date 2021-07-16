@@ -25,10 +25,12 @@ export function spentOnConvosHandler(user: UserType, cache: ApolloCache<any>) {
     let challengeReceipts: string[] = [];
     let newIndex = 0;
 
+    const spentOnConvos = parseInt(user.spentOnConvos);
+
     /*
      * Handle bronze
      */
-    if (user.spentOnConvos >= bronzeCount && user.socChallengeIndex < 1) {
+    if (spentOnConvos >= bronzeCount && user.socChallengeIndex < 1) {
         newIndex = 1;
         challengeReceipts.push(
             [ChallengeTypes.SpentOnConvos, bronzeCount].join(":")
@@ -38,7 +40,7 @@ export function spentOnConvosHandler(user: UserType, cache: ApolloCache<any>) {
     /*
      * Handle silver
      */
-    if (user.spentOnConvos >= silverCount && user.socChallengeIndex < 2) {
+    if (spentOnConvos >= silverCount && user.socChallengeIndex < 2) {
         newIndex = 2;
         challengeReceipts.push(
             [ChallengeTypes.SpentOnConvos, silverCount].join(":")
@@ -48,7 +50,7 @@ export function spentOnConvosHandler(user: UserType, cache: ApolloCache<any>) {
     /*
      * Handle gold
      */
-    if (user.spentOnConvos >= goldCount && user.socChallengeIndex < 3) {
+    if (spentOnConvos >= goldCount && user.socChallengeIndex < 3) {
         newIndex = 3;
         challengeReceipts.push(
             [ChallengeTypes.SpentOnConvos, goldCount].join(":")
@@ -58,7 +60,7 @@ export function spentOnConvosHandler(user: UserType, cache: ApolloCache<any>) {
     /*
      * Handle supreme
      */
-    if (user.spentOnConvos >= supremeCount && user.socChallengeIndex < 4) {
+    if (spentOnConvos >= supremeCount && user.socChallengeIndex < 4) {
         newIndex = 4;
         challengeReceipts.push(
             [ChallengeTypes.SpentOnConvos, supremeCount].join(":")

@@ -89,7 +89,9 @@ export async function onNewCommunityFollower(
                     return true;
                 },
                 transTotal(existing) {
-                    return existing + FOLLOW_COMMUNITY_PRICE;
+                    existing = parseInt(existing);
+
+                    return (existing + FOLLOW_COMMUNITY_PRICE).toString();
                 },
             },
         });

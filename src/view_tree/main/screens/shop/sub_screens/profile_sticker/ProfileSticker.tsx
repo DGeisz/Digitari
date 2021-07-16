@@ -54,7 +54,11 @@ const ProfileSticker: React.FC = () => {
                                 return [...existing, data.buySticker];
                             },
                             bolts(existing) {
-                                return existing - stickerPrice(data.buySticker);
+                                existing = parseInt(existing);
+
+                                return (
+                                    existing - stickerPrice(data.buySticker)
+                                ).toString();
                             },
                         },
                     });
@@ -120,7 +124,7 @@ const ProfileSticker: React.FC = () => {
                                 description={"unlock this icon"}
                                 purchaseTitle={"Unlock Icon"}
                                 price={stickerPrice(finalSticker)}
-                                userBolts={data?.user.bolts}
+                                userBolts={parseInt(data?.user.bolts)}
                                 alreadyOwns={data?.user.profileStickersPurchased.includes(
                                     finalSticker
                                 )}

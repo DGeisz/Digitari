@@ -45,7 +45,9 @@ export function onNewFollower(
                     return true;
                 },
                 transTotal(existing) {
-                    return existing + FOLLOW_USER_PRICE;
+                    existing = parseInt(existing);
+
+                    return (existing + FOLLOW_USER_PRICE).toString();
                 },
             },
         });

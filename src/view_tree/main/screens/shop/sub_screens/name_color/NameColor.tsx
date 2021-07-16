@@ -54,9 +54,11 @@ const NameColor: React.FC = () => {
                                 return [...existing, data.buyNameColor];
                             },
                             bolts(existing) {
+                                existing = parseInt(existing);
+
                                 return (
                                     existing - nameColorPrice(data.buyNameColor)
-                                );
+                                ).toString();
                             },
                         },
                     });
@@ -119,7 +121,7 @@ const NameColor: React.FC = () => {
                                 description={"unlock this color"}
                                 purchaseTitle={"Unlock Color"}
                                 price={nameColorPrice(color)}
-                                userBolts={data?.user.bolts}
+                                userBolts={parseInt(data?.user.bolts)}
                                 alreadyOwns={data?.user.nameColorsPurchased.includes(
                                     color
                                 )}

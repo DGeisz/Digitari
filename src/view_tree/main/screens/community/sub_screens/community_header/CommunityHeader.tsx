@@ -64,10 +64,12 @@ const CommunityHeader: React.FC<Props> = (props) => {
                             return existing + 1;
                         },
                         coin(existing) {
+                            existing = parseInt(existing);
+
                             return Math.max(
                                 existing - FOLLOW_COMMUNITY_PRICE,
                                 0
-                            );
+                            ).toString();
                         },
                     },
                 });

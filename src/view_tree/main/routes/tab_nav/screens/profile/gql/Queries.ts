@@ -14,6 +14,7 @@ export const GET_USER = gql`
             coin
             imgUrl
             link
+            transTotal
 
             lastCollectionTime
 
