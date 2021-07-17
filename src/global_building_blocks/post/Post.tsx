@@ -45,6 +45,8 @@ import {
 } from "../../global_types/ShopTypes";
 import BoltBox from "../bolt_box/BoltBox";
 import { userPost2BoltCount } from "./utils/bolt_utils";
+import BoltInstructions from "./building_blocks/bolt_instructions/BoltInstructions";
+import { firstBolt } from "../../global_state/FirstImpressionsState";
 
 const COMMUNITY_NAME_MAX_LEN = 30;
 
@@ -87,6 +89,8 @@ const Post: React.FC<Props> = (props) => {
     const [postModalVisible, setPostModalVisible] = useState<boolean>(false);
     const [postModalError, setPostModalError] = useState<string>("");
     const [postModalLoading, setPostModalLoading] = useState<boolean>(false);
+
+    const [instructionsVisible, showInstructions] = useState<boolean>(false);
 
     const [error, setPostError] = useState<string>("");
 
@@ -226,6 +230,10 @@ const Post: React.FC<Props> = (props) => {
 
     const tapBolt = async () => {
         if (props.post.uid !== uid && remainingBolts > 0) {
+            if (firstBolt()) {
+                showInstructions(true);
+            }
+
             const currentBolts = numBolts + 1;
 
             if (currentBolts <= availableBolts) {
@@ -372,6 +380,10 @@ const Post: React.FC<Props> = (props) => {
                 },
             ]}
         >
+            <BoltInstructions
+                hideModal={() => showInstructions(false)}
+                visible={instructionsVisible}
+            />
             <CancelConfirmModal
                 visible={postModalVisible}
                 loading={postModalLoading}

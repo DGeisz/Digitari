@@ -5,13 +5,14 @@ export const palette = {
     black: "black",
 
     // Forest suite
-    softestForestGreen: "#effaeb",
+    softestForestGreen: "#e1ffd6", //"#effaeb",
     lightForestGreen: "#c1f0af",
 
     // Ocean suite
     oceanFroth: "#ebfaf8",
     oceanSurf: "#bbede6",
     mediumOceanSurf: "#31b09e",
+    softDeepBlue: "#e0f7ff",
     notDeepBlue: "#a1d9ed",
     deepBlue: "#32afdd",
     brightBlue: "#edf9fc",

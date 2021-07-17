@@ -52,24 +52,15 @@ const BoltInstructions: React.FC<Props> = (props) => {
                     top={false}
                     onPress={() => {
                         LayoutAnimation.easeInEaseOut();
-                        setScreen(Screens.Intro);
-                        // props.hideModal();
-                        // tappedFirstBolt();
+                        props.hideModal();
+                        tappedFirstBolt();
                     }}
                 >
                     <Text style={instructionStyles.instructionText}>
                         The digicoin you spend on digibolts goes to the post
                         creator, so try to only collect bolts from posts you
-                        like.
+                        like! 👍
                     </Text>
-                    <View style={instructionStyles.contentContainer}>
-                        <BoltBox
-                            boltColor={palette.white}
-                            amount={0}
-                            showAmount={false}
-                            boltSize={40}
-                        />
-                    </View>
                 </TutorialModal>
             );
             break;

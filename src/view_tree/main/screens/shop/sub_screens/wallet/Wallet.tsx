@@ -30,6 +30,8 @@ import {
     UpgradeWalletData,
     UpgradeWalletVariables,
 } from "./gql/Mutations";
+import CoinBox from "../../../../../../global_building_blocks/coin_box/CoinBox";
+import { palette } from "../../../../../../global_styles/Palette";
 
 const WalletShopPage: React.FC = () => {
     const uid = localUid();
@@ -129,12 +131,22 @@ const WalletShopPage: React.FC = () => {
                     </Text>
                     <View style={shopStyles.entryItemContainer}>
                         <Text style={shopStyles.entryBigDescription}>
-                            Upgrade your wallet's max capacity to{" "}
-                            <Text style={shopStyles.boldBlue}>
-                                {toCommaRep(nextSize)} digicoin
-                            </Text>
-                            .
+                            Upgrade Max Capacity to:
+                            {/*Upgrade your wallet's max capacity to{" "}*/}
+                            {/*<Text style={shopStyles.boldBlue}>*/}
+                            {/*    {toCommaRep(nextSize)} digicoin*/}
+                            {/*</Text>*/}
+                            {/*.*/}
                         </Text>
+                        <View style={{ height: 6 }} />
+                        <CoinBox
+                            amount={nextSize}
+                            showAbbreviated={false}
+                            coinSize={32}
+                            fontSize={23}
+                            boxColor={palette.softDeepBlue}
+                            paddingRight={8}
+                        />
                         <LockBuySelect
                             alreadyOwns={false}
                             purchaseTitle={"Upgrade"}
@@ -205,6 +217,7 @@ const WalletShopPage: React.FC = () => {
 
                                     try {
                                         await boostWallet();
+                                        await refetch();
                                     } catch (e) {
                                         if (__DEV__) {
                                             console.log(

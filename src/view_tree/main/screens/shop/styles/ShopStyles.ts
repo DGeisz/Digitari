@@ -37,6 +37,7 @@ export const shopStyles = StyleSheet.create({
         textAlign: "center",
         color: palette.hardGray,
         fontWeight: "bold",
+        // marginBottom: 6,
     },
     entryItemContainer: {
         ...basicLayouts.grid2,
