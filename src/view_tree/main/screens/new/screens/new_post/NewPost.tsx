@@ -80,7 +80,6 @@ const NewPost: React.FC<Props> = (props) => {
      * Content
      */
     const [content, setContent] = useState<string>("");
-    const contentRef = useRef<TextInput>(null);
 
     /*
      * Add on
@@ -399,7 +398,6 @@ const NewPost: React.FC<Props> = (props) => {
                     <View style={styles.postFieldContainer}>
                         <Text style={styles.fieldTitle}>Post</Text>
                         <TextInput
-                            ref={contentRef}
                             keyboardType="twitter"
                             autoFocus={autoFocus}
                             style={styles.contentInput}

@@ -93,6 +93,8 @@ import {
     GetUserQueryData,
     GetUserQueryVariables,
 } from "../../routes/tab_nav/screens/profile/gql/Queries";
+import { firstConvoPage } from "../../../../global_state/FirstImpressionsState";
+import InstructionsModal from "./building_blocks/instruction_modal/InstructionsModal";
 
 function getCheckLeft(uid: string, tid: string): (id: string) => boolean {
     if (uid === tid) {
@@ -631,6 +633,13 @@ const Convo: React.FC<Props> = (props) => {
     let post: PostType;
     let messages: MessageType[];
 
+    /*
+     * For instructions
+     */
+    const [instructionsModal, showInstructions] = useState<boolean>(
+        firstConvoPage()
+    );
+
     if (!!postError) {
         return <ErrorMessage refresh={postRefetch} />;
     }
@@ -689,6 +698,10 @@ const Convo: React.FC<Props> = (props) => {
      */
     const convoContent = (
         <>
+            <InstructionsModal
+                hideModal={() => showInstructions(false)}
+                visible={instructionsModal}
+            />
             <FlatList
                 ref={scrollRef}
                 contentContainerStyle={styles.convoListContainer}

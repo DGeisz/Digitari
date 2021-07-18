@@ -1,7 +1,7 @@
 import { makeVar } from "@apollo/client";
 import AsyncStorage from "@react-native-community/async-storage";
 
-const FORCE_INSTRUCTIONS = false;
+const FORCE_INSTRUCTIONS = true;
 
 /*
  * State for first time opening app
@@ -11,10 +11,8 @@ export const firstTimeOpeningApp = makeVar<boolean>(true);
 const FIRST_OPEN_KEY = "FIRST_OPEN_KEY";
 
 AsyncStorage.getItem(FIRST_OPEN_KEY).then((raw) => {
-    if (!!raw) {
-        if (!FORCE_INSTRUCTIONS) {
-            firstTimeOpeningApp(JSON.parse(raw));
-        }
+    if (!!raw && !FORCE_INSTRUCTIONS) {
+        firstTimeOpeningApp(JSON.parse(raw));
     }
 });
 
@@ -36,10 +34,8 @@ export const firstProfile = makeVar<boolean>(true);
 const FIRST_PROFILE_KEY = "FIRST_PROFILE_KEY";
 
 AsyncStorage.getItem(FIRST_PROFILE_KEY).then((raw) => {
-    if (!!raw) {
-        if (!FORCE_INSTRUCTIONS) {
-            firstProfile(JSON.parse(raw));
-        }
+    if (!!raw && !FORCE_INSTRUCTIONS) {
+        firstProfile(JSON.parse(raw));
     }
 });
 
@@ -61,10 +57,8 @@ export const firstShop = makeVar<boolean>(true);
 const FIRST_SHOP_KEY = "FIRST_SHOP_KEY";
 
 AsyncStorage.getItem(FIRST_SHOP_KEY).then((raw) => {
-    if (!!raw) {
-        if (!FORCE_INSTRUCTIONS) {
-            firstShop(JSON.parse(raw));
-        }
+    if (!!raw && !FORCE_INSTRUCTIONS) {
+        firstShop(JSON.parse(raw));
     }
 });
 
@@ -86,10 +80,8 @@ export const firstWallet = makeVar<boolean>(true);
 const FIRST_WALLET_KEY = "FIRST_WALLET_KEY";
 
 AsyncStorage.getItem(FIRST_WALLET_KEY).then((raw) => {
-    if (!!raw) {
-        if (!FORCE_INSTRUCTIONS) {
-            firstWallet(JSON.parse(raw));
-        }
+    if (!!raw && !FORCE_INSTRUCTIONS) {
+        firstWallet(JSON.parse(raw));
     }
 });
 
@@ -111,10 +103,8 @@ export const firstConvos = makeVar<boolean>(true);
 const FIRST_CONVOS = "FIRST_CONVOS";
 
 AsyncStorage.getItem(FIRST_CONVOS).then((raw) => {
-    if (!!raw) {
-        if (!FORCE_INSTRUCTIONS) {
-            firstConvos(JSON.parse(raw));
-        }
+    if (!!raw && !FORCE_INSTRUCTIONS) {
+        firstConvos(JSON.parse(raw));
     }
 });
 
@@ -136,10 +126,8 @@ export const firstFeed = makeVar<boolean>(true);
 const FIRST_FEED = "FIRST_FEED";
 
 AsyncStorage.getItem(FIRST_FEED).then((raw) => {
-    if (!!raw) {
-        if (!FORCE_INSTRUCTIONS) {
-            firstFeed(JSON.parse(raw));
-        }
+    if (!!raw && !FORCE_INSTRUCTIONS) {
+        firstFeed(JSON.parse(raw));
     }
 });
 
@@ -161,10 +149,8 @@ export const firstBolt = makeVar<boolean>(true);
 const FIRST_BOLT = "FIRST_BOLT";
 
 AsyncStorage.getItem(FIRST_BOLT).then((raw) => {
-    if (!!raw) {
-        if (!FORCE_INSTRUCTIONS) {
-            firstBolt(JSON.parse(raw));
-        }
+    if (!!raw && !FORCE_INSTRUCTIONS) {
+        firstBolt(JSON.parse(raw));
     }
 });
 
@@ -186,19 +172,35 @@ export const firstPost = makeVar<boolean>(true);
 const FIRST_POST = "FIRST_POST";
 
 AsyncStorage.getItem(FIRST_BOLT).then((raw) => {
-    if (!!raw) {
-        if (!FORCE_INSTRUCTIONS) {
-            firstPost(JSON.parse(raw));
-        }
+    if (!!raw && !FORCE_INSTRUCTIONS) {
+        firstPost(JSON.parse(raw));
     }
 });
 
 export function openedFirstPost() {
     firstPost(false);
-    AsyncStorage.setItem(FIRST_POST, JSON.stringify("false")).then();
+    AsyncStorage.setItem(FIRST_POST, JSON.stringify(false)).then();
 }
 
 // Dev fn
 export function removeFirstPost() {
     AsyncStorage.removeItem(FIRST_POST).then();
+}
+
+/*
+ * State for first convo
+ */
+export const firstConvoPage = makeVar<boolean>(true);
+
+const FIRST_CONVO_PAGE = "FIRST_CONVO_PAGE";
+
+AsyncStorage.getItem(FIRST_CONVO_PAGE).then((raw) => {
+    if (!!raw && !FORCE_INSTRUCTIONS) {
+        firstConvoPage(JSON.parse(raw));
+    }
+});
+
+export function openedFirstConvoPage() {
+    firstConvoPage(false);
+    AsyncStorage.setItem(FIRST_CONVO_PAGE, JSON.stringify(false)).then();
 }
