@@ -1,6 +1,8 @@
 import { makeVar } from "@apollo/client";
 import AsyncStorage from "@react-native-community/async-storage";
 
+const FORCE_INSTRUCTIONS = false;
+
 /*
  * State for first time opening app
  */
@@ -10,7 +12,9 @@ const FIRST_OPEN_KEY = "FIRST_OPEN_KEY";
 
 AsyncStorage.getItem(FIRST_OPEN_KEY).then((raw) => {
     if (!!raw) {
-        firstTimeOpeningApp(JSON.parse(raw));
+        if (!FORCE_INSTRUCTIONS) {
+            firstTimeOpeningApp(JSON.parse(raw));
+        }
     }
 });
 
@@ -33,7 +37,9 @@ const FIRST_PROFILE_KEY = "FIRST_PROFILE_KEY";
 
 AsyncStorage.getItem(FIRST_PROFILE_KEY).then((raw) => {
     if (!!raw) {
-        firstProfile(JSON.parse(raw));
+        if (!FORCE_INSTRUCTIONS) {
+            firstProfile(JSON.parse(raw));
+        }
     }
 });
 
@@ -56,7 +62,9 @@ const FIRST_SHOP_KEY = "FIRST_SHOP_KEY";
 
 AsyncStorage.getItem(FIRST_SHOP_KEY).then((raw) => {
     if (!!raw) {
-        firstShop(JSON.parse(raw));
+        if (!FORCE_INSTRUCTIONS) {
+            firstShop(JSON.parse(raw));
+        }
     }
 });
 
@@ -79,7 +87,9 @@ const FIRST_WALLET_KEY = "FIRST_WALLET_KEY";
 
 AsyncStorage.getItem(FIRST_WALLET_KEY).then((raw) => {
     if (!!raw) {
-        firstWallet(JSON.parse(raw));
+        if (!FORCE_INSTRUCTIONS) {
+            firstWallet(JSON.parse(raw));
+        }
     }
 });
 
@@ -102,7 +112,9 @@ const FIRST_CONVOS = "FIRST_CONVOS";
 
 AsyncStorage.getItem(FIRST_CONVOS).then((raw) => {
     if (!!raw) {
-        firstConvos(JSON.parse(raw));
+        if (!FORCE_INSTRUCTIONS) {
+            firstConvos(JSON.parse(raw));
+        }
     }
 });
 
@@ -125,7 +137,9 @@ const FIRST_FEED = "FIRST_FEED";
 
 AsyncStorage.getItem(FIRST_FEED).then((raw) => {
     if (!!raw) {
-        firstFeed(JSON.parse(raw));
+        if (!FORCE_INSTRUCTIONS) {
+            firstFeed(JSON.parse(raw));
+        }
     }
 });
 
@@ -148,7 +162,9 @@ const FIRST_BOLT = "FIRST_BOLT";
 
 AsyncStorage.getItem(FIRST_BOLT).then((raw) => {
     if (!!raw) {
-        firstBolt(JSON.parse(raw));
+        if (!FORCE_INSTRUCTIONS) {
+            firstBolt(JSON.parse(raw));
+        }
     }
 });
 
@@ -160,4 +176,29 @@ export function tappedFirstBolt() {
 // Dev fn
 export function removeFirstBolt() {
     AsyncStorage.removeItem(FIRST_BOLT).then();
+}
+
+/*
+ * State for first new post
+ */
+export const firstPost = makeVar<boolean>(true);
+
+const FIRST_POST = "FIRST_POST";
+
+AsyncStorage.getItem(FIRST_BOLT).then((raw) => {
+    if (!!raw) {
+        if (!FORCE_INSTRUCTIONS) {
+            firstPost(JSON.parse(raw));
+        }
+    }
+});
+
+export function openedFirstPost() {
+    firstPost(false);
+    AsyncStorage.setItem(FIRST_POST, JSON.stringify("false")).then();
+}
+
+// Dev fn
+export function removeFirstPost() {
+    AsyncStorage.removeItem(FIRST_POST).then();
 }

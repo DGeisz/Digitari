@@ -197,7 +197,7 @@ const CommunityHeader: React.FC<Props> = (props) => {
                                     await followCommunity();
                                 } catch (e) {
                                     setError(
-                                        `An error occurred.  Make sure your have ${FOLLOW_COMMUNITY_PRICE} digicoin and try again`
+                                        `Hmm, something went wrong.  Make sure your have ${FOLLOW_COMMUNITY_PRICE} digicoin and try again`
                                     );
                                 } finally {
                                     setLoading(false);

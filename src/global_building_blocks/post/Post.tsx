@@ -191,7 +191,6 @@ const Post: React.FC<Props> = (props) => {
                 ]),
             ])
         );
-
         animation.start();
 
         return animation.stop;
@@ -243,6 +242,8 @@ const Post: React.FC<Props> = (props) => {
                 if (typeof bulkTimeout !== "undefined") {
                     clearTimeout(bulkTimeout);
                 }
+
+                // console.log("Setting timeout");
 
                 setBulkTimeout(
                     setTimeout(async () => {
@@ -745,6 +746,7 @@ const Post: React.FC<Props> = (props) => {
                                     <BoltBox
                                         amount={props.post.responseCost}
                                         boltSize={17}
+                                        moveTextRight={2}
                                     />
                                 </TouchableOpacity>
                             </View>

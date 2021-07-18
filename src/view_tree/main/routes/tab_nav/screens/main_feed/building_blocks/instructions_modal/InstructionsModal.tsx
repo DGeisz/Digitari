@@ -34,10 +34,13 @@ const InstructionsModal: React.FC<Props> = (props) => {
                     footerText={"Next"}
                 >
                     <Text style={instructionStyles.instructionText}>
-                        Here's your feed! {DOUBLE_NEWLINE}
-                        ...or what will be your feed. {DOUBLE_NEWLINE}
+                        Here's your feed! ...or what will be your feed.{" "}
+                        {DOUBLE_NEWLINE}
                         Once you follow other users or communities you'll start
                         receiving their new posts here.
+                        {DOUBLE_NEWLINE}
+                        Wherever you see posts, you get a digicoin reward for
+                        every 10 posts you view! 💰
                     </Text>
                 </TutorialModal>
             );

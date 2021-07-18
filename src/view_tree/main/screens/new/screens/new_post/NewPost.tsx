@@ -51,6 +51,8 @@ import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
 import InfoModal from "./building_blocks/info_modal/InfoModal";
 import LinkPreview from "../../../../../../global_building_blocks/link_preview/LinkPreview";
 import { challengeCheck } from "../../../../../../global_gql/challenge_check/challenge_check";
+import { firstPost } from "../../../../../../global_state/FirstImpressionsState";
+import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
 
 interface Props {
     navigation: NewPostNavProp;
@@ -59,6 +61,20 @@ interface Props {
 
 const NewPost: React.FC<Props> = (props) => {
     const scrollRef = useRef<ScrollView>(null);
+
+    /*
+     * Instructions
+     */
+    const [instructionsVisible, showInstructions] = useState<boolean>(
+        firstPost()
+    );
+    const [autoFocus, setAutoFocus] = useState<boolean>(true);
+
+    useEffect(() => {
+        if (instructionsVisible) {
+            setAutoFocus(false);
+        }
+    }, []);
 
     /*
      * Content
@@ -375,13 +391,17 @@ const NewPost: React.FC<Props> = (props) => {
     if (!!user) {
         return (
             <>
+                <InstructionsModal
+                    hideModal={() => showInstructions(false)}
+                    visible={instructionsVisible}
+                />
                 <ScrollView style={styles.newPostContainer} ref={scrollRef}>
                     <View style={styles.postFieldContainer}>
                         <Text style={styles.fieldTitle}>Post</Text>
                         <TextInput
                             ref={contentRef}
                             keyboardType="twitter"
-                            autoFocus
+                            autoFocus={autoFocus}
                             style={styles.contentInput}
                             placeholder="What's on your mind?"
                             multiline

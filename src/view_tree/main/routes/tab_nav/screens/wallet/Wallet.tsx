@@ -101,14 +101,6 @@ const Wallet: React.FC<Props> = (props) => {
         notifyOnNetworkStatusChange: true,
     });
 
-    useEffect(() => {
-        return props.navigation.addListener("focus", () => {
-            if (typeof transData !== "undefined") {
-                !!transRefetch && transRefetch();
-            }
-        });
-    }, [transData]);
-
     /*
      * Mutations
      */

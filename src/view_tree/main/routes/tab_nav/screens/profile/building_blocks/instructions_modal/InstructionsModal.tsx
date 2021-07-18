@@ -52,13 +52,12 @@ const InstructionsModal: React.FC<Props> = (props) => {
                         props.hideModal();
                         openedFirstProfile();
                     }}
-                    footerText="Next"
                 >
                     <Text style={instructionStyles.instructionText}>
                         Poke around to get a feel for the platform!{" "}
                         {DOUBLE_NEWLINE}
-                        The Shop is a pretty good place to start because you'll
-                        learn what you can unlock.
+                        The Shop is a good place to start so you can learn what
+                        to unlock.
                     </Text>
                 </TutorialModal>
             );
