@@ -18,12 +18,10 @@ export function onMessageData(
 ) {
     const {
         client: { cache },
-        subscriptionData: { data, error },
+        subscriptionData: { data },
     } = options;
 
     const uid = localUid();
-
-    console.log("On message options: ", data, error);
 
     if (!!data?.messageAdded) {
         const convoMessagesData = cache.readQuery<

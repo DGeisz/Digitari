@@ -67,10 +67,14 @@ const Settings: React.FC<Props> = (props) => {
                         },
                     });
                 } catch (e) {
-                    console.log("Error deleting push token: ", e);
+                    if (__DEV__) {
+                        console.log("Error deleting push token: ", e);
+                    }
                 }
             } catch (e) {
-                console.log("Error in push deletion flow: ", e);
+                if (__DEV__) {
+                    console.log("Error in push deletion flow: ", e);
+                }
             }
 
             /*
@@ -84,7 +88,9 @@ const Settings: React.FC<Props> = (props) => {
                  */
                 await client.clearStore();
             } catch (e) {
-                console.log("Error signing out: ", e);
+                if (__DEV__) {
+                    console.log("Error signing out: ", e);
+                }
             }
         }
     };

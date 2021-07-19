@@ -22,8 +22,6 @@ export function onNewFollower(
         subscriptionData: { data },
     } = options;
 
-    console.log("Received new follower sub!");
-
     if (!!data?.newFollower) {
         const follower = data.newFollower;
         const uid = localUid();

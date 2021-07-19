@@ -87,20 +87,6 @@ export function onConvoCreated(
             });
         }
 
-        const transaction: TransactionType = {
-            tid: localUid(),
-            time: Date.now().toString(),
-            coin: convo.responseCost,
-            message: `Your post received a new response: "${convo.initialMsg}"`,
-            transactionType: TransactionTypesEnum.Convo,
-            data: `${convo.id}:${convo.pid}`,
-        };
-
-        /*
-         * Add receipt for animation
-         */
-        addNewReceipt(convo.responseCost);
-
         /*
          * Notify user of new convo and transaction updates
          */
@@ -113,23 +99,13 @@ export function onConvoCreated(
                 newConvoUpdate() {
                     return true;
                 },
-                newTransactionUpdate() {
-                    return true;
-                },
                 receivedFromConvos(existing) {
-                    existing = parseInt(existing);
-
-                    return (existing + convo.responseCost).toString();
-                },
-                transTotal(existing) {
                     existing = parseInt(existing);
 
                     return (existing + convo.responseCost).toString();
                 },
             },
         });
-
-        addTransaction(transaction, cache);
 
         /*
          * Quick challenge check

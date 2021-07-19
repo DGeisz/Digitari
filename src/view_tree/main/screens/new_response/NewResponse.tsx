@@ -79,8 +79,6 @@ const NewResponse: React.FC<Props> = (props) => {
     >(CREATE_CONVO, {
         update(cache, { data }) {
             if (!!data?.createConvo) {
-                console.log(data.createConvo);
-
                 cache.modify({
                     id: cache.identify({
                         __typename: USER_TYPENAME,
@@ -143,7 +141,9 @@ const NewResponse: React.FC<Props> = (props) => {
                     noAnimation: data.createConvo.id.length > 5,
                 });
             } else {
-                console.log("No new data for new response");
+                if (__DEV__) {
+                    console.log("No new data for new response");
+                }
             }
         },
     });
@@ -151,11 +151,6 @@ const NewResponse: React.FC<Props> = (props) => {
     const onSend = async (text: string) => {
         try {
             const now = Date.now().toString();
-
-            console.log(
-                "Do I have necessary data? ",
-                !!postData?.post && !!userData?.user
-            );
 
             await createConvo({
                 variables: {
@@ -203,7 +198,9 @@ const NewResponse: React.FC<Props> = (props) => {
                         : undefined,
             });
         } catch (e) {
-            console.log("Send error", e);
+            if (__DEV__) {
+                console.log("Send error", e);
+            }
         }
     };
 

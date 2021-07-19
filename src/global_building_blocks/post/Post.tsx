@@ -243,8 +243,6 @@ const Post: React.FC<Props> = (props) => {
                     clearTimeout(bulkTimeout);
                 }
 
-                // console.log("Setting timeout");
-
                 setBulkTimeout(
                     setTimeout(async () => {
                         /*

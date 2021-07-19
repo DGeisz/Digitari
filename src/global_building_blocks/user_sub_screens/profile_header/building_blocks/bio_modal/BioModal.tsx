@@ -158,7 +158,9 @@ const BioModal: React.FC<Props> = (props) => {
                     imgName: imgUrl,
                 },
             }).catch((e) => {
-                console.log("img error: ", e);
+                if (__DEV__) {
+                    console.log("img error: ", e);
+                }
             });
         }
 

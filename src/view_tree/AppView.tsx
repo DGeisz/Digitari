@@ -257,7 +257,9 @@ const AppView: React.FC = () => {
                     }
                 }
             } catch (e) {
-                console.log("Fetch error: ", e);
+                if (__DEV__) {
+                    console.log("Fetch error: ", e);
+                }
 
                 if (e !== "No current user") {
                     setTimeout(() => {

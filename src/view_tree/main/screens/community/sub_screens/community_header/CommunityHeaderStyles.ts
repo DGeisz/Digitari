@@ -19,6 +19,7 @@ export const styles = StyleSheet.create({
     followErrorText: {
         color: palette.danger,
         paddingBottom: 10,
+        fontWeight: "bold",
     },
     headerLeft: {
         ...basicLayouts.flexGrid2,

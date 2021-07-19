@@ -139,7 +139,6 @@ const BasicProfile: React.FC<Props> = (props) => {
     >(UPDATE_BIO_LINK, {
         update(cache, { data }) {
             if (!!data?.updateBioLink) {
-                console.log("This is bio link: ", data.updateBioLink.link);
                 cache.modify({
                     id: cache.identify({
                         __typename: USER_TYPENAME,

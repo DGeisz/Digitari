@@ -104,11 +104,6 @@ const ChallengeCompleteModal: React.FC<Props> = (props) => {
                                         viewChallengeReceipt: receipt,
                                     },
                                     update(cache, { data }) {
-                                        console.log(
-                                            "Here we're updating!",
-                                            data,
-                                            receipt
-                                        );
                                         /*
                                          * Update the user
                                          */

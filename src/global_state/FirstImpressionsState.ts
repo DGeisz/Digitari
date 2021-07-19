@@ -12,10 +12,7 @@ export const firstTimeOpeningApp = makeVar<boolean>(true);
 const FIRST_OPEN_KEY = "FIRST_OPEN_KEY";
 
 AsyncStorage.getItem(FIRST_OPEN_KEY).then((raw) => {
-    console.log("Checking first open:", raw, !!raw);
-
     if (!!raw && !FORCE_INSTRUCTIONS) {
-        console.log("We in here!");
         firstTimeOpeningApp(JSON.parse(raw));
     }
 });
@@ -199,7 +196,6 @@ export const firstConvoPage = makeVar<boolean>(true);
 const FIRST_CONVO_PAGE = "FIRST_CONVO_PAGE";
 
 AsyncStorage.getItem(FIRST_CONVO_PAGE).then((raw) => {
-    console.log("Convos page:", raw);
     if (!!raw && !FORCE_INSTRUCTIONS) {
         firstConvoPage(JSON.parse(raw));
     }

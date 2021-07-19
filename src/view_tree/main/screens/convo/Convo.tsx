@@ -872,7 +872,9 @@ const Convo: React.FC<Props> = (props) => {
                             try {
                                 await blockConvo();
                             } catch (e) {
-                                console.log("Block error: ", e);
+                                if (__DEV__) {
+                                    console.log("Block error: ", e);
+                                }
                             }
                         }}
                     />
@@ -1021,7 +1023,9 @@ const Convo: React.FC<Props> = (props) => {
                             },
                         });
                     } catch (e) {
-                        console.log("Send error: ", e);
+                        if (__DEV__) {
+                            console.log("Send error: ", e);
+                        }
                     }
                 }}
             >
@@ -1038,7 +1042,9 @@ const Convo: React.FC<Props> = (props) => {
                         try {
                             await blockConvo();
                         } catch (e) {
-                            console.log("Block error: ", e);
+                            if (__DEV__) {
+                                console.log("Block error: ", e);
+                            }
                         }
                     }}
                     onDismiss={async () => {
@@ -1052,7 +1058,9 @@ const Convo: React.FC<Props> = (props) => {
                         try {
                             await activateConvo();
                         } catch (e) {
-                            console.log("Activation error: ", e);
+                            if (__DEV__) {
+                                console.log("Activation error: ", e);
+                            }
                         }
                     }}
                 />
