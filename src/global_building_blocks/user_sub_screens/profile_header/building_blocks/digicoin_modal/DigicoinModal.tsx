@@ -25,8 +25,6 @@ const DigicoinModal: React.FC<Props> = (props) => {
                         </View>
                     </View>
                     <Text style={modalStyles.modalMainText}>
-                        Digicoin is, well, everything.
-                        {DOUBLE_NEWLINE}
                         Wanna get famous? Just create a post to unlock the true
                         power of the coin.
                         {DOUBLE_NEWLINE}

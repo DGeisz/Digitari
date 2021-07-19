@@ -124,7 +124,9 @@ const UserPosts: React.FC<Props> = (props) => {
                     return (
                         <View style={styles.noPostsContainer}>
                             <Text style={styles.noPostsText}>
-                                This user hasn't created any posts
+                                {myUid === props.uid
+                                    ? "You haven't created any posts"
+                                    : "User hasn't created any posts"}
                             </Text>
                         </View>
                     );

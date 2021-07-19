@@ -21,7 +21,6 @@ import {
     millisInDay,
     millisToCountdown,
 } from "../../../../../../global_utils/TimeRepUtils";
-import { toCommaRep } from "../../../../../../global_utils/ValueRepUtils";
 import {
     BOOST_WALLET,
     BoostWalletData,

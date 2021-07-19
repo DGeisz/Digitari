@@ -12,6 +12,10 @@ export const firstTimeOpeningApp = makeVar<boolean>(true);
 const FIRST_OPEN_KEY = "FIRST_OPEN_KEY";
 
 AsyncStorage.getItem(FIRST_OPEN_KEY).then((raw) => {
+    if (__DEV__) {
+        console.log("Here's first open: ", raw);
+    }
+
     if (!!raw && !FORCE_INSTRUCTIONS) {
         firstTimeOpeningApp(JSON.parse(raw));
     }
