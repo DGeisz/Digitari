@@ -56,10 +56,9 @@ const InstructionsModal: React.FC<Props> = (props) => {
                 >
                     <Text style={instructionStyles.instructionText}>
                         If you're wondering what Convos are, they're how people
-                        interact on Digitari. {DOUBLE_NEWLINE}
-                        Convos are like halfway between a DM and a comments
-                        section. Just open any post with responses to see how
-                        they work.
+                        interact on Digitari. {DOUBLE_NEWLINE}A Convo is like
+                        halfway between a DM and a comments section. Just open
+                        any post with responses to see how they work.
                     </Text>
                 </TutorialModal>
             );

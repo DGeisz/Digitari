@@ -79,7 +79,7 @@ const InstructionsModal: React.FC<Props> = (props) => {
                         can successfully finish the Convo! 🤝 {DOUBLE_NEWLINE}
                         You increase your ranking and tier by successfully
                         finishing Convos, so always be nice and respectful so
-                        the other person responds! 😊
+                        that the other person responds! 😊
                     </Text>
                 </TutorialModal>
             );

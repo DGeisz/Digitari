@@ -38,7 +38,8 @@ const BoltInstructions: React.FC<Props> = (props) => {
                 >
                     <Text style={instructionStyles.instructionText}>
                         You collected your first digibolt! 🎉{DOUBLE_NEWLINE}
-                        You'll use digibolts to upgrade your account.
+                        You'll use digibolts to upgrade your account in the
+                        Shop.
                         {DOUBLE_NEWLINE}
                         Each post has a couple digibolts for you to collect, and
                         each bolt costs 10 digicoin.

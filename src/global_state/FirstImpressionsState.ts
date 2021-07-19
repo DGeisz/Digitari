@@ -1,7 +1,8 @@
 import { makeVar } from "@apollo/client";
 import AsyncStorage from "@react-native-community/async-storage";
 
-const FORCE_INSTRUCTIONS = true;
+const FORCE_INSTRUCTIONS = false;
+const DELETE_INSTRUCTION_FLAGS = false;
 
 /*
  * State for first time opening app
@@ -11,7 +12,10 @@ export const firstTimeOpeningApp = makeVar<boolean>(true);
 const FIRST_OPEN_KEY = "FIRST_OPEN_KEY";
 
 AsyncStorage.getItem(FIRST_OPEN_KEY).then((raw) => {
+    console.log("Checking first open:", raw, !!raw);
+
     if (!!raw && !FORCE_INSTRUCTIONS) {
+        console.log("We in here!");
         firstTimeOpeningApp(JSON.parse(raw));
     }
 });
@@ -23,7 +27,7 @@ export function openedAppFirstTime() {
 
 // DEV fn
 export function removeAppFirstTime() {
-    AsyncStorage.removeItem(FIRST_SHOP_KEY).then();
+    AsyncStorage.removeItem(FIRST_OPEN_KEY).then();
 }
 
 /*
@@ -195,6 +199,7 @@ export const firstConvoPage = makeVar<boolean>(true);
 const FIRST_CONVO_PAGE = "FIRST_CONVO_PAGE";
 
 AsyncStorage.getItem(FIRST_CONVO_PAGE).then((raw) => {
+    console.log("Convos page:", raw);
     if (!!raw && !FORCE_INSTRUCTIONS) {
         firstConvoPage(JSON.parse(raw));
     }
@@ -203,4 +208,21 @@ AsyncStorage.getItem(FIRST_CONVO_PAGE).then((raw) => {
 export function openedFirstConvoPage() {
     firstConvoPage(false);
     AsyncStorage.setItem(FIRST_CONVO_PAGE, JSON.stringify(false)).then();
+}
+
+// Dev fn
+export function removeFirstConvoPage() {
+    AsyncStorage.removeItem(FIRST_CONVO_PAGE).then();
+}
+
+if (DELETE_INSTRUCTION_FLAGS) {
+    removeAppFirstTime();
+    removeFirstBolt();
+    removeFirstConvos();
+    removeFirstFeed();
+    removeFirstPost();
+    removeFirstProfile();
+    removeFirstShop();
+    removeFirstWallet();
+    removeFirstConvoPage();
 }
