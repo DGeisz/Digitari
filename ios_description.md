@@ -1,3 +1,57 @@
+## Major update
+
+Digitari is the platform that transforms social media into a game!
+How does it work?  It's pretty easy. 
+
+1. Earn rewards by interacting with posts, people, and communities you love.
+2. Use your rewards to upgrade your profile and reach more people.
+3. Repeat :)
+
+Like other popular platforms, Digitari lets you express your true self
+and engage with other amazing people and communities.
+
+However, by transforming social media into a decentralized game, Digitari
+has truly leveled-up the internet.
+
+How?
+
+■ No Ads!  
+That's right, DIGITARI DOESN'T HAVE ADS! Instead of ads, Digitari
+makes money by selling in-game bonuses.  That means Digitari's business model
+focuses on helping users win instead of force-feeding you ads for 
+products you don't want.
+
+■ No Algorithm!  
+That's right, DIGITARI DOESN'T HAVE AN ALGORITHM! Digitari creates
+your feed using its free-market-based game, not an addictive and 
+destabilizing Algorithm. Social Dilemma? More like the Social Solution :)
+
+■ Wanna get famous?  
+As you progress in Digitari, you'll be able to reach more and more people.
+So instead of chasing an Algorithm and praying for virality, if you want to
+get famous/build a following, just focus on creating good content and 
+dominating the game.
+
+■ Bye-bye toxicity!
+Unlike other platforms, Digitari's game mechanics organically reward
+healthy conversation and punish toxic speech.  That means it's 
+much easier to build a following if you're respectful and open-minded, 
+and significantly more difficult if you're a troll sowing discord.
+
+■ YOU are rewarded for YOUR attention!  
+Your attention is extremely valuable.  Other platforms basically sell
+your attention to companies through ads, leaving you with nothing.  On 
+Digitari, you earn rewards for your attention that you can use to reach
+more people or support your favorite creators.
+
+
+Right now, Digitari is invite-only, so ask your friends on Digitari for an invite.
+If you don't know anyone on Digitari, you can request an invite by emailing us at 
+outreach@playdigitari.com and including links to your other social accounts.
+
+## Old
+
+
 Digitari is the platform that transforms social media into a game!
 How do you win? By genuinely being yourself and finding people
 who care.  On Digitari, you create posts that share your interests
