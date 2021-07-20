@@ -1,11 +1,14 @@
-## Major update
+## Version 2.0
 
 Digitari is the platform that transforms social media into a game!
-How does it work?  It's pretty easy. 
+How does it work?  
 
-1. Earn rewards by interacting with posts, people, and communities you love.
-2. Use your rewards to upgrade your profile and reach more people.
-3. Repeat :)
+&#8291;1. Earn rewards by interacting with posts, people, and communities you love.  
+&#8291;2. Use your rewards to upgrade your profile and reach more people.  
+&#8291;3. Repeat :)
+
+Pretty easy, right?  But don't worry -- once you've mastered the basics, there are
+all sorts of extra features and goodies for you to unlock and discover.
 
 Like other popular platforms, Digitari lets you express your true self
 and engage with other amazing people and communities.
@@ -32,7 +35,7 @@ So instead of chasing an Algorithm and praying for virality, if you want to
 get famous/build a following, just focus on creating good content and 
 dominating the game.
 
-■ Bye-bye toxicity!
+■ Bye-bye toxicity!  
 Unlike other platforms, Digitari's game mechanics organically reward
 healthy conversation and punish toxic speech.  That means it's 
 much easier to build a following if you're respectful and open-minded, 
@@ -47,10 +50,10 @@ more people or support your favorite creators.
 
 Right now, Digitari is invite-only, so ask your friends on Digitari for an invite.
 If you don't know anyone on Digitari, you can request an invite by emailing us at 
-outreach@playdigitari.com and including links to your other social accounts.
+outreach@playdigitari.com and including links to your other social accounts. Can't 
+wait to have you on the platform :)
 
-## Old
-
+## Version 1.0
 
 Digitari is the platform that transforms social media into a game!
 How do you win? By genuinely being yourself and finding people
