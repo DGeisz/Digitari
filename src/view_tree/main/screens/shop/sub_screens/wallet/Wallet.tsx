@@ -158,7 +158,31 @@ const WalletShopPage: React.FC = () => {
                                 setUpgradeLoading(true);
 
                                 try {
-                                    await upgradeWallet();
+                                    await upgradeWallet({
+                                        update(cache, { data: upgradeData }) {
+                                            if (!!upgradeData?.upgradeWallet) {
+                                                cache.modify({
+                                                    id: cache.identify({
+                                                        __typename: USER_TYPENAME,
+                                                        id: uid,
+                                                    }),
+                                                    fields: {
+                                                        maxWallet() {
+                                                            return nextSize.toString();
+                                                        },
+                                                        bolts() {
+                                                            return (
+                                                                parseInt(
+                                                                    data?.user
+                                                                        .bolts
+                                                                ) - nextPrice
+                                                            ).toString();
+                                                        },
+                                                    },
+                                                });
+                                            }
+                                        },
+                                    });
                                 } catch (e) {
                                     if (__DEV__) {
                                         console.log(
