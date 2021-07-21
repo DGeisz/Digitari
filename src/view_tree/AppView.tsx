@@ -263,7 +263,7 @@ const AppView: React.FC = () => {
 
                 if (e !== "No current user") {
                     setTimeout(() => {
-                        setRetryCount((count) => count + 1);
+                        setRetryCount(retryCount + 1);
                     }, 1000);
                 }
             }

@@ -21,6 +21,7 @@ import {
     DonateToPostVariables,
 } from "../../../../../../../../global_building_blocks/post/gql/Mutations";
 import {
+    ActivityIndicator,
     FlatList,
     RefreshControl,
     Text,
@@ -43,7 +44,6 @@ import {
 } from "../../../../../../../../global_types/TransactionTypes";
 import { USER_TYPENAME } from "../../../../../../../../global_types/UserTypes";
 import { addTransaction } from "../../../../../../hooks/use_realtime_updates/subscription_handlers/utils/cache_utils";
-import NewButton from "../../../../../../../../global_building_blocks/new_button/NewButton";
 import { YourFeedNavProp } from "../../MainFeedNavTypes";
 import { FeedContext, FeedType } from "../../MainFeedContext";
 import { GET_FEED, GetFeedData, GetFeedVariables } from "./gql/Queries";
@@ -64,7 +64,7 @@ const YourFeed: React.FC<Props> = (props) => {
             props.navigation.navigate("YourFeed");
         }
 
-        return props.navigation.addListener("focus", (e) => {
+        return props.navigation.addListener("focus", () => {
             setType(FeedType.YourFeed);
         });
     }, []);
@@ -102,6 +102,21 @@ const YourFeed: React.FC<Props> = (props) => {
             uid,
         },
     });
+
+    /*
+     * Add automatic refresh on focus if you don't have any posts
+     */
+    useEffect(() => {
+        return props.navigation.addListener("focus", () => {
+            /*
+             * Check to be sure the query has gone through,
+             * and then if you don't have any posts
+             */
+            if (!!data?.feed && data.feed.length === 0) {
+                !!refetch && refetch();
+            }
+        });
+    }, [data]);
 
     const [donateToPost] = useMutation<DonateToPostData, DonateToPostVariables>(
         DONATE_TO_POST
@@ -159,13 +174,25 @@ const YourFeed: React.FC<Props> = (props) => {
                 If you're looking to make some extra digibolts, just hit up "All
                 Posts."
             </Text>
-            <TouchableOpacity
-                onPress={() => {
-                    !!refetch && refetch();
-                }}
-            >
-                <Text style={styles.refreshText}>Refresh</Text>
-            </TouchableOpacity>
+            {networkStatus === NetworkStatus.refetch || stillSpin ? (
+                <View style={styles.loadingWheelContainer}>
+                    <ActivityIndicator color={palette.deepBlue} size="large" />
+                </View>
+            ) : (
+                <TouchableOpacity
+                    onPress={() => {
+                        setStillSpin(true);
+
+                        setTimeout(() => {
+                            setStillSpin(false);
+                        }, 1000);
+
+                        !!refetch && refetch();
+                    }}
+                >
+                    <Text style={styles.refreshText}>Refresh</Text>
+                </TouchableOpacity>
+            )}
         </View>
     ) : (
         <FlatList
@@ -307,10 +334,7 @@ const YourFeed: React.FC<Props> = (props) => {
                                         Your feed is all out of posts!
                                         {"\n\n"}
                                         Follow more users or communities to
-                                        receive more posts in your feed.
-                                        {"\n\n"}
-                                        You can still earn digicoin by viewing
-                                        user or community posts.
+                                        receive more posts.
                                     </Text>
                                 </View>
                             );

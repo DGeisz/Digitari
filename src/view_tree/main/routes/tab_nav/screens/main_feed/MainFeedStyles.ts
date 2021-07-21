@@ -40,4 +40,8 @@ export const styles = StyleSheet.create({
         fontWeight: "bold",
         color: palette.deepBlue,
     },
+    loadingWheelContainer: {
+        ...basicLayouts.grid2,
+        marginTop: 10,
+    },
 });

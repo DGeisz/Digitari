@@ -49,7 +49,7 @@ const AllPosts: React.FC<Props> = (props) => {
     const { setType } = useContext(FeedContext);
 
     useEffect(() => {
-        return props.navigation.addListener("focus", (e) => {
+        return props.navigation.addListener("focus", () => {
             setType(FeedType.AllPosts);
         });
     }, []);
