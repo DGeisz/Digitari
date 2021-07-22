@@ -13,6 +13,7 @@ import { shopStyles } from "../../styles/ShopStyles";
 import {
     bioColor2Name,
     bioColorPrice,
+    bioColorRequirement,
     BioColors,
     bioColorToStyle,
     stickerPrice,
@@ -30,6 +31,7 @@ import {
     SelectBioColorVariables,
 } from "./gql/Mutation";
 import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
+import { calculateLevelInfo } from "../../../../../../global_utils/LevelUtils";
 
 const BioColor: React.FC = () => {
     const uid = localUid();
@@ -96,6 +98,9 @@ const BioColor: React.FC = () => {
         return <ErrorMessage refresh={refetch} />;
     }
 
+    const level = calculateLevelInfo(parseInt(data.user.coinSpent))[0];
+    const ranking = data.user.ranking;
+
     return (
         <ScrollView style={shopStyles.outerContainer}>
             <View style={shopStyles.container}>
@@ -122,6 +127,9 @@ const BioColor: React.FC = () => {
                             <ShopItem
                                 key={color}
                                 title={bioColor2Name(color)}
+                                level={level}
+                                ranking={ranking}
+                                requirement={bioColorRequirement(color)}
                                 description={"unlock this color"}
                                 purchaseTitle={"Unlock Color"}
                                 price={bioColorPrice(color)}

@@ -13,6 +13,7 @@ import { shopStyles } from "../../styles/ShopStyles";
 import {
     ProfileStickers,
     stickerPrice,
+    stickerRequirement,
     stickerToEmoji,
     stickerToName,
 } from "../../../../../../global_types/ShopTypes";
@@ -28,6 +29,7 @@ import {
     SelectStickerVariables,
 } from "./gql/Mutations";
 import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
+import { calculateLevelInfo } from "../../../../../../global_utils/LevelUtils";
 
 const ProfileSticker: React.FC = () => {
     const uid = localUid();
@@ -96,6 +98,9 @@ const ProfileSticker: React.FC = () => {
         return <ErrorMessage refresh={refetch} />;
     }
 
+    const level = calculateLevelInfo(parseInt(data.user.coinSpent))[0];
+    const ranking = data.user.ranking;
+
     return (
         <ScrollView style={shopStyles.outerContainer}>
             <View style={shopStyles.container}>
@@ -121,6 +126,9 @@ const ProfileSticker: React.FC = () => {
                                 key={finalSticker}
                                 loading={iconLoading === finalSticker}
                                 title={stickerToName(finalSticker)}
+                                level={level}
+                                ranking={ranking}
+                                requirement={stickerRequirement(finalSticker)}
                                 description={"unlock this icon"}
                                 purchaseTitle={"Unlock Icon"}
                                 price={stickerPrice(finalSticker)}

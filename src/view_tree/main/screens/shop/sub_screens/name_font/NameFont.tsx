@@ -6,6 +6,7 @@ import { nameFontToStyle } from "./fonts/fonts";
 import {
     nameFont2Name,
     nameFontPrice,
+    nameFontRequirement,
     NameFontsEnum,
     profileColor2Style,
 } from "../../../../../../global_types/ShopTypes";
@@ -28,6 +29,7 @@ import {
     SelectNameFontVariables,
 } from "./gql/Mutations";
 import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
+import { calculateLevelInfo } from "../../../../../../global_utils/LevelUtils";
 
 const NameFont: React.FC = () => {
     const uid = localUid();
@@ -94,6 +96,9 @@ const NameFont: React.FC = () => {
         return <ErrorMessage refresh={refetch} />;
     }
 
+    const level = calculateLevelInfo(parseInt(data.user.coinSpent))[0];
+    const ranking = data.user.ranking;
+
     return (
         <ScrollView style={shopStyles.outerContainer}>
             <View style={shopStyles.container}>
@@ -117,6 +122,9 @@ const NameFont: React.FC = () => {
                             <ShopItem
                                 key={nameFont}
                                 title={nameFont2Name(font)}
+                                level={level}
+                                ranking={ranking}
+                                requirement={nameFontRequirement(font)}
                                 description={"unlock this font"}
                                 purchaseTitle={"Unlock Font"}
                                 price={nameFontPrice(font)}

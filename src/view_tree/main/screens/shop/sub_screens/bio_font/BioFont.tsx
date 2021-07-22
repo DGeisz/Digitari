@@ -14,6 +14,7 @@ import {
     bioColorToStyle,
     bioFont2Name,
     bioFontPrice,
+    bioFontRequirement,
     BioFontsEnum,
     stickerPrice,
 } from "../../../../../../global_types/ShopTypes";
@@ -30,6 +31,7 @@ import {
     SelectBioFontVariables,
 } from "./gql/Mutations";
 import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
+import { calculateLevelInfo } from "../../../../../../global_utils/LevelUtils";
 
 const BioFont: React.FC = () => {
     const uid = localUid();
@@ -96,6 +98,9 @@ const BioFont: React.FC = () => {
         return <ErrorMessage refresh={refetch} />;
     }
 
+    const level = calculateLevelInfo(parseInt(data.user.coinSpent))[0];
+    const ranking = data.user.ranking;
+
     return (
         <ScrollView style={shopStyles.outerContainer}>
             <View style={shopStyles.container}>
@@ -118,6 +123,9 @@ const BioFont: React.FC = () => {
                             <ShopItem
                                 key={font}
                                 title={bioFont2Name(font)}
+                                level={level}
+                                ranking={ranking}
+                                requirement={bioFontRequirement(font)}
                                 description={"unlock this font"}
                                 purchaseTitle={"Unlock Font"}
                                 price={bioFontPrice(font)}

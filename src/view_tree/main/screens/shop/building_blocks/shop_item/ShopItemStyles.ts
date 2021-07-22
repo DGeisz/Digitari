@@ -18,6 +18,20 @@ export const styles = StyleSheet.create({
         marginTop: 25,
         marginBottom: 10,
     },
+    unknownText: {
+        fontWeight: "bold",
+        color: palette.hardGray,
+        fontSize: 35,
+    },
+    unknownContainer: {
+        ...basicLayouts.grid5,
+        marginTop: 20,
+    },
+    itemViewInstructions: {
+        fontWeight: "bold",
+        color: palette.lightGray,
+        marginBottom: 5,
+    },
     title: {
         fontWeight: "bold",
         color: palette.deepBlue,

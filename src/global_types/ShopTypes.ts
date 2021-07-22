@@ -1,6 +1,11 @@
 import { StyleProp, TextStyle } from "react-native";
 import { palette } from "../global_styles/Palette";
 
+export interface ItemRequirement {
+    ranking?: number;
+    level?: number;
+}
+
 export enum NameFontsEnum {
     Default,
     LetterJacket,
@@ -166,6 +171,77 @@ export function nameFontPrice(font: NameFontsEnum): number {
     }
 }
 
+export function nameFontRequirement(font: NameFontsEnum): ItemRequirement {
+    switch (font) {
+        case NameFontsEnum.Default:
+            return {};
+        case NameFontsEnum.LetterJacket:
+            return {};
+        case NameFontsEnum.Galaxy9000:
+            return {};
+        case NameFontsEnum.HowdyPartner:
+            return {
+                level: 15,
+            };
+        case NameFontsEnum.ImAPrincess:
+            return {
+                level: 20,
+            };
+        case NameFontsEnum.Ole:
+            return {
+                ranking: 5,
+            };
+        case NameFontsEnum.CheapHalloweenParty:
+            return {
+                level: 30,
+            };
+        case NameFontsEnum.PassinNotes:
+            return {
+                level: 35,
+            };
+        case NameFontsEnum.Yuck:
+            return {
+                ranking: 12,
+            };
+        case NameFontsEnum.OldTyme:
+            return {
+                level: 45,
+            };
+        case NameFontsEnum.Arcade:
+            return {
+                level: 50,
+            };
+        case NameFontsEnum.GirlyGirl:
+            return {
+                ranking: 25,
+            };
+        case NameFontsEnum.WhamBamKablam:
+            return {
+                level: 60,
+            };
+        case NameFontsEnum.RollerSkateDate:
+            return {
+                level: 65,
+            };
+        case NameFontsEnum.Zoom:
+            return {
+                ranking: 75,
+            };
+        case NameFontsEnum.ZeusRevenge:
+            return {
+                level: 85,
+            };
+        case NameFontsEnum.YuletideBall:
+            return {
+                level: 95,
+            };
+        case NameFontsEnum.GreatGatsby:
+            return {
+                ranking: 250,
+            };
+    }
+}
+
 export enum ProfileColors {
     Default,
     BloodStain,
@@ -319,6 +395,65 @@ export function nameColorPrice(color: ProfileColors): number {
     }
 }
 
+export function nameColorRequirement(color: ProfileColors): ItemRequirement {
+    switch (color) {
+        case ProfileColors.Default:
+            return {};
+        case ProfileColors.BloodStain:
+            return {};
+        case ProfileColors.Stop:
+            return {};
+        case ProfileColors.LastSunset:
+            return {
+                level: 15,
+            };
+        case ProfileColors.PlasticDollhouse:
+            return {
+                level: 20,
+            };
+        case ProfileColors.AlaskanSockeye:
+            return {
+                ranking: 5,
+            };
+        case ProfileColors.DarkForest:
+            return {
+                level: 25,
+            };
+        case ProfileColors.AboveTreeline:
+            return {
+                level: 30,
+            };
+        case ProfileColors.CrackinGlowSticks:
+            return {
+                ranking: 10,
+            };
+        case ProfileColors.AllHail:
+            return {
+                level: 40,
+            };
+        case ProfileColors.BlacklitRave:
+            return {
+                level: 45,
+            };
+        case ProfileColors.FirstTeaParty:
+            return {
+                ranking: 30,
+            };
+        case ProfileColors.MadeThePodium:
+            return {
+                level: 55,
+            };
+        case ProfileColors.SoClose:
+            return {
+                level: 60,
+            };
+        case ProfileColors.ChampionOfTheWorld:
+            return {
+                ranking: 70,
+            };
+    }
+}
+
 export enum BioFontsEnum {
     Default,
     DearDiary,
@@ -386,6 +521,41 @@ export function bioFontPrice(font: BioFontsEnum): number {
             return 2500;
         case BioFontsEnum.SpiritualSciFi:
             return 5000;
+    }
+}
+
+export function bioFontRequirement(font: BioFontsEnum): ItemRequirement {
+    switch (font) {
+        case BioFontsEnum.Default:
+            return {};
+        case BioFontsEnum.DearDiary:
+            return {};
+        case BioFontsEnum.Lemonade:
+            return {};
+        case BioFontsEnum.OnceUponATime:
+            return {
+                level: 20,
+            };
+        case BioFontsEnum.Novel:
+            return {
+                level: 30,
+            };
+        case BioFontsEnum.WhenTypewriters:
+            return {
+                ranking: 5,
+            };
+        case BioFontsEnum.MissionBriefing:
+            return {
+                level: 45,
+            };
+        case BioFontsEnum.MidsummerFantasy:
+            return {
+                level: 55,
+            };
+        case BioFontsEnum.SpiritualSciFi:
+            return {
+                ranking: 40,
+            };
     }
 }
 
@@ -467,6 +637,33 @@ export function bioColorPrice(color: BioColors): number {
             return 1500;
         case BioColors.HeartOfTheSea:
             return 4000;
+    }
+}
+
+export function bioColorRequirement(color: BioColors): ItemRequirement {
+    switch (color) {
+        case BioColors.Default:
+            return {};
+        case BioColors.DarkForest:
+            return {};
+        case BioColors.AllHail:
+            return {};
+        case BioColors.FadingEmbers:
+            return {
+                level: 25,
+            };
+        case BioColors.BloodStain:
+            return {
+                level: 35,
+            };
+        case BioColors.FormerGlory:
+            return {
+                ranking: 20,
+            };
+        case BioColors.HeartOfTheSea:
+            return {
+                level: 60,
+            };
     }
 }
 
@@ -674,5 +871,112 @@ export function stickerPrice(sticker: ProfileStickers): number {
             return 70000;
         case ProfileStickers.StarMedal:
             return 100000;
+    }
+}
+
+export function stickerRequirement(sticker: ProfileStickers): ItemRequirement {
+    switch (sticker) {
+        case ProfileStickers.Default:
+            return {};
+        case ProfileStickers.Ghost:
+            return {};
+        case ProfileStickers.CrossBones:
+            return {};
+        case ProfileStickers.DrumStick:
+            return {
+                level: 10,
+            };
+        case ProfileStickers.Football:
+            return {
+                level: 15,
+            };
+        case ProfileStickers.Brain:
+            return {
+                ranking: 2,
+            };
+        case ProfileStickers.HatWithBow:
+            return {
+                level: 20,
+            };
+        case ProfileStickers.Scorpion:
+            return {
+                level: 25,
+            };
+        case ProfileStickers.Snowflake:
+            return {
+                ranking: 5,
+            };
+        case ProfileStickers.Saxophone:
+            return {
+                level: 30,
+            };
+        case ProfileStickers.TRex:
+            return {
+                level: 35,
+            };
+        case ProfileStickers.Teddy:
+            return {
+                ranking: 10,
+            };
+        case ProfileStickers.Poop:
+            return {
+                level: 40,
+            };
+        case ProfileStickers.Alien:
+            return {
+                level: 45,
+            };
+        case ProfileStickers.Salsa:
+            return {
+                ranking: 20,
+            };
+        case ProfileStickers.Gains:
+            return {
+                level: 50,
+            };
+        case ProfileStickers.BaldEagle:
+            return {
+                level: 55,
+            };
+        case ProfileStickers.Soccer:
+            return {
+                ranking: 45,
+            };
+        case ProfileStickers.HappySad:
+            return {
+                level: 65,
+            };
+        case ProfileStickers.Fire:
+            return {
+                level: 70,
+            };
+        case ProfileStickers.Violin:
+            return {
+                ranking: 80,
+            };
+        case ProfileStickers.RaceCar:
+            return {
+                level: 80,
+            };
+        case ProfileStickers.Microscope:
+            return {
+                level: 90,
+            };
+        case ProfileStickers.CrossSwords:
+            return {
+                ranking: 175,
+            };
+        case ProfileStickers.Rocket:
+            return {
+                level: 110,
+            };
+        case ProfileStickers.Champagne:
+            return {
+                level: 120,
+            };
+        case ProfileStickers.StarMedal:
+            return {
+                ranking: 500,
+            };
     }
 }

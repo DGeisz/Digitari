@@ -14,6 +14,7 @@ import ErrorMessage from "../../../../../../global_building_blocks/error_message
 import ShopItem from "../../building_blocks/shop_item/ShopItem";
 import {
     nameColorPrice,
+    nameColorRequirement,
     profileColor2Name,
     profileColor2Style,
     ProfileColors,
@@ -30,6 +31,7 @@ import {
     SelectNameColorVariables,
 } from "./gql/Mutations";
 import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
+import { calculateLevelInfo } from "../../../../../../global_utils/LevelUtils";
 
 const NameColor: React.FC = () => {
     const uid = localUid();
@@ -96,6 +98,9 @@ const NameColor: React.FC = () => {
         return <ErrorMessage refresh={refetch} />;
     }
 
+    const level = calculateLevelInfo(parseInt(data.user.coinSpent))[0];
+    const ranking = data.user.ranking;
+
     return (
         <ScrollView style={shopStyles.outerContainer}>
             <View style={shopStyles.container}>
@@ -118,6 +123,9 @@ const NameColor: React.FC = () => {
                             <ShopItem
                                 key={color}
                                 title={profileColor2Name(color)}
+                                level={level}
+                                ranking={ranking}
+                                requirement={nameColorRequirement(color)}
                                 description={"unlock this color"}
                                 purchaseTitle={"Unlock Color"}
                                 price={nameColorPrice(color)}
