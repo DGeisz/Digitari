@@ -176,7 +176,7 @@ export const firstPost = makeVar<boolean>(true);
 
 const FIRST_POST = "FIRST_POST";
 
-AsyncStorage.getItem(FIRST_BOLT).then((raw) => {
+AsyncStorage.getItem(FIRST_POST).then((raw) => {
     if (!!raw && !FORCE_INSTRUCTIONS) {
         firstPost(JSON.parse(raw));
     }
