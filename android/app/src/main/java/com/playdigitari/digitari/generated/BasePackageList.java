@@ -7,7 +7,9 @@ import org.unimodules.core.interfaces.Package;
 public class BasePackageList {
   public List<Package> getPackageList() {
     return Arrays.<Package>asList(
+        new expo.modules.splashscreen.SplashScreenPackage(),
         new expo.modules.application.ApplicationPackage(),
+        new expo.modules.av.AVPackage(),
         new expo.modules.constants.ConstantsPackage(),
         new expo.modules.contacts.ContactsPackage(),
         new expo.modules.errorrecovery.ErrorRecoveryPackage(),
@@ -23,7 +25,6 @@ public class BasePackageList {
         new expo.modules.permissions.PermissionsPackage(),
         new expo.modules.securestore.SecureStorePackage(),
         new expo.modules.sms.SMSPackage(),
-        new expo.modules.splashscreen.SplashScreenPackage(),
         new expo.modules.sqlite.SQLitePackage(),
         new expo.modules.updates.UpdatesPackage()
     );
