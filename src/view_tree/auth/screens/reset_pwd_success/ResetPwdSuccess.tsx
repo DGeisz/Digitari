@@ -2,10 +2,7 @@ import React from "react";
 import { Text, View } from "react-native";
 import { authStyles } from "../../styles/AuthStyles";
 import AuthButton from "../../building_blocks/auth_button/AuthButton";
-import {
-    ResetPwdNavProp,
-    ResetPwdSuccessNavProp,
-} from "../../AuthEntryNavTypes";
+import { ResetPwdSuccessNavProp } from "../../AuthEntryNavTypes";
 import { basicLayouts } from "../../../../global_styles/BasicLayouts";
 
 interface Props {
@@ -23,10 +20,7 @@ const ResetPwdSuccess: React.FC<Props> = (props) => {
             <View style={basicLayouts.grid5}>
                 <AuthButton
                     marginTop={20}
-                    onPress={() => {
-                        props.navigation.popToTop();
-                        props.navigation.navigate("SignIn");
-                    }}
+                    onPress={props.navigation.popToTop}
                     text={"Sign in"}
                 />
             </View>

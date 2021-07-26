@@ -31,6 +31,10 @@ const ForgotPwd: React.FC<Props> = (props) => {
                 props.navigation.popToTop();
                 props.navigation.navigate("ResetPwd", { email });
             } catch (e) {
+                if (__DEV__) {
+                    console.log("Reset error: ", e);
+                }
+
                 setErrorActive(true);
             }
             setLoading(false);
