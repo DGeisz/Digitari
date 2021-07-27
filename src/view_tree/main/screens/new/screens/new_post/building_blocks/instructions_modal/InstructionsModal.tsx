@@ -10,7 +10,6 @@ enum Screens {
     Intro,
     Content,
     NextTwoFields,
-    Target,
     Recipients,
     Distribution,
     Finish,
@@ -57,11 +56,7 @@ const InstructionsModal: React.FC<Props> = (props) => {
                     <Text style={instructionStyles.instructionText}>
                         Posting is super easy😊
                         {DOUBLE_NEWLINE}
-                        In the top field, just type out whatever is on your
-                        mind!
-                        {DOUBLE_NEWLINE}
-                        You can also include extra content in the "Add-on" field
-                        if you want.
+                        Just write out whatever is on your mind!
                     </Text>
                 </TutorialModal>
             );
@@ -69,24 +64,7 @@ const InstructionsModal: React.FC<Props> = (props) => {
         case Screens.NextTwoFields:
             modalContent = (
                 <TutorialModal
-                    top
-                    onPress={() => {
-                        LayoutAnimation.easeInEaseOut();
-                        setScreen(Screens.Target);
-                    }}
-                    footerText={"Next"}
-                >
-                    <Text style={instructionStyles.instructionText}>
-                        The "Target" and "Recipients" fields give you an easy
-                        way to take total control over who sees your content.
-                    </Text>
-                </TutorialModal>
-            );
-            break;
-        case Screens.Target:
-            modalContent = (
-                <TutorialModal
-                    top
+                    top={false}
                     onPress={() => {
                         LayoutAnimation.easeInEaseOut();
                         setScreen(Screens.Recipients);
@@ -94,10 +72,10 @@ const InstructionsModal: React.FC<Props> = (props) => {
                     footerText={"Next"}
                 >
                     <Text style={instructionStyles.instructionText}>
-                        In "Target," pick a group of people who'll appreciate
-                        your post! {DOUBLE_NEWLINE}
-                        You can either send your post to your personal followers
-                        or the members of any Digitari community.
+                        At the very top of the screen, select who should get
+                        your post in their feed. {DOUBLE_NEWLINE}
+                        You can send your post to your personal followers or a
+                        Digitari community.
                     </Text>
                 </TutorialModal>
             );
@@ -105,7 +83,7 @@ const InstructionsModal: React.FC<Props> = (props) => {
         case Screens.Recipients:
             modalContent = (
                 <TutorialModal
-                    top
+                    top={false}
                     onPress={() => {
                         LayoutAnimation.easeInEaseOut();
                         setScreen(Screens.Distribution);
@@ -113,11 +91,11 @@ const InstructionsModal: React.FC<Props> = (props) => {
                     footerText={"Next"}
                 >
                     <Text style={instructionStyles.instructionText}>
-                        In "Recipients," YOU get to pick how many people from
-                        your Target will get your post.
+                        Finally, pick the number of people who'll get this post
+                        in their feed.
                         {DOUBLE_NEWLINE}
-                        Want 10k people to see your doge meme? Go right ahead!
-                        It just costs 10 digicoin per recipient.
+                        Want 10k people to see your dank meme? Go right ahead!
+                        It just costs 10 digicoin per person.
                     </Text>
                 </TutorialModal>
             );
@@ -125,7 +103,7 @@ const InstructionsModal: React.FC<Props> = (props) => {
         case Screens.Distribution:
             modalContent = (
                 <TutorialModal
-                    top
+                    top={false}
                     onPress={() => {
                         LayoutAnimation.easeInEaseOut();
                         setScreen(Screens.Finish);
@@ -133,10 +111,13 @@ const InstructionsModal: React.FC<Props> = (props) => {
                     footerText={"Next"}
                 >
                     <Text style={instructionStyles.instructionText}>
-                        All you have to do is tell us how many people should see
-                        your post. {DOUBLE_NEWLINE}
-                        We'll pick that number of people from your Target and
-                        send your post directly to their feeds. Easy, peasy😊
+                        Don't worry -- all{" "}
+                        <Text style={instructionStyles.italics}>you</Text> have
+                        to do is tell us how many people should see your post.
+                        {DOUBLE_NEWLINE}
+                        After you post, we'll choose that number of people from
+                        your selected audience and send your post directly to
+                        their feeds. Easy, peasy😊
                     </Text>
                 </TutorialModal>
             );
@@ -154,8 +135,8 @@ const InstructionsModal: React.FC<Props> = (props) => {
                     <Text style={instructionStyles.instructionText}>
                         Don't be shy, share your interests with the world!{" "}
                         {DOUBLE_NEWLINE}
-                        You earn digicoin when people collect digibolts from
-                        your posts, so your posts will make you a bunch of coin.
+                        You'll earn a bunch of digicoin when people collect
+                        digibolts from your posts.
                         {DOUBLE_NEWLINE}
                         ...which lets you post to more people! Keep going and
                         you'll be famous in no time😎

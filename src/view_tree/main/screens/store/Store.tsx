@@ -55,7 +55,9 @@ const Store: React.FC = () => {
         }
     }, [retryCount]);
 
-    const finalItems = items.sort();
+    const finalItems = items.sort(
+        (a, b) => a.priceAmountMicros - b.priceAmountMicros
+    );
 
     if (error) {
         return (

@@ -3,7 +3,7 @@ import { IAPItemDetails } from "expo-in-app-purchases";
 export const purchaseItems: IAPItemDetails[] = [
     {
         productId: "coin0",
-        title: "Pinch o' Coins",
+        title: "Pinch o' Coins (Digitari)",
         description: "1,500 Digicoins",
         price: "$0.99",
         priceAmountMicros: 990000,

@@ -148,7 +148,7 @@ const NewCommunity: React.FC<Props> = (props) => {
                     )}
                     <Text style={styles.fieldTitle}>Name</Text>
                     <TextInput
-                        placeholder="Community name"
+                        placeholder="What's your community called?"
                         style={styles.fieldInput}
                         value={name}
                         onChangeText={(text) =>
@@ -163,7 +163,7 @@ const NewCommunity: React.FC<Props> = (props) => {
                     <View style={styles.buffer} />
                     <Text style={styles.fieldTitle}>Community</Text>
                     <TextInput
-                        placeholder="Community description"
+                        placeholder="What should members post about?"
                         style={styles.fieldInput}
                         onFocus={() => {
                             !!scrollViewRef?.current &&

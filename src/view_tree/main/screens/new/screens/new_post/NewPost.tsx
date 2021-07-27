@@ -145,7 +145,7 @@ const NewPost: React.FC<Props> = (props) => {
         }
     }, [editTarget]);
 
-    const [recipientsVisible, showRecipients] = useState<boolean>(false);
+    const [recipientsVisible, showRecipients] = useState<boolean>(firstPost());
     const [recipients, setRecipients] = useState<number | undefined>(undefined);
     const recipientsRef = useRef<TextInput>(null);
 
@@ -579,7 +579,6 @@ const NewPost: React.FC<Props> = (props) => {
                         </View>
                     )}
                     <View style={styles.postContentContainer}>
-                        {/*<Text style={styles.fieldTitle}>Post</Text>*/}
                         <TextInput
                             keyboardType="twitter"
                             autoFocus={autoFocus}
@@ -822,7 +821,6 @@ const NewPost: React.FC<Props> = (props) => {
                             </>
                         )}
                     </View>
-
                     <View
                         style={
                             recipientsVisible
@@ -870,108 +868,6 @@ const NewPost: React.FC<Props> = (props) => {
                                 getPostCommunity({ variables: { id } });
                             }}
                         />
-                        {/*<Text style={styles.sendToTitle}>Send to:</Text>*/}
-                        {/*<View style={styles.postOptionBar}>*/}
-                        {/*    <TouchableOpacity*/}
-                        {/*        style={*/}
-                        {/*            target === PostTarget.MyFollowers*/}
-                        {/*                ? styles.activeOption*/}
-                        {/*                : styles.inactiveOption*/}
-                        {/*        }*/}
-                        {/*        onPress={() => {*/}
-                        {/*            setTarget(PostTarget.MyFollowers);*/}
-                        {/*        }}*/}
-                        {/*    >*/}
-                        {/*        <Text*/}
-                        {/*            style={*/}
-                        {/*                target === PostTarget.MyFollowers*/}
-                        {/*                    ? styles.activeOptionText*/}
-                        {/*                    : styles.inactiveOptionText*/}
-                        {/*            }*/}
-                        {/*        >*/}
-                        {/*            My Followers*/}
-                        {/*        </Text>*/}
-                        {/*    </TouchableOpacity>*/}
-                        {/*    <TouchableOpacity*/}
-                        {/*        style={*/}
-                        {/*            target === PostTarget.Community*/}
-                        {/*                ? styles.activeOption*/}
-                        {/*                : styles.inactiveOption*/}
-                        {/*        }*/}
-                        {/*        onPress={() => setTarget(PostTarget.Community)}*/}
-                        {/*    >*/}
-                        {/*        <Text*/}
-                        {/*            style={*/}
-                        {/*                target === PostTarget.Community*/}
-                        {/*                    ? styles.activeOptionText*/}
-                        {/*                    : styles.inactiveOptionText*/}
-                        {/*            }*/}
-                        {/*        >*/}
-                        {/*            Community*/}
-                        {/*        </Text>*/}
-                        {/*    </TouchableOpacity>*/}
-                        {/*</View>*/}
-                        {/*{target === PostTarget.MyFollowers ? (*/}
-                        {/*    <Text style={styles.followersText}>*/}
-                        {/*        <Text style={styles.followersNumeral}>*/}
-                        {/*            {toCommaRep(user.followers) + " "}*/}
-                        {/*        </Text>*/}
-                        {/*        {user.followers === 1*/}
-                        {/*            ? "Follower"*/}
-                        {/*            : "Followers"}*/}
-                        {/*    </Text>*/}
-                        {/*) : (*/}
-                        {/*    <>*/}
-                        {/*        <TouchableOpacity*/}
-                        {/*            style={styles.communityContainer}*/}
-                        {/*            onPress={() => showSelectCom(true)}*/}
-                        {/*        >*/}
-                        {/*            {!community ? (*/}
-                        {/*                <Text*/}
-                        {/*                    style={styles.selectCommunityText}*/}
-                        {/*                >*/}
-                        {/*                    Select Community*/}
-                        {/*                </Text>*/}
-                        {/*            ) : (*/}
-                        {/*                <>*/}
-                        {/*                    <Text style={styles.communityText}>*/}
-                        {/*                        {community.name}*/}
-                        {/*                    </Text>*/}
-                        {/*                    <Text*/}
-                        {/*                        style={styles.commFollowersText}*/}
-                        {/*                    >*/}
-                        {/*                        <Text*/}
-                        {/*                            style={*/}
-                        {/*                                styles.commFollowerNumeral*/}
-                        {/*                            }*/}
-                        {/*                        >*/}
-                        {/*                            /!*TODO Change for screenshots*!/*/}
-                        {/*                            {toCommaRep(*/}
-                        {/*                                community.followers*/}
-                        {/*                            ) + " "}*/}
-                        {/*                            /!*{toCommaRep(1326) + " "}*!/*/}
-                        {/*                        </Text>*/}
-                        {/*                        {community.followers === 1*/}
-                        {/*                            ? "Followers"*/}
-                        {/*                            : "Followers"}*/}
-                        {/*                    </Text>*/}
-                        {/*                </>*/}
-                        {/*            )}*/}
-                        {/*        </TouchableOpacity>*/}
-                        {/*        <TouchableOpacity*/}
-                        {/*            style={styles.createCommunityButton}*/}
-                        {/*            onPress={() =>*/}
-                        {/*                props.navigation.navigate(*/}
-                        {/*                    "NewCommunity"*/}
-                        {/*                )*/}
-                        {/*            }*/}
-                        {/*        >*/}
-                        {/*            <Text style={styles.createCommunityText}>*/}
-                        {/*                + Create Community*/}
-                        {/*            </Text>*/}
-                        {/*        </TouchableOpacity>*/}
-                        {/*    </>*/}
-                        {/*)}*/}
                     </View>
                     <View
                         style={[

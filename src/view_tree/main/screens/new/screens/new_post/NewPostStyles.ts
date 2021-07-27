@@ -46,7 +46,6 @@ export const styles = StyleSheet.create({
     postContentContainer: {
         paddingVertical: 15,
         borderColor: palette.softGray,
-        borderBottomWidth: 1,
         borderTopWidth: 1,
         marginTop: 8,
     },
@@ -56,6 +55,7 @@ export const styles = StyleSheet.create({
     },
     recipientsContainer: {
         paddingVertical: 15,
+        borderTopWidth: 1,
         borderBottomWidth: 1,
         borderColor: palette.softGray,
     },
@@ -148,7 +148,7 @@ export const styles = StyleSheet.create({
     },
     followersText: {
         color: palette.lightGray,
-        // fontSize: 18,
+        marginLeft: 10,
     },
     sendToTitle: {
         fontSize: 16,

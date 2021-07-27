@@ -41,6 +41,9 @@ export const instructionStyles = StyleSheet.create({
         fontSize: 17,
         fontWeight: "bold",
     },
+    italics: {
+        fontStyle: "italic",
+    },
     footerContainer: {
         ...basicLayouts.grid5,
         marginTop: 20,

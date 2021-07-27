@@ -16,7 +16,9 @@ const StoreItem: React.FC<Props> = (props) => {
 
     return (
         <View style={styles.itemContainer}>
-            <Text style={styles.itemTitle}>{props.title}</Text>
+            <Text style={styles.itemTitle}>
+                {props.title.split(" ").slice(0, 3).join(" ")}
+            </Text>
             <View style={styles.coinContainer}>
                 <CoinBox
                     coinSize={40}
