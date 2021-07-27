@@ -12,13 +12,52 @@ export const styles = StyleSheet.create({
     newPostContainer: {
         width: GENERAL_CONTENT_WIDTH,
         alignSelf: "center",
-        paddingHorizontal: 10,
-    },
-    postFieldContainer: {
+        paddingTop: 10,
         paddingHorizontal: 20,
+    },
+    targetContainer: {
+        ...basicLayouts.grid2,
+        flexWrap: "wrap",
+        flexDirection: "row",
+    },
+    arrowContainer: {
+        marginRight: 3,
+    },
+    targetTextContainer: {
+        ...basicLayouts.flexGrid1,
+    },
+    targetText: {
+        color: palette.hardGray,
+        fontWeight: "bold",
+    },
+    targetFollowersText: {
+        color: palette.lightGray,
+        fontWeight: "400",
+    },
+    editTargetContainer: {
+        ...basicLayouts.grid6,
+        marginLeft: 40,
+    },
+    editTargetButton: {},
+    editTargetText: {
+        color: palette.deepBlue,
+    },
+    targetSelectorContainer: {},
+    postContentContainer: {
+        paddingVertical: 15,
+        borderColor: palette.softGray,
+        borderBottomWidth: 1,
+        borderTopWidth: 1,
+        marginTop: 8,
+    },
+    recipientsHidden: {
+        height: 0,
+        overflow: "hidden",
+    },
+    recipientsContainer: {
         paddingVertical: 15,
         borderBottomWidth: 1,
-        borderBottomColor: palette.softGray,
+        borderColor: palette.softGray,
     },
     fieldTitleContainer: {
         flexDirection: "row",
@@ -30,15 +69,27 @@ export const styles = StyleSheet.create({
         marginBottom: 15,
         marginRight: 8,
     },
+    addOnTitle: {
+        fontSize: 16,
+        fontWeight: "bold",
+        color: palette.hardGray,
+        marginLeft: 5,
+    },
     contentInput: {
-        fontSize: 20,
-        marginBottom: 10,
+        fontSize: 22,
+        marginBottom: 5,
+    },
+    showAddOnButton: {
+        ...basicLayouts.grid2,
+        marginTop: 10,
+        flexDirection: "row",
     },
     remainingText: {
         color: palette.mediumGray,
         fontWeight: "500",
     },
     postOptionBar: {
+        ...basicLayouts.grid2,
         flexDirection: "row",
         marginBottom: 10,
     },
@@ -96,8 +147,15 @@ export const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     followersText: {
+        color: palette.lightGray,
+        // fontSize: 18,
+    },
+    sendToTitle: {
+        fontSize: 16,
+        fontWeight: "bold",
         color: palette.hardGray,
-        fontSize: 18,
+        marginRight: 3,
+        marginBottom: 5,
     },
     communityContainer: {
         paddingVertical: 10,
@@ -121,7 +179,7 @@ export const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     commFollowersText: {
-        color: palette.mediumGray,
+        color: palette.lightGray,
         fontSize: 16,
     },
     createCommunityButton: {
@@ -133,11 +191,13 @@ export const styles = StyleSheet.create({
     },
     recipientsInput: {
         fontSize: 20,
+        marginBottom: 20,
     },
     postFooter: {
         ...basicLayouts.grid5,
-        marginTop: 20,
+        opacity: 0.2,
         marginBottom: 40,
+        marginTop: 20,
     },
     postErrorMessage: {
         fontSize: 16,
@@ -147,8 +207,8 @@ export const styles = StyleSheet.create({
     },
     postButton: {
         flexDirection: "row",
-        borderColor: palette.deepBlue,
         borderWidth: 2,
+        borderColor: palette.deepBlue,
         paddingHorizontal: 20,
         paddingVertical: 10,
         borderRadius: 50,
@@ -162,6 +222,5 @@ export const styles = StyleSheet.create({
     postButtonText: {
         fontSize: 20,
         fontWeight: "bold",
-        color: palette.hardGray,
     },
 });
