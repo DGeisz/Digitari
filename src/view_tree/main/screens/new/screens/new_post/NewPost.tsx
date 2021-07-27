@@ -443,9 +443,11 @@ const NewPost: React.FC<Props> = (props) => {
                                     {shortTarget}
                                     <Text
                                         style={styles.targetFollowersText}
-                                    >{` · ${toRep(
-                                        shortFollowers
-                                    )} Followers`}</Text>
+                                    >{` · ${toRep(shortFollowers)} ${
+                                        shortFollowers === 1
+                                            ? "Follower"
+                                            : "Followers"
+                                    }`}</Text>
                                 </Text>
                             </View>
                             <View style={styles.editTargetContainer}>
