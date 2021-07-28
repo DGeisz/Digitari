@@ -52,7 +52,16 @@ const AppView: React.FC = () => {
                 await connectAsync();
 
                 setPurchaseListener((result: IAPQueryResponse) => {
-                    const { responseCode, results } = result;
+                    const { responseCode, results, errorCode } = result;
+
+                    if (__DEV__) {
+                        console.log(
+                            "This is IAP response code and results:",
+                            responseCode,
+                            results,
+                            errorCode
+                        );
+                    }
 
                     if (responseCode === IAPResponseCode.OK && !!results) {
                         results.forEach(async (rawPurchase) => {
@@ -73,6 +82,13 @@ const AppView: React.FC = () => {
                                     receipt = purchase.purchaseToken as string;
                                 }
 
+                                if (__DEV__) {
+                                    console.log(
+                                        "We're processing purchase: ",
+                                        purchase
+                                    );
+                                }
+
                                 const {
                                     data: processData,
                                 } = await client.mutate<
@@ -87,6 +103,13 @@ const AppView: React.FC = () => {
                                         receipt,
                                     },
                                 });
+
+                                if (__DEV__) {
+                                    console.log(
+                                        "We successfully processed purchase: ",
+                                        processData
+                                    );
+                                }
 
                                 /*
                                 Then after we've accepted the transaction on the backend,

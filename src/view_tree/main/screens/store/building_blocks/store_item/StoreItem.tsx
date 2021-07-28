@@ -38,7 +38,13 @@ const StoreItem: React.FC<Props> = (props) => {
 
                         try {
                             await props.onSelect();
-                        } finally {
+                        } catch (e) {
+                            if (__DEV__) {
+                                console.log(
+                                    "Here's the error with purchase: ",
+                                    e
+                                );
+                            }
                         }
 
                         setLoading(false);

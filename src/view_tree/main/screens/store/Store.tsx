@@ -7,7 +7,7 @@ import { FlatList } from "react-native-gesture-handler";
 import { purchaseItems } from "./data/purchase_items";
 import { extractCoinAmount } from "./utils/iap_item_utils";
 import { globalScreenStyles } from "../../../../global_styles/GlobalScreenStyles";
-import { View } from "react-native";
+import { View, Platform } from "react-native";
 import ErrorMessage from "../../../../global_building_blocks/error_message/ErrorMessage";
 
 /*
@@ -93,7 +93,26 @@ const Store: React.FC = () => {
                                     "expo-in-app-purchases"
                                 );
 
-                                await purchaseItemAsync(item.productId);
+                                if (__DEV__) {
+                                    console.log(
+                                        "Beginning purchase transaction..."
+                                    );
+                                }
+
+                                if (Platform.OS === "ios") {
+                                    await purchaseItemAsync(item.productId);
+                                } else {
+                                    /*
+                                     * Seems that this method never resolves on android...
+                                     */
+                                    purchaseItemAsync(item.productId).then();
+                                }
+
+                                if (__DEV__) {
+                                    console.log(
+                                        "Finishing purchase transaction"
+                                    );
+                                }
                             }
                         }}
                     />
