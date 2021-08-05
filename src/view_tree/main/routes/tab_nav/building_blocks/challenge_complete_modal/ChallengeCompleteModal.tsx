@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
 import { styles } from "./ChallengeCompleteModalStyles";
-import { useMutation, useQuery } from "@apollo/client";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import {
     USER_CHALLENGE_RECEIPTS,
     UserChallengeReceiptsData,
@@ -16,6 +16,14 @@ import {
     ViewChallengeReceiptVariables,
 } from "./gql/Mutations";
 import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
+import {
+    LAST_COLLECTION_TIME,
+    LastCollectionTimeData,
+    LastCollectionTimeVariables,
+    TRANSACTIONS,
+    TransactionsData,
+    TransactionsVariables,
+} from "../../screens/wallet/gql/Queries";
 
 interface Props {
     openWallet: () => void;
@@ -33,7 +41,7 @@ const ChallengeCompleteModal: React.FC<Props> = (props) => {
         }
     }, [timeoutVisible]);
 
-    const { data, loading, error } = useQuery<
+    const { data } = useQuery<
         UserChallengeReceiptsData,
         UserChallengeReceiptsVariables
     >(USER_CHALLENGE_RECEIPTS, {
@@ -41,6 +49,20 @@ const ChallengeCompleteModal: React.FC<Props> = (props) => {
             uid,
         },
     });
+
+    const [fetchLastCollectionInfo] = useLazyQuery<
+        LastCollectionTimeData,
+        LastCollectionTimeVariables
+    >(LAST_COLLECTION_TIME, {
+        variables: {
+            uid,
+        },
+    });
+
+    const [fetchTransData] = useLazyQuery<
+        TransactionsData,
+        TransactionsVariables
+    >(TRANSACTIONS);
 
     const [viewChallengeReceipt] = useMutation<
         ViewChallengeReceiptData,
@@ -96,6 +118,7 @@ const ChallengeCompleteModal: React.FC<Props> = (props) => {
                             onPress={() => {
                                 props.openWallet();
                                 setTimeoutVisible(false);
+
                                 viewChallengeReceipt({
                                     variables: {
                                         receipt,
@@ -125,6 +148,12 @@ const ChallengeCompleteModal: React.FC<Props> = (props) => {
                                         });
                                     },
                                 }).then();
+
+                                /*
+                                 * Refetch wallet
+                                 */
+                                fetchLastCollectionInfo();
+                                fetchTransData();
                             }}
                         >
                             <Text style={styles.modalCollectButtonText}>

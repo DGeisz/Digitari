@@ -36,6 +36,7 @@ export const TRANSACTIONS = gql`
             coin
             message
             transactionType
+            transactionIcon
             data
         }
     }

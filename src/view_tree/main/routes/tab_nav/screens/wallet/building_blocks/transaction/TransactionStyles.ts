@@ -37,7 +37,7 @@ export const styles = StyleSheet.create({
         // borderRightColor: palette.softGray,
         // borderRightWidth: 1,
     },
-    userIcon: {
+    icon: {
         marginBottom: 2,
     },
 });

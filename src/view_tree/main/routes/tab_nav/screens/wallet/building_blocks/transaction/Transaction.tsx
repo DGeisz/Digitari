@@ -1,5 +1,6 @@
 import React from "react";
 import {
+    TransactionIcon,
     TransactionType,
     TransactionTypesEnum,
 } from "../../../../../../../../global_types/TransactionTypes";
@@ -7,9 +8,13 @@ import { Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./TransactionStyles";
 import { millisToRep } from "../../../../../../../../global_utils/TimeRepUtils";
 import CoinBox from "../../../../../../../../global_building_blocks/coin_box/CoinBox";
-import BoltBox from "../../../../../../../../global_building_blocks/bolt_box/BoltBox";
 import { palette } from "../../../../../../../../global_styles/Palette";
-import { FontAwesome, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import {
+    FontAwesome,
+    FontAwesome5,
+    Ionicons,
+    MaterialIcons,
+} from "@expo/vector-icons";
 
 interface Props {
     transaction: TransactionType;
@@ -21,49 +26,61 @@ interface Props {
 }
 
 const Transaction: React.FC<Props> = (props) => {
-    let icon;
+    const transactionActive =
+        parseInt(props.transaction.time) > props.lastCollectionTime;
 
-    if (Math.random() > 0.75) {
-        icon = (
-            <FontAwesome
-                name="user"
-                size={22}
-                color={palette.deepBlue}
-                style={styles.userIcon}
-            />
-        );
-    } else {
-        if (Math.random() > 0.66) {
+    let icon;
+    const iconBlue = transactionActive ? palette.deepBlue : palette.notDeepBlue;
+
+    switch (props.transaction.transactionIcon) {
+        case TransactionIcon.Convo:
             icon = (
                 <Ionicons
                     name={"ios-chatbubbles"}
                     size={22}
-                    style={styles.userIcon}
-                    color={palette.deepBlue}
+                    style={styles.icon}
+                    color={iconBlue}
                 />
             );
-        } else {
-            if (Math.random() > 0.5) {
-                icon = (
-                    <MaterialIcons
-                        name="dynamic-feed"
-                        size={22}
-                        color={palette.semiSoftGray}
-                    />
-                );
-            } else {
-                icon = (
-                    <MaterialIcons
-                        name="bolt"
-                        size={30}
-                        color={palette.semiSoftGray}
-                    />
-                );
-            }
-        }
+            break;
+        case TransactionIcon.Feed:
+            icon = (
+                <MaterialIcons
+                    name="dynamic-feed"
+                    size={22}
+                    color={palette.semiSoftGray}
+                />
+            );
+            break;
+        case TransactionIcon.User:
+            icon = (
+                <FontAwesome
+                    name="user"
+                    size={22}
+                    color={iconBlue}
+                    style={styles.icon}
+                />
+            );
+            break;
+        case TransactionIcon.Challenge:
+            icon = (
+                <FontAwesome5
+                    name="medal"
+                    size={21}
+                    color={iconBlue}
+                    style={styles.icon}
+                />
+            );
+            break;
+        default:
+            icon = (
+                <MaterialIcons
+                    name="bolt"
+                    size={30}
+                    color={palette.semiSoftGray}
+                />
+            );
     }
-
-    icon = null;
 
     return (
         <TouchableOpacity
