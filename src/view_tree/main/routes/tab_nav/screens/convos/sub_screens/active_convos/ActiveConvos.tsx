@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
     FlatList,
     RefreshControl,
@@ -6,7 +6,6 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
-import { localUid } from "../../../../../../../../global_state/UserState";
 import { TabNavContext } from "../../../../TabNavContext";
 import { NetworkStatus, useQuery } from "@apollo/client";
 import {
@@ -21,10 +20,11 @@ import ConvoCover from "../../../../../../../../global_building_blocks/convo_cov
 import { palette } from "../../../../../../../../global_styles/Palette";
 import { globalScreenStyles } from "../../../../../../../../global_styles/GlobalScreenStyles";
 import { styles } from "./ActiveConvosStyles";
+import { localUid } from "../../../../../../../../global_state/UserState";
+import { ConvosContext } from "../../ConvosContext";
 
-interface Props {}
-
-const ActiveConvos: React.FC<Props> = () => {
+const ActiveConvos: React.FC = () => {
+    const uid = localUid();
     const { openConvo } = useContext(TabNavContext);
 
     const { data, error, networkStatus, refetch, fetchMore } = useQuery<
@@ -40,6 +40,20 @@ const ActiveConvos: React.FC<Props> = () => {
     const [fetchMoreLen, setFetchMoreLen] = useState<number>(
         ACTIVE_CONVOS_PER_PAGE - 1
     );
+
+    let anyUnViewedConvos = false;
+
+    if (finalFeed.length > 0) {
+        anyUnViewedConvos = finalFeed.some((convo) =>
+            convo.tid === uid ? !convo.tviewed : !convo.sviewed
+        );
+    }
+
+    const { setActiveConvosViewed } = useContext(ConvosContext);
+
+    useEffect(() => {
+        setActiveConvosViewed(!anyUnViewedConvos);
+    }, [anyUnViewedConvos]);
 
     if (
         networkStatus === NetworkStatus.loading ||

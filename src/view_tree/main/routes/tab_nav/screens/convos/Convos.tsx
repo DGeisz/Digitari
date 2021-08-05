@@ -18,6 +18,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { ConvosNavProp } from "../../TabNavTypes";
 import { firstConvos } from "../../../../../../global_state/FirstImpressionsState";
 import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
+import { ConvosContext } from "./ConvosContext";
 
 interface Props {
     navigation: ConvosNavProp;
@@ -33,6 +34,8 @@ const Convos: React.FC<Props> = (props) => {
     const [instructionsVisible, showInstructions] = useState<boolean>(
         firstConvos()
     );
+
+    const [activeConvosViewed, setActiveConvosViewed] = useState<boolean>(true);
 
     const [viewConvosScreen] = useMutation<ViewConvosData>(VIEWED_CONVOS, {
         optimisticResponse: {
@@ -83,7 +86,11 @@ const Convos: React.FC<Props> = (props) => {
     }, [pageFocused, newConvoUpdate, viewConvosScreen]);
 
     return (
-        <>
+        <ConvosContext.Provider
+            value={{
+                setActiveConvosViewed,
+            }}
+        >
             <InstructionsModal
                 hideModal={() => showInstructions(false)}
                 visible={instructionsVisible}
@@ -103,13 +110,17 @@ const Convos: React.FC<Props> = (props) => {
                     component={ActiveConvos}
                     options={{
                         tabBarLabel: ({ color }) => (
-                            <TabLabel title={"Active"} color={color} />
+                            <TabLabel
+                                title={"Active"}
+                                color={color}
+                                active={!activeConvosViewed}
+                            />
                         ),
                     }}
                 />
             </Tab.Navigator>
             <NewButton openNew={openNew} />
-        </>
+        </ConvosContext.Provider>
     );
 };
 
