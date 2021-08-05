@@ -97,6 +97,7 @@ const Wallet: React.FC<Props> = (props) => {
         error: transError,
         networkStatus: transNetworkStatus,
         refetch: transRefetch,
+        fetchMore,
     } = useQuery<TransactionsData, TransactionsVariables>(TRANSACTIONS, {
         notifyOnNetworkStatusChange: true,
     });
@@ -519,6 +520,19 @@ const Wallet: React.FC<Props> = (props) => {
                         />
                     }
                     ListFooterComponent={<View style={styles.listFooter} />}
+                    onEndReached={async () => {
+                        if (finalFeed.length > 0) {
+                            const lastTime =
+                                finalFeed[finalFeed.length - 1].time;
+
+                            !!fetchMore &&
+                                (await fetchMore({
+                                    variables: {
+                                        lastTime,
+                                    },
+                                }));
+                        }
+                    }}
                 />
             </View>
             <NewButton openNew={openNew} />

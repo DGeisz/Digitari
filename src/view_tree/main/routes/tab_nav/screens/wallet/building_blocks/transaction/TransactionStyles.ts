@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
         color: palette.lightGray,
     },
     messageContainer: {
-        ...basicLayouts.flexGrid1,
+        ...basicLayouts.flexGrid4,
         paddingHorizontal: 10,
     },
     messageText: {
@@ -36,5 +36,8 @@ export const styles = StyleSheet.create({
         width: 60,
         // borderRightColor: palette.softGray,
         // borderRightWidth: 1,
+    },
+    userIcon: {
+        marginBottom: 2,
     },
 });

@@ -174,6 +174,7 @@ export const schema = gql`
         coin: Int
         message: String
         transactionType: Int
+        transactionIcon: Int
         data: String
     }
 

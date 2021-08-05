@@ -254,7 +254,11 @@ const NewResponse: React.FC<Props> = (props) => {
                 {loading ? (
                     <LoadingWheel />
                 ) : (
-                    <MessageInput onSend={onSend} onChangeText={setContent} />
+                    <MessageInput
+                        onSend={onSend}
+                        onChangeText={setContent}
+                        autoFocus
+                    />
                 )}
             </TouchableOpacity>
         </>

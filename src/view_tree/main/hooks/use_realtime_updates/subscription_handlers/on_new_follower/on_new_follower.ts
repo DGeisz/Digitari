@@ -2,6 +2,7 @@ import { OnSubscriptionDataOptions } from "@apollo/client";
 import { NewFollowerData } from "../../gql/Subscriptions";
 import {
     TRANSACTION_TYPENAME,
+    TransactionIcon,
     TransactionType,
     TransactionTypesEnum,
 } from "../../../../../../global_types/TransactionTypes";
@@ -59,6 +60,7 @@ export function onNewFollower(
             coin: FOLLOW_USER_PRICE,
             message: `${follower.name} followed you!`,
             transactionType: TransactionTypesEnum.User,
+            transactionIcon: TransactionIcon.User,
             data: follower.sid,
             __typename: TRANSACTION_TYPENAME,
         };

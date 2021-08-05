@@ -3,6 +3,7 @@ import { DonationReceivedData } from "../../gql/Subscriptions";
 import { POST_TYPENAME } from "../../../../../../global_types/PostTypes";
 import {
     TRANSACTION_TYPENAME,
+    TransactionIcon,
     TransactionType,
     TransactionTypesEnum,
 } from "../../../../../../global_types/TransactionTypes";
@@ -49,7 +50,9 @@ export async function onDonationReceived(
             },
         });
 
-        let message = `${name} spent ${toRep(coinTotal)} digicoin on your post`;
+        let message = `${name} bought ${toRep(amount)} ${
+            amount === 1 ? "digibolt" : "digibolts"
+        } from your post`;
 
         try {
             const { data: postData } = await client.query<
@@ -63,9 +66,9 @@ export async function onDonationReceived(
             });
 
             if (!!postData?.post) {
-                message = `${name} spent ${toRep(
-                    coinTotal
-                )} digicoin on your post: "${postData.post.content}"`;
+                message = `${name} bought ${toRep(amount)} ${
+                    amount === 1 ? "digibolt" : "digibolts"
+                } from your post: "${postData.post.content}"`;
             }
         } catch (e) {}
 
@@ -78,6 +81,7 @@ export async function onDonationReceived(
             coin: coinTotal,
             message,
             transactionType: TransactionTypesEnum.User,
+            transactionIcon: TransactionIcon.Bolt,
             data: uid,
             __typename: TRANSACTION_TYPENAME,
         };

@@ -44,9 +44,6 @@ const MessageInput: React.FC<Props> = ({
     //Height of the window to avoid keyboard
     const [height, setHeight] = useState<number>(insets.bottom);
 
-    //Height of the children in the screen
-    const [childHeight, setChildHeight] = useState<number>(windowHeight);
-
     //Boolean to determine if the child's initial height has been set
     const [isChildFixed, fixChild] = useState<boolean>(false);
 
@@ -99,14 +96,12 @@ const MessageInput: React.FC<Props> = ({
             subscriptions.push(
                 Keyboard.addListener("keyboardDidShow", (event) => {
                     scheduleLayoutAnimation(event);
-                    // setHeight(event.endCoordinates.height);
                     onKeyboardShow && onKeyboardShow();
                 })
             );
             subscriptions.push(
                 Keyboard.addListener("keyboardDidHide", (event) => {
                     scheduleLayoutAnimation(event);
-                    // setHeight(0);
                 })
             );
         }
@@ -121,9 +116,8 @@ const MessageInput: React.FC<Props> = ({
             <View style={{ flex: 1 }}>
                 <View
                     style={{ flex: 1 }}
-                    onLayout={(e) => {
+                    onLayout={() => {
                         if (!isChildFixed) {
-                            setChildHeight(e.nativeEvent.layout.height);
                             fixChild(true);
                         }
                     }}

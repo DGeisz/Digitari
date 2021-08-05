@@ -8,6 +8,7 @@ import { addTransaction, sort_active_convos } from "../utils/cache_utils";
 import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
 import { localUid } from "../../../../../../global_state/UserState";
 import {
+    TransactionIcon,
     TransactionType,
     TransactionTypesEnum,
 } from "../../../../../../global_types/TransactionTypes";
@@ -103,6 +104,7 @@ export function onConvoFinished(
             coin: 0,
             message: transactionMessage,
             transactionType: TransactionTypesEnum.Convo,
+            transactionIcon: TransactionIcon.Convo,
             data: `${cvid}:${convo.pid}`,
         };
 

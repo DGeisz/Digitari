@@ -6,6 +6,7 @@ import {
 import { addTransaction, sort_active_convos } from "../utils/cache_utils";
 import { ConvoDismissedData } from "../../gql/Subscriptions";
 import {
+    TransactionIcon,
     TransactionType,
     TransactionTypesEnum,
 } from "../../../../../../global_types/TransactionTypes";
@@ -67,6 +68,7 @@ export function onConvoDismissedData(
             coin: 0,
             message: `${convo.tname} dismissed your response: "${convo.lastMsg}"`,
             transactionType: TransactionTypesEnum.Convo,
+            transactionIcon: TransactionIcon.Convo,
             data: `${cvid}:${convo.pid}`,
         };
 

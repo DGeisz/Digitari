@@ -80,6 +80,7 @@ import {
     DonateToPostVariables,
 } from "../../../../global_building_blocks/post/gql/Mutations";
 import {
+    TransactionIcon,
     TransactionType,
     TransactionTypesEnum,
 } from "../../../../global_types/TransactionTypes";
@@ -498,6 +499,7 @@ const Convo: React.FC<Props> = (props) => {
                         coin: 0,
                         message: transactionMessage,
                         transactionType: TransactionTypesEnum.Convo,
+                        transactionIcon: TransactionIcon.Convo,
                         data: `${cvid}:${convoData.convo.pid}`,
                     };
 
@@ -1003,6 +1005,7 @@ const Convo: React.FC<Props> = (props) => {
                         !!scrollRef.current && scrollRef.current.scrollToEnd();
                     }, 500);
                 }}
+                autoFocus
                 onSend={async (message) => {
                     try {
                         await createMessage({

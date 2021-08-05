@@ -34,6 +34,7 @@ import CoinCountdown from "../../coin_countdown/CoinCountdown";
 import { addNewReceipt } from "../../../global_state/CoinUpdates";
 import {
     TRANSACTION_TYPENAME,
+    TransactionIcon,
     TransactionType,
     TransactionTypesEnum,
 } from "../../../global_types/TransactionTypes";
@@ -218,6 +219,8 @@ const UserPosts: React.FC<Props> = (props) => {
                                             message: "Viewed user posts",
                                             transactionType:
                                                 TransactionTypesEnum.Post,
+                                            transactionIcon:
+                                                TransactionIcon.Feed,
                                             data: "",
                                             __typename: TRANSACTION_TYPENAME,
                                         };

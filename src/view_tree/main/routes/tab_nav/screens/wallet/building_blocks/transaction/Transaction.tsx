@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import {
     TransactionType,
     TransactionTypesEnum,
@@ -7,6 +7,9 @@ import { Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./TransactionStyles";
 import { millisToRep } from "../../../../../../../../global_utils/TimeRepUtils";
 import CoinBox from "../../../../../../../../global_building_blocks/coin_box/CoinBox";
+import BoltBox from "../../../../../../../../global_building_blocks/bolt_box/BoltBox";
+import { palette } from "../../../../../../../../global_styles/Palette";
+import { FontAwesome, Ionicons, MaterialIcons } from "@expo/vector-icons";
 
 interface Props {
     transaction: TransactionType;
@@ -18,6 +21,50 @@ interface Props {
 }
 
 const Transaction: React.FC<Props> = (props) => {
+    let icon;
+
+    if (Math.random() > 0.75) {
+        icon = (
+            <FontAwesome
+                name="user"
+                size={22}
+                color={palette.deepBlue}
+                style={styles.userIcon}
+            />
+        );
+    } else {
+        if (Math.random() > 0.66) {
+            icon = (
+                <Ionicons
+                    name={"ios-chatbubbles"}
+                    size={22}
+                    style={styles.userIcon}
+                    color={palette.deepBlue}
+                />
+            );
+        } else {
+            if (Math.random() > 0.5) {
+                icon = (
+                    <MaterialIcons
+                        name="dynamic-feed"
+                        size={22}
+                        color={palette.semiSoftGray}
+                    />
+                );
+            } else {
+                icon = (
+                    <MaterialIcons
+                        name="bolt"
+                        size={30}
+                        color={palette.semiSoftGray}
+                    />
+                );
+            }
+        }
+    }
+
+    icon = null;
+
     return (
         <TouchableOpacity
             activeOpacity={0.5}
@@ -43,6 +90,7 @@ const Transaction: React.FC<Props> = (props) => {
             }}
         >
             <View style={styles.coinContainer}>
+                {icon}
                 <CoinBox
                     coinSize={20}
                     amount={props.transaction.coin}

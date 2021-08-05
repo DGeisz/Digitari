@@ -31,6 +31,7 @@ import { palette } from "../../../../../../../../global_styles/Palette";
 import CoinCountdown from "../../../../../../../../global_building_blocks/coin_countdown/CoinCountdown";
 import {
     TRANSACTION_TYPENAME,
+    TransactionIcon,
     TransactionType,
     TransactionTypesEnum,
 } from "../../../../../../../../global_types/TransactionTypes";
@@ -188,6 +189,8 @@ const AllPosts: React.FC<Props> = (props) => {
                                             message: "Viewed Digitari posts",
                                             transactionType:
                                                 TransactionTypesEnum.Post,
+                                            transactionIcon:
+                                                TransactionIcon.Feed,
                                             data: "",
                                             __typename: TRANSACTION_TYPENAME,
                                         };

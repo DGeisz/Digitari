@@ -39,6 +39,7 @@ import CoinCountdown from "../../../../../../../../global_building_blocks/coin_c
 import { addNewReceipt } from "../../../../../../../../global_state/CoinUpdates";
 import {
     TRANSACTION_TYPENAME,
+    TransactionIcon,
     TransactionType,
     TransactionTypesEnum,
 } from "../../../../../../../../global_types/TransactionTypes";
@@ -266,6 +267,8 @@ const YourFeed: React.FC<Props> = (props) => {
                                             message: "Viewed feed",
                                             transactionType:
                                                 TransactionTypesEnum.Post,
+                                            transactionIcon:
+                                                TransactionIcon.Feed,
                                             data: "",
                                             __typename: TRANSACTION_TYPENAME,
                                         };

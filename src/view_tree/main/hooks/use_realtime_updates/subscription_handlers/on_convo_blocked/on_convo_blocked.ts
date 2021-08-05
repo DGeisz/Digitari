@@ -9,6 +9,7 @@ import { localUid } from "../../../../../../global_state/UserState";
 import { ConvoBlockedData } from "../../gql/Subscriptions";
 import {
     TRANSACTION_TYPENAME,
+    TransactionIcon,
     TransactionType,
     TransactionTypesEnum,
 } from "../../../../../../global_types/TransactionTypes";
@@ -97,6 +98,7 @@ export function onConvoBlocked(
             coin: 0,
             message,
             transactionType: TransactionTypesEnum.Convo,
+            transactionIcon: TransactionIcon.Convo,
             data: `${cvid}:${convo.pid}`,
             __typename: TRANSACTION_TYPENAME,
         };
