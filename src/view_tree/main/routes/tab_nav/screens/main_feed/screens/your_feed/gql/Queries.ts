@@ -6,6 +6,7 @@ export const GET_FEED = gql`
         feed(lastTime: $lastTime, skipReward: $skipReward) {
             id
             uid
+            userPic
 
             nameColor
             nameFont

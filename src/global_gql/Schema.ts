@@ -124,6 +124,7 @@ export const schema = gql`
     type Post {
         id: ID
         uid: ID
+        userPic: String
 
         # Main content
         user: String

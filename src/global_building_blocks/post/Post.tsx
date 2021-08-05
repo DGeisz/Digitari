@@ -9,7 +9,12 @@ import {
 } from "react-native";
 import { styles } from "./PostStyles";
 import Tier from "../tier/Tier";
-import { Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import {
+    Entypo,
+    FontAwesome,
+    Ionicons,
+    MaterialIcons,
+} from "@expo/vector-icons";
 import {
     POST_TYPENAME,
     PostAddOn,
@@ -455,11 +460,26 @@ const Post: React.FC<Props> = (props) => {
                         style={styles.postSideBuffer}
                         pointerEvents={"box-none"}
                     >
-                        <View
-                            style={styles.sideBufferTop}
-                            pointerEvents={"none"}
-                        >
-                            <Tier size={30} tier={props.post.tier} />
+                        <View style={styles.sideBufferTop}>
+                            <TouchableOpacity
+                                onPress={() => props.openUser(props.post.uid)}
+                                activeOpacity={0.5}
+                            >
+                                {!!props.post.userPic ? (
+                                    <Image
+                                        style={styles.userImageContainer}
+                                        source={{ uri: props.post.userPic }}
+                                    />
+                                ) : (
+                                    <View style={styles.userIconContainer}>
+                                        <FontAwesome
+                                            name="user"
+                                            color={palette.white}
+                                            size={23}
+                                        />
+                                    </View>
+                                )}
+                            </TouchableOpacity>
                             <View style={styles.sideBufferDivider} />
                         </View>
                         <TouchableOpacity

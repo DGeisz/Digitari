@@ -24,6 +24,7 @@ export enum PostTarget {
 export interface PostType {
     id: string;
     uid: string;
+    userPic?: string;
 
     user: string;
     tier: number;

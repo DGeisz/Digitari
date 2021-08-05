@@ -6,6 +6,7 @@ export const ALL_POSTS = gql`
         allPosts(lastTime: $lastTime, skipReward: $skipReward) {
             id
             uid
+            userPic
 
             nameColor
             nameFont

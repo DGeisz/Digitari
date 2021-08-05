@@ -46,6 +46,7 @@ import LevelInfoModal from "../user_stats/building_blocks/stats_header/building_
 import RankingModal from "./building_blocks/ranking_modal/RankingModal";
 import DigicoinModal from "./building_blocks/digicoin_modal/DigicoinModal";
 import BoltsModal from "./building_blocks/bolts_modal/BoltsModal";
+import PicModal from "../../post/building_blocks/pic_modal/PicModal";
 
 interface Props {
     user: UserType;
@@ -66,6 +67,8 @@ const ProfileHeader: React.FC<Props> = (props) => {
 
     const [coinModalVisible, showCoinModal] = useState<boolean>(false);
     const [boltModalVisible, showBoltModal] = useState<boolean>(false);
+
+    const [picModalVisible, showPicModal] = useState<boolean>(false);
 
     const uid = localUid();
 
@@ -224,12 +227,24 @@ const ProfileHeader: React.FC<Props> = (props) => {
                     </View>
                 )}
                 <View style={styles.profileSplit0} pointerEvents="box-none">
-                    <View style={styles.split0Left} pointerEvents="none">
+                    <View style={styles.split0Left}>
                         {!!props.user.imgUrl ? (
-                            <Image
-                                style={styles.userImage}
-                                source={{ uri: props.user.imgUrl }}
-                            />
+                            <>
+                                <PicModal
+                                    url={props.user.imgUrl}
+                                    visible={picModalVisible}
+                                    hide={() => showPicModal(false)}
+                                />
+                                <TouchableOpacity
+                                    onPress={() => showPicModal(true)}
+                                    activeOpacity={1}
+                                >
+                                    <Image
+                                        style={styles.userImage}
+                                        source={{ uri: props.user.imgUrl }}
+                                    />
+                                </TouchableOpacity>
+                            </>
                         ) : (
                             <View style={styles.userIconContainer}>
                                 <FontAwesome

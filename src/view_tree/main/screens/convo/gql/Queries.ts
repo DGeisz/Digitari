@@ -49,6 +49,7 @@ export const CONVO_POST = gql`
         post(pid: $pid) {
             id
             uid
+            userPic
 
             nameColor
             nameFont

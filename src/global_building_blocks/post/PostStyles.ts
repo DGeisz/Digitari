@@ -8,6 +8,7 @@ import {
 } from "../../global_constants/screen_constants";
 
 const imageSize = GENERAL_CONTENT_WIDTH * 0.7;
+const iconSideLength = 45;
 
 export const styles = StyleSheet.create({
     postContainer: {
@@ -27,19 +28,32 @@ export const styles = StyleSheet.create({
     },
     postSideBuffer: {
         paddingHorizontal: 2,
+        marginLeft: 5,
         minWidth: 50,
     },
     sideBufferTop: {
         ...basicLayouts.grid8,
     },
+    userImageContainer: {
+        height: iconSideLength,
+        width: iconSideLength,
+        borderRadius: 30,
+    },
+    userIconContainer: {
+        ...basicLayouts.grid5,
+        backgroundColor: palette.deepBlue,
+        height: iconSideLength,
+        width: iconSideLength,
+        borderRadius: 30,
+    },
     sideBufferDivider: {
         width: 30,
         borderBottomWidth: 1,
         borderBottomColor: palette.softGray,
-        marginVertical: 2,
+        marginTop: 8,
+        marginBottom: 2,
     },
     sideBufferBottom: {
-        // ...basicLayouts.flexGrid2,
         ...basicLayouts.grid2,
         paddingTop: 5,
     },

@@ -27,6 +27,10 @@ const Settings: React.FC<Props> = (props) => {
     const client = useApolloClient();
 
     const signOut = async () => {
+        if (__DEV__) {
+            console.log("Starting sign out");
+        }
+
         setSignOutVisible(false);
 
         /*
@@ -49,26 +53,24 @@ const Settings: React.FC<Props> = (props) => {
                     finalStatus = status;
                 }
 
-                if (finalStatus !== "granted") {
+                if (finalStatus === "granted") {
                     /*
                      * We officially failed to get permission to send push
                      */
 
-                    return;
-                }
+                    const token = (await Notifications.getExpoPushTokenAsync())
+                        .data;
 
-                const token = (await Notifications.getExpoPushTokenAsync())
-                    .data;
-
-                try {
-                    await deletePush({
-                        variables: {
-                            token,
-                        },
-                    });
-                } catch (e) {
-                    if (__DEV__) {
-                        console.log("Error deleting push token: ", e);
+                    try {
+                        await deletePush({
+                            variables: {
+                                token,
+                            },
+                        });
+                    } catch (e) {
+                        if (__DEV__) {
+                            console.log("Error deleting push token: ", e);
+                        }
                     }
                 }
             } catch (e) {
@@ -81,7 +83,15 @@ const Settings: React.FC<Props> = (props) => {
              * Now we actually sign the user out
              */
             try {
+                if (__DEV__) {
+                    console.log("About to hit sign out");
+                }
+
                 await Auth.signOut();
+
+                if (__DEV__) {
+                    console.log("Just hit sign out");
+                }
 
                 /*
                  * Also totally clear out the cache

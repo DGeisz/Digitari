@@ -18,6 +18,7 @@ export const GET_COMMUNITY_POSTS = gql`
         ) {
             id
             uid
+            userPic
 
             nameColor
             nameFont

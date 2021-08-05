@@ -9,6 +9,7 @@ export const POST = gql`
         post(pid: $pid) {
             id
             uid
+            userPic
 
             nameColor
             nameFont
