@@ -48,8 +48,26 @@ export const schema = gql`
         profileStickersPurchased: [Int]
 
         challengeReceipts: [String]
-
         coinSpent: String
+
+        # Fields for levels
+        level: Int
+        levelUsersFollowed: Int
+        levelsCommsFollowed: Int
+        levelCoinCollected: Int
+        levelPostsCreated: Int
+        levelPostBoltsBought: Int
+        levelInvitedAndJoined: Int
+        levelNewResponses: Int
+        levelSuccessfulConvos: Int
+        levelCommsCreated: Int
+
+        # This is coin spent posting
+        levelCoinSpentOnPosts: String # String for proper serialization purposes
+        levelCoinEarnedFromPosts: String # String for serialization purposes
+        maxFollowing: Int
+        maxFollowers: Int
+        maxPostRecipients: Int
 
         # Fields for challenges
         receivedFromConvos: String

@@ -55,6 +55,7 @@ interface Props {
     openReportUser: () => void;
     openSettings: () => void;
     openShop: () => void;
+    openLevelUp: () => void;
 }
 
 const ProfileHeader: React.FC<Props> = (props) => {
@@ -196,9 +197,27 @@ const ProfileHeader: React.FC<Props> = (props) => {
                 {!!error && <Text style={styles.followErrorText}>{error}</Text>}
                 {uid === props.user.id && (
                     <View
-                        style={styles.shopButtonContainer}
+                        style={styles.topButtonsContainer}
                         pointerEvents="box-none"
                     >
+                        <TouchableOpacity
+                            style={styles.levelUpButton}
+                            onPress={props.openLevelUp}
+                        >
+                            <MaterialIcons
+                                name="bolt"
+                                size={18}
+                                color={palette.deepBlue}
+                            />
+                            <Text style={styles.levelUpButtonText}>
+                                Level Up
+                            </Text>
+                            <MaterialIcons
+                                name="bolt"
+                                size={18}
+                                color={palette.deepBlue}
+                            />
+                        </TouchableOpacity>
                         {/*
                             IMPORTANT!!!
 

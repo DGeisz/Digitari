@@ -44,6 +44,7 @@ const Profile: React.FC = () => {
         openReportUser,
         openSettings,
         openShop,
+        openLevelUp,
     } = useContext(TabNavContext);
 
     const [instructionsModalVisible, showInstructionsModal] = useState<boolean>(
@@ -112,6 +113,7 @@ const Profile: React.FC = () => {
                                     openReportUser={() => {
                                         openReportUser(user.id);
                                     }}
+                                    openLevelUp={openLevelUp}
                                 />
                             ),
                             headerHeight: 250,

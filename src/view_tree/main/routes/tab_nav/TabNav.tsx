@@ -84,6 +84,10 @@ const TabNav: React.FC<Props> = (props) => {
         }
     };
 
+    const openLevelUp = () => {
+        props.navigation.push("LevelUp");
+    };
+
     const { data } = useQuery<GetUpdateFlagsData, GetUpdateFlagsVariables>(
         GET_UPDATE_FLAGS,
         {
@@ -116,6 +120,7 @@ const TabNav: React.FC<Props> = (props) => {
                     openReportUser,
                     openSettings,
                     openShop,
+                    openLevelUp,
                 }}
             >
                 <ChallengeCompleteModal

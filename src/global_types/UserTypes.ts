@@ -66,6 +66,23 @@ export interface UserType {
 
     coinSpent: string;
 
+    level: number;
+    levelUsersFollowed: number;
+    levelsCommsFollowed: number;
+    levelCoinCollected: number;
+    levelPostsCreated: number;
+    levelPostBoltsBought: number;
+    levelInvitedAndJoined: number;
+    levelNewResponses: number;
+    levelSuccessfulConvos: number;
+    levelCommsCreated: number;
+    levelCoinSpentOnPosts: string;
+    levelCoinEarnedFromPosts: string;
+
+    maxFollowing: number;
+    maxFollowers: number;
+    maxPostRecipients: number;
+
     // Challenge fields
     receivedFromConvos: string;
     rfcChallengeIndex: number;
@@ -99,7 +116,7 @@ const WALLET_BASE_PRICE = 20;
  */
 export function calculateWalletUpgrade(maxWallet: number): [number, number] {
     const currentExp = Math.ceil(
-        Math.log(maxWallet / WALLET_BASE_SIZE) / Math.log(1.6)
+        Math.log(maxWallet / WALLET_BASE_SIZE) / Math.log(WALLET_MULTIPLIER)
     );
 
     const nextPrice = makePrettyNumber(

@@ -36,6 +36,7 @@ import PrivacyPolicy from "./screens/settings/screens/privacy_policy/PrivacyPoli
 import TermsAndConditions from "./screens/settings/screens/terms_and_conditions/TermsAndConditions";
 import Shop from "./screens/shop/Shop";
 import { LastPostsFetchContext } from "./context/last_fetch_time_context";
+import LevelUp from "./screens/level_up/LevelUp";
 
 const RootStack = createStackNavigator<MainEntryStack>();
 
@@ -209,6 +210,11 @@ const MainEntry: React.FC = () => {
                     options={({ route }) => ({ title: route.params.name })}
                 />
                 <RootStack.Screen name={"Shop"} component={Shop} />
+                <RootStack.Screen
+                    name={"LevelUp"}
+                    options={{ title: "Level Up" }}
+                    component={LevelUp}
+                />
                 <RootStack.Screen
                     name="NewPost"
                     component={NewPost}

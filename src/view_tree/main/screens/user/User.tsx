@@ -71,6 +71,9 @@ const User: React.FC<Props> = (props) => {
                                     });
                                 }}
                                 openShop={() => props.navigation.push("Shop")}
+                                openLevelUp={() =>
+                                    props.navigation.push("LevelUp")
+                                }
                                 user={data.user}
                                 isMe={data?.user.id === uid}
                                 openSettings={() =>

@@ -11,9 +11,26 @@ export const styles = StyleSheet.create({
         paddingTop: 5,
         paddingBottom: 20,
     },
-    shopButtonContainer: {
+    topButtonsContainer: {
         ...basicLayouts.grid5,
+        flexDirection: "row",
         paddingVertical: 10,
+    },
+    levelUpButton: {
+        ...basicLayouts.grid5,
+        flexDirection: "row",
+        paddingVertical: 6,
+        paddingHorizontal: 2,
+        borderRadius: 10,
+        borderWidth: 2,
+        borderColor: palette.deepBlue,
+        marginRight: 4,
+    },
+    levelUpButtonText: {
+        fontWeight: "bold",
+        color: palette.deepBlue,
+        fontSize: 18,
+        marginHorizontal: 3,
     },
     shopButton: {
         ...basicLayouts.grid5,

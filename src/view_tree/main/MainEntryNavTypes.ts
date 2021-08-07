@@ -31,6 +31,7 @@ export type MainEntryStack = {
         uid: string;
     };
     Shop: { screen: string } | undefined;
+    LevelUp: undefined;
     Follows: {
         uid: string;
         name: string;
