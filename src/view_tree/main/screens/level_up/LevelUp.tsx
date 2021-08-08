@@ -1,5 +1,5 @@
-import React from "react";
-import { ScrollView, Text, View } from "react-native";
+import React, { useEffect, useRef } from "react";
+import { Animated, ScrollView, Text, View } from "react-native";
 import { styles } from "./LevelUpStyles";
 import LevelTaskComp from "./building_blocks/level_task/LevelTask";
 import { useQuery } from "@apollo/client";
@@ -11,7 +11,8 @@ import {
 import { localUid } from "../../../../global_state/UserState";
 import LoadingWheel from "../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import ErrorMessage from "../../../../global_building_blocks/error_message/ErrorMessage";
-import { LevelTaskType } from "../../../../global_types/LevelTypes";
+import { calculateLevel } from "../../../../global_types/LevelTypes";
+import LevelRewardComp from "./building_blocks/level_reward_comp/LevelRewardComp";
 
 const LevelUp: React.FC = () => {
     const uid = localUid();
@@ -34,39 +35,32 @@ const LevelUp: React.FC = () => {
     }
 
     if (!!data?.user) {
+        const level = calculateLevel(10);
+
         return (
             <ScrollView style={styles.outerContainer}>
-                <View style={styles.bubbleContainer}>
-                    <View style={styles.bubbleTitleContainer}>
-                        <Text style={styles.tasksTitle}>Tasks</Text>
-                    </View>
-                    <LevelTaskComp
-                        task={{
-                            task: LevelTaskType.BuyBolts,
-                            quantity: 100,
-                        }}
-                        user={data?.user}
-                    />
-                    <LevelTaskComp
-                        task={{
-                            task: LevelTaskType.BuyBolts,
-                            quantity: 1000,
-                        }}
-                        user={data?.user}
-                    />
-                    <LevelTaskComp
-                        task={{
-                            task: LevelTaskType.BuyBolts,
-                            quantity: 100,
-                        }}
-                        user={data?.user}
-                    />
+                <View style={styles.titleContainer}>
+                    <Text style={styles.levelTitle}>Level {level.level}</Text>
                 </View>
                 <View style={styles.bubbleContainer}>
-                    <View style={styles.bubbleTitleContainer}>
-                        <Text style={styles.rewardsTitle}>Rewards</Text>
+                    <View style={styles.titleContainer}>
+                        <Text style={styles.bubbleTitle}>Tasks</Text>
                     </View>
+                    {level.tasks.map((task) => (
+                        <LevelTaskComp task={task} user={data?.user} />
+                    ))}
                 </View>
+                <View style={styles.bubbleContainer}>
+                    <View style={styles.titleContainer}>
+                        <Text style={styles.bubbleTitle}>Rewards</Text>
+                    </View>
+                    <Animated.View style={styles.rewardsContainer}>
+                        {level.rewards.map((reward) => (
+                            <LevelRewardComp reward={reward} />
+                        ))}
+                    </Animated.View>
+                </View>
+                <Text>{level.cost}</Text>
             </ScrollView>
         );
     }

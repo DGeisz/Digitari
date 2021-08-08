@@ -17,6 +17,7 @@ interface Props {
     paddingVertical?: number;
     paddingRight?: number;
     outOfCoin?: number;
+    fontWeight?: "bold" | "500" | "600" | "700";
 }
 
 export default class CoinBox extends React.Component<Props> {
@@ -30,6 +31,7 @@ export default class CoinBox extends React.Component<Props> {
         boxColor: palette.transparent,
         showCoinPlus: false,
         showAbbreviated: true,
+        fontWeight: "600",
     };
 
     render() {
@@ -70,6 +72,7 @@ export default class CoinBox extends React.Component<Props> {
                             {
                                 fontSize: this.props.fontSize,
                                 color: this.props.fontColor,
+                                fontWeight: this.props.fontWeight,
                             },
                         ]}
                     >

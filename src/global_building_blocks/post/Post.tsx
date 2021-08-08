@@ -8,7 +8,6 @@ import {
     View,
 } from "react-native";
 import { styles } from "./PostStyles";
-import Tier from "../tier/Tier";
 import {
     Entypo,
     FontAwesome,

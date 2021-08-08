@@ -7,6 +7,7 @@ export const palette = {
     // Forest suite
     softestForestGreen: "#e1ffd6", //"#effaeb",
     lightForestGreen: "#c1f0af",
+    mediumForestGreen: "#71bf52",
 
     // Ocean suite
     oceanFroth: "#ebfaf8",

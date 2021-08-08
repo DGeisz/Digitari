@@ -7,10 +7,14 @@ const BAR_HEIGHT = 13;
 export const styles = StyleSheet.create({
     container: {
         ...basicLayouts.flexGrid1,
-        marginTop: 20,
+        paddingTop: 10,
+        marginBottom: 15,
+        borderTopWidth: 1,
+        borderColor: palette.softGray,
     },
     taskDescription: {
         fontWeight: "500",
+        fontSize: 16,
         color: palette.hardGray,
     },
     progressContainer: {
@@ -34,7 +38,7 @@ export const styles = StyleSheet.create({
         marginLeft: 10,
     },
     numericText: {
-        color: palette.hardGray,
-        fontWeight: "500",
+        color: palette.mediumGray,
+        fontWeight: "bold",
     },
 });

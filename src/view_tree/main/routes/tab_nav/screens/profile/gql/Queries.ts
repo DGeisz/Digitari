@@ -44,6 +44,24 @@ export const GET_USER = gql`
             challengeReceipts
             coinSpent
 
+            level
+            levelUsersFollowed
+            levelsCommsFollowed
+            levelCoinCollected
+            levelPostsCreated
+            levelPostBoltsBought
+            levelInvitedAndJoined
+            levelNewResponses
+            levelSuccessfulConvos
+            levelCommsCreated
+
+            # This is coin spent posting
+            levelCoinSpentOnPosts
+            levelCoinEarnedFromPosts
+            maxFollowing
+            maxFollowers
+            maxPostRecipients
+
             receivedFromConvos
             rfcChallengeIndex
             spentOnConvos

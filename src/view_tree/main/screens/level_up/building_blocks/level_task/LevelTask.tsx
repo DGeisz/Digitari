@@ -6,6 +6,8 @@ import { styles } from "./LevelTaskStyles";
 import { GENERAL_CONTENT_WIDTH } from "../../../../../../global_constants/screen_constants";
 import { palette } from "../../../../../../global_styles/Palette";
 import { toRep } from "../../../../../../global_utils/ValueRepUtils";
+import { getTaskDescription } from "../../utils/task_description_utils";
+import { getTaskProgress } from "../../utils/task_progress_utils";
 
 interface Props {
     task: LevelTask;
@@ -15,7 +17,7 @@ interface Props {
 const LevelTaskComp: React.FC<Props> = (props) => {
     const [barWidth, setBarWidth] = useState(GENERAL_CONTENT_WIDTH - 40);
 
-    const progress = Math.min(50, props.task.quantity);
+    const progress = getTaskProgress(props.task, props.user);
 
     const barColor =
         progress / props.task.quantity >= 1
@@ -25,7 +27,7 @@ const LevelTaskComp: React.FC<Props> = (props) => {
     return (
         <View style={styles.container}>
             <Text style={styles.taskDescription}>
-                Get 11 Orcas to call your name
+                {getTaskDescription(props.task)}
             </Text>
             <View style={styles.progressContainer}>
                 <View

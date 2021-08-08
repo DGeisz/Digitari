@@ -9,25 +9,30 @@ export const styles = StyleSheet.create({
         alignSelf: "center",
         padding: 10,
     },
+    levelTitle: {
+        marginBottom: 10,
+        fontSize: 25,
+        fontWeight: "bold",
+        color: palette.deepBlue,
+    },
     bubbleContainer: {
         backgroundColor: palette.white,
         paddingTop: 10,
-        paddingBottom: 20,
         paddingHorizontal: 15,
         borderRadius: 20,
         marginBottom: 10,
     },
-    bubbleTitleContainer: {
+    titleContainer: {
         ...basicLayouts.grid2,
     },
-    tasksTitle: {
+    bubbleTitle: {
         fontWeight: "bold",
         fontSize: 20,
         color: palette.hardGray,
+        marginBottom: 20,
     },
-    rewardsTitle: {
-        fontWeight: "bold",
-        fontSize: 20,
-        color: palette.deepBlue,
+    rewardsContainer: {
+        ...basicLayouts.grid2,
+        marginBottom: 10,
     },
 });
