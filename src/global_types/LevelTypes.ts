@@ -1,4 +1,5 @@
 import { XXHash32 } from "ts-xxhash";
+import { makePrettyNumber } from "./UserTypes";
 
 export enum LevelTaskType {
     FollowUsers,
@@ -55,7 +56,7 @@ export function calculateLevel(level: number): Level {
     switch (level) {
         case 1: {
             return {
-                level: 1,
+                level,
                 tasks: [
                     {
                         task: LevelTaskType.FollowUsersOrComms,
@@ -89,7 +90,7 @@ export function calculateLevel(level: number): Level {
         }
         case 2: {
             return {
-                level: 2,
+                level,
                 tasks: [
                     {
                         task: LevelTaskType.FollowUsers,
@@ -127,7 +128,7 @@ export function calculateLevel(level: number): Level {
         }
         case 3: {
             return {
-                level: 3,
+                level,
                 tasks: [
                     {
                         task: LevelTaskType.BuyBolts,
@@ -165,7 +166,7 @@ export function calculateLevel(level: number): Level {
         }
         case 4: {
             return {
-                level: 4,
+                level,
                 tasks: [
                     {
                         task: LevelTaskType.NewResponse,
@@ -203,7 +204,7 @@ export function calculateLevel(level: number): Level {
         }
         case 5: {
             return {
-                level: 5,
+                level,
                 tasks: [
                     {
                         task: LevelTaskType.CreateCommunities,
@@ -241,7 +242,7 @@ export function calculateLevel(level: number): Level {
         }
         case 6: {
             return {
-                level: 6,
+                level,
                 tasks: [
                     {
                         task: LevelTaskType.CreateBio,
@@ -279,7 +280,7 @@ export function calculateLevel(level: number): Level {
         }
         case 7: {
             return {
-                level: 7,
+                level,
                 tasks: [
                     {
                         task: LevelTaskType.BuyBolts,
@@ -317,7 +318,7 @@ export function calculateLevel(level: number): Level {
         }
         case 8: {
             return {
-                level: 8,
+                level,
                 tasks: [
                     {
                         task: LevelTaskType.ConvoStreak,
@@ -355,7 +356,7 @@ export function calculateLevel(level: number): Level {
         }
         case 9: {
             return {
-                level: 9,
+                level,
                 tasks: [
                     {
                         task: LevelTaskType.CreateBioLink,
@@ -392,10 +393,9 @@ export function calculateLevel(level: number): Level {
             };
         }
         /*TODO: Change to 10*/
-        // case 10: {
-        default: {
+        case 10: {
             return {
-                level: 10,
+                level,
                 tasks: [
                     {
                         task: LevelTaskType.ConvoStreak,
@@ -432,6 +432,38 @@ export function calculateLevel(level: number): Level {
             };
         }
     }
+
+    return {
+        level,
+        tasks: selectThreeTasks(level).map((task) => ({
+            task,
+            quantity: taskQuantity(task, level),
+        })),
+        rewards: [
+            {
+                reward: LevelRewardType.MaxFollowers,
+                quantity: makePrettyNumber(100 * 1.6 ** (level - START_LEVEL)),
+            },
+            {
+                reward: LevelRewardType.MaxPostRecipients,
+                quantity: makePrettyNumber(80 * 1.6 ** (level - START_LEVEL)),
+            },
+            !!(level % 5)
+                ? {
+                      reward: LevelRewardType.MaxFollowing,
+                      quantity: 5,
+                  }
+                : {
+                      reward: LevelRewardType.Invites,
+                      quantity: 3,
+                  },
+            {
+                reward: LevelRewardType.Coin,
+                quantity: makePrettyNumber(2000 * 1.2 ** (level - START_LEVEL)),
+            },
+        ],
+        cost: makePrettyNumber(1000 * 1.2 ** (level - START_LEVEL)),
+    };
 }
 
 const LEVEL_HASH_SEED = "level";
@@ -462,4 +494,28 @@ export function selectThreeTasks(level: number): LevelTaskType[] {
     }
 
     return finalTasks;
+}
+
+const START_LEVEL = 10;
+
+function taskQuantity(task: LevelTaskType, level: number): number {
+    console.log("This is task: ", task, level);
+    switch (task) {
+        case LevelTaskType.BuyBolts:
+            return (level - START_LEVEL) * 250 + 100;
+        case LevelTaskType.CollectCoin:
+            return (level - START_LEVEL) * 500 + 1000;
+        case LevelTaskType.NewResponse:
+            return (level - START_LEVEL) * 5 + 15;
+        case LevelTaskType.SuccessfulConvos:
+            return makePrettyNumber((level - START_LEVEL) * 3.5 + 10);
+        case LevelTaskType.CreatePosts:
+            return makePrettyNumber((level - START_LEVEL) * 4.5 + 10);
+        case LevelTaskType.SpendCoinCreatingPosts:
+            return (level - START_LEVEL) * 500 + 1000;
+        case LevelTaskType.FollowUsersOrComms:
+            return 3;
+    }
+
+    return 0;
 }

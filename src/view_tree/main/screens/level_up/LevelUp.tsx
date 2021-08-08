@@ -45,7 +45,7 @@ const LevelUp: React.FC = () => {
     }
 
     if (!!data?.user) {
-        const level = calculateLevel(data.user.level + 1);
+        const level = calculateLevel(22);
 
         const tasksComplete = levelTasksComplete(level, data.user);
 
@@ -74,6 +74,7 @@ const LevelUp: React.FC = () => {
                         {level.rewards.map((reward, index) => (
                             <LevelRewardComp
                                 reward={reward}
+                                index={index}
                                 key={`level${index}`}
                             />
                         ))}

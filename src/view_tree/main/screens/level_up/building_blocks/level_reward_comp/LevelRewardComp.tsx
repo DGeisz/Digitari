@@ -16,6 +16,7 @@ const REWARDS_QUANTA = 500;
 
 interface Props {
     reward: LevelReward;
+    index: number;
 }
 
 const LevelRewardComp: React.FC<Props> = (props) => {
@@ -39,7 +40,7 @@ const LevelRewardComp: React.FC<Props> = (props) => {
             ])
         );
 
-        setTimeout(animation.start, 400 * Math.random());
+        setTimeout(animation.start, 200 * props.index);
 
         return animation.stop;
     }, []);
