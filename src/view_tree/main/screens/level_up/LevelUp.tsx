@@ -11,8 +11,14 @@ import {
 import { localUid } from "../../../../global_state/UserState";
 import LoadingWheel from "../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import ErrorMessage from "../../../../global_building_blocks/error_message/ErrorMessage";
-import { calculateLevel } from "../../../../global_types/LevelTypes";
+import {
+    calculateLevel,
+    selectThreeTasks,
+} from "../../../../global_types/LevelTypes";
 import LevelRewardComp from "./building_blocks/level_reward_comp/LevelRewardComp";
+import LockBuySelect from "../shop/building_blocks/lock_buy_select/LockBuySelect";
+import { globalScreenStyles } from "../../../../global_styles/GlobalScreenStyles";
+import { levelTasksComplete } from "./utils/task_progress_utils";
 
 const LevelUp: React.FC = () => {
     const uid = localUid();
@@ -26,6 +32,10 @@ const LevelUp: React.FC = () => {
         },
     });
 
+    useEffect(() => {
+        console.log(selectThreeTasks(15));
+    }, []);
+
     if (loading) {
         return <LoadingWheel />;
     }
@@ -35,7 +45,9 @@ const LevelUp: React.FC = () => {
     }
 
     if (!!data?.user) {
-        const level = calculateLevel(10);
+        const level = calculateLevel(data.user.level + 1);
+
+        const tasksComplete = levelTasksComplete(level, data.user);
 
         return (
             <ScrollView style={styles.outerContainer}>
@@ -46,8 +58,12 @@ const LevelUp: React.FC = () => {
                     <View style={styles.titleContainer}>
                         <Text style={styles.bubbleTitle}>Tasks</Text>
                     </View>
-                    {level.tasks.map((task) => (
-                        <LevelTaskComp task={task} user={data?.user} />
+                    {level.tasks.map((task, index) => (
+                        <LevelTaskComp
+                            task={task}
+                            user={data?.user}
+                            key={`task${index}`}
+                        />
                     ))}
                 </View>
                 <View style={styles.bubbleContainer}>
@@ -55,12 +71,30 @@ const LevelUp: React.FC = () => {
                         <Text style={styles.bubbleTitle}>Rewards</Text>
                     </View>
                     <Animated.View style={styles.rewardsContainer}>
-                        {level.rewards.map((reward) => (
-                            <LevelRewardComp reward={reward} />
+                        {level.rewards.map((reward, index) => (
+                            <LevelRewardComp
+                                reward={reward}
+                                key={`level${index}`}
+                            />
                         ))}
                     </Animated.View>
                 </View>
-                <Text>{level.cost}</Text>
+                <LockBuySelect
+                    alreadyOwns={false}
+                    purchaseTitle={"Level Up"}
+                    userBolts={2000}
+                    forceLock={tasksComplete}
+                    lockedMessage={
+                        !tasksComplete
+                            ? "You need to complete all the tasks!"
+                            : undefined
+                    }
+                    description={"level up"}
+                    onConfirm={() => {}}
+                    price={level.cost}
+                    onSelect={() => {}}
+                />
+                <View style={globalScreenStyles.listFooterBuffer} />
             </ScrollView>
         );
     }

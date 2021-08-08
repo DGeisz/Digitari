@@ -1,3 +1,5 @@
+import { XXHash32 } from "ts-xxhash";
+
 export enum LevelTaskType {
     FollowUsers,
     FollowComms,
@@ -389,7 +391,8 @@ export function calculateLevel(level: number): Level {
                 cost: 1000,
             };
         }
-        /*TODO: change to 10*/
+        /*TODO: Change to 10*/
+        // case 10: {
         default: {
             return {
                 level: 10,
@@ -429,4 +432,34 @@ export function calculateLevel(level: number): Level {
             };
         }
     }
+}
+
+const LEVEL_HASH_SEED = "level";
+
+export function selectThreeTasks(level: number): LevelTaskType[] {
+    const hash = XXHash32.hash(LEVEL_HASH_SEED)
+        .update(level.toString())
+        .digest()
+        .toNumber();
+
+    const possibleTasks: LevelTaskType[] = [
+        LevelTaskType.BuyBolts,
+        LevelTaskType.CollectCoin,
+        LevelTaskType.NewResponse,
+        LevelTaskType.SuccessfulConvos,
+        LevelTaskType.CreatePosts,
+        LevelTaskType.SpendCoinCreatingPosts,
+        LevelTaskType.FollowUsersOrComms,
+    ];
+
+    const finalTasks = [];
+
+    for (let i = 0; i < 3; i++) {
+        const index = Math.floor(hash / 10 ** i) % possibleTasks.length;
+
+        finalTasks.push(possibleTasks[index]);
+        possibleTasks.splice(index, 1);
+    }
+
+    return finalTasks;
 }

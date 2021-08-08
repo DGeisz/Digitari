@@ -1,4 +1,5 @@
 import {
+    Level,
     LevelTask,
     LevelTaskType,
 } from "../../../../../global_types/LevelTypes";
@@ -65,4 +66,8 @@ export function getTaskProgress(task: LevelTask, user: UserType): number {
  */
 export function taskCompleted(task: LevelTask, user: UserType): boolean {
     return getTaskProgress(task, user) >= task.quantity;
+}
+
+export function levelTasksComplete(level: Level, user: UserType): boolean {
+    return level.tasks.every((task) => taskCompleted(task, user));
 }

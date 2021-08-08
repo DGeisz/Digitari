@@ -27,6 +27,13 @@ interface Props {
     alreadyOwns: boolean;
     alreadySelected?: boolean;
     selectTitle?: string;
+    lockedMessage?: string;
+
+    /*
+     * Indicates that we want to keep this
+     * locked, even though the user might have enough bolts
+     */
+    forceLock?: boolean;
     onSelect: () => void;
 }
 
@@ -83,15 +90,20 @@ const LockBuySelect: React.FC<Props> = (props) => {
                 </TouchableOpacity>
             </View>
         );
-    } else if (props.userBolts < props.price) {
+    } else if (props.userBolts < props.price || !!props.forceLock) {
         return (
             <View style={styles.container}>
-                {lockedError && (
-                    <Text style={styles.errorText}>
-                        You need {toCommaRep(props.price)} digibolts to{" "}
-                        {props.description}
-                    </Text>
-                )}
+                {lockedError &&
+                    (!!props.lockedMessage ? (
+                        <Text style={styles.errorText}>
+                            {props.lockedMessage}
+                        </Text>
+                    ) : (
+                        <Text style={styles.errorText}>
+                            You need {toCommaRep(props.price)} digibolts to{" "}
+                            {props.description}
+                        </Text>
+                    ))}
                 <TouchableOpacity
                     style={styles.lockedContainer}
                     activeOpacity={0.5}
