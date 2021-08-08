@@ -26,6 +26,14 @@ export const styles = StyleSheet.create({
         borderColor: palette.deepBlue,
         marginRight: 4,
     },
+    levelUpBoltContainer: {
+        position: "relative",
+    },
+    boltUpdate: {
+        position: "absolute",
+        left: -4,
+        top: -5,
+    },
     levelUpButtonText: {
         fontWeight: "bold",
         color: palette.deepBlue,

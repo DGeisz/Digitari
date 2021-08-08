@@ -47,6 +47,8 @@ import RankingModal from "./building_blocks/ranking_modal/RankingModal";
 import DigicoinModal from "./building_blocks/digicoin_modal/DigicoinModal";
 import BoltsModal from "./building_blocks/bolts_modal/BoltsModal";
 import PicModal from "../../post/building_blocks/pic_modal/PicModal";
+import { levelTasksComplete } from "../../../view_tree/main/screens/level_up/utils/task_progress_utils";
+import { calculateLevel } from "../../../global_types/LevelTypes";
 
 interface Props {
     user: UserType;
@@ -188,6 +190,13 @@ const ProfileHeader: React.FC<Props> = (props) => {
         }
     );
 
+    const tasksCompleted = levelTasksComplete(
+        calculateLevel(props.user.level),
+        props.user
+    );
+
+    const pulseLevelUp = tasksCompleted || props.user.level === 0;
+
     return (
         <View pointerEvents="box-none">
             <View
@@ -204,19 +213,33 @@ const ProfileHeader: React.FC<Props> = (props) => {
                             style={styles.levelUpButton}
                             onPress={props.openLevelUp}
                         >
-                            <MaterialIcons
-                                name="bolt"
-                                size={18}
-                                color={palette.deepBlue}
-                            />
+                            <View style={styles.levelUpBoltContainer}>
+                                {pulseLevelUp && (
+                                    <View style={styles.boltUpdate}>
+                                        <UpdateIndicator dotSize={2} />
+                                    </View>
+                                )}
+                                <MaterialIcons
+                                    name="bolt"
+                                    size={18}
+                                    color={palette.deepBlue}
+                                />
+                            </View>
                             <Text style={styles.levelUpButtonText}>
                                 Level Up
                             </Text>
-                            <MaterialIcons
-                                name="bolt"
-                                size={18}
-                                color={palette.deepBlue}
-                            />
+                            <View style={styles.levelUpBoltContainer}>
+                                {pulseLevelUp && (
+                                    <View style={styles.boltUpdate}>
+                                        <UpdateIndicator dotSize={2} />
+                                    </View>
+                                )}
+                                <MaterialIcons
+                                    name="bolt"
+                                    size={18}
+                                    color={palette.deepBlue}
+                                />
+                            </View>
                         </TouchableOpacity>
                         {/*
                             IMPORTANT!!!
