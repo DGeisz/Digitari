@@ -918,7 +918,7 @@ const Convo: React.FC<Props> = (props) => {
                                 }
                             }
 
-                            return <View />;
+                            return <View style={styles.buffer} />;
                         case ConvoStatus.New:
                             if (sid === uid || sid === hid) {
                                 return (
@@ -930,9 +930,9 @@ const Convo: React.FC<Props> = (props) => {
                                 );
                             }
 
-                            return <View />;
+                            return <View style={styles.buffer} />;
                         default:
-                            return <View />;
+                            return <View style={styles.buffer} />;
                     }
                 }}
                 onEndReached={async () => {

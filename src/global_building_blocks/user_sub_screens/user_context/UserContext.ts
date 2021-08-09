@@ -10,7 +10,7 @@ interface UserContextType {
     refreshHeader: () => void;
     openReport: (pid: string) => void;
     openConvo: (cvid: string, pid: string) => void;
-    openFollows: (name: string, uid: string) => void;
+    openFollows: () => void;
     user?: UserType;
 }
 

@@ -57,10 +57,6 @@ interface PendingProps {
     finishMessage: string;
 }
 
-interface PendingState {
-    modalVisible: boolean;
-}
-
 export const PendingFinishFooter: React.FC<PendingProps> = (props) => {
     const [modalVisible, setModalVisible] = useState<boolean>(false);
 

@@ -147,54 +147,8 @@ const User: React.FC<Props> = (props) => {
                                     <TabLabel title={"Posts"} color={color} />
                                 ),
                             }}
-                        >
-                            {() => (
-                                <UserPosts
-                                // uid={data?.user.id}
-                                // openPost={(pid: string) =>
-                                //     props.navigation.navigate(
-                                //         "PostScreen",
-                                //         {
-                                //             pid,
-                                //         }
-                                //     )
-                                // }
-                                // openCommunity={(cmid: string) =>
-                                //     props.navigation.navigate("Community", {
-                                //         cmid,
-                                //     })
-                                // }
-                                // openNewMessage={(
-                                //     tname: string,
-                                //     pid: string,
-                                //     responseCost: number
-                                // ) =>
-                                //     props.navigation.navigate(
-                                //         "NewResponse",
-                                //         {
-                                //             tname,
-                                //             pid,
-                                //             responseCost,
-                                //         }
-                                //     )
-                                // }
-                                // openUser={(uid: string) => {
-                                //     props.navigation.navigate("User", {
-                                //         uid,
-                                //     });
-                                // }}
-                                // openReport={(pid: string) => {
-                                //     props.navigation.navigate(
-                                //         "ReportPost",
-                                //         {
-                                //             pid,
-                                //         }
-                                //     );
-                                // }}
-                                // refreshHeader={refetch}
-                                />
-                            )}
-                        </Tab.Screen>
+                            component={UserPosts}
+                        />
                         <Tab.Screen
                             name="UserConvos"
                             options={{
@@ -202,21 +156,8 @@ const User: React.FC<Props> = (props) => {
                                     <TabLabel title={"Convos"} color={color} />
                                 ),
                             }}
-                        >
-                            {() => (
-                                <UserConvos
-                                // routeKey={"UserConvos"}
-                                // uid={data?.user.id}
-                                // openConvo={(cvid: string, pid: string) => {
-                                //     props.navigation.navigate("Convo", {
-                                //         cvid,
-                                //         pid,
-                                //     });
-                                // }}
-                                // refreshHeader={refetch}
-                                />
-                            )}
-                        </Tab.Screen>
+                            component={UserConvos}
+                        />
                         <Tab.Screen
                             name="UserStats"
                             options={{
@@ -224,21 +165,8 @@ const User: React.FC<Props> = (props) => {
                                     <TabLabel title={"Stats"} color={color} />
                                 ),
                             }}
-                        >
-                            {() => (
-                                <UserStats
-                                // routeKey="UserStats"
-                                // user={data.user}
-                                // refreshHeader={refetch}
-                                // openFollows={() => {
-                                //     props.navigation.push("Follows", {
-                                //         name: `${data.user.firstName} ${data.user.lastName}`,
-                                //         uid: data?.user.id,
-                                //     });
-                                // }}
-                                />
-                            )}
-                        </Tab.Screen>
+                            component={UserStats}
+                        />
                     </Tab.Navigator>
                 </UserContext.Provider>
                 <NewButton

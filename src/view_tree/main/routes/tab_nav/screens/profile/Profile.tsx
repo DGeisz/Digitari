@@ -107,7 +107,11 @@ const Profile: React.FC = () => {
                             refreshHeader: refetch,
                             openReport,
                             openConvo,
-                            openFollows,
+                            openFollows: () =>
+                                openFollows(
+                                    `${user.firstName} ${user.lastName}`,
+                                    user.id
+                                ),
                             user,
                         }}
                     >
@@ -145,20 +149,8 @@ const Profile: React.FC = () => {
                                         />
                                     ),
                                 }}
-                            >
-                                {() => (
-                                    <UserPosts
-                                    // routeKey={"UserPosts"}
-                                    // uid={uid}
-                                    // openPost={openPost}
-                                    // openUser={openUser}
-                                    // openCommunity={openCommunity}
-                                    // openNewMessage={openNewMessage}
-                                    // refreshHeader={refetch}
-                                    // openReport={openReport}
-                                    />
-                                )}
-                            </Tab.Screen>
+                                component={UserPosts}
+                            />
                             <Tab.Screen
                                 name="UserConvos"
                                 options={{
@@ -169,16 +161,8 @@ const Profile: React.FC = () => {
                                         />
                                     ),
                                 }}
-                            >
-                                {() => (
-                                    <UserConvos
-                                    // routeKey={"UserConvos"}
-                                    // uid={uid}
-                                    // openConvo={openConvo}
-                                    // refreshHeader={refetch}
-                                    />
-                                )}
-                            </Tab.Screen>
+                                component={UserConvos}
+                            />
                             <Tab.Screen
                                 name="UserStats"
                                 options={{
@@ -189,21 +173,8 @@ const Profile: React.FC = () => {
                                         />
                                     ),
                                 }}
-                            >
-                                {() => (
-                                    <UserStats
-                                    // routeKey="UserStats"
-                                    // user={user}
-                                    // refreshHeader={refetch}
-                                    // openFollows={() =>
-                                    //     openFollows(
-                                    //         `${user.firstName} ${user.lastName}`,
-                                    //         user.id
-                                    //     )
-                                    // }
-                                    />
-                                )}
-                            </Tab.Screen>
+                                component={UserStats}
+                            />
                         </Tab.Navigator>
                     </UserContext.Provider>
                 </View>

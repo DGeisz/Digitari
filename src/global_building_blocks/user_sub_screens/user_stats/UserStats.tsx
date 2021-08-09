@@ -10,14 +10,7 @@ import UserStat from "./building_blocks/user_stat/UserStat";
 import { GENERAL_CONTENT_WIDTH } from "../../../global_constants/screen_constants";
 import { UserContext } from "../user_context/UserContext";
 
-interface Props {
-    // user: UserType;
-    // routeKey: string;
-    // refreshHeader: () => void;
-    // openFollows: () => void;
-}
-
-const UserStats: React.FC<Props> = (props) => {
+const UserStats: React.FC = () => {
     const context = useContext(UserContext);
 
     const scrollPropsAndRef = useCollapsibleScene("UserStats");
@@ -26,8 +19,6 @@ const UserStats: React.FC<Props> = (props) => {
     if (!context.user) {
         return null;
     }
-
-    console.log("Made it past");
 
     return (
         <Animated.ScrollView

@@ -5,7 +5,8 @@ import { basicLayouts } from "../../../../../../global_styles/BasicLayouts";
 export const styles = StyleSheet.create({
     statusContainer: {
         ...basicLayouts.flexGrid5,
-        marginVertical: 10,
+        marginTop: 10,
+        marginBottom: 20,
     },
     dismissedContainer: {
         padding: 10,

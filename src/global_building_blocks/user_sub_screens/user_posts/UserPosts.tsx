@@ -45,18 +45,7 @@ import { UserContext } from "../user_context/UserContext";
 
 const nextPostsReward = 40;
 
-interface Props {
-    // routeKey: string;
-    // uid: string;
-    // openPost: (pid: string) => void;
-    // openNewMessage: (tname: string, pid: string, responseCost: number) => void;
-    // openCommunity: (cmid: string) => void;
-    // openUser: (uid: string) => void;
-    // refreshHeader: () => void;
-    // openReport: (pid: string) => void;
-}
-
-const UserPosts: React.FC<Props> = (props) => {
+const UserPosts: React.FC = () => {
     const myUid = localUid();
 
     const context = useContext(UserContext);

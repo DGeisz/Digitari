@@ -17,14 +17,7 @@ import { localUid } from "../../../global_state/UserState";
 import ErrorMessage from "../../error_message/ErrorMessage";
 import { UserContext } from "../user_context/UserContext";
 
-interface Props {
-    // routeKey: string;
-    // uid: string;
-    // openConvo: (cvid: string, pid: string) => void;
-    // refreshHeader: () => void;
-}
-
-const UserConvos: React.FC<Props> = (props) => {
+const UserConvos: React.FC = () => {
     const myUid = localUid();
 
     const context = useContext(UserContext);
