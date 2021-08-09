@@ -20,7 +20,6 @@ import {
     GetUpdateFlagsVariables,
 } from "./gql/Queries";
 import CoinIndicator from "./building_blocks/coin_indicator/CoinIndicator";
-import ChallengeCompleteModal from "./building_blocks/challenge_complete_modal/ChallengeCompleteModal";
 import { firstTimeOpeningApp } from "../../../../global_state/FirstImpressionsState";
 
 const Tab = createBottomTabNavigator<TabNavTab>();
@@ -123,13 +122,6 @@ const TabNav: React.FC<Props> = (props) => {
                     openLevelUp,
                 }}
             >
-                <ChallengeCompleteModal
-                    openWallet={() => {
-                        props.navigation.navigate("TabNav", {
-                            screen: "Wallet",
-                        });
-                    }}
-                />
                 <Tab.Navigator
                     initialRouteName={
                         firstTimeOpeningApp() ? "Profile" : "MainFeed"

@@ -12,7 +12,6 @@ import {
     TransactionType,
     TransactionTypesEnum,
 } from "../../../../../../global_types/TransactionTypes";
-import { challengeCheck } from "../../../../../../global_gql/challenge_check/challenge_check";
 
 export function onConvoFinished(
     options: OnSubscriptionDataOptions<ConvoFinishedData>
@@ -124,10 +123,5 @@ export function onConvoFinished(
         });
 
         addTransaction(transaction, cache);
-
-        /*
-         * Quick challenge check
-         */
-        challengeCheck(cache);
     }
 }

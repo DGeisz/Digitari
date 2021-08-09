@@ -22,7 +22,6 @@ import {
     CreateConvoVariables,
 } from "./gql/Mutations";
 import LoadingWheel from "../../../../global_building_blocks/loading_wheel/LoadingWheel";
-import { challengeCheck } from "../../../../global_gql/challenge_check/challenge_check";
 import {
     CONVO,
     CONVO_MESSAGES,
@@ -129,11 +128,6 @@ const NewResponse: React.FC<Props> = (props) => {
                         },
                     });
                 }
-
-                /*
-                 * Do a quick challenge check
-                 */
-                challengeCheck(cache);
 
                 props.navigation.replace("Convo", {
                     cvid: data.createConvo.id,

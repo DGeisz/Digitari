@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from "react";
+import React, { useState } from "react";
 import {
     ActivityIndicator,
     Image,
@@ -29,8 +29,6 @@ import {
 } from "./gql/Mutation";
 import { localUid } from "../../../global_state/UserState";
 import TierModal from "./building_blocks/tier_modal/TierModal";
-import { challengeCheck } from "../../../global_gql/challenge_check/challenge_check";
-import { calculateLevelInfo } from "../../../global_utils/LevelUtils";
 import UserOptionsModal from "./building_blocks/user_options_modal/UserOptionsModal";
 import UpdateIndicator from "../../../view_tree/main/routes/tab_nav/building_blocks/update_indicator/UpdateIndicator";
 import { nameFontToProfileStyle } from "./fonts/nameFonts";
@@ -42,7 +40,6 @@ import {
 import { bioFont2Style } from "./fonts/bioFonts";
 import BoltBox from "../../bolt_box/BoltBox";
 import { stripUrlScheme } from "../../../global_utils/StringUtils";
-import LevelInfoModal from "../user_stats/building_blocks/stats_header/building_blocks/level_info_modal/LevelInfoModal";
 import RankingModal from "./building_blocks/ranking_modal/RankingModal";
 import DigicoinModal from "./building_blocks/digicoin_modal/DigicoinModal";
 import BoltsModal from "./building_blocks/bolts_modal/BoltsModal";
@@ -65,7 +62,6 @@ const ProfileHeader: React.FC<Props> = (props) => {
     const [loading, setLoading] = useState<boolean>(false);
 
     const [tierModalVisible, showTierModal] = useState<boolean>(false);
-    const [levelModalVisible, showLevelModal] = useState<boolean>(false);
     const [rankingModalVisible, showRankingModal] = useState<boolean>(false);
 
     const [coinModalVisible, showCoinModal] = useState<boolean>(false);
@@ -74,11 +70,6 @@ const ProfileHeader: React.FC<Props> = (props) => {
     const [picModalVisible, showPicModal] = useState<boolean>(false);
 
     const uid = localUid();
-
-    const [level] = useMemo<[number, number, number]>(
-        () => calculateLevelInfo(parseInt(props.user.coinSpent)),
-        [props.user.coinSpent]
-    );
 
     const [follow] = useMutation<FollowUserData, FollowUserVariables>(
         FOLLOW_USER,
@@ -133,8 +124,6 @@ const ProfileHeader: React.FC<Props> = (props) => {
                     });
 
                     setLoading(false);
-
-                    challengeCheck(cache);
                 }
             },
         }
@@ -401,27 +390,9 @@ const ProfileHeader: React.FC<Props> = (props) => {
                                     visible={rankingModalVisible}
                                     hide={() => showRankingModal(false)}
                                 />
-                                <TouchableOpacity
-                                    onPress={() => showRankingModal(true)}
-                                >
-                                    <Text style={styles.profileRankingText}>
-                                        {`Ranking: ${toCommaRep(
-                                            props.user.ranking
-                                        )}`}
-                                    </Text>
-                                </TouchableOpacity>
-                                <LevelInfoModal
-                                    user={props.user}
-                                    visible={levelModalVisible}
-                                    hide={() => showLevelModal(false)}
-                                />
-                                <TouchableOpacity
-                                    onPress={() => showLevelModal(true)}
-                                >
-                                    <Text style={styles.profileLevelText}>
-                                        {`Level: ${toCommaRep(level)}`}
-                                    </Text>
-                                </TouchableOpacity>
+                                <Text style={styles.profileLevelText}>
+                                    {`Level: ${toCommaRep(props.user.level)}`}
+                                </Text>
                             </View>
                         </View>
                     </View>
@@ -471,12 +442,24 @@ const ProfileHeader: React.FC<Props> = (props) => {
                         >
                             <Text style={styles.followNumeralText}>
                                 {toRep(props.user.followers)}
+                                {uid === props.user.id && (
+                                    <Text style={styles.followMaxText}>
+                                        {" "}
+                                        / {toRep(props.user.maxFollowers)}{" "}
+                                    </Text>
+                                )}
                                 <Text style={styles.followsText}>
                                     {" Followers"}
                                 </Text>
                             </Text>
                             <Text style={styles.followNumeralText}>
                                 {toRep(props.user.following)}
+                                {uid === props.user.id && (
+                                    <Text style={styles.followMaxText}>
+                                        {" "}
+                                        / {toRep(props.user.maxFollowing)}{" "}
+                                    </Text>
+                                )}
                                 <Text style={styles.followingText}>
                                     {" Following"}
                                 </Text>

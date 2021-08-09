@@ -499,7 +499,6 @@ export function selectThreeTasks(level: number): LevelTaskType[] {
 const START_LEVEL = 10;
 
 function taskQuantity(task: LevelTaskType, level: number): number {
-    console.log("This is task: ", task, level);
     switch (task) {
         case LevelTaskType.BuyBolts:
             return (level - START_LEVEL) * 250 + 100;

@@ -28,6 +28,7 @@ import {
     openedAppFirstTime,
 } from "../../../../../../global_state/FirstImpressionsState";
 import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
+import { UserContext } from "../../../../../../global_building_blocks/user_sub_screens/user_context/UserContext";
 
 const Tab = createMaterialCollapsibleTopTabNavigator();
 
@@ -96,124 +97,115 @@ const Profile: React.FC = () => {
                     }}
                 />
                 <View style={basicLayouts.flexGrid1}>
-                    <Tab.Navigator
-                        collapsibleOptions={{
-                            renderHeader: () => (
-                                <ProfileHeader
-                                    openFollows={() =>
-                                        openFollows(
-                                            `${user.firstName} ${user.lastName}`,
-                                            user.id
-                                        )
-                                    }
-                                    openShop={openShop}
-                                    user={user}
-                                    isMe
-                                    openSettings={openSettings}
-                                    openReportUser={() => {
-                                        openReportUser(user.id);
-                                    }}
-                                    openLevelUp={openLevelUp}
-                                />
-                            ),
-                            headerHeight: 250,
-                            disableSnap: true,
+                    <UserContext.Provider
+                        value={{
+                            uid,
+                            openPost,
+                            openNewMessage,
+                            openCommunity,
+                            openUser,
+                            refreshHeader: refetch,
+                            openReport,
+                            openConvo,
+                            openFollows,
+                            user,
                         }}
-                        tabBarOptions={
-                            SCREEN_LARGER_THAN_CONTENT
-                                ? {}
-                                : {
-                                      scrollEnabled: true,
-                                      tabStyle: {
-                                          flex: 0,
-                                          width: 100,
-                                          padding: 0,
-                                      },
-                                  }
-                        }
                     >
-                        <Tab.Screen
-                            name="UserPosts"
-                            options={{
-                                tabBarLabel: ({ color }) => (
-                                    <TabLabel title={"Posts"} color={color} />
-                                ),
-                            }}
-                        >
-                            {() => (
-                                <UserPosts
-                                    routeKey={"UserPosts"}
-                                    uid={uid}
-                                    openPost={openPost}
-                                    openUser={openUser}
-                                    openCommunity={openCommunity}
-                                    openNewMessage={openNewMessage}
-                                    refreshHeader={refetch}
-                                    openReport={openReport}
-                                />
-                            )}
-                        </Tab.Screen>
-                        <Tab.Screen
-                            name="UserConvos"
-                            options={{
-                                tabBarLabel: ({ color }) => (
-                                    <TabLabel title={"Convos"} color={color} />
-                                ),
-                            }}
-                        >
-                            {() => (
-                                <UserConvos
-                                    routeKey={"UserConvos"}
-                                    uid={uid}
-                                    openConvo={openConvo}
-                                    refreshHeader={refetch}
-                                />
-                            )}
-                        </Tab.Screen>
-                        <Tab.Screen
-                            name="UserChallenges"
-                            options={{
-                                tabBarLabel: ({ color }) => (
-                                    <TabLabel
-                                        title={"Challenges"}
-                                        color={color}
-                                    />
-                                ),
-                            }}
-                        >
-                            {() => {
-                                return (
-                                    <UserChallenges
+                        <Tab.Navigator
+                            collapsibleOptions={{
+                                renderHeader: () => (
+                                    <ProfileHeader
+                                        openFollows={() =>
+                                            openFollows(
+                                                `${user.firstName} ${user.lastName}`,
+                                                user.id
+                                            )
+                                        }
+                                        openShop={openShop}
                                         user={user}
-                                        routeKey={"UserChallenges"}
-                                        refreshHeader={refetch}
+                                        isMe
+                                        openSettings={openSettings}
+                                        openReportUser={() => {
+                                            openReportUser(user.id);
+                                        }}
+                                        openLevelUp={openLevelUp}
                                     />
-                                );
-                            }}
-                        </Tab.Screen>
-                        <Tab.Screen
-                            name="UserStats"
-                            options={{
-                                tabBarLabel: ({ color }) => (
-                                    <TabLabel title={"Stats"} color={color} />
                                 ),
+                                headerHeight: 250,
+                                disableSnap: true,
                             }}
                         >
-                            {() => (
-                                <UserStats
-                                    routeKey="UserStats"
-                                    user={user}
-                                    refreshHeader={refetch}
-                                    openFollows={() =>
-                                        openFollows(
-                                            `${user.firstName} ${user.lastName}`,
-                                            user.id
-                                        )
-                                    }
-                                />
-                            )}
-                        </Tab.Screen>
-                    </Tab.Navigator>
+                            <Tab.Screen
+                                name="UserPosts"
+                                options={{
+                                    tabBarLabel: ({ color }) => (
+                                        <TabLabel
+                                            title={"Posts"}
+                                            color={color}
+                                        />
+                                    ),
+                                }}
+                            >
+                                {() => (
+                                    <UserPosts
+                                    // routeKey={"UserPosts"}
+                                    // uid={uid}
+                                    // openPost={openPost}
+                                    // openUser={openUser}
+                                    // openCommunity={openCommunity}
+                                    // openNewMessage={openNewMessage}
+                                    // refreshHeader={refetch}
+                                    // openReport={openReport}
+                                    />
+                                )}
+                            </Tab.Screen>
+                            <Tab.Screen
+                                name="UserConvos"
+                                options={{
+                                    tabBarLabel: ({ color }) => (
+                                        <TabLabel
+                                            title={"Convos"}
+                                            color={color}
+                                        />
+                                    ),
+                                }}
+                            >
+                                {() => (
+                                    <UserConvos
+                                    // routeKey={"UserConvos"}
+                                    // uid={uid}
+                                    // openConvo={openConvo}
+                                    // refreshHeader={refetch}
+                                    />
+                                )}
+                            </Tab.Screen>
+                            <Tab.Screen
+                                name="UserStats"
+                                options={{
+                                    tabBarLabel: ({ color }) => (
+                                        <TabLabel
+                                            title={"Stats"}
+                                            color={color}
+                                        />
+                                    ),
+                                }}
+                            >
+                                {() => (
+                                    <UserStats
+                                    // routeKey="UserStats"
+                                    // user={user}
+                                    // refreshHeader={refetch}
+                                    // openFollows={() =>
+                                    //     openFollows(
+                                    //         `${user.firstName} ${user.lastName}`,
+                                    //         user.id
+                                    //     )
+                                    // }
+                                    />
+                                )}
+                            </Tab.Screen>
+                        </Tab.Navigator>
+                    </UserContext.Provider>
                 </View>
                 <NewButton openNew={openNew} />
             </>

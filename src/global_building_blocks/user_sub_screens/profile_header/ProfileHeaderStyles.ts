@@ -153,6 +153,7 @@ export const styles = StyleSheet.create({
     },
     profileLevelText: {
         fontWeight: "bold",
+        fontSize: 17,
         color: palette.lightGray,
     },
     profileSplit3: {
@@ -194,6 +195,10 @@ export const styles = StyleSheet.create({
         color: palette.hardGray,
         marginRight: 8,
         marginTop: 3,
+    },
+    followMaxText: {
+        color: palette.semiSoftGray,
+        fontWeight: "600",
     },
     followsText: {
         fontWeight: "400",

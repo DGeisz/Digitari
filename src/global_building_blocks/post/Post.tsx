@@ -36,7 +36,6 @@ import { FetchResult } from "@apollo/client/link/core";
 import { MutationFunctionOptions } from "@apollo/client/react/types/types";
 import { DonateToPostData, DonateToPostVariables } from "./gql/Mutations";
 import { DIGIBOLT_PRICE, USER_TYPENAME } from "../../global_types/UserTypes";
-import { challengeCheck } from "../../global_gql/challenge_check/challenge_check";
 import PicModal from "./building_blocks/pic_modal/PicModal";
 import OptionsModal from "./building_blocks/options_modal/OptionsModal";
 import SymbolModal from "./building_blocks/symbol_modal/SymbolModal";
@@ -338,8 +337,6 @@ const Post: React.FC<Props> = (props) => {
                                                 },
                                             },
                                         });
-
-                                        challengeCheck(cache);
                                     }
                                 },
                             }));

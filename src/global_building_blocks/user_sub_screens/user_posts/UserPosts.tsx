@@ -41,28 +41,31 @@ import {
 import { USER_TYPENAME } from "../../../global_types/UserTypes";
 import { addTransaction } from "../../../view_tree/main/hooks/use_realtime_updates/subscription_handlers/utils/cache_utils";
 import { LastPostsFetchContext } from "../../../view_tree/main/context/last_fetch_time_context";
+import { UserContext } from "../user_context/UserContext";
 
 const nextPostsReward = 40;
 
 interface Props {
-    routeKey: string;
-    uid: string;
-    openPost: (pid: string) => void;
-    openNewMessage: (tname: string, pid: string, responseCost: number) => void;
-    openCommunity: (cmid: string) => void;
-    openUser: (uid: string) => void;
-    refreshHeader: () => void;
-    openReport: (pid: string) => void;
+    // routeKey: string;
+    // uid: string;
+    // openPost: (pid: string) => void;
+    // openNewMessage: (tname: string, pid: string, responseCost: number) => void;
+    // openCommunity: (cmid: string) => void;
+    // openUser: (uid: string) => void;
+    // refreshHeader: () => void;
+    // openReport: (pid: string) => void;
 }
 
 const UserPosts: React.FC<Props> = (props) => {
     const myUid = localUid();
 
+    const context = useContext(UserContext);
+
     const { data, error, networkStatus, refetch, fetchMore } = useQuery<
         GetUserPostsData,
         GetUserPostVariables
     >(GET_USER_POSTS, {
-        variables: { uid: props.uid },
+        variables: { uid: context.uid },
         notifyOnNetworkStatusChange: true,
     });
 
@@ -79,7 +82,7 @@ const UserPosts: React.FC<Props> = (props) => {
         DONATE_TO_POST
     );
 
-    const scrollPropsAndRef = useCollapsibleScene(props.routeKey);
+    const scrollPropsAndRef = useCollapsibleScene("UserPosts");
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
     const [fetchMoreLen, setFetchMoreLen] = useState<number>(0);
@@ -125,7 +128,7 @@ const UserPosts: React.FC<Props> = (props) => {
                     return (
                         <View style={styles.noPostsContainer}>
                             <Text style={styles.noPostsText}>
-                                {myUid === props.uid
+                                {myUid === context.uid
                                     ? "You haven't created any posts"
                                     : "User hasn't created any posts"}
                             </Text>
@@ -144,12 +147,12 @@ const UserPosts: React.FC<Props> = (props) => {
                     donateToPost={donateToPost}
                     userCoin={userCoin}
                     userFirstName={userFirstName}
-                    openUser={props.openUser}
-                    openCommunity={props.openCommunity}
-                    openPost={props.openPost}
-                    onMessage={props.openNewMessage}
+                    openUser={context.openUser}
+                    openCommunity={context.openCommunity}
+                    openPost={context.openPost}
+                    onMessage={context.openNewMessage}
                     post={item}
-                    openReport={props.openReport}
+                    openReport={context.openReport}
                 />
             )}
             keyExtractor={(item) => [item.id, "userPosts"].join(":")}
@@ -161,7 +164,7 @@ const UserPosts: React.FC<Props> = (props) => {
                     onRefresh={() => {
                         setStillSpin(true);
                         refetch && refetch();
-                        !!props.refreshHeader && props.refreshHeader();
+                        !!context.refreshHeader && context.refreshHeader();
                         setTimeout(() => {
                             setStillSpin(false);
                         }, 1000);
@@ -178,7 +181,7 @@ const UserPosts: React.FC<Props> = (props) => {
                 /*
                  * Only do automatic fetch more for our own posts
                  */
-                if (myUid === props.uid) {
+                if (myUid === context.uid) {
                     if (finalFeed.length > fetchMoreLen) {
                         const lastTime = finalFeed[finalFeed.length - 1].time;
                         const ffLen = finalFeed.length;

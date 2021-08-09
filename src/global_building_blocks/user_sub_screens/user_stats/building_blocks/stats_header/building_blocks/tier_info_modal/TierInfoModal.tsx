@@ -45,64 +45,13 @@ const TierInfoModal: React.FC<Props> = (props) => {
                     <View style={styles.modalContainer}>
                         <View style={styles.modalHeader}>
                             <Text style={styles.headerTitle}>
-                                Ranking & Tier
+                                Convo Streak & Tier
                             </Text>
                         </View>
                         <ScrollView>
                             <View style={styles.calculationContainer}>
-                                <View style={styles.equationContainer}>
-                                    <Text style={styles.equationText}>
-                                        {"Ranking  =  "}
-                                    </Text>
-                                    <View style={styles.equationLeftContainer}>
-                                        <SuccessfulConversationsSymbol
-                                            size={18}
-                                        />
-                                        <Text style={styles.equationText}>
-                                            {" - "}
-                                        </Text>
-                                        <BeenBlockedSymbol size={18} />
-                                        <Text style={styles.equationText}>
-                                            {" - "}
-                                        </Text>
-                                        <BlockedSymbol size={18} />
-                                    </View>
-                                </View>
-                                <View style={styles.innerCalc}>
-                                    <View style={styles.calcTop}>
-                                        <View style={styles.calculationRow}>
-                                            <SuccessfulConvos
-                                                conversations={
-                                                    props.user.successfulConvos
-                                                }
-                                                showAbbreviated={false}
-                                            />
-                                        </View>
-                                        <View style={styles.calculationRow}>
-                                            <Text style={styles.minus}>-</Text>
-                                            <BeenBlocked
-                                                beenBlocked={
-                                                    props.user.beenBlocked
-                                                }
-                                                showAbbreviated={false}
-                                            />
-                                        </View>
-                                        <View style={styles.calculationRow}>
-                                            <Text style={styles.minus}>-</Text>
-                                            <Blocked
-                                                blocked={props.user.blocked}
-                                                showAbbreviated={false}
-                                            />
-                                        </View>
-                                    </View>
-                                    <View style={styles.calculationRow}>
-                                        <Text style={styles.calculationResult}>
-                                            {toCommaRep(props.user.ranking)}
-                                        </Text>
-                                    </View>
-                                </View>
                                 <Text style={styles.explanationText}>
-                                    So {isMe ? "your" : "this user's"} ranking
+                                    {isMe ? "Your" : "This user's"} convo streak
                                     is:
                                 </Text>
                                 <Text style={styles.rankingText}>
@@ -113,6 +62,46 @@ const TierInfoModal: React.FC<Props> = (props) => {
                                     for tier:
                                 </Text>
                                 <Tier size={30} ranking={props.user.ranking} />
+                            </View>
+                            <View style={styles.convoStreakContainer}>
+                                <Text style={styles.streakHeader}>
+                                    Convo Streak Rules
+                                </Text>
+                                <View style={styles.ruleContainer}>
+                                    <View style={styles.ruleLeft}>
+                                        <Text style={styles.ruleBullet}>·</Text>
+                                    </View>
+                                    <View style={styles.ruleRight}>
+                                        <Text style={styles.ruleText}>
+                                            Streak increases by one when you
+                                            have a successful convo
+                                        </Text>
+                                    </View>
+                                </View>
+                                <View style={styles.ruleContainer}>
+                                    <View style={styles.ruleLeft}>
+                                        <Text style={styles.ruleBullet}>·</Text>
+                                    </View>
+                                    <View style={styles.ruleRight}>
+                                        <Text style={styles.ruleText}>
+                                            Streak decreases by 25% or 4
+                                            (whichever is greater) if one of
+                                            your posts or messages is blocked
+                                        </Text>
+                                    </View>
+                                </View>
+                                <View style={styles.ruleContainer}>
+                                    <View style={styles.ruleLeft}>
+                                        <Text style={styles.ruleBullet}>·</Text>
+                                    </View>
+                                    <View style={styles.ruleRight}>
+                                        <Text style={styles.ruleText}>
+                                            Streak decreases by 10% or 2
+                                            (whichever is greater) if you block
+                                            someone's message or post
+                                        </Text>
+                                    </View>
+                                </View>
                             </View>
                             <View style={styles.bigThreeContainer}>
                                 <View style={styles.symExpContainer}>

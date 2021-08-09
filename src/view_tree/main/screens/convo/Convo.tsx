@@ -85,7 +85,6 @@ import {
     TransactionTypesEnum,
 } from "../../../../global_types/TransactionTypes";
 import { addTransaction } from "../../hooks/use_realtime_updates/subscription_handlers/utils/cache_utils";
-import { challengeCheck } from "../../../../global_gql/challenge_check/challenge_check";
 import ConvoOptionsModal from "./building_blocks/convo_options_modal/ConvoOptionsModal";
 import { PostType } from "../../../../global_types/PostTypes";
 import { MessageType } from "../../../../global_types/MessageTypes";
@@ -505,11 +504,6 @@ const Convo: React.FC<Props> = (props) => {
 
                     addTransaction(transaction, cache);
                 }
-
-                /*
-                 * Do a quick challenge check
-                 */
-                challengeCheck(cache);
             },
         }
     );

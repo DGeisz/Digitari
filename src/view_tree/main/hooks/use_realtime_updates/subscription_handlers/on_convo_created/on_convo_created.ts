@@ -6,15 +6,8 @@ import {
     NewConvosVariables,
 } from "../../../../routes/tab_nav/screens/convos/sub_screens/new_convos/gql/Queries";
 import { ConvoOrder } from "../../../../../../global_types/ConvoTypes";
-import {
-    TransactionType,
-    TransactionTypesEnum,
-} from "../../../../../../global_types/TransactionTypes";
 import { localUid } from "../../../../../../global_state/UserState";
-import { addTransaction } from "../utils/cache_utils";
 import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
-import { addNewReceipt } from "../../../../../../global_state/CoinUpdates";
-import { challengeCheck } from "../../../../../../global_gql/challenge_check/challenge_check";
 
 export function onConvoCreated(
     options: OnSubscriptionDataOptions<ConvoCreatedData>
@@ -106,10 +99,5 @@ export function onConvoCreated(
                 },
             },
         });
-
-        /*
-         * Quick challenge check
-         */
-        challengeCheck(cache);
     }
 }

@@ -27,7 +27,7 @@ const TierInfo: React.FC<Props> = (props) => {
             <View style={styles.infoHeader}>
                 <Tier size={45} tier={props.tier} />
                 <View style={styles.rankingContainer}>
-                    <Text style={styles.rankingTitle}>Ranking</Text>
+                    <Text style={styles.rankingTitle}>Convo Streak</Text>
                     <Text style={styles.rankingText}>{rankingText}</Text>
                 </View>
             </View>

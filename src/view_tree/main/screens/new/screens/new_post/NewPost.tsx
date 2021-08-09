@@ -53,7 +53,6 @@ import {
 import { cache } from "../../../../../../global_state/Cache";
 import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
 import LinkPreview from "../../../../../../global_building_blocks/link_preview/LinkPreview";
-import { challengeCheck } from "../../../../../../global_gql/challenge_check/challenge_check";
 import { firstPost } from "../../../../../../global_state/FirstImpressionsState";
 import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
 
@@ -264,8 +263,6 @@ const NewPost: React.FC<Props> = (props) => {
                     },
                 },
             });
-
-            challengeCheck(cache);
         },
     });
 
