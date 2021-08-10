@@ -5,6 +5,7 @@ export const GET_SELF = gql`
         user(uid: $uid) {
             id
             followers
+            maxPostRecipients
             coin
         }
     }
@@ -14,6 +15,7 @@ export interface GetSelfData {
     user: {
         followers: number;
         coin: string;
+        maxPostRecipients: number;
     };
 }
 

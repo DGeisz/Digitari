@@ -55,6 +55,8 @@ import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
 import LinkPreview from "../../../../../../global_building_blocks/link_preview/LinkPreview";
 import { firstPost } from "../../../../../../global_state/FirstImpressionsState";
 import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
+import BoltBox from "../../../../../../global_building_blocks/bolt_box/BoltBox";
+import FlyingBolt from "../../../../../../global_building_blocks/flying_bolt/FlyingBolt";
 
 interface Props {
     navigation: NewPostNavProp;
@@ -63,6 +65,8 @@ interface Props {
 
 const NewPost: React.FC<Props> = (props) => {
     const scrollRef = useRef<ScrollView>(null);
+
+    const [fuse, setFuse] = useState<number>(0);
 
     /*
      * Instructions
@@ -246,6 +250,15 @@ const NewPost: React.FC<Props> = (props) => {
 
                         return existing.toString();
                     },
+                    bolts(existing) {
+                        existing = parseInt(existing);
+
+                        if (!!recipients) {
+                            return (existing + recipients).toString();
+                        }
+
+                        return existing.toString();
+                    },
                     coinSpent(existing) {
                         existing = parseInt(existing);
 
@@ -327,6 +340,20 @@ const NewPost: React.FC<Props> = (props) => {
             return;
         }
 
+        if (recipients > data.user.maxPostRecipients) {
+            if (data.user.maxPostRecipients === 1) {
+                setErrorMessage("Level up to post to more than one person!");
+            } else {
+                setErrorMessage(
+                    `Level up to post to more than ${toCommaRep(
+                        data.user.maxPostRecipients
+                    )} people!`
+                );
+            }
+
+            return;
+        }
+
         if (
             target === PostTarget.MyFollowers &&
             recipients > data.user.followers
@@ -374,6 +401,8 @@ const NewPost: React.FC<Props> = (props) => {
                 addOnContent = addOnText;
                 break;
         }
+
+        setFuse(1 + Math.random());
 
         await createPost({
             variables: {
@@ -585,6 +614,8 @@ const NewPost: React.FC<Props> = (props) => {
                             placeholder="What's on your mind?"
                             multiline
                             onChangeText={(text) => {
+                                setErrorMessage("");
+
                                 setContent(
                                     text
                                         .replace(/\r?\n|\r/g, "")
@@ -845,6 +876,8 @@ const NewPost: React.FC<Props> = (props) => {
                             keyboardType="numeric"
                             multiline
                             onChangeText={(raw) => {
+                                setErrorMessage("");
+
                                 const noCommas = raw.replace(/\D/g, "");
                                 const num = parseInt(noCommas);
 
@@ -860,6 +893,23 @@ const NewPost: React.FC<Props> = (props) => {
                                     : toCommaRep(recipients)
                             }
                         />
+                        {!!data?.user && (
+                            <Text
+                                style={[
+                                    styles.maxRecipientsText,
+                                    {
+                                        color:
+                                            !!recipients &&
+                                            recipients >
+                                                data.user.maxPostRecipients
+                                                ? palette.danger
+                                                : palette.semiSoftGray,
+                                    },
+                                ]}
+                            >
+                                Max: {toCommaRep(data?.user.maxPostRecipients)}
+                            </Text>
+                        )}
                         <SelectCommunityModal
                             visible={selectComVisible}
                             onHide={() => showSelectCom(false)}
@@ -874,6 +924,17 @@ const NewPost: React.FC<Props> = (props) => {
                             { opacity: postReady ? 1 : 0.4 },
                         ]}
                     >
+                        <View style={styles.flyingBoltContainer}>
+                            <FlyingBolt
+                                animationHeight={200}
+                                amount={!!recipients ? recipients : 0}
+                                boltSize={50}
+                                fontSize={35}
+                                fuse={fuse}
+                                paddingRight={5}
+                                moveTextRight={8}
+                            />
+                        </View>
                         {!!errorMessage && (
                             <Text style={styles.postErrorMessage}>
                                 {errorMessage}
@@ -891,6 +952,15 @@ const NewPost: React.FC<Props> = (props) => {
                                     <Text style={styles.postButtonText}>
                                         Post
                                     </Text>
+                                    <BoltBox
+                                        amount={!!recipients ? recipients : 0}
+                                        boltSize={22}
+                                        showBoltPlus
+                                        moveTextRight={2}
+                                        paddingRight={8}
+                                        boxColor={palette.lightForestGreen}
+                                        fontSize={16}
+                                    />
                                 </View>
                                 <CoinBox
                                     amount={
@@ -899,8 +969,8 @@ const NewPost: React.FC<Props> = (props) => {
                                     }
                                     showAbbreviated={false}
                                     fontColor={palette.hardGray}
-                                    fontSize={20}
-                                    coinSize={25}
+                                    fontSize={18}
+                                    coinSize={22}
                                 />
                             </TouchableOpacity>
                         )}

@@ -36,7 +36,6 @@ import {
     ViewedTransactionData,
 } from "./gql/Mutations";
 import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
-import { QUERY_TYPENAME } from "../../../../../../global_gql/Schema";
 import {
     GET_UPDATE_FLAGS,
     GetUpdateFlagsData,
