@@ -11,12 +11,8 @@ import {
 } from "../../../../big_three/BigThree";
 import CoinBox from "../../../../coin_box/CoinBox";
 import TierInfoModal from "./building_blocks/tier_info_modal/TierInfoModal";
-import { calculateLevelInfo } from "../../../../../global_utils/LevelUtils";
 import TierModal from "../../../profile_header/building_blocks/tier_modal/TierModal";
-import LevelInfoModal from "./building_blocks/level_info_modal/LevelInfoModal";
 import BoltBox from "../../../../bolt_box/BoltBox";
-import { FontAwesome } from "@expo/vector-icons";
-import { palette } from "../../../../../global_styles/Palette";
 import BoltsModal from "../../../profile_header/building_blocks/bolts_modal/BoltsModal";
 import DigicoinModal from "../../../profile_header/building_blocks/digicoin_modal/DigicoinModal";
 import { localUid } from "../../../../../global_state/UserState";

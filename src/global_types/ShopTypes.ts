@@ -181,11 +181,11 @@ export function nameFontRequirement(font: NameFontsEnum): ItemRequirement {
             return {};
         case NameFontsEnum.HowdyPartner:
             return {
-                level: 15,
+                level: 2,
             };
         case NameFontsEnum.ImAPrincess:
             return {
-                level: 20,
+                level: 4,
             };
         case NameFontsEnum.Ole:
             return {
@@ -193,11 +193,11 @@ export function nameFontRequirement(font: NameFontsEnum): ItemRequirement {
             };
         case NameFontsEnum.CheapHalloweenParty:
             return {
-                level: 30,
+                level: 8,
             };
         case NameFontsEnum.PassinNotes:
             return {
-                level: 35,
+                level: 10,
             };
         case NameFontsEnum.Yuck:
             return {
@@ -205,11 +205,11 @@ export function nameFontRequirement(font: NameFontsEnum): ItemRequirement {
             };
         case NameFontsEnum.OldTyme:
             return {
-                level: 45,
+                level: 14,
             };
         case NameFontsEnum.Arcade:
             return {
-                level: 50,
+                level: 16,
             };
         case NameFontsEnum.GirlyGirl:
             return {
@@ -217,11 +217,11 @@ export function nameFontRequirement(font: NameFontsEnum): ItemRequirement {
             };
         case NameFontsEnum.WhamBamKablam:
             return {
-                level: 60,
+                level: 20,
             };
         case NameFontsEnum.RollerSkateDate:
             return {
-                level: 65,
+                level: 22,
             };
         case NameFontsEnum.Zoom:
             return {
@@ -229,15 +229,15 @@ export function nameFontRequirement(font: NameFontsEnum): ItemRequirement {
             };
         case NameFontsEnum.ZeusRevenge:
             return {
-                level: 85,
+                level: 26,
             };
         case NameFontsEnum.YuletideBall:
             return {
-                level: 95,
+                level: 28,
             };
         case NameFontsEnum.GreatGatsby:
             return {
-                ranking: 250,
+                level: 30,
             };
     }
 }
@@ -405,11 +405,11 @@ export function nameColorRequirement(color: ProfileColors): ItemRequirement {
             return {};
         case ProfileColors.LastSunset:
             return {
-                level: 15,
+                level: 3,
             };
         case ProfileColors.PlasticDollhouse:
             return {
-                level: 20,
+                level: 6,
             };
         case ProfileColors.AlaskanSockeye:
             return {
@@ -417,11 +417,11 @@ export function nameColorRequirement(color: ProfileColors): ItemRequirement {
             };
         case ProfileColors.DarkForest:
             return {
-                level: 25,
+                level: 9,
             };
         case ProfileColors.AboveTreeline:
             return {
-                level: 30,
+                level: 12,
             };
         case ProfileColors.CrackinGlowSticks:
             return {
@@ -429,11 +429,11 @@ export function nameColorRequirement(color: ProfileColors): ItemRequirement {
             };
         case ProfileColors.AllHail:
             return {
-                level: 40,
+                level: 18,
             };
         case ProfileColors.BlacklitRave:
             return {
-                level: 45,
+                level: 21,
             };
         case ProfileColors.FirstTeaParty:
             return {
@@ -441,15 +441,15 @@ export function nameColorRequirement(color: ProfileColors): ItemRequirement {
             };
         case ProfileColors.MadeThePodium:
             return {
-                level: 55,
+                level: 24,
             };
         case ProfileColors.SoClose:
             return {
-                level: 60,
+                level: 27,
             };
         case ProfileColors.ChampionOfTheWorld:
             return {
-                ranking: 70,
+                level: 30,
             };
     }
 }
@@ -534,11 +534,11 @@ export function bioFontRequirement(font: BioFontsEnum): ItemRequirement {
             return {};
         case BioFontsEnum.OnceUponATime:
             return {
-                level: 20,
+                level: 4,
             };
         case BioFontsEnum.Novel:
             return {
-                level: 30,
+                level: 8,
             };
         case BioFontsEnum.WhenTypewriters:
             return {
@@ -546,15 +546,15 @@ export function bioFontRequirement(font: BioFontsEnum): ItemRequirement {
             };
         case BioFontsEnum.MissionBriefing:
             return {
-                level: 45,
+                level: 16,
             };
         case BioFontsEnum.MidsummerFantasy:
             return {
-                level: 55,
+                level: 20,
             };
         case BioFontsEnum.SpiritualSciFi:
             return {
-                ranking: 40,
+                level: 24,
             };
     }
 }
@@ -650,11 +650,11 @@ export function bioColorRequirement(color: BioColors): ItemRequirement {
             return {};
         case BioColors.FadingEmbers:
             return {
-                level: 25,
+                level: 5,
             };
         case BioColors.BloodStain:
             return {
-                level: 35,
+                level: 10,
             };
         case BioColors.FormerGlory:
             return {
@@ -662,7 +662,7 @@ export function bioColorRequirement(color: BioColors): ItemRequirement {
             };
         case BioColors.HeartOfTheSea:
             return {
-                level: 60,
+                level: 20,
             };
     }
 }
@@ -884,11 +884,11 @@ export function stickerRequirement(sticker: ProfileStickers): ItemRequirement {
             return {};
         case ProfileStickers.DrumStick:
             return {
-                level: 10,
+                level: 3,
             };
         case ProfileStickers.Football:
             return {
-                level: 15,
+                level: 4,
             };
         case ProfileStickers.Brain:
             return {
@@ -896,11 +896,11 @@ export function stickerRequirement(sticker: ProfileStickers): ItemRequirement {
             };
         case ProfileStickers.HatWithBow:
             return {
-                level: 20,
+                level: 6,
             };
         case ProfileStickers.Scorpion:
             return {
-                level: 25,
+                level: 7,
             };
         case ProfileStickers.Snowflake:
             return {
@@ -908,11 +908,11 @@ export function stickerRequirement(sticker: ProfileStickers): ItemRequirement {
             };
         case ProfileStickers.Saxophone:
             return {
-                level: 30,
+                level: 9,
             };
         case ProfileStickers.TRex:
             return {
-                level: 35,
+                level: 10,
             };
         case ProfileStickers.Teddy:
             return {
@@ -920,11 +920,11 @@ export function stickerRequirement(sticker: ProfileStickers): ItemRequirement {
             };
         case ProfileStickers.Poop:
             return {
-                level: 40,
+                level: 12,
             };
         case ProfileStickers.Alien:
             return {
-                level: 45,
+                level: 13,
             };
         case ProfileStickers.Salsa:
             return {
@@ -932,11 +932,11 @@ export function stickerRequirement(sticker: ProfileStickers): ItemRequirement {
             };
         case ProfileStickers.Gains:
             return {
-                level: 50,
+                level: 15,
             };
         case ProfileStickers.BaldEagle:
             return {
-                level: 55,
+                level: 16,
             };
         case ProfileStickers.Soccer:
             return {
@@ -944,11 +944,11 @@ export function stickerRequirement(sticker: ProfileStickers): ItemRequirement {
             };
         case ProfileStickers.HappySad:
             return {
-                level: 65,
+                level: 18,
             };
         case ProfileStickers.Fire:
             return {
-                level: 70,
+                level: 19,
             };
         case ProfileStickers.Violin:
             return {
@@ -956,11 +956,11 @@ export function stickerRequirement(sticker: ProfileStickers): ItemRequirement {
             };
         case ProfileStickers.RaceCar:
             return {
-                level: 80,
+                level: 21,
             };
         case ProfileStickers.Microscope:
             return {
-                level: 90,
+                level: 22,
             };
         case ProfileStickers.CrossSwords:
             return {
@@ -968,15 +968,15 @@ export function stickerRequirement(sticker: ProfileStickers): ItemRequirement {
             };
         case ProfileStickers.Rocket:
             return {
-                level: 110,
+                level: 25,
             };
         case ProfileStickers.Champagne:
             return {
-                level: 120,
+                level: 30,
             };
         case ProfileStickers.StarMedal:
             return {
-                ranking: 500,
+                ranking: 35,
             };
     }
 }

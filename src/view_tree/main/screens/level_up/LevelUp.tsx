@@ -32,10 +32,6 @@ const LevelUp: React.FC = () => {
         },
     });
 
-    useEffect(() => {
-        console.log(selectThreeTasks(15));
-    }, []);
-
     if (loading) {
         return <LoadingWheel />;
     }

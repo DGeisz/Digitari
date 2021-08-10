@@ -5,6 +5,7 @@ export const GET_REMAINING_INVITES = gql`
         user(uid: $uid) {
             id
             remainingInvites
+            level
         }
     }
 `;
@@ -13,6 +14,7 @@ export interface GetRemainingInvitesData {
     user: {
         id: string;
         remainingInvites: number;
+        level: number;
     };
 }
 

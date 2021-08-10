@@ -26,6 +26,7 @@ import { USER_TYPENAME } from "../../../../global_types/UserTypes";
 import { modalStyles } from "../../../../global_styles/OptionsModalStyles";
 import { palette } from "../../../../global_styles/Palette";
 import * as Linking from "expo-linking";
+import { ranking2Tier } from "../../../../global_types/TierTypes";
 
 const prefix = Linking.createURL("/");
 
@@ -247,66 +248,91 @@ const OptionsModal: React.FC<Props> = (props) => {
             {props.canBlock && (
                 <Modal isVisible={blockVisible}>
                     <View style={modalStyles.modalOuterContainer}>
-                        <View style={modalStyles.modalContainer}>
-                            <View style={modalStyles.modalHeader}>
-                                <Text
-                                    style={[
-                                        modalStyles.modalHeaderText,
-                                        { color: palette.warning },
-                                    ]}
-                                >
-                                    Block post
-                                </Text>
-                            </View>
-                            {!!blockError && (
+                        {!!userData?.user &&
+                        ranking2Tier(userData.user.ranking) <
+                            props.post.tier ? (
+                            <View style={modalStyles.modalContainer}>
                                 <Text style={modalStyles.modalErrorText}>
-                                    {blockError}
+                                    Can't block a post from a user with a higher
+                                    tier than you!
                                 </Text>
-                            )}
-                            <Text style={modalStyles.modalInfoText}>
-                                Blocking this post will remove it from your
-                                feed, and also decrease both the poster's
-                                ranking and your ranking.
-                            </Text>
-                            <View style={modalStyles.modalFooter}>
-                                {blockLoading ? (
-                                    <LoadingWheel />
-                                ) : (
+                                <View style={modalStyles.modalFooter}>
                                     <TouchableOpacity
-                                        style={modalStyles.blockButton}
-                                        onPress={blockPost}
+                                        style={modalStyles.closeButton}
+                                        onPress={() => setBlockVisible(false)}
                                     >
-                                        <View
-                                            style={
-                                                modalStyles.blockButtonTextContainer
-                                            }
+                                        <Text
+                                            style={modalStyles.closeButtonText}
                                         >
-                                            <Text
+                                            Cancel
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        ) : (
+                            <View style={modalStyles.modalContainer}>
+                                <View style={modalStyles.modalHeader}>
+                                    <Text
+                                        style={[
+                                            modalStyles.modalHeaderText,
+                                            { color: palette.warning },
+                                        ]}
+                                    >
+                                        Block post
+                                    </Text>
+                                </View>
+                                {!!blockError && (
+                                    <Text style={modalStyles.modalErrorText}>
+                                        {blockError}
+                                    </Text>
+                                )}
+                                <Text style={modalStyles.modalInfoText}>
+                                    Blocking this post will remove it from your
+                                    feed, and also decrease both the poster's
+                                    convo streak and your convo streak.
+                                </Text>
+                                <View style={modalStyles.modalFooter}>
+                                    {blockLoading ? (
+                                        <LoadingWheel />
+                                    ) : (
+                                        <TouchableOpacity
+                                            style={modalStyles.blockButton}
+                                            onPress={blockPost}
+                                        >
+                                            <View
                                                 style={
-                                                    modalStyles.blockButtonText
+                                                    modalStyles.blockButtonTextContainer
                                                 }
                                             >
-                                                Block
-                                            </Text>
-                                        </View>
-                                        <CoinBox
-                                            amount={POST_BLOCK_COST}
-                                            showAbbreviated
-                                            coinSize={23}
-                                            fontSize={15}
-                                        />
+                                                <Text
+                                                    style={
+                                                        modalStyles.blockButtonText
+                                                    }
+                                                >
+                                                    Block
+                                                </Text>
+                                            </View>
+                                            <CoinBox
+                                                amount={POST_BLOCK_COST}
+                                                showAbbreviated
+                                                coinSize={23}
+                                                fontSize={15}
+                                            />
+                                        </TouchableOpacity>
+                                    )}
+                                    <TouchableOpacity
+                                        style={modalStyles.closeButton}
+                                        onPress={() => setBlockVisible(false)}
+                                    >
+                                        <Text
+                                            style={modalStyles.closeButtonText}
+                                        >
+                                            Cancel
+                                        </Text>
                                     </TouchableOpacity>
-                                )}
-                                <TouchableOpacity
-                                    style={modalStyles.closeButton}
-                                    onPress={() => setBlockVisible(false)}
-                                >
-                                    <Text style={modalStyles.closeButtonText}>
-                                        Cancel
-                                    </Text>
-                                </TouchableOpacity>
+                                </View>
                             </View>
-                        </View>
+                        )}
                     </View>
                 </Modal>
             )}

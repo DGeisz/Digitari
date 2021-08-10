@@ -24,6 +24,15 @@ export const styles = StyleSheet.create({
         color: palette.lightGray,
         fontSize: 13,
     },
+    levelMessageContainer: {
+        ...basicLayouts.grid2,
+        padding: 20,
+    },
+    levelMessage: {
+        fontSize: 16,
+        fontWeight: "bold",
+        color: palette.semiSoftGray,
+    },
     noInvitesContainer: {
         ...basicLayouts.grid2,
         padding: 20,

@@ -129,11 +129,12 @@ const NewResponse: React.FC<Props> = (props) => {
                     });
                 }
 
-                props.navigation.replace("Convo", {
-                    cvid: data.createConvo.id,
-                    pid,
-                    noAnimation: data.createConvo.id.length > 5,
-                });
+                if (data.createConvo.id.length < 5) {
+                    props.navigation.replace("Convo", {
+                        cvid: data.createConvo.id,
+                        pid,
+                    });
+                }
             } else {
                 if (__DEV__) {
                     console.log("No new data for new response");

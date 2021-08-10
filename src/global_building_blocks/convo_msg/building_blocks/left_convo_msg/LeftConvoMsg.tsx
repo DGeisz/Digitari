@@ -97,7 +97,7 @@ export default class LeftConvoMsg extends React.PureComponent<Props, State> {
                                 confirmMessage={"Block"}
                                 visible={this.state.blockModalVisible}
                                 body={
-                                    "Block message and decrease both of your rankings?"
+                                    "Block message and decrease both of your convo streaks?"
                                 }
                                 title={"Block Message"}
                                 onConfirm={() => {

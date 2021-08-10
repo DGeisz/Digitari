@@ -43,6 +43,7 @@ export const GET_USER = gql`
             coin
             challengeReceipts
             coinSpent
+            remainingInvites
 
             level
             levelUsersFollowed

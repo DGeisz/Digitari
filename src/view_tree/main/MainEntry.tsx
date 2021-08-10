@@ -12,7 +12,7 @@ import User from "./screens/user/User";
 import Follows from "./screens/follows/Follows";
 import NewPost from "./screens/new/screens/new_post/NewPost";
 import { useRealtimeUpdates } from "./hooks/use_realtime_updates/use_realtime_updates";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import {
     REGISTER_PUSH,
     RegisterPushData,
@@ -20,7 +20,7 @@ import {
 } from "./gql/Mutations";
 import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
-import { Image, Platform, Text, TouchableOpacity } from "react-native";
+import { Image, Platform, Text, TouchableOpacity, View } from "react-native";
 import ReportPost from "./screens/reports/report_post/ReportPost";
 import ReportConvo from "./screens/reports/report_convo/ReportConvo";
 import ReportUser from "./screens/reports/report_user/ReportUser";
@@ -37,10 +37,26 @@ import TermsAndConditions from "./screens/settings/screens/terms_and_conditions/
 import Shop from "./screens/shop/Shop";
 import { LastPostsFetchContext } from "./context/last_fetch_time_context";
 import LevelUp from "./screens/level_up/LevelUp";
+import { localUid } from "../../global_state/UserState";
+import {
+    GET_USER,
+    GetUserQueryData,
+    GetUserQueryVariables,
+} from "./routes/tab_nav/screens/profile/gql/Queries";
+import UpdateIndicator from "./routes/tab_nav/building_blocks/update_indicator/UpdateIndicator";
 
 const RootStack = createStackNavigator<MainEntryStack>();
 
 const MainEntry: React.FC = () => {
+    const uid = localUid();
+
+    const { data } = useQuery<GetUserQueryData, GetUserQueryVariables>(
+        GET_USER,
+        {
+            variables: { uid },
+        }
+    );
+
     /*
      * Handle realtime subscriptions
      */
@@ -158,12 +174,36 @@ const MainEntry: React.FC = () => {
                             headerTitle: getTabNavHeaderTitle(route),
                             headerLeft: () => (
                                 <TouchableOpacity
+                                    style={styles.inviteContainer}
                                     onPress={() => {
                                         navigation.navigate("Invite");
                                     }}
                                 >
+                                    {!!data?.user &&
+                                        !!data.user.remainingInvites && (
+                                            <View
+                                                style={
+                                                    styles.inviteDotContainer
+                                                }
+                                            >
+                                                <View
+                                                    style={styles.inviteDot}
+                                                />
+                                                {data.user.level < 10 && (
+                                                    <View
+                                                        style={
+                                                            styles.pulseContainer
+                                                        }
+                                                    >
+                                                        <UpdateIndicator
+                                                            dotSize={1.8}
+                                                        />
+                                                    </View>
+                                                )}
+                                            </View>
+                                        )}
                                     <Text style={styles.inviteText}>
-                                        + Invite
+                                        Invite
                                     </Text>
                                 </TouchableOpacity>
                             ),

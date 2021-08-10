@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
     Animated,
     RefreshControl,
@@ -24,29 +24,25 @@ import ErrorMessage from "../../../../../../global_building_blocks/error_message
 import { globalScreenStyles } from "../../../../../../global_styles/GlobalScreenStyles";
 import ConvoCover from "../../../../../../global_building_blocks/convo_cover/ConvoCover";
 import { styles } from "./CommunityConvosStyles";
+import { CommunityContext } from "../../CommunityContext";
 
-interface Props {
-    routeKey: string;
-    cmid: string;
-    navigation: CommunityNavProp;
-    refreshHeader: () => void;
-}
-
-const CommunityConvos: React.FC<Props> = (props) => {
+const CommunityConvos: React.FC = () => {
     const [tier, setTier] = useState<TierEnum | undefined>(undefined);
+
+    const context = useContext(CommunityContext);
 
     const { data, error, networkStatus, refetch, fetchMore } = useQuery<
         CommunityConvosData,
         CommunityConvosVariables
     >(COMMUNITY_CONVOS, {
         variables: {
-            cmid: props.cmid,
+            cmid: context.cmid,
             tier,
         },
         notifyOnNetworkStatusChange: true,
     });
 
-    const scrollPropsAndRef = useCollapsibleScene(props.routeKey);
+    const scrollPropsAndRef = useCollapsibleScene("CommunityConvos");
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
     const [fetchMoreLen, setFetchMoreLen] = useState<number>(
@@ -76,7 +72,7 @@ const CommunityConvos: React.FC<Props> = (props) => {
                                             : {},
                                     ]}
                                     onPress={() => setTier(undefined)}
-                                    key={[props.cmid, "all"].join(":")}
+                                    key={[context.cmid, "all"].join(":")}
                                 >
                                     <Text
                                         style={[
@@ -103,7 +99,7 @@ const CommunityConvos: React.FC<Props> = (props) => {
                                             : {},
                                     ]}
                                     onPress={() => setTier(TierEnum.Angel)}
-                                    key={[props.cmid, "angel"].join(":")}
+                                    key={[context.cmid, "angel"].join(":")}
                                 >
                                     <Text style={tierBarStyles.tierOptionText}>
                                         {TierEmoji.Angel}
@@ -120,7 +116,7 @@ const CommunityConvos: React.FC<Props> = (props) => {
                                             : {},
                                     ]}
                                     onPress={() => setTier(TierEnum.HeartEyes)}
-                                    key={[props.cmid, "heart"].join(":")}
+                                    key={[context.cmid, "heart"].join(":")}
                                 >
                                     <Text style={tierBarStyles.tierOptionText}>
                                         {TierEmoji.HeartEyes}
@@ -137,7 +133,7 @@ const CommunityConvos: React.FC<Props> = (props) => {
                                             : {},
                                     ]}
                                     onPress={() => setTier(TierEnum.Sunglasses)}
-                                    key={[props.cmid, "sun"].join(":")}
+                                    key={[context.cmid, "sun"].join(":")}
                                 >
                                     <Text style={tierBarStyles.tierOptionText}>
                                         {TierEmoji.Sunglasses}
@@ -154,7 +150,7 @@ const CommunityConvos: React.FC<Props> = (props) => {
                                             : {},
                                     ]}
                                     onPress={() => setTier(TierEnum.Hugging)}
-                                    key={[props.cmid, "hug"].join(":")}
+                                    key={[context.cmid, "hug"].join(":")}
                                 >
                                     <Text style={tierBarStyles.tierOptionText}>
                                         {TierEmoji.Hugging}
@@ -171,7 +167,7 @@ const CommunityConvos: React.FC<Props> = (props) => {
                                             : {},
                                     ]}
                                     onPress={() => setTier(TierEnum.Grinning)}
-                                    key={[props.cmid, "grin"].join(":")}
+                                    key={[context.cmid, "grin"].join(":")}
                                 >
                                     <Text style={tierBarStyles.tierOptionText}>
                                         {TierEmoji.Grinning}
@@ -188,7 +184,7 @@ const CommunityConvos: React.FC<Props> = (props) => {
                                             : {},
                                     ]}
                                     onPress={() => setTier(TierEnum.Smiling)}
-                                    key={[props.cmid, "smile"].join(":")}
+                                    key={[context.cmid, "smile"].join(":")}
                                 >
                                     <Text style={tierBarStyles.tierOptionText}>
                                         {TierEmoji.Smiling}
@@ -207,7 +203,7 @@ const CommunityConvos: React.FC<Props> = (props) => {
                                     onPress={() =>
                                         setTier(TierEnum.SlightlySmiling)
                                     }
-                                    key={[props.cmid, "ssmile"].join(":")}
+                                    key={[context.cmid, "ssmile"].join(":")}
                                 >
                                     <Text style={tierBarStyles.tierOptionText}>
                                         {TierEmoji.SlightlySmiling}
@@ -224,7 +220,7 @@ const CommunityConvos: React.FC<Props> = (props) => {
                                             : {},
                                     ]}
                                     onPress={() => setTier(TierEnum.Frowning)}
-                                    key={[props.cmid, "frown"].join(":")}
+                                    key={[context.cmid, "frown"].join(":")}
                                 >
                                     <Text style={tierBarStyles.tierOptionText}>
                                         {TierEmoji.Frowning}
@@ -241,7 +237,7 @@ const CommunityConvos: React.FC<Props> = (props) => {
                                             : {},
                                     ]}
                                     onPress={() => setTier(TierEnum.Steam)}
-                                    key={[props.cmid, "steam"].join(":")}
+                                    key={[context.cmid, "steam"].join(":")}
                                 >
                                     <Text style={tierBarStyles.tierOptionText}>
                                         {TierEmoji.Steam}
@@ -258,7 +254,7 @@ const CommunityConvos: React.FC<Props> = (props) => {
                                             : {},
                                     ]}
                                     onPress={() => setTier(TierEnum.AngryHorns)}
-                                    key={[props.cmid, "horns"].join(":")}
+                                    key={[context.cmid, "horns"].join(":")}
                                 >
                                     <Text style={tierBarStyles.tierOptionText}>
                                         {TierEmoji.AngryHorns}
@@ -290,7 +286,7 @@ const CommunityConvos: React.FC<Props> = (props) => {
                     showUnViewedDot={false}
                     showBottomBorder={index !== finalFeed.length - 1}
                     openConvo={(cvid, pid) =>
-                        props.navigation.navigate("Convo", { cvid, pid })
+                        context.navigation.navigate("Convo", { cvid, pid })
                     }
                 />
             )}
@@ -304,7 +300,7 @@ const CommunityConvos: React.FC<Props> = (props) => {
                         setStillSpin(true);
                         setFetchMoreLen(0);
                         refetch && refetch();
-                        !!props.refreshHeader && props.refreshHeader();
+                        !!context.refreshHeader && context.refreshHeader();
                         setTimeout(() => {
                             setStillSpin(false);
                         }, 1000);
@@ -327,7 +323,7 @@ const CommunityConvos: React.FC<Props> = (props) => {
                     !!fetchMore &&
                         (await fetchMore({
                             variables: {
-                                cmid: props.cmid,
+                                cmid: context.cmid,
                                 lastTime,
                                 tier,
                             },

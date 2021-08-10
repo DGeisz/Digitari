@@ -140,8 +140,11 @@ const Invites: React.FC<Props> = (props) => {
         return <ErrorMessage refresh={refetch} />;
     }
 
+    const sufficientLevel = !!data?.user && data.user.level > 1;
+
     const remainingInvites = !!data?.user ? data.user.remainingInvites : 0;
-    const finalContacts = remainingInvites > 0 && hasAccess ? contacts : [];
+    const finalContacts =
+        sufficientLevel && remainingInvites > 0 && hasAccess ? contacts : [];
 
     return (
         <View style={styles.invitesContainer}>
@@ -157,7 +160,7 @@ const Invites: React.FC<Props> = (props) => {
                                 Honestly, Digitari is way more fun when all your
                                 friends are on the platform.
                                 {DOUBLE_NEWLINE}
-                                Plus, you get 500 extra digicoin{" "}
+                                Plus, you get 400 extra digicoin{" "}
                                 <Text style={styles.italics}>
                                     for free
                                 </Text>{" "}
@@ -169,7 +172,13 @@ const Invites: React.FC<Props> = (props) => {
                                 Remaining invites: {remainingInvites}
                             </Text>
                         </TouchableOpacity>
-                        {remainingInvites < 1 ? (
+                        {!sufficientLevel ? (
+                            <View style={styles.levelMessageContainer}>
+                                <Text style={styles.levelMessage}>
+                                    Reach level 2 to invite your friends
+                                </Text>
+                            </View>
+                        ) : remainingInvites < 1 ? (
                             <View style={styles.noInvitesContainer}>
                                 <Text style={styles.noInvitesText}>
                                     🎉 You used all your invites! 🎉

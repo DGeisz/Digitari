@@ -40,7 +40,7 @@ export default class ResponseResponse extends React.PureComponent<
             <View style={styles.rRContainer}>
                 <CancelConfirmModal
                     visible={this.state.blockVisible}
-                    body="Block convo and decrease both of your rankings?"
+                    body="Block convo and decrease both of your convo streaks?"
                     title="Block"
                     onConfirm={() => {
                         this.setState({ blockVisible: false, loading: true });

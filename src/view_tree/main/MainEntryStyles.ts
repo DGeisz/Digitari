@@ -2,11 +2,32 @@ import { StyleSheet } from "react-native";
 import { palette } from "../../global_styles/Palette";
 import { basicLayouts } from "../../global_styles/BasicLayouts";
 
+const DOT_SIZE = 8;
+
 export const styles = StyleSheet.create({
+    inviteContainer: {
+        ...basicLayouts.grid2,
+        flexDirection: "row",
+        marginHorizontal: 10,
+    },
+    inviteDotContainer: {
+        position: "relative",
+        marginRight: 5,
+    },
+    inviteDot: {
+        height: DOT_SIZE,
+        width: DOT_SIZE,
+        borderRadius: DOT_SIZE,
+        backgroundColor: palette.deepBlue,
+    },
+    pulseContainer: {
+        position: "absolute",
+        left: -9,
+        top: -10,
+    },
     inviteText: {
         fontWeight: "bold",
-        marginHorizontal: 10,
-        color: palette.deepBlue,
+        color: palette.hardGray,
     },
     coinContainer: {
         ...basicLayouts.grid5,

@@ -392,7 +392,6 @@ export function calculateLevel(level: number): Level {
                 cost: 1000,
             };
         }
-        /*TODO: Change to 10*/
         case 10: {
             return {
                 level,

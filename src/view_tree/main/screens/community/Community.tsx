@@ -18,6 +18,7 @@ import CommunityPosts from "./sub_screens/community_posts/CommunityPosts";
 import NewButton from "../../../../global_building_blocks/new_button/NewButton";
 import CommunityConvos from "./sub_screens/community_convos/CommunityConvos";
 import { styles } from "./sub_screens/CommunityStyles";
+import { CommunityContext } from "./CommunityContext";
 
 interface Props {
     route: CommunityRouteProp;
@@ -50,76 +51,65 @@ const Community: React.FC<Props> = (props) => {
     if (data?.community) {
         return (
             <View style={basicLayouts.flexGrid1}>
-                <Tab.Navigator
-                    collapsibleOptions={{
-                        renderHeader: () => (
-                            <CommunityHeader
-                                community={data.community}
-                                openReportCommunity={() => {
-                                    props.navigation.navigate(
-                                        "ReportCommunity",
-                                        { cmid }
-                                    );
-                                }}
-                            />
-                        ),
-                        headerHeight: 250,
+                <CommunityContext.Provider
+                    value={{
+                        navigation: props.navigation,
+                        cmid: data.community.id,
+                        refreshHeader: refetch,
+                        tid: props.route.params.cmid,
+                        onSelectUser: (uid) => {
+                            props.navigation.push("User", { uid });
+                        },
                     }}
                 >
-                    <Tab.Screen
-                        name="CommunityPosts"
-                        options={{
-                            tabBarLabel: ({ color }) => (
-                                <TabLabel title={"Posts"} color={color} />
+                    <Tab.Navigator
+                        collapsibleOptions={{
+                            renderHeader: () => (
+                                <CommunityHeader
+                                    community={data.community}
+                                    openReportCommunity={() => {
+                                        props.navigation.navigate(
+                                            "ReportCommunity",
+                                            { cmid }
+                                        );
+                                    }}
+                                />
                             ),
+                            headerHeight: 250,
                         }}
                     >
-                        {() => (
-                            <CommunityPosts
-                                navigation={props.navigation}
-                                routeKey={"CommunityPosts"}
-                                cmid={data?.community.id}
-                                refreshHeader={refetch}
-                            />
-                        )}
-                    </Tab.Screen>
-                    <Tab.Screen
-                        name="CommunityConvos"
-                        options={{
-                            tabBarLabel: ({ color }) => (
-                                <TabLabel title={"Convos"} color={color} />
-                            ),
-                        }}
-                    >
-                        {() => (
-                            <CommunityConvos
-                                routeKey={"CommunityConvos"}
-                                cmid={data?.community.id}
-                                navigation={props.navigation}
-                                refreshHeader={refetch}
-                            />
-                        )}
-                    </Tab.Screen>
-                    <Tab.Screen
-                        name="CommunityFollowers"
-                        options={{
-                            tabBarLabel: ({ color }) => (
-                                <TabLabel title={"Followers"} color={color} />
-                            ),
-                        }}
-                    >
-                        {() => (
-                            <Followers
-                                routeKey="CommunityFollowers"
-                                tid={props.route.params.cmid}
-                                onSelectUser={(uid) => {
-                                    props.navigation.push("User", { uid });
-                                }}
-                                refreshHeader={refetch}
-                            />
-                        )}
-                    </Tab.Screen>
-                </Tab.Navigator>
+                        <Tab.Screen
+                            name="CommunityPosts"
+                            options={{
+                                tabBarLabel: ({ color }) => (
+                                    <TabLabel title={"Posts"} color={color} />
+                                ),
+                            }}
+                            component={CommunityPosts}
+                        />
+                        <Tab.Screen
+                            name="CommunityConvos"
+                            options={{
+                                tabBarLabel: ({ color }) => (
+                                    <TabLabel title={"Convos"} color={color} />
+                                ),
+                            }}
+                            component={CommunityConvos}
+                        />
+                        <Tab.Screen
+                            name="CommunityFollowers"
+                            options={{
+                                tabBarLabel: ({ color }) => (
+                                    <TabLabel
+                                        title={"Followers"}
+                                        color={color}
+                                    />
+                                ),
+                            }}
+                            component={Followers}
+                        />
+                    </Tab.Navigator>
+                </CommunityContext.Provider>
                 <NewButton
                     openNew={() =>
                         props.navigation.navigate("NewPost", {
