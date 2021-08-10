@@ -180,6 +180,7 @@ export const styles = StyleSheet.create({
     },
     mainFooterCenter: {
         ...basicLayouts.flexGrid7,
+        paddingLeft: 15,
         paddingBottom: 4,
     },
     infoIconContainer: {
@@ -211,7 +212,9 @@ export const styles = StyleSheet.create({
         top: -2,
         left: -1,
     },
-    pencil: {},
+    pencil: {
+        marginRight: 3,
+    },
     postConvosContainer: {
         borderTopWidth: 1,
         borderTopColor: palette.softGray,

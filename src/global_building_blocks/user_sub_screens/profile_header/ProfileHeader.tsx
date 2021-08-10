@@ -54,6 +54,8 @@ import {
     GetUserQueryData,
     GetUserQueryVariables,
 } from "../../../view_tree/main/routes/tab_nav/screens/profile/gql/Queries";
+import DigicodeModal from "../../digicode_modal/DigicodeModal";
+import { DigicodeType } from "../../../global_types/DigicodeTypes";
 
 interface Props {
     user: UserType;
@@ -111,6 +113,8 @@ const ProfileHeader: React.FC<Props> = (props) => {
     const [boltModalVisible, showBoltModal] = useState<boolean>(false);
 
     const [picModalVisible, showPicModal] = useState<boolean>(false);
+
+    const [codeModalVisible, showCodeModal] = useState<boolean>(false);
 
     const uid = localUid();
 
@@ -248,6 +252,15 @@ const ProfileHeader: React.FC<Props> = (props) => {
 
     return (
         <View pointerEvents="box-none">
+            <DigicodeModal
+                visible={codeModalVisible}
+                hide={() => showCodeModal(false)}
+                code={{
+                    id: props.user.id,
+                    type: DigicodeType.User,
+                }}
+                title={`${props.user.firstName} ${props.user.lastName}`}
+            />
             <View
                 style={styles.profileHeaderContainer}
                 pointerEvents="box-none"
@@ -583,18 +596,22 @@ const ProfileHeader: React.FC<Props> = (props) => {
                         </TouchableOpacity>
                         <View style={styles.userLevelContainer}>
                             <View style={styles.profileUserBar}>
-                                <Text
-                                    style={[
-                                        nameFontToProfileStyle(
-                                            props.user.nameFont
-                                        ),
-                                        profileColor2Style(
-                                            props.user.nameColor
-                                        ),
-                                    ]}
+                                <TouchableOpacity
+                                    onPress={() => showCodeModal(true)}
                                 >
-                                    {`${props.user.firstName} ${props.user.lastName}`}
-                                </Text>
+                                    <Text
+                                        style={[
+                                            nameFontToProfileStyle(
+                                                props.user.nameFont
+                                            ),
+                                            profileColor2Style(
+                                                props.user.nameColor
+                                            ),
+                                        ]}
+                                    >
+                                        {`${props.user.firstName} ${props.user.lastName}`}
+                                    </Text>
+                                </TouchableOpacity>
                                 <UserOptionsModal
                                     openReportUser={props.openReportUser}
                                     uid={props.user.id}

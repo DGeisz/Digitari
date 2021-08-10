@@ -37,6 +37,8 @@ import {
 } from "../../../../routes/tab_nav/screens/profile/gql/Queries";
 import BoltBox from "../../../../../../global_building_blocks/bolt_box/BoltBox";
 import FlyingBolt from "../../../../../../global_building_blocks/flying_bolt/FlyingBolt";
+import DigicodeModal from "../../../../../../global_building_blocks/digicode_modal/DigicodeModal";
+import { DigicodeType } from "../../../../../../global_types/DigicodeTypes";
 
 interface Props {
     community: CommunityType;
@@ -84,6 +86,8 @@ const CommunityHeader: React.FC<Props> = (props) => {
 
     const { id: cmid } = props.community;
     const uid = localUid();
+
+    const [codeModalVisible, showCodeModal] = useState<boolean>(false);
 
     /*Fuse for flying bolt*/
     const [fuse, setFuse] = useState<number>(0);
@@ -204,6 +208,12 @@ const CommunityHeader: React.FC<Props> = (props) => {
 
     return (
         <View style={styles.headerContainer} pointerEvents="box-none">
+            <DigicodeModal
+                visible={codeModalVisible}
+                hide={() => showCodeModal(false)}
+                code={{ id: props.community.id, type: DigicodeType.Community }}
+                title={props.community.name}
+            />
             {!!error && <Text style={styles.followErrorText}>{error}</Text>}
             <View style={styles.headerHeader} pointerEvents="box-none">
                 <View style={styles.headerLeft} pointerEvents="box-none">
@@ -378,7 +388,9 @@ const CommunityHeader: React.FC<Props> = (props) => {
                     </View>
                 </View>
             </View>
-            <Text style={styles.nameText}>{props.community.name}</Text>
+            <TouchableOpacity onPress={() => showCodeModal(true)}>
+                <Text style={styles.nameText}>{props.community.name}</Text>
+            </TouchableOpacity>
             <View style={styles.headerBody} pointerEvents="none">
                 <Text style={styles.descriptionText}>
                     {props.community.description}

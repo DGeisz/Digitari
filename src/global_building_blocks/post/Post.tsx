@@ -50,6 +50,9 @@ import BoltBox from "../bolt_box/BoltBox";
 import { userPost2BoltCount } from "./utils/bolt_utils";
 import BoltInstructions from "./building_blocks/bolt_instructions/BoltInstructions";
 import { firstBolt } from "../../global_state/FirstImpressionsState";
+import CoinBox from "../coin_box/CoinBox";
+import { convoReward } from "../../global_types/ConvoTypes";
+import { DOUBLE_NEWLINE } from "../../global_utils/StringUtils";
 
 const COMMUNITY_NAME_MAX_LEN = 30;
 
@@ -389,7 +392,11 @@ const Post: React.FC<Props> = (props) => {
                 loading={postModalLoading}
                 body={`Use ${toCommaRep(
                     props.post.responseCost
-                )} digibolts to respond to ${props.post.user}?`}
+                )} digicoin to respond to ${
+                    props.post.user
+                }?${DOUBLE_NEWLINE}The reward for a successful convo is ${convoReward(
+                    props.post.responseCost
+                )} digibolts.`}
                 title={"New Response"}
                 error={postModalError}
                 onConfirm={async () => {
@@ -756,11 +763,20 @@ const Post: React.FC<Props> = (props) => {
                                                     : palette.beneathTheWaves
                                             }
                                         />
+                                        <BoltBox
+                                            boxColor={palette.lightForestGreen}
+                                            amount={convoReward(
+                                                props.post.responseCost
+                                            )}
+                                            showBoltPlus
+                                            paddingVertical={3}
+                                            moveTextRight={2}
+                                            boltSize={17}
+                                        />
                                     </View>
-                                    <BoltBox
+                                    <CoinBox
                                         amount={props.post.responseCost}
-                                        boltSize={17}
-                                        moveTextRight={2}
+                                        coinSize={17}
                                     />
                                 </TouchableOpacity>
                             </View>

@@ -34,6 +34,7 @@ import { localHid, localUid } from "../../../../global_state/UserState";
 import {
     CONVO_ACTIVATION_COST,
     CONVO_TYPENAME,
+    convoReward,
     ConvoStatus,
     ConvoType,
     MESSAGE_COUNT_THRESHOLD,
@@ -95,6 +96,8 @@ import {
 } from "../../routes/tab_nav/screens/profile/gql/Queries";
 import { firstConvoPage } from "../../../../global_state/FirstImpressionsState";
 import InstructionsModal from "./building_blocks/instruction_modal/InstructionsModal";
+import CoinBox from "../../../../global_building_blocks/coin_box/CoinBox";
+import BoltBox from "../../../../global_building_blocks/bolt_box/BoltBox";
 
 function getCheckLeft(uid: string, tid: string): (id: string) => boolean {
     if (uid === tid) {
@@ -838,6 +841,22 @@ const Convo: React.FC<Props> = (props) => {
                                             goBack={props.navigation.goBack}
                                             cvid={cvid}
                                             pid={pid}
+                                        />
+                                    </View>
+                                </View>
+                                <View style={styles.rewardContainer}>
+                                    <Text style={styles.rewardText}>
+                                        Convo reward
+                                    </Text>
+                                    <View style={styles.coinBoxContainer}>
+                                        <BoltBox
+                                            amount={convoReward(
+                                                postData?.post.responseCost
+                                            )}
+                                            boltSize={18}
+                                            fontSize={13}
+                                            boxColor={palette.lightForestGreen}
+                                            showBoltPlus
                                         />
                                     </View>
                                 </View>
