@@ -31,6 +31,7 @@ interface Props {
 
 const CommunityHeader: React.FC<Props> = (props) => {
     const [error, setError] = useState<string | null>("");
+
     const [loading, setLoading] = useState<boolean>(false);
 
     const { id: cmid } = props.community;

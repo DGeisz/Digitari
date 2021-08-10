@@ -123,6 +123,13 @@ export const styles = StyleSheet.create({
     split1Right: {
         ...basicLayouts.grid5,
     },
+    followContainer: {
+        minWidth: 100,
+    },
+    flyingBoltContainer: {
+        position: "absolute",
+        left: -27,
+    },
     followButton: {
         ...basicLayouts.grid5,
         flexDirection: "row",
@@ -132,16 +139,27 @@ export const styles = StyleSheet.create({
         borderColor: palette.deepBlue,
         borderRadius: 20,
     },
-    followButtonTextContainer: {
+    unFollowButtonTextContainer: {
+        ...basicLayouts.grid2,
+        flexDirection: "row",
         borderRightWidth: 1,
         borderRightColor: palette.softGray,
-        paddingRight: 10,
+        paddingRight: 2,
+    },
+    followButtonTextContainer: {
+        ...basicLayouts.grid2,
+        flexDirection: "row",
+        borderRightWidth: 1,
+        borderRightColor: palette.softGray,
+        paddingRight: 6,
     },
     followButtonText: {
         color: palette.hardGray,
         fontSize: 15,
         fontWeight: "bold",
         paddingVertical: 5,
+        marginRight: 5,
+        marginLeft: 5,
     },
     statsContainer: {
         flexDirection: "row",

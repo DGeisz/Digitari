@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     ActivityIndicator,
     Image,
+    LayoutAnimation,
     Linking,
     Text,
     TouchableOpacity,
@@ -10,6 +11,7 @@ import {
 import { styles } from "./ProfileHeaderStyles";
 import {
     FOLLOW_USER_PRICE,
+    FOLLOW_USER_REWARD,
     USER_TYPENAME,
     UserType,
 } from "../../../global_types/UserTypes";
@@ -18,7 +20,7 @@ import { toCommaRep, toRep } from "../../../global_utils/ValueRepUtils";
 import CoinBox from "../../coin_box/CoinBox";
 import { FontAwesome, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { palette } from "../../../global_styles/Palette";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import {
     FOLLOW_USER,
     FollowUserData,
@@ -46,6 +48,12 @@ import BoltsModal from "./building_blocks/bolts_modal/BoltsModal";
 import PicModal from "../../post/building_blocks/pic_modal/PicModal";
 import { levelTasksComplete } from "../../../view_tree/main/screens/level_up/utils/task_progress_utils";
 import { calculateLevel } from "../../../global_types/LevelTypes";
+import FlyingBolt from "../../flying_bolt/FlyingBolt";
+import {
+    GET_USER,
+    GetUserQueryData,
+    GetUserQueryVariables,
+} from "../../../view_tree/main/routes/tab_nav/screens/profile/gql/Queries";
 
 interface Props {
     user: UserType;
@@ -59,6 +67,41 @@ interface Props {
 
 const ProfileHeader: React.FC<Props> = (props) => {
     const [error, setError] = useState<string | null>("");
+    const [errorTimeout, setErrorTimeout] = useState<number | null>();
+
+    const setErrorMessage = (msg: string) => {
+        LayoutAnimation.easeInEaseOut();
+        setError(msg);
+
+        if (!!errorTimeout) {
+            clearTimeout(errorTimeout);
+        }
+
+        setErrorTimeout(
+            setTimeout(() => {
+                LayoutAnimation.easeInEaseOut();
+                setError("");
+
+                setErrorTimeout(null);
+            }, 4000)
+        );
+    };
+
+    /*
+     * Clean up the error flow after we dismount
+     */
+    useEffect(() => {
+        return () => {
+            setErrorTimeout((errorTimeout) => {
+                if (!!errorTimeout) {
+                    clearTimeout(errorTimeout);
+                }
+
+                return null;
+            });
+        };
+    }, []);
+
     const [loading, setLoading] = useState<boolean>(false);
 
     const [tierModalVisible, showTierModal] = useState<boolean>(false);
@@ -70,6 +113,15 @@ const ProfileHeader: React.FC<Props> = (props) => {
     const [picModalVisible, showPicModal] = useState<boolean>(false);
 
     const uid = localUid();
+
+    /*Fuse for flying bolt*/
+    const [fuse, setFuse] = useState<number>(0);
+
+    /*Get self*/
+    const { data: selfData } = useQuery<
+        GetUserQueryData,
+        GetUserQueryVariables
+    >(GET_USER, { variables: { uid } });
 
     const [follow] = useMutation<FollowUserData, FollowUserVariables>(
         FOLLOW_USER,
@@ -87,7 +139,7 @@ const ProfileHeader: React.FC<Props> = (props) => {
                 },
             },
             update(cache, { data: followData }) {
-                if (followData?.followUser) {
+                if (!!followData?.followUser) {
                     cache.modify({
                         id: cache.identify({
                             __typename: USER_TYPENAME,
@@ -154,6 +206,14 @@ const ProfileHeader: React.FC<Props> = (props) => {
                         fields: {
                             following(existing) {
                                 return existing - 1;
+                            },
+                            bolts(existing) {
+                                existing = parseInt(existing);
+
+                                return Math.max(
+                                    existing - FOLLOW_USER_REWARD,
+                                    0
+                                ).toString();
                             },
                         },
                     });
@@ -298,59 +358,198 @@ const ProfileHeader: React.FC<Props> = (props) => {
                                     color={palette.mediumGray}
                                 />
                             </TouchableOpacity>
-                        ) : loading ? (
-                            <ActivityIndicator
-                                color={palette.deepBlue}
-                                size="small"
-                            />
-                        ) : props.user.amFollowing ? (
-                            <TouchableOpacity
-                                style={styles.followButton}
-                                onPress={async () => {
-                                    setError(null);
-                                    setLoading(true);
-                                    try {
-                                        await unFollow();
-                                    } catch (e) {
-                                        setError(
-                                            "An error occurred.  Check your connection and try again"
-                                        );
-                                    } finally {
-                                        setLoading(false);
-                                    }
-                                }}
-                            >
-                                <Text style={styles.followButtonText}>
-                                    Unfollow
-                                </Text>
-                            </TouchableOpacity>
                         ) : (
-                            <TouchableOpacity
-                                style={styles.followButton}
-                                onPress={async () => {
-                                    setLoading(true);
-                                    try {
-                                        await follow();
-                                    } catch (e) {
-                                        setError(
-                                            `An error occurred.  Make sure your have ${FOLLOW_USER_PRICE} digicoin and try again`
-                                        );
-                                    } finally {
-                                        setLoading(false);
-                                    }
-                                }}
-                            >
-                                <View style={styles.followButtonTextContainer}>
-                                    <Text style={styles.followButtonText}>
-                                        Follow
-                                    </Text>
+                            <View style={styles.followContainer}>
+                                {loading ? (
+                                    <ActivityIndicator
+                                        color={palette.deepBlue}
+                                        size="small"
+                                    />
+                                ) : props.user.amFollowing ? (
+                                    <TouchableOpacity
+                                        style={styles.followButton}
+                                        onPress={async () => {
+                                            if (!!selfData?.user) {
+                                                const self = selfData.user;
+
+                                                if (
+                                                    parseInt(self.bolts) <
+                                                    FOLLOW_USER_REWARD
+                                                ) {
+                                                    setErrorMessage(
+                                                        `You need ${FOLLOW_USER_REWARD} bolts to unfollow ${props.user.firstName}`
+                                                    );
+                                                } else {
+                                                    setLoading(true);
+
+                                                    try {
+                                                        await unFollow();
+                                                    } catch (e) {
+                                                        if (__DEV__) {
+                                                            console.log(
+                                                                "This is unfollow error: ",
+                                                                e
+                                                            );
+                                                        }
+                                                        setErrorMessage(
+                                                            "Hmm... Something went wrong. Try again in a bit."
+                                                        );
+                                                    }
+                                                }
+                                            }
+                                        }}
+                                    >
+                                        <View
+                                            style={
+                                                styles.unFollowButtonTextContainer
+                                            }
+                                        >
+                                            <Text
+                                                style={styles.followButtonText}
+                                            >
+                                                Unfollow
+                                            </Text>
+                                        </View>
+                                        <BoltBox
+                                            amount={FOLLOW_USER_REWARD}
+                                            fontSize={15}
+                                            boltSize={20}
+                                            moveTextRight={2}
+                                        />
+                                    </TouchableOpacity>
+                                ) : (
+                                    <TouchableOpacity
+                                        style={styles.followButton}
+                                        onPress={async () => {
+                                            /*
+                                             * If we successfully fetched the user, we can do
+                                             * all our fancy checks (this should always work)
+                                             */
+                                            if (!!selfData?.user) {
+                                                const self = selfData.user;
+
+                                                if (
+                                                    parseInt(self.coin) <
+                                                    FOLLOW_USER_PRICE
+                                                ) {
+                                                    setErrorMessage(
+                                                        `You need ${FOLLOW_USER_PRICE} coin to follow ${props.user.firstName}!`
+                                                    );
+                                                } else if (
+                                                    self.following >=
+                                                    self.maxFollowing
+                                                ) {
+                                                    setErrorMessage(
+                                                        `You need to level-up to follow ${props.user.firstName}!`
+                                                    );
+                                                } else if (
+                                                    props.user.followers >=
+                                                    props.user.maxFollowers
+                                                ) {
+                                                    setErrorMessage(
+                                                        "This user needs to level-up before you can follow them!"
+                                                    );
+
+                                                    try {
+                                                        await follow({
+                                                            optimisticResponse: {
+                                                                followUser: undefined,
+                                                            },
+                                                        });
+                                                    } catch (e) {
+                                                        if (__DEV__) {
+                                                            console.log(
+                                                                "The follow didn't go through: ",
+                                                                e
+                                                            );
+                                                        }
+                                                    }
+                                                } else {
+                                                    /*
+                                                     * We've exhausted all the edge cases,
+                                                     * give this a go
+                                                     */
+                                                    setLoading(true);
+                                                    setFuse(1 + Math.random());
+
+                                                    try {
+                                                        await follow({
+                                                            optimisticResponse: {
+                                                                followUser: undefined,
+                                                            },
+                                                        });
+                                                    } catch (e) {
+                                                        if (__DEV__) {
+                                                            console.log(
+                                                                "This is follow error: ",
+                                                                e
+                                                            );
+                                                        }
+
+                                                        setErrorMessage(
+                                                            "Hmm... Something went wrong. Try again in a bit"
+                                                        );
+                                                    }
+
+                                                    setLoading(false);
+                                                }
+                                            } else {
+                                                /*
+                                                 * Otherwise, we just do a basic follow
+                                                 */
+                                                setLoading(true);
+
+                                                try {
+                                                    await follow();
+                                                } catch (e) {
+                                                    setErrorMessage(
+                                                        `An error occurred.  Make sure your have ${FOLLOW_USER_PRICE} digicoin and try again`
+                                                    );
+                                                }
+
+                                                setLoading(false);
+                                            }
+                                        }}
+                                    >
+                                        <View
+                                            style={
+                                                styles.followButtonTextContainer
+                                            }
+                                        >
+                                            <Text
+                                                style={styles.followButtonText}
+                                            >
+                                                Follow
+                                            </Text>
+                                            <BoltBox
+                                                amount={FOLLOW_USER_REWARD}
+                                                boxColor={
+                                                    palette.lightForestGreen
+                                                }
+                                                boltSize={16}
+                                                fontSize={12}
+                                                paddingVertical={4}
+                                                showBoltPlus
+                                                moveTextRight={2}
+                                            />
+                                        </View>
+                                        <CoinBox
+                                            amount={FOLLOW_USER_PRICE}
+                                            fontSize={15}
+                                            coinSize={23}
+                                        />
+                                    </TouchableOpacity>
+                                )}
+                                <View style={styles.flyingBoltContainer}>
+                                    <FlyingBolt
+                                        animationHeight={100}
+                                        amount={20}
+                                        boltSize={20}
+                                        fontSize={20}
+                                        fuse={fuse}
+                                    />
                                 </View>
-                                <CoinBox
-                                    amount={FOLLOW_USER_PRICE}
-                                    fontSize={15}
-                                    coinSize={23}
-                                />
-                            </TouchableOpacity>
+                            </View>
                         )}
                     </View>
                 </View>
