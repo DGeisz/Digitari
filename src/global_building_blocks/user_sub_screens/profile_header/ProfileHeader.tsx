@@ -396,6 +396,22 @@ const ProfileHeader: React.FC<Props> = (props) => {
                                                         );
                                                     }
                                                 }
+                                            } else {
+                                                setLoading(true);
+
+                                                try {
+                                                    await unFollow();
+                                                } catch (e) {
+                                                    if (__DEV__) {
+                                                        console.log(
+                                                            "This is unfollow error: ",
+                                                            e
+                                                        );
+                                                    }
+                                                    setErrorMessage(
+                                                        "Hmm... Something went wrong. Try again in a bit."
+                                                    );
+                                                }
                                             }
                                         }}
                                     >
