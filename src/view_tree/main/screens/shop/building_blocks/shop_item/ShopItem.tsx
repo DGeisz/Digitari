@@ -31,7 +31,7 @@ const ShopItem: React.FC<Props> = (props) => {
         props.ranking < props.requirement.ranking
     ) {
         visible = false;
-        requirementText = `Reach Ranking ${toCommaRep(
+        requirementText = `Have a Convo Streak of ${toCommaRep(
             props.requirement.ranking
         )}`;
     } else if (

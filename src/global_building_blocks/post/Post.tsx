@@ -402,8 +402,8 @@ const Post: React.FC<Props> = (props) => {
                 onConfirm={async () => {
                     setPostModalLoading(true);
 
-                    if (props.userBolts < props.post.responseCost) {
-                        setPostModalError("You don't have enough digibolts!");
+                    if (props.userCoin < props.post.responseCost) {
+                        setPostModalError("You don't have enough digicoin!");
                     } else {
                         try {
                             const { data } = await client.query<

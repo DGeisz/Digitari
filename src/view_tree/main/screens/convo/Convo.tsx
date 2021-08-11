@@ -857,6 +857,7 @@ const Convo: React.FC<Props> = (props) => {
                                             fontSize={13}
                                             boxColor={palette.lightForestGreen}
                                             showBoltPlus
+                                            moveTextRight={2}
                                         />
                                     </View>
                                 </View>
