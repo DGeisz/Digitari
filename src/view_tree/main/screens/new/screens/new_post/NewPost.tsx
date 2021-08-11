@@ -57,6 +57,11 @@ import { firstPost } from "../../../../../../global_state/FirstImpressionsState"
 import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
 import BoltBox from "../../../../../../global_building_blocks/bolt_box/BoltBox";
 import FlyingBolt from "../../../../../../global_building_blocks/flying_bolt/FlyingBolt";
+import { addBoltTransaction } from "../../../../hooks/use_realtime_updates/subscription_handlers/utils/cache_utils";
+import {
+    TransactionIcon,
+    TransactionTypesEnum,
+} from "../../../../../../global_types/TransactionTypes";
 
 interface Props {
     navigation: NewPostNavProp;
@@ -230,52 +235,65 @@ const NewPost: React.FC<Props> = (props) => {
                         }
                     })();
                 }
+
+                cache.modify({
+                    id: cache.identify({
+                        __typename: USER_TYPENAME,
+                        id: uid,
+                    }),
+                    fields: {
+                        coin(existing) {
+                            existing = parseInt(existing);
+
+                            if (!!recipients) {
+                                return Math.max(
+                                    existing - COST_PER_RECIPIENT * recipients,
+                                    0
+                                ).toString();
+                            }
+
+                            return existing.toString();
+                        },
+                        boltTransTotal(existing) {
+                            existing = parseInt(existing);
+
+                            if (!!recipients) {
+                                return (existing + recipients).toString();
+                            }
+
+                            return existing.toString();
+                        },
+                        coinSpent(existing) {
+                            existing = parseInt(existing);
+
+                            if (!!recipients) {
+                                return (
+                                    existing +
+                                    COST_PER_RECIPIENT * recipients
+                                ).toString();
+                            }
+
+                            return existing.toString();
+                        },
+                        postCount(existing) {
+                            return existing + 1;
+                        },
+                    },
+                });
+
+                addBoltTransaction(
+                    {
+                        tid: uid,
+                        time: Date.now().toString(),
+                        bolts: recipients,
+                        message: `You created a post: "${content}"`,
+                        transactionType: TransactionTypesEnum.Post,
+                        transactionIcon: TransactionIcon.Post,
+                        data: data.createPost.post.id,
+                    },
+                    cache
+                );
             }
-
-            cache.modify({
-                id: cache.identify({
-                    __typename: USER_TYPENAME,
-                    id: uid,
-                }),
-                fields: {
-                    coin(existing) {
-                        existing = parseInt(existing);
-
-                        if (!!recipients) {
-                            return Math.max(
-                                existing - COST_PER_RECIPIENT * recipients,
-                                0
-                            ).toString();
-                        }
-
-                        return existing.toString();
-                    },
-                    bolts(existing) {
-                        existing = parseInt(existing);
-
-                        if (!!recipients) {
-                            return (existing + recipients).toString();
-                        }
-
-                        return existing.toString();
-                    },
-                    coinSpent(existing) {
-                        existing = parseInt(existing);
-
-                        if (!!recipients) {
-                            return (
-                                existing +
-                                COST_PER_RECIPIENT * recipients
-                            ).toString();
-                        }
-
-                        return existing.toString();
-                    },
-                    postCount(existing) {
-                        return existing + 1;
-                    },
-                },
-            });
         },
     });
 

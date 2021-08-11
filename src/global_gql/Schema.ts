@@ -14,6 +14,7 @@ export const schema = gql`
         imgUrl: String
         remainingInvites: Int
         transTotal: String
+        boltTransTotal: String
 
         lastCollectionTime: String
 
@@ -34,6 +35,8 @@ export const schema = gql`
         # For wallet
         maxWallet: String
         walletBonusEnd: String
+
+        maxBoltWallet: String
 
         # Profile customizations
         nameFont: Int
@@ -197,8 +200,19 @@ export const schema = gql`
         data: String
     }
 
+    type BoltTransaction {
+        tid: ID
+        time: String
+        bolts: Int
+        message: String
+        transactionType: Int
+        transactionIcon: Int
+        data: String
+    }
+
     type EarningsReceipt {
         coin: Int
+        bolts: Int
         time: String
     }
 
@@ -286,6 +300,7 @@ export const schema = gql`
         following(sid: ID!, lastTime: String, entityType: Int): [FollowEntity]
         postResponseCheck(pid: ID): Boolean
         transactions(lastTime: String): [Transaction]
+        boltTransactions(lastTime: String): [BoltTransaction]
         allPosts(lastTime: String, skipReward: Boolean): [Post]
 
         validInviteCode(code: String): Boolean

@@ -53,6 +53,11 @@ import { firstBolt } from "../../global_state/FirstImpressionsState";
 import CoinBox from "../coin_box/CoinBox";
 import { convoReward } from "../../global_types/ConvoTypes";
 import { DOUBLE_NEWLINE } from "../../global_utils/StringUtils";
+import { addBoltTransaction } from "../../view_tree/main/hooks/use_realtime_updates/subscription_handlers/utils/cache_utils";
+import {
+    TransactionIcon,
+    TransactionTypesEnum,
+} from "../../global_types/TransactionTypes";
 
 const COMMUNITY_NAME_MAX_LEN = 30;
 
@@ -329,7 +334,7 @@ const Post: React.FC<Props> = (props) => {
                                                             DIGIBOLT_PRICE
                                                     ).toString();
                                                 },
-                                                bolts(existing) {
+                                                boltTransTotal(existing) {
                                                     existing = parseInt(
                                                         existing
                                                     );
@@ -340,6 +345,26 @@ const Post: React.FC<Props> = (props) => {
                                                 },
                                             },
                                         });
+
+                                        addBoltTransaction(
+                                            {
+                                                tid: uid,
+                                                time: Date.now().toString(),
+                                                bolts: currentBolts,
+                                                message: `You gave ${toCommaRep(
+                                                    currentBolts *
+                                                        DIGIBOLT_PRICE
+                                                )} coin to the post: "${
+                                                    props.post.content
+                                                }"`,
+                                                transactionType:
+                                                    TransactionTypesEnum.Post,
+                                                transactionIcon:
+                                                    TransactionIcon.Like,
+                                                data: pid,
+                                            },
+                                            cache
+                                        );
                                     }
                                 },
                             }));

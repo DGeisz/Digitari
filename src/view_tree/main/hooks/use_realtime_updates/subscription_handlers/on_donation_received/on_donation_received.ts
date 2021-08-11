@@ -80,7 +80,7 @@ export async function onDonationReceived(
             coin: coinTotal,
             message,
             transactionType: TransactionTypesEnum.User,
-            transactionIcon: TransactionIcon.Bolt,
+            transactionIcon: TransactionIcon.Like,
             data: uid,
             __typename: TRANSACTION_TYPENAME,
         };

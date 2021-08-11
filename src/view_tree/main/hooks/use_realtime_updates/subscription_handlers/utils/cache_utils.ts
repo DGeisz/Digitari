@@ -6,6 +6,9 @@ import {
 import { ApolloCache } from "@apollo/client";
 import { TransactionType } from "../../../../../../global_types/TransactionTypes";
 import {
+    BOLT_TRANSACTIONS,
+    BoltTransData,
+    BoltTransVariables,
     TRANSACTIONS,
     TransactionsData,
     TransactionsVariables,
@@ -51,6 +54,29 @@ export function addTransaction(
             query: TRANSACTIONS,
             data: {
                 transactions,
+            },
+        });
+    }
+}
+
+export function addBoltTransaction(
+    newTransaction: TransactionType,
+    cache: ApolloCache<any>
+) {
+    const transData = cache.readQuery<BoltTransData, BoltTransVariables>({
+        query: BOLT_TRANSACTIONS,
+    });
+
+    if (!!transData?.boltTransactions) {
+        const boltTransactions = [
+            newTransaction,
+            ...transData.boltTransactions,
+        ];
+
+        cache.writeQuery<BoltTransData, BoltTransVariables>({
+            query: BOLT_TRANSACTIONS,
+            data: {
+                boltTransactions,
             },
         });
     }

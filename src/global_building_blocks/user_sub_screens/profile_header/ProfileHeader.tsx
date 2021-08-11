@@ -56,6 +56,11 @@ import {
 } from "../../../view_tree/main/routes/tab_nav/screens/profile/gql/Queries";
 import DigicodeModal from "../../digicode_modal/DigicodeModal";
 import { DigicodeType } from "../../../global_types/DigicodeTypes";
+import { addBoltTransaction } from "../../../view_tree/main/hooks/use_realtime_updates/subscription_handlers/utils/cache_utils";
+import {
+    TransactionIcon,
+    TransactionTypesEnum,
+} from "../../../global_types/TransactionTypes";
 
 interface Props {
     user: UserType;
@@ -144,6 +149,8 @@ const ProfileHeader: React.FC<Props> = (props) => {
             },
             update(cache, { data: followData }) {
                 if (!!followData?.followUser) {
+                    setLoading(false);
+
                     cache.modify({
                         id: cache.identify({
                             __typename: USER_TYPENAME,
@@ -161,8 +168,28 @@ const ProfileHeader: React.FC<Props> = (props) => {
                                     0
                                 ).toString();
                             },
+                            boltTransTotal(existing) {
+                                existing = parseInt(existing);
+
+                                return (
+                                    existing + FOLLOW_USER_REWARD
+                                ).toString();
+                            },
                         },
                     });
+
+                    addBoltTransaction(
+                        {
+                            tid: uid,
+                            time: Date.now().toString(),
+                            bolts: FOLLOW_USER_REWARD,
+                            message: `You followed ${props.user.firstName}`,
+                            transactionIcon: TransactionIcon.User,
+                            transactionType: TransactionTypesEnum.User,
+                            data: props.user.id,
+                        },
+                        cache
+                    );
 
                     cache.modify({
                         id: cache.identify({

@@ -84,7 +84,7 @@ const NewResponse: React.FC<Props> = (props) => {
                         id: uid,
                     }),
                     fields: {
-                        bolts(existing) {
+                        coin(existing) {
                             existing = parseInt(existing);
 
                             return Math.max(

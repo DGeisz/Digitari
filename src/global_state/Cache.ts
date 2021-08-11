@@ -61,6 +61,25 @@ export const cache = new InMemoryCache({
                         }
                     },
                 },
+                boltTransactions: {
+                    keyArgs: [],
+                    //@ts-ignore
+                    merge(existing, incoming, { args: { lastTime } }) {
+                        if (existing && incoming) {
+                            if (!!lastTime) {
+                                return [...existing, ...incoming];
+                            } else {
+                                return incoming;
+                            }
+                        } else if (existing) {
+                            return existing;
+                        } else if (incoming) {
+                            return incoming;
+                        } else {
+                            return [];
+                        }
+                    },
+                },
                 allPosts: {
                     keyArgs: [],
                     //@ts-ignore

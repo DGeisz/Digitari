@@ -19,7 +19,10 @@ import { toRep } from "../../../../../../global_utils/ValueRepUtils";
 import { dateFormatter } from "../../../../../../global_utils/TimeRepUtils";
 import CoinBox from "../../../../../../global_building_blocks/coin_box/CoinBox";
 import { useMutation, useQuery } from "@apollo/client";
-import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
+import {
+    FOLLOW_USER_REWARD,
+    USER_TYPENAME,
+} from "../../../../../../global_types/UserTypes";
 import {
     FOLLOW_COMMUNITY,
     FollowCommunityData,
@@ -39,6 +42,11 @@ import BoltBox from "../../../../../../global_building_blocks/bolt_box/BoltBox";
 import FlyingBolt from "../../../../../../global_building_blocks/flying_bolt/FlyingBolt";
 import DigicodeModal from "../../../../../../global_building_blocks/digicode_modal/DigicodeModal";
 import { DigicodeType } from "../../../../../../global_types/DigicodeTypes";
+import { addBoltTransaction } from "../../../../hooks/use_realtime_updates/subscription_handlers/utils/cache_utils";
+import {
+    TransactionIcon,
+    TransactionTypesEnum,
+} from "../../../../../../global_types/TransactionTypes";
 
 interface Props {
     community: CommunityType;
@@ -133,8 +141,28 @@ const CommunityHeader: React.FC<Props> = (props) => {
                                 0
                             ).toString();
                         },
+                        boltTransTotal(existing) {
+                            existing = parseInt(existing);
+
+                            return (
+                                existing + FOLLOW_COMMUNITY_REWARD
+                            ).toString();
+                        },
                     },
                 });
+
+                addBoltTransaction(
+                    {
+                        tid: uid,
+                        time: Date.now().toString(),
+                        bolts: FOLLOW_USER_REWARD,
+                        message: `You followed ${props.community.name}`,
+                        transactionIcon: TransactionIcon.Community,
+                        transactionType: TransactionTypesEnum.Community,
+                        data: props.community.id,
+                    },
+                    cache
+                );
 
                 cache.modify({
                     id: cache.identify({
@@ -182,6 +210,14 @@ const CommunityHeader: React.FC<Props> = (props) => {
                     fields: {
                         following(existing) {
                             return existing - 1;
+                        },
+                        bolts(existing) {
+                            existing = parseInt(existing);
+
+                            return Math.max(
+                                existing - FOLLOW_COMMUNITY_REWARD,
+                                0
+                            ).toString();
                         },
                     },
                 });

@@ -369,25 +369,6 @@ const Convo: React.FC<Props> = (props) => {
                     },
                 });
 
-                /*
-                 * Update user's bolts
-                 */
-                cache.modify({
-                    id: cache.identify({
-                        __typename: USER_TYPENAME,
-                        id: uid,
-                    }),
-                    fields: {
-                        bolts(existing) {
-                            existing = parseInt(existing);
-
-                            return (
-                                existing - CONVO_ACTIVATION_COST
-                            ).toString();
-                        },
-                    },
-                });
-
                 const activeConvos = cache.readQuery<
                     ActiveConvosData,
                     ActiveConvosVariables

@@ -41,11 +41,14 @@ export interface UserType {
     coin: string;
     bolts: string;
     transTotal: string;
+    boltTransTotal: string;
 
     imgUrl?: string;
 
     walletBonusEnd: string;
     maxWallet: string;
+
+    maxBoltWallet: string;
 
     nameFont: NameFontsEnum;
     nameFontsPurchased: NameFontsEnum[];
