@@ -272,7 +272,7 @@ const CommunityHeader: React.FC<Props> = (props) => {
                                 color={palette.deepBlue}
                                 size="small"
                             />
-                        ) : !props.community.amFollowing ? (
+                        ) : props.community.amFollowing ? (
                             <TouchableOpacity
                                 style={styles.followButton}
                                 onPress={async () => {

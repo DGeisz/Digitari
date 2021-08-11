@@ -49,6 +49,9 @@ export interface Level {
     cost: number;
 }
 
+export const LEVEL_COST_MULTIPLIER = 1.2;
+export const LEVEL_REACH_MULTIPLIER = 1.3;
+
 export function calculateLevel(level: number): Level {
     /*
      * Start off with the built in levels
@@ -93,12 +96,8 @@ export function calculateLevel(level: number): Level {
                 level,
                 tasks: [
                     {
-                        task: LevelTaskType.FollowUsers,
-                        quantity: 2,
-                    },
-                    {
-                        task: LevelTaskType.FollowComms,
-                        quantity: 1,
+                        task: LevelTaskType.FollowUsersOrComms,
+                        quantity: 3,
                     },
                     {
                         task: LevelTaskType.CreatePosts,
@@ -441,11 +440,15 @@ export function calculateLevel(level: number): Level {
         rewards: [
             {
                 reward: LevelRewardType.MaxFollowers,
-                quantity: makePrettyNumber(100 * 1.6 ** (level - START_LEVEL)),
+                quantity: makePrettyNumber(
+                    100 * LEVEL_REACH_MULTIPLIER ** (level - START_LEVEL)
+                ),
             },
             {
                 reward: LevelRewardType.MaxPostRecipients,
-                quantity: makePrettyNumber(80 * 1.6 ** (level - START_LEVEL)),
+                quantity: makePrettyNumber(
+                    80 * LEVEL_REACH_MULTIPLIER ** (level - START_LEVEL)
+                ),
             },
             !!(level % 5)
                 ? {
@@ -458,10 +461,14 @@ export function calculateLevel(level: number): Level {
                   },
             {
                 reward: LevelRewardType.Coin,
-                quantity: makePrettyNumber(2000 * 1.2 ** (level - START_LEVEL)),
+                quantity: makePrettyNumber(
+                    2000 * LEVEL_COST_MULTIPLIER ** (level - START_LEVEL)
+                ),
             },
         ],
-        cost: makePrettyNumber(1000 * 1.2 ** (level - START_LEVEL)),
+        cost: makePrettyNumber(
+            1000 * LEVEL_COST_MULTIPLIER ** (level - START_LEVEL)
+        ),
     };
 }
 
