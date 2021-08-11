@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Entypo, FontAwesome, Ionicons } from "@expo/vector-icons";
 import MainFeed from "./screens/main_feed/MainFeed";
 import Wallet from "./screens/wallet/Wallet";
@@ -87,6 +87,12 @@ const TabNav: React.FC<Props> = (props) => {
         props.navigation.push("LevelUp");
     };
 
+    const [feedScrollIndex, setFeedScrollIndex] = useState<number>(0);
+    const [convosScrollIndex, setConvosScrollIndex] = useState<number>(0);
+    const [searchScrollIndex, setSearchScrollIndex] = useState<number>(0);
+    const [transScrollIndex, setTransScrollIndex] = useState<number>(0);
+    const [profileScrollIndex, setProfileScrollIndex] = useState<number>(0);
+
     const { data } = useQuery<GetUpdateFlagsData, GetUpdateFlagsVariables>(
         GET_UPDATE_FLAGS,
         {
@@ -120,6 +126,11 @@ const TabNav: React.FC<Props> = (props) => {
                     openSettings,
                     openShop,
                     openLevelUp,
+                    feedScrollIndex,
+                    convosScrollIndex,
+                    searchScrollIndex,
+                    transScrollIndex,
+                    profileScrollIndex,
                 }}
             >
                 <Tab.Navigator
@@ -134,6 +145,11 @@ const TabNav: React.FC<Props> = (props) => {
                     <Tab.Screen
                         name="MainFeed"
                         component={MainFeed}
+                        listeners={{
+                            tabPress() {
+                                setFeedScrollIndex((index) => index + 1);
+                            },
+                        }}
                         options={{
                             tabBarIcon: ({ color, size }) => (
                                 <View style={styles.iconContainer}>
@@ -149,6 +165,11 @@ const TabNav: React.FC<Props> = (props) => {
                     <Tab.Screen
                         name="Convos"
                         component={Convos}
+                        listeners={{
+                            tabPress() {
+                                setConvosScrollIndex((index) => index + 1);
+                            },
+                        }}
                         options={{
                             tabBarIcon: ({ color, size }) => (
                                 <View style={styles.iconContainer}>
@@ -165,6 +186,11 @@ const TabNav: React.FC<Props> = (props) => {
                     <Tab.Screen
                         name="Search"
                         component={Search}
+                        listeners={{
+                            tabPress() {
+                                setSearchScrollIndex((index) => index + 1);
+                            },
+                        }}
                         options={{
                             tabBarIcon: ({ color, size }) => (
                                 <FontAwesome
@@ -178,6 +204,11 @@ const TabNav: React.FC<Props> = (props) => {
                     <Tab.Screen
                         name="Wallet"
                         component={Wallet}
+                        listeners={{
+                            tabPress() {
+                                setTransScrollIndex((index) => index + 1);
+                            },
+                        }}
                         options={{
                             tabBarIcon: ({ color, size }) => {
                                 return (
@@ -199,6 +230,11 @@ const TabNav: React.FC<Props> = (props) => {
                     <Tab.Screen
                         name="Profile"
                         component={Profile}
+                        listeners={{
+                            tabPress() {
+                                setProfileScrollIndex((index) => index + 1);
+                            },
+                        }}
                         options={{
                             tabBarIcon: ({ color, size }) => (
                                 <FontAwesome

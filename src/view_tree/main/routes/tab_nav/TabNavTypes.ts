@@ -15,3 +15,4 @@ export type WalletNavProp = StackNavigationProp<TabNavTab, "Wallet">;
 export type ConvosNavProp = StackNavigationProp<TabNavTab, "Convos">;
 export type MainFeedNavProp = StackNavigationProp<TabNavTab, "MainFeed">;
 export type ProfileNavProp = StackNavigationProp<TabNavTab, "Profile">;
+export type SearchNavProp = StackNavigationProp<TabNavTab, "Search">;

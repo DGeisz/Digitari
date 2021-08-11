@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Animated, RefreshControl, Text, View } from "react-native";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { Animated, FlatList, RefreshControl, Text, View } from "react-native";
 import {
     NetworkStatus,
     useApolloClient,
@@ -72,6 +72,7 @@ const UserPosts: React.FC = () => {
     );
 
     const scrollPropsAndRef = useCollapsibleScene("UserPosts");
+
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
     const [fetchMoreLen, setFetchMoreLen] = useState<number>(0);

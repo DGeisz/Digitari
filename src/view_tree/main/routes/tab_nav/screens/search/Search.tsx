@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { styles } from "./SearchStyles";
 import { FlatList, Keyboard, Text, TouchableOpacity, View } from "react-native";
 import { TabNavContext } from "../../TabNavContext";
@@ -20,13 +20,27 @@ import { FontAwesome } from "@expo/vector-icons";
 import { palette } from "../../../../../../global_styles/Palette";
 import ErrorMessage from "../../../../../../global_building_blocks/error_message/ErrorMessage";
 import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
+import { useScrollToTopOnPress } from "../../hooks/ScrollToTop";
+import { SearchNavProp } from "../../TabNavTypes";
 
 const activeColor = palette.white;
 const inactiveColor = palette.mediumGray;
 
-const Search: React.FC = () => {
-    const { openNew, openCommunity, openUser } = useContext(TabNavContext);
+interface Props {
+    navigation: SearchNavProp;
+}
+
+const Search: React.FC<Props> = (props) => {
+    const { openNew, openCommunity, openUser, searchScrollIndex } = useContext(
+        TabNavContext
+    );
     const [query, setQuery] = useState<string>("");
+
+    const searchListRef = useRef<FlatList>(null);
+    const topListRef = useRef<FlatList>(null);
+
+    useScrollToTopOnPress(searchScrollIndex, props.navigation, searchListRef);
+    useScrollToTopOnPress(searchScrollIndex, props.navigation, topListRef);
 
     const [searchOption, setSearchOption] = useState<SearchEntityEnum | null>(
         null
@@ -185,6 +199,7 @@ const Search: React.FC = () => {
                             </View>
                         ) : (
                             <FlatList
+                                ref={searchListRef}
                                 style={basicLayouts.flexGrid1}
                                 data={data.search}
                                 renderItem={({ item }) => (
@@ -224,6 +239,7 @@ const Search: React.FC = () => {
                 ) : topData?.topResults ? (
                     topData.topResults.length !== 0 && (
                         <FlatList
+                            ref={topListRef}
                             style={basicLayouts.flexGrid1}
                             data={topData.topResults}
                             renderItem={({ item }) => (

@@ -49,6 +49,7 @@ import InstructionsModal from "./building_blocks/instructions_modal/Instructions
 import { millisToCountdown } from "../../../../../../global_utils/TimeRepUtils";
 import { firstWallet } from "../../../../../../global_state/FirstImpressionsState";
 import BoltBox from "../../../../../../global_building_blocks/bolt_box/BoltBox";
+import { useScrollToTopOnPress } from "../../hooks/ScrollToTop";
 
 const MIN_FILLER_WIDTH = 5;
 
@@ -63,9 +64,17 @@ interface Props {
 
 const Wallet: React.FC<Props> = (props) => {
     const uid = localUid();
-    const { openNew, openConvo, openUser, openShop, openPost } = useContext(
-        TabNavContext
-    );
+    const {
+        transScrollIndex,
+        openNew,
+        openConvo,
+        openUser,
+        openShop,
+        openPost,
+    } = useContext(TabNavContext);
+
+    const listRef = useRef<FlatList>(null);
+    useScrollToTopOnPress(transScrollIndex, props.navigation, listRef);
 
     const [transType, setTransType] = useState<TransType>(TransType.Coin);
 
@@ -223,8 +232,6 @@ const Wallet: React.FC<Props> = (props) => {
     }, [pageFocused, newTransactionUpdate, viewTransactionsScreen]);
 
     const [stillSpin, setStillSpin] = useState<boolean>(false);
-
-    const listRef = useRef<FlatList>(null);
 
     /*
      * Animation playground
