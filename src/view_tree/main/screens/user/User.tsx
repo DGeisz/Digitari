@@ -106,6 +106,7 @@ const User: React.FC<Props> = (props) => {
                                 uid: data?.user.id,
                             });
                         },
+                        isProfile: false,
                     }}
                 >
                     <Tab.Navigator

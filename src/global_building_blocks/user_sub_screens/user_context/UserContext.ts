@@ -12,10 +12,12 @@ interface UserContextType {
     openConvo: (cvid: string, pid: string) => void;
     openFollows: () => void;
     user?: UserType;
+    isProfile: boolean;
 }
 
 export const UserContext = React.createContext<UserContextType>({
     uid: "",
+    isProfile: false,
     openPost: () => {},
     openNewMessage: () => {},
     openCommunity: () => {},

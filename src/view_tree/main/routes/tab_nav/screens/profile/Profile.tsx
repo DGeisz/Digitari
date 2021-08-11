@@ -113,6 +113,7 @@ const Profile: React.FC = () => {
                                     user.id
                                 ),
                             user,
+                            isProfile: true,
                         }}
                     >
                         <Tab.Navigator

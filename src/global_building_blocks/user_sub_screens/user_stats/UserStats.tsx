@@ -1,5 +1,11 @@
-import React, { useContext, useState } from "react";
-import { Animated, RefreshControl, View } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import {
+    Animated,
+    FlatList,
+    RefreshControl,
+    ScrollView,
+    View,
+} from "react-native";
 import StatsHeader from "./building_blocks/stats_header/StatsHeader";
 import { useCollapsibleScene } from "react-native-collapsible-tab-view";
 import { UserType } from "../../../global_types/UserTypes";
@@ -9,11 +15,28 @@ import { styles } from "./UserStatsStyles";
 import UserStat from "./building_blocks/user_stat/UserStat";
 import { GENERAL_CONTENT_WIDTH } from "../../../global_constants/screen_constants";
 import { UserContext } from "../user_context/UserContext";
+import { TabNavContext } from "../../../view_tree/main/routes/tab_nav/TabNavContext";
 
 const UserStats: React.FC = () => {
     const context = useContext(UserContext);
 
+    const [jankyRef, setJankyRef] = useState<ScrollView | null>(null);
+
+    const setThisRef = (element: any) => {
+        setJankyRef(element);
+    };
+
+    const { profileScrollIndex } = useContext(TabNavContext);
     const scrollPropsAndRef = useCollapsibleScene("UserStats");
+
+    useEffect(() => {
+        if (context.isProfile) {
+            if (!!profileScrollIndex) {
+                !!jankyRef && jankyRef.scrollTo({ animated: true, y: 0 });
+            }
+        }
+    }, [profileScrollIndex]);
+
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
     if (!context.user) {
@@ -23,6 +46,10 @@ const UserStats: React.FC = () => {
     return (
         <Animated.ScrollView
             {...scrollPropsAndRef}
+            ref={(r: any) => {
+                scrollPropsAndRef.ref(r);
+                context.isProfile && setThisRef(r);
+            }}
             contentContainerStyle={{
                 ...scrollPropsAndRef.contentContainerStyle,
                 alignSelf: "center",

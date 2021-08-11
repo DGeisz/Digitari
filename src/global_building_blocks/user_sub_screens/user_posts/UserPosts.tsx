@@ -42,6 +42,8 @@ import { USER_TYPENAME } from "../../../global_types/UserTypes";
 import { addTransaction } from "../../../view_tree/main/hooks/use_realtime_updates/subscription_handlers/utils/cache_utils";
 import { LastPostsFetchContext } from "../../../view_tree/main/context/last_fetch_time_context";
 import { UserContext } from "../user_context/UserContext";
+import { PostType } from "../../../global_types/PostTypes";
+import { TabNavContext } from "../../../view_tree/main/routes/tab_nav/TabNavContext";
 
 const nextPostsReward = 40;
 
@@ -71,7 +73,23 @@ const UserPosts: React.FC = () => {
         DONATE_TO_POST
     );
 
+    const [jankyRef, setJankyRef] = useState<FlatList<PostType> | null>(null);
+
+    const setThisRef = (element: any) => {
+        setJankyRef(element);
+    };
+
+    const { profileScrollIndex } = useContext(TabNavContext);
     const scrollPropsAndRef = useCollapsibleScene("UserPosts");
+
+    useEffect(() => {
+        if (context.isProfile) {
+            if (!!profileScrollIndex) {
+                !!jankyRef &&
+                    jankyRef.scrollToOffset({ animated: true, offset: 0 });
+            }
+        }
+    }, [profileScrollIndex]);
 
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
@@ -102,6 +120,10 @@ const UserPosts: React.FC = () => {
     return (
         <Animated.FlatList
             {...scrollPropsAndRef}
+            ref={(r) => {
+                scrollPropsAndRef.ref(r);
+                context.isProfile && setThisRef(r);
+            }}
             ListHeaderComponent={() => {
                 if (
                     !data?.userPosts &&
