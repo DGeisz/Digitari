@@ -272,7 +272,7 @@ const CommunityHeader: React.FC<Props> = (props) => {
                                 color={palette.deepBlue}
                                 size="small"
                             />
-                        ) : props.community.amFollowing ? (
+                        ) : !props.community.amFollowing ? (
                             <TouchableOpacity
                                 style={styles.followButton}
                                 onPress={async () => {
@@ -407,8 +407,10 @@ const CommunityHeader: React.FC<Props> = (props) => {
                                 </View>
                                 <CoinBox
                                     amount={FOLLOW_COMMUNITY_PRICE}
-                                    fontSize={15}
+                                    fontSize={14}
                                     coinSize={23}
+                                    showCoinMinus
+                                    fontColor={palette.danger}
                                 />
                             </TouchableOpacity>
                         )}

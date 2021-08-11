@@ -32,7 +32,6 @@ import ConvoMsg from "../../../../global_building_blocks/convo_msg/ConvoMsg";
 import ResponseResponse from "./building_blocks/response_response/ResponseResponse";
 import { localHid, localUid } from "../../../../global_state/UserState";
 import {
-    CONVO_ACTIVATION_COST,
     CONVO_TYPENAME,
     convoReward,
     ConvoStatus,
@@ -85,7 +84,7 @@ import {
     TransactionType,
     TransactionTypesEnum,
 } from "../../../../global_types/TransactionTypes";
-import { addTransaction } from "../../hooks/use_realtime_updates/subscription_handlers/utils/cache_utils";
+import { addBoltTransaction } from "../../hooks/use_realtime_updates/subscription_handlers/utils/cache_utils";
 import ConvoOptionsModal from "./building_blocks/convo_options_modal/ConvoOptionsModal";
 import { PostType } from "../../../../global_types/PostTypes";
 import { MessageType } from "../../../../global_types/MessageTypes";
@@ -96,7 +95,6 @@ import {
 } from "../../routes/tab_nav/screens/profile/gql/Queries";
 import { firstConvoPage } from "../../../../global_state/FirstImpressionsState";
 import InstructionsModal from "./building_blocks/instruction_modal/InstructionsModal";
-import CoinBox from "../../../../global_building_blocks/coin_box/CoinBox";
 import BoltBox from "../../../../global_building_blocks/bolt_box/BoltBox";
 
 function getCheckLeft(uid: string, tid: string): (id: string) => boolean {
@@ -441,29 +439,34 @@ const Convo: React.FC<Props> = (props) => {
                     },
                 });
 
-                /*
-                 * Increase the user's ranking, successfulConvos, and
-                 * increase their trans total by the convo reward
-                 */
-                cache.modify({
-                    id: cache.identify({
-                        __typename: USER_TYPENAME,
-                        id: uid,
-                    }),
-                    fields: {
-                        ranking(existing) {
-                            return existing + 1;
-                        },
-                        successfulConvos(existing) {
-                            return existing + 1;
-                        },
-                    },
-                });
-
-                /*
-                 * Add a transaction
-                 */
                 if (!!convoData?.convo) {
+                    /*
+                     * Increase the user's ranking, successfulConvos, and
+                     * increase their bolt trans total by the convo reward
+                     */
+                    cache.modify({
+                        id: cache.identify({
+                            __typename: USER_TYPENAME,
+                            id: uid,
+                        }),
+                        fields: {
+                            boltTransTotal(existing) {
+                                existing = parseInt(existing);
+
+                                return (
+                                    existing +
+                                    convoReward(convoData.convo.responseCost)
+                                ).toString();
+                            },
+                            ranking(existing) {
+                                return existing + 1;
+                            },
+                            successfulConvos(existing) {
+                                return existing + 1;
+                            },
+                        },
+                    });
+
                     let transactionMessage: string;
 
                     if (uid === convoData.convo.tid) {
@@ -479,14 +482,14 @@ const Convo: React.FC<Props> = (props) => {
                     const transaction: TransactionType = {
                         tid: uid,
                         time: Date.now().toString(),
-                        coin: 0,
+                        bolts: convoReward(convoData.convo.responseCost),
                         message: transactionMessage,
                         transactionType: TransactionTypesEnum.Convo,
                         transactionIcon: TransactionIcon.Convo,
                         data: `${cvid}:${convoData.convo.pid}`,
                     };
 
-                    addTransaction(transaction, cache);
+                    addBoltTransaction(transaction, cache);
                 }
             },
         }

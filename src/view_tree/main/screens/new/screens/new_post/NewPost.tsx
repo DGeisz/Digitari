@@ -986,9 +986,10 @@ const NewPost: React.FC<Props> = (props) => {
                                         (!!recipients ? recipients : 0)
                                     }
                                     showAbbreviated={false}
-                                    fontColor={palette.hardGray}
+                                    showCoinMinus
+                                    fontColor={palette.danger}
                                     fontSize={18}
-                                    coinSize={22}
+                                    coinSize={25}
                                 />
                             </TouchableOpacity>
                         )}

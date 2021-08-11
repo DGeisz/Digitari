@@ -13,6 +13,7 @@ interface Props {
     coinSize?: number;
     boxColor?: string;
     showCoinPlus?: boolean;
+    showCoinMinus?: boolean;
     showAbbreviated?: boolean;
     paddingVertical?: number;
     paddingRight?: number;
@@ -77,6 +78,7 @@ export default class CoinBox extends React.Component<Props> {
                         ]}
                     >
                         {(this.props.showCoinPlus ? "+" : "") +
+                            (!!this.props.showCoinMinus ? "-" : "") +
                             (this.props.showAbbreviated
                                 ? toRep(this.props.amount)
                                 : toCommaRep(this.props.amount))}

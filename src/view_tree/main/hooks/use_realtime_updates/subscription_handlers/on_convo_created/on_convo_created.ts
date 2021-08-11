@@ -8,6 +8,12 @@ import {
 import { ConvoOrder } from "../../../../../../global_types/ConvoTypes";
 import { localUid } from "../../../../../../global_state/UserState";
 import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
+import { addTransaction } from "../utils/cache_utils";
+import {
+    TransactionIcon,
+    TransactionTypesEnum,
+} from "../../../../../../global_types/TransactionTypes";
+import { addNewReceipt } from "../../../../../../global_state/CoinUpdates";
 
 export function onConvoCreated(
     options: OnSubscriptionDataOptions<ConvoCreatedData>
@@ -80,15 +86,24 @@ export function onConvoCreated(
             });
         }
 
+        const uid = localUid();
+
         /*
          * Notify user of new convo and transaction updates
          */
         cache.modify({
             id: cache.identify({
                 __typename: USER_TYPENAME,
-                id: localUid(),
+                id: uid,
             }),
             fields: {
+                transTotal(existing) {
+                    existing = parseInt(existing);
+
+                    return (
+                        existing + data.convoCreated.responseCost
+                    ).toString();
+                },
                 newConvoUpdate() {
                     return true;
                 },
@@ -99,5 +114,23 @@ export function onConvoCreated(
                 },
             },
         });
+
+        addNewReceipt(data.convoCreated.responseCost);
+
+        /*
+         * Add a coin transaction for the reward
+         */
+        addTransaction(
+            {
+                tid: uid,
+                time: Date.now().toString(),
+                coin: data.convoCreated.responseCost,
+                message: `Your post received a new response: "${data.convoCreated.initialMsg}"`,
+                transactionIcon: TransactionIcon.Convo,
+                transactionType: TransactionTypesEnum.Convo,
+                data: `${data.convoCreated.id}:${data.convoCreated.pid}`,
+            },
+            cache
+        );
     }
 }

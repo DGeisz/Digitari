@@ -33,9 +33,17 @@ import {
     COMMUNITY_NAME_MAX_LEN,
     COMMUNITY_TYPENAME,
     CREATE_COMMUNITY_PRICE,
+    CREATE_COMMUNITY_REWARD,
 } from "../../../../../../global_types/CommunityTypes";
 import { useAuthKeyboardBuffer } from "../../../../../auth/building_blocks/use_auth_keyboard_buffer/UseAuthKeyboardBuffer";
 import { toCommaRep } from "../../../../../../global_utils/ValueRepUtils";
+import BoltBox from "../../../../../../global_building_blocks/bolt_box/BoltBox";
+import FlyingBolt from "../../../../../../global_building_blocks/flying_bolt/FlyingBolt";
+import { addBoltTransaction } from "../../../../hooks/use_realtime_updates/subscription_handlers/utils/cache_utils";
+import {
+    TransactionIcon,
+    TransactionTypesEnum,
+} from "../../../../../../global_types/TransactionTypes";
 
 interface Props {
     navigation: NewCommunityNavProp;
@@ -55,12 +63,16 @@ const NewCommunity: React.FC<Props> = (props) => {
         },
     });
 
+    const [name, setName] = useState<string>("");
+
     const [createCommunity] = useMutation<
         CreateCommunityMutationData,
         CreateCommunityMutationVariables
     >(CREATE_COMMUNITY, {
         update(cache, { data }) {
             if (!!data?.createCommunity) {
+                setFuse(1 + Math.random());
+
                 cache.modify({
                     id: cache.identify({
                         __typename: USER_TYPENAME,
@@ -75,8 +87,28 @@ const NewCommunity: React.FC<Props> = (props) => {
                                 0
                             ).toString();
                         },
+                        boltTransTotal(existing) {
+                            existing = parseInt(existing);
+
+                            return (
+                                existing + CREATE_COMMUNITY_REWARD
+                            ).toString();
+                        },
                     },
                 });
+
+                addBoltTransaction(
+                    {
+                        tid: uid,
+                        time: Date.now().toString(),
+                        bolts: CREATE_COMMUNITY_REWARD,
+                        message: `You created "${name}"`,
+                        transactionType: TransactionTypesEnum.Community,
+                        transactionIcon: TransactionIcon.Community,
+                        data: data.createCommunity.id,
+                    },
+                    cache
+                );
 
                 cache.writeFragment({
                     fragment: CREATE_COMMUNITY_FRAGMENT,
@@ -96,11 +128,12 @@ const NewCommunity: React.FC<Props> = (props) => {
         },
     });
 
-    const [name, setName] = useState<string>("");
     const [description, setDescription] = useState<string>("");
 
     const [error, setError] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
+
+    const [fuse, setFuse] = useState<number>(0);
 
     const keyboardHeight = useAuthKeyboardBuffer();
 
@@ -161,7 +194,7 @@ const NewCommunity: React.FC<Props> = (props) => {
                         </Text>
                     )}
                     <View style={styles.buffer} />
-                    <Text style={styles.fieldTitle}>Community</Text>
+                    <Text style={styles.fieldTitle}>Description</Text>
                     <TextInput
                         placeholder="What should members post about?"
                         style={styles.fieldInput}
@@ -199,15 +232,36 @@ const NewCommunity: React.FC<Props> = (props) => {
                                     <Text style={styles.createButtonText}>
                                         Create
                                     </Text>
+                                    <BoltBox
+                                        amount={CREATE_COMMUNITY_REWARD}
+                                        boxColor={palette.lightForestGreen}
+                                        showBoltPlus
+                                        boltSize={22}
+                                        fontSize={16}
+                                        paddingVertical={4}
+                                        moveTextRight={2}
+                                        paddingRight={3}
+                                    />
                                 </View>
                                 <CoinBox
                                     fontSize={18}
-                                    coinSize={25}
+                                    coinSize={28}
+                                    fontColor={palette.danger}
+                                    showCoinMinus
                                     amount={CREATE_COMMUNITY_PRICE}
                                     showAbbreviated={false}
                                 />
                             </TouchableOpacity>
                         )}
+                        <View style={styles.flyingBoltContainer}>
+                            <FlyingBolt
+                                animationHeight={200}
+                                amount={CREATE_COMMUNITY_REWARD}
+                                boltSize={35}
+                                fontSize={28}
+                                fuse={fuse}
+                            />
+                        </View>
                     </View>
                     <View style={{ height: keyboardHeight }} />
                 </TouchableOpacity>

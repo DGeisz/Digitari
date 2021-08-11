@@ -591,8 +591,10 @@ const ProfileHeader: React.FC<Props> = (props) => {
                                         </View>
                                         <CoinBox
                                             amount={FOLLOW_USER_PRICE}
-                                            fontSize={15}
+                                            fontSize={14}
                                             coinSize={23}
+                                            showCoinMinus
+                                            fontColor={palette.danger}
                                         />
                                     </TouchableOpacity>
                                 )}
