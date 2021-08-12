@@ -320,6 +320,8 @@ export const schema = gql`
             email: String!
         ): User
 
+        levelUp: User
+
         checkInUser: User
 
         registerPush(token: String!): Boolean

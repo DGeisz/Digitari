@@ -96,8 +96,12 @@ export function calculateLevel(level: number): Level {
                 level,
                 tasks: [
                     {
-                        task: LevelTaskType.FollowUsersOrComms,
-                        quantity: 3,
+                        task: LevelTaskType.FollowUsers,
+                        quantity: 2,
+                    },
+                    {
+                        task: LevelTaskType.FollowComms,
+                        quantity: 1,
                     },
                     {
                         task: LevelTaskType.CreatePosts,

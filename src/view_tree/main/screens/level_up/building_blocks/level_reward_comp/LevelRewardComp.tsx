@@ -12,7 +12,7 @@ import Modal from "react-native-modal";
 import { modalStyles } from "../../../../../../global_styles/OptionsModalStyles";
 import { getRewardDescription } from "../../utils/reward_description_utils";
 
-const REWARDS_QUANTA = 500;
+const REWARDS_QUANTA = 600;
 
 interface Props {
     reward: LevelReward;
@@ -28,7 +28,7 @@ const LevelRewardComp: React.FC<Props> = (props) => {
         const animation = Animated.loop(
             Animated.sequence([
                 Animated.timing(rewardsScale, {
-                    toValue: 1.05,
+                    toValue: 1.08,
                     useNativeDriver: true,
                     duration: REWARDS_QUANTA,
                 }),

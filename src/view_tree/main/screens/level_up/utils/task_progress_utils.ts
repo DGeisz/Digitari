@@ -1,5 +1,6 @@
 import {
     Level,
+    LevelRewardType,
     LevelTask,
     LevelTaskType,
 } from "../../../../../global_types/LevelTypes";
@@ -70,4 +71,47 @@ export function taskCompleted(task: LevelTask, user: UserType): boolean {
 
 export function levelTasksComplete(level: Level, user: UserType): boolean {
     return level.tasks.every((task) => taskCompleted(task, user));
+}
+
+export function applyRewards(level: Level, user: UserType): UserType {
+    const newUser: UserType = { ...user };
+
+    for (let reward of level.rewards) {
+        switch (reward.reward) {
+            case LevelRewardType.Coin:
+                newUser.transTotal += reward.quantity;
+                break;
+
+            case LevelRewardType.MaxFollowers:
+                newUser.maxFollowers += reward.quantity;
+                break;
+
+            case LevelRewardType.MaxFollowing:
+                newUser.maxFollowing += reward.quantity;
+                break;
+
+            case LevelRewardType.MaxPostRecipients:
+                newUser.maxPostRecipients += reward.quantity;
+                break;
+
+            case LevelRewardType.Invites:
+                newUser.remainingInvites += reward.quantity;
+                break;
+        }
+    }
+
+    newUser.level += 1;
+    newUser.levelUsersFollowed = 0;
+    newUser.levelsCommsFollowed = 0;
+    newUser.levelCoinCollected = 0;
+    newUser.levelPostsCreated = 0;
+    newUser.levelPostBoltsBought = 0;
+    newUser.levelInvitedAndJoined = 0;
+    newUser.levelNewResponses = 0;
+    newUser.levelSuccessfulConvos = 0;
+    newUser.levelCommsCreated = 0;
+    newUser.levelCoinSpentOnPosts = (0).toString();
+    newUser.levelCoinEarnedFromPosts = (0).toString();
+
+    return newUser;
 }

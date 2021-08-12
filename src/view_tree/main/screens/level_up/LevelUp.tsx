@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { Animated, ScrollView, Text, View } from "react-native";
 import { styles } from "./LevelUpStyles";
 import LevelTaskComp from "./building_blocks/level_task/LevelTask";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import {
     GET_USER,
     GetUserQueryData,
@@ -11,14 +11,13 @@ import {
 import { localUid } from "../../../../global_state/UserState";
 import LoadingWheel from "../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import ErrorMessage from "../../../../global_building_blocks/error_message/ErrorMessage";
-import {
-    calculateLevel,
-    selectThreeTasks,
-} from "../../../../global_types/LevelTypes";
+import { calculateLevel } from "../../../../global_types/LevelTypes";
 import LevelRewardComp from "./building_blocks/level_reward_comp/LevelRewardComp";
 import LockBuySelect from "../shop/building_blocks/lock_buy_select/LockBuySelect";
 import { globalScreenStyles } from "../../../../global_styles/GlobalScreenStyles";
-import { levelTasksComplete } from "./utils/task_progress_utils";
+import { applyRewards, levelTasksComplete } from "./utils/task_progress_utils";
+import { LEVEL_UP, LevelUpData, LevelUpVariables } from "./gql/Mutations";
+import { USER_TYPENAME } from "../../../../global_types/UserTypes";
 
 const LevelUp: React.FC = () => {
     const uid = localUid();
@@ -32,6 +31,88 @@ const LevelUp: React.FC = () => {
         },
     });
 
+    const [levelUp] = useMutation<LevelUpData, LevelUpVariables>(LEVEL_UP, {
+        update(cache, { data }) {
+            if (!!data?.levelUp) {
+                /*
+                 * Update the user
+                 */
+                const newUser = data.levelUp;
+
+                /*
+                 * This is probably unnecessary, but I just
+                 * need to ensure we got it right
+                 */
+                cache.modify({
+                    id: cache.identify({
+                        __typename: USER_TYPENAME,
+                        id: uid,
+                    }),
+                    fields: {
+                        level() {
+                            return newUser.level;
+                        },
+                        bolts() {
+                            return newUser.bolts;
+                        },
+                        newTransactionUpdate() {
+                            return newUser.newTransactionUpdate;
+                        },
+                        transTotal() {
+                            return newUser.transTotal;
+                        },
+                        maxFollowers() {
+                            return newUser.maxFollowers;
+                        },
+                        maxFollowing() {
+                            return newUser.maxFollowing;
+                        },
+                        maxPostRecipients() {
+                            return newUser.maxPostRecipients;
+                        },
+                        remainingInvites() {
+                            return newUser.remainingInvites;
+                        },
+
+                        levelUsersFollowed() {
+                            return newUser.levelUsersFollowed;
+                        },
+                        levelsCommsFollowed() {
+                            return newUser.levelsCommsFollowed;
+                        },
+                        levelCoinCollected() {
+                            return newUser.levelCoinCollected;
+                        },
+                        levelPostsCreated() {
+                            return newUser.levelPostsCreated;
+                        },
+                        levelPostBoltsBought() {
+                            return newUser.levelPostBoltsBought;
+                        },
+                        levelInvitedAndJoined() {
+                            return newUser.levelInvitedAndJoined;
+                        },
+                        levelNewResponses() {
+                            return newUser.levelNewResponses;
+                        },
+                        levelSuccessfulConvos() {
+                            return newUser.levelSuccessfulConvos;
+                        },
+                        levelCommsCreated() {
+                            return newUser.levelCommsCreated;
+                        },
+                        levelCoinSpentOnPosts() {
+                            return newUser.levelCoinSpentOnPosts;
+                        },
+                        levelCoinEarnedFromPosts() {
+                            return newUser.levelCoinEarnedFromPosts;
+                        },
+                    },
+                });
+            }
+        },
+    });
+
     if (loading) {
         return <LoadingWheel />;
     }
@@ -41,7 +122,7 @@ const LevelUp: React.FC = () => {
     }
 
     if (!!data?.user) {
-        const level = calculateLevel(22);
+        const level = calculateLevel(data.user.level + 1);
 
         const tasksComplete = levelTasksComplete(level, data.user);
 
@@ -79,15 +160,27 @@ const LevelUp: React.FC = () => {
                 <LockBuySelect
                     alreadyOwns={false}
                     purchaseTitle={"Level Up"}
-                    userBolts={2000}
-                    forceLock={tasksComplete}
+                    userBolts={parseInt(data.user.bolts)}
+                    forceLock={!tasksComplete}
                     lockedMessage={
                         !tasksComplete
                             ? "You need to complete all the tasks!"
                             : undefined
                     }
                     description={"level up"}
-                    onConfirm={() => {}}
+                    onConfirm={async () => {
+                        try {
+                            await levelUp({
+                                optimisticResponse: {
+                                    levelUp: applyRewards(level, data?.user),
+                                },
+                            });
+                        } catch (e) {
+                            if (__DEV__) {
+                                console.log("Level up error: ", e);
+                            }
+                        }
+                    }}
                     price={level.cost}
                     onSelect={() => {}}
                 />
