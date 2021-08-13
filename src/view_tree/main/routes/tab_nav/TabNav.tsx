@@ -4,7 +4,6 @@ import MainFeed from "./screens/main_feed/MainFeed";
 import Wallet from "./screens/wallet/Wallet";
 import Convos from "./screens/convos/Convos";
 import Profile from "./screens/profile/Profile";
-import Search from "./screens/search/Search";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { TabNavProp } from "../../MainEntryNavTypes";
 import { TabNavContext } from "./TabNavContext";
@@ -21,6 +20,7 @@ import {
 } from "./gql/Queries";
 import CoinIndicator from "./building_blocks/coin_indicator/CoinIndicator";
 import { firstTimeOpeningApp } from "../../../../global_state/FirstImpressionsState";
+import SearchAndScan from "./screens/search/SearchAndScan";
 
 const Tab = createBottomTabNavigator<TabNavTab>();
 
@@ -185,7 +185,7 @@ const TabNav: React.FC<Props> = (props) => {
                     />
                     <Tab.Screen
                         name="Search"
-                        component={Search}
+                        component={SearchAndScan}
                         listeners={{
                             tabPress() {
                                 setSearchScrollIndex((index) => index + 1);

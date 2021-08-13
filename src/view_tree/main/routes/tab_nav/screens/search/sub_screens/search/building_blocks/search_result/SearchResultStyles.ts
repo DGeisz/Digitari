@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
-import { palette } from "../../../../../../../../global_styles/Palette";
-import { basicLayouts } from "../../../../../../../../global_styles/BasicLayouts";
-import { GENERAL_CONTENT_WIDTH } from "../../../../../../../../global_constants/screen_constants";
+import { palette } from "../../../../../../../../../../global_styles/Palette";
+import { basicLayouts } from "../../../../../../../../../../global_styles/BasicLayouts";
+import { GENERAL_CONTENT_WIDTH } from "../../../../../../../../../../global_constants/screen_constants";
 
 const iconSideLength = 45;
 

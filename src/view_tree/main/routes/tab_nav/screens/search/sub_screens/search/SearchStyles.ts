@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
-import { palette } from "../../../../../../global_styles/Palette";
-import { basicLayouts } from "../../../../../../global_styles/BasicLayouts";
+import { palette } from "../../../../../../../../global_styles/Palette";
+import { basicLayouts } from "../../../../../../../../global_styles/BasicLayouts";
 
 export const styles = StyleSheet.create({
     headerContainer: {

@@ -4,10 +4,10 @@ import { styles } from "./SearchResultStyles";
 import {
     SearchEntityEnum,
     SearchEntityType,
-} from "../../../../../../../../global_types/SearchEntity";
+} from "../../../../../../../../../../global_types/SearchEntity";
 import { FontAwesome } from "@expo/vector-icons";
-import { palette } from "../../../../../../../../global_styles/Palette";
-import { toRep } from "../../../../../../../../global_utils/ValueRepUtils";
+import { palette } from "../../../../../../../../../../global_styles/Palette";
+import { toRep } from "../../../../../../../../../../global_utils/ValueRepUtils";
 
 interface Props {
     result: SearchEntityType;
