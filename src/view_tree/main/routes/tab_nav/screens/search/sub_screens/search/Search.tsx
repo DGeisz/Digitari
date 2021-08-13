@@ -64,6 +64,10 @@ const Search: React.FC<Props> = (props) => {
     });
 
     useEffect(() => {
+        console.log(error, topError);
+    }, [error, topError]);
+
+    useEffect(() => {
         if (!!query) {
             searchQuery({
                 variables: {

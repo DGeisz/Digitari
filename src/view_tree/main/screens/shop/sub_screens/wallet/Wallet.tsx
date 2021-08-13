@@ -115,27 +115,6 @@ const WalletShopPage: React.FC = () => {
         },
     });
 
-    const [boostWallet] = useMutation<BoostWalletData, BoostWalletVariables>(
-        BOOST_WALLET,
-        {
-            update(cache, { data }) {
-                if (!!data?.boostWallet) {
-                    cache.modify({
-                        id: cache.identify({
-                            __typename: USER_TYPENAME,
-                            id: uid,
-                        }),
-                        fields: {
-                            walletBonusEnd() {
-                                return (Date.now() + millisInDay).toString();
-                            },
-                        },
-                    });
-                }
-            },
-        }
-    );
-
     if (!data?.user || loading) {
         return <LoadingWheel />;
     }
@@ -143,8 +122,6 @@ const WalletShopPage: React.FC = () => {
     if (!!error) {
         return <ErrorMessage refresh={refetch} />;
     }
-
-    const boostEnd = parseInt(data.user.walletBonusEnd);
 
     const [nextPrice, nextSize] = calculateWalletUpgrade(
         parseInt(data.user.maxWallet)
@@ -298,66 +275,6 @@ const WalletShopPage: React.FC = () => {
                         />
                     </View>
                 </View>
-                {/*<View style={shopStyles.basicEntryContainer}>*/}
-                {/*    <Text style={shopStyles.entryTitleText}>Boost wallet</Text>*/}
-                {/*    <View style={shopStyles.descriptionContainer}>*/}
-                {/*        <Text style={shopStyles.entryDescription}>*/}
-                {/*            Tired of always maxing out your wallet? Must be hard*/}
-                {/*            being such a baller 🤑*/}
-                {/*        </Text>*/}
-                {/*    </View>*/}
-                {/*    <View style={shopStyles.entryItemContainer}>*/}
-                {/*        <Text style={shopStyles.entryBigDescription}>*/}
-                {/*            Boost your wallet to get{" "}*/}
-                {/*            <Text style={shopStyles.boldBlue}>24 hours</Text> of{" "}*/}
-                {/*            <Text style={shopStyles.boldBlue}>*/}
-                {/*                infinite wallet capacity*/}
-                {/*            </Text>*/}
-                {/*            .*/}
-                {/*        </Text>*/}
-                {/*        {boostEnd > currentTime ? (*/}
-                {/*            <View style={styles.bonusOuterContainer}>*/}
-                {/*                <View style={styles.bonusInnerContainer}>*/}
-                {/*                    <Text style={styles.bonusTitle}>*/}
-                {/*                        Time remaining*/}
-                {/*                    </Text>*/}
-                {/*                    <Text style={styles.bonusTimeRemaining}>*/}
-                {/*                        {millisToCountdown(*/}
-                {/*                            boostEnd - currentTime*/}
-                {/*                        )}*/}
-                {/*                    </Text>*/}
-                {/*                </View>*/}
-                {/*            </View>*/}
-                {/*        ) : (*/}
-                {/*            <LockBuySelect*/}
-                {/*                alreadyOwns={false}*/}
-                {/*                loading={boostLoading}*/}
-                {/*                purchaseTitle={"Boost"}*/}
-                {/*                userBolts={parseInt(data.user.bolts)}*/}
-                {/*                description={"boost your wallet"}*/}
-                {/*                onConfirm={async () => {*/}
-                {/*                    setBoostLoading(true);*/}
-
-                {/*                    try {*/}
-                {/*                        await boostWallet();*/}
-                {/*                        await refetch();*/}
-                {/*                    } catch (e) {*/}
-                {/*                        if (__DEV__) {*/}
-                {/*                            console.log(*/}
-                {/*                                "Error boosting wallet: ",*/}
-                {/*                                e*/}
-                {/*                            );*/}
-                {/*                        }*/}
-                {/*                    }*/}
-
-                {/*                    setBoostLoading(false);*/}
-                {/*                }}*/}
-                {/*                price={BOOST_WALLET_PRICE}*/}
-                {/*                onSelect={() => {}}*/}
-                {/*            />*/}
-                {/*        )}*/}
-                {/*    </View>*/}
-                {/*</View>*/}
             </View>
         </ScrollView>
     );

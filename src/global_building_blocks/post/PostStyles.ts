@@ -38,6 +38,7 @@ export const styles = StyleSheet.create({
         height: iconSideLength,
         width: iconSideLength,
         borderRadius: 30,
+        backgroundColor: palette.semiSoftGray,
     },
     userIconContainer: {
         ...basicLayouts.grid5,
