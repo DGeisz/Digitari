@@ -26,7 +26,7 @@ const InstructionsModal: React.FC<Props> = (props) => {
                     Welcome to the Shop, my friend!
                     {DOUBLE_NEWLINE}
                     Use digibolts you've collected from posts to upgrade your
-                    account and unlock profile customizations!
+                    account and unlock goodies!
                 </Text>
             </TutorialModal>
         </Modal>

@@ -8,7 +8,6 @@ import { openedFirstWallet } from "../../../../../../../../global_state/FirstImp
 
 enum Screens {
     Intro,
-    InfiniteWallet,
     CollectPrompt,
 }
 
@@ -28,15 +27,15 @@ const InstructionsModal: React.FC<Props> = (props) => {
                     top={false}
                     onPress={() => {
                         LayoutAnimation.easeInEaseOut();
-                        setScreen(Screens.InfiniteWallet);
+                        setScreen(Screens.CollectPrompt);
                     }}
                     footerText={"Next"}
                 >
                     <Text style={instructionStyles.instructionText}>
                         This is your Wallet, where all your dreams come true 🤩
                         {DOUBLE_NEWLINE}
-                        Whenever you earn digicoin, it's stored here in
-                        transactions.
+                        Whenever you earn digicoin or digibolts, they're stored
+                        here in transactions.
                         {DOUBLE_NEWLINE}
                         Then when you're ready, slap that "Collect" button to
                         transfer your earnings to your account!
@@ -44,25 +43,25 @@ const InstructionsModal: React.FC<Props> = (props) => {
                 </TutorialModal>
             );
             break;
-        case Screens.InfiniteWallet:
-            modalContent = (
-                <TutorialModal
-                    top={false}
-                    footerText={"Next"}
-                    onPress={() => {
-                        LayoutAnimation.easeInEaseOut();
-                        setScreen(Screens.CollectPrompt);
-                    }}
-                >
-                    <Text style={instructionStyles.instructionText}>
-                        As a welcoming gift, you get 48 hours of an infinite
-                        wallet! 🎁 {DOUBLE_NEWLINE}
-                        After that, your wallet's max capacity goes down to 100
-                        coin, but you can upgrade it in the Shop.
-                    </Text>
-                </TutorialModal>
-            );
-            break;
+        // case Screens.InfiniteWallet:
+        //     modalContent = (
+        //         <TutorialModal
+        //             top={false}
+        //             footerText={"Next"}
+        //             onPress={() => {
+        //                 LayoutAnimation.easeInEaseOut();
+        //                 setScreen(Screens.CollectPrompt);
+        //             }}
+        //         >
+        //             <Text style={instructionStyles.instructionText}>
+        //                 As a welcoming gift, you get 48 hours of an infinite
+        //                 wallet! 🎁 {DOUBLE_NEWLINE}
+        //                 After that, your wallet's max capacity goes down to 100
+        //                 coin, but you can upgrade it in the Shop.
+        //             </Text>
+        //         </TutorialModal>
+        //     );
+        //     break;
         case Screens.CollectPrompt:
             modalContent = (
                 <TutorialModal
@@ -74,8 +73,8 @@ const InstructionsModal: React.FC<Props> = (props) => {
                     }}
                 >
                     <Text style={instructionStyles.instructionText}>
-                        Looks like you earned 1,000 coin for joining Digitari!
-                        How nice of us 😉{DOUBLE_NEWLINE}
+                        Looks like you earned 300 coin for joining Digitari! How
+                        nice of us 😉{DOUBLE_NEWLINE}
                         Hit "Collect" to collect your coin.
                     </Text>
                 </TutorialModal>

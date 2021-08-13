@@ -34,7 +34,7 @@ const InstructionsModal: React.FC<Props> = (props) => {
                     footerText={"Next"}
                 >
                     <Text style={instructionStyles.instructionText}>
-                        Here's your feed! ...or what will be your feed.{" "}
+                        Here's your feed!
                         {DOUBLE_NEWLINE}
                         Once you follow other users or communities you'll start
                         receiving their new posts here.
@@ -56,8 +56,10 @@ const InstructionsModal: React.FC<Props> = (props) => {
                     }}
                 >
                     <Text style={instructionStyles.instructionText}>
-                        For now, head over to "All Posts" and tap the first
-                        digibolt you see.
+                        For now, tap the first digibolt you see!
+                        {DOUBLE_NEWLINE}
+                        If there aren't any posts in your feed, just head over
+                        to "All Posts."
                     </Text>
                     <View style={instructionStyles.contentContainer}>
                         <BoltBox

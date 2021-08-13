@@ -38,7 +38,7 @@ const InstructionsModal: React.FC<Props> = (props) => {
                     <Text style={instructionStyles.instructionText}>
                         Wanna post something? {DOUBLE_NEWLINE}
                         Good idea -- posting is a great way to make a TON of
-                        digicoin. 👊
+                        coin and bolts. 👊
                     </Text>
                 </TutorialModal>
             );
@@ -118,6 +118,9 @@ const InstructionsModal: React.FC<Props> = (props) => {
                         After you post, we'll choose that number of people from
                         your selected audience and send your post directly to
                         their feeds. Easy, peasy😊
+                        {DOUBLE_NEWLINE}
+                        Plus, you get a digibolt for every person you send your
+                        post to!
                     </Text>
                 </TutorialModal>
             );
