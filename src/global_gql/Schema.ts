@@ -368,6 +368,7 @@ export const schema = gql`
 
         boostWallet: Boolean
         upgradeWallet: User
+        upgradeBoltWallet: User
 
         buySticker(sticker: Int!): Int
         selectSticker(sticker: Int!): Int
