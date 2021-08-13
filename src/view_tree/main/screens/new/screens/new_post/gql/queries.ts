@@ -6,6 +6,7 @@ export const GET_SELF = gql`
             id
             followers
             maxPostRecipients
+            level
             coin
         }
     }
@@ -16,6 +17,7 @@ export interface GetSelfData {
         followers: number;
         coin: string;
         maxPostRecipients: number;
+        level: number;
     };
 }
 

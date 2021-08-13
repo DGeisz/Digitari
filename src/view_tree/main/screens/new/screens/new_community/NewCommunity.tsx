@@ -27,7 +27,7 @@ import {
 } from "./gql/Mutations";
 import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
 import { localUid } from "../../../../../../global_state/UserState";
-import { NewCommunityNavProp } from "../../../../MainEntryNavTypes";
+import { NewPostNavProp } from "../../../../MainEntryNavTypes";
 import {
     COMMUNITY_DESCRIPTION_MAX_LEN,
     COMMUNITY_NAME_MAX_LEN,
@@ -46,7 +46,7 @@ import {
 } from "../../../../../../global_types/TransactionTypes";
 
 interface Props {
-    navigation: NewCommunityNavProp;
+    navigation: NewPostNavProp;
 }
 
 const NewCommunity: React.FC<Props> = (props) => {
@@ -119,11 +119,11 @@ const NewCommunity: React.FC<Props> = (props) => {
                     data: data.createCommunity,
                 });
 
-                props.navigation.navigate("NewPost", {
+                props.navigation.replace("Community", {
                     cmid: data.createCommunity.id,
                 });
             } else {
-                props.navigation.navigate("NewPost", {});
+                props.navigation.goBack();
             }
         },
     });
@@ -234,17 +234,16 @@ const NewCommunity: React.FC<Props> = (props) => {
                                     </Text>
                                     <BoltBox
                                         amount={CREATE_COMMUNITY_REWARD}
-                                        boxColor={palette.lightForestGreen}
-                                        showBoltPlus
                                         boltSize={22}
-                                        fontSize={16}
-                                        paddingVertical={4}
+                                        showBoltPlus
                                         moveTextRight={2}
-                                        paddingRight={3}
+                                        paddingRight={8}
+                                        boxColor={palette.lightForestGreen}
+                                        fontSize={16}
                                     />
                                 </View>
                                 <CoinBox
-                                    fontSize={18}
+                                    fontSize={17}
                                     coinSize={28}
                                     fontColor={palette.danger}
                                     showCoinMinus

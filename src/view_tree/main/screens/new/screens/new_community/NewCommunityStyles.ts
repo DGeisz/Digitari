@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
         flexDirection: "row",
         borderRightWidth: 1,
         borderRightColor: palette.lightGray,
-        paddingRight: 10,
+        paddingRight: 7,
         marginRight: 3,
     },
     createButtonText: {

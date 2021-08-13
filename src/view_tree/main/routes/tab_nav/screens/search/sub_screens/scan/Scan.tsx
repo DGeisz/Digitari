@@ -99,8 +99,8 @@ const Scan: React.FC<Props> = (props) => {
                 <Text style={styles.scannerText}>
                     Wanna skip a search? Scan your friend's digicode to open
                     their profile. {DOUBLE_NEWLINE}
-                    Just tap a user or community's name to access their
-                    digicode.
+                    Just tap a user or community's name on their profile to
+                    access their digicode.
                 </Text>
             </View>
         );

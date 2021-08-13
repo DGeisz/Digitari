@@ -15,6 +15,12 @@ export const styles = StyleSheet.create({
         paddingTop: 10,
         paddingHorizontal: 20,
     },
+    levelUpMessage: {
+        textAlign: "center",
+        fontWeight: "bold",
+        fontSize: 18,
+        color: palette.semiSoftGray,
+    },
     targetContainer: {
         ...basicLayouts.grid2,
         flexWrap: "wrap",
@@ -233,11 +239,11 @@ export const styles = StyleSheet.create({
         flexDirection: "row",
         borderRightWidth: 1,
         borderRightColor: palette.lightGray,
-        paddingRight: 10,
+        paddingRight: 7,
         marginRight: 3,
     },
     postButtonText: {
-        marginRight: 5,
+        marginRight: 8,
         fontSize: 18,
         fontWeight: "bold",
     },

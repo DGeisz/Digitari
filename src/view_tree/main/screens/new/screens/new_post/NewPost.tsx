@@ -466,6 +466,16 @@ const NewPost: React.FC<Props> = (props) => {
     const postReady = !!content && typeof recipients !== "undefined";
 
     if (!!user) {
+        if (user.level === 0) {
+            return (
+                <View style={styles.newPostContainer}>
+                    <Text style={styles.levelUpMessage}>
+                        Reach level 1 to create a post!
+                    </Text>
+                </View>
+            );
+        }
+
         return (
             <>
                 <InstructionsModal
@@ -605,20 +615,6 @@ const NewPost: React.FC<Props> = (props) => {
                                                 </Text>
                                             </>
                                         )}
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        style={styles.createCommunityButton}
-                                        onPress={() =>
-                                            props.navigation.navigate(
-                                                "NewCommunity"
-                                            )
-                                        }
-                                    >
-                                        <Text
-                                            style={styles.createCommunityText}
-                                        >
-                                            + Create Community
-                                        </Text>
                                     </TouchableOpacity>
                                 </>
                             )}
@@ -988,7 +984,7 @@ const NewPost: React.FC<Props> = (props) => {
                                     showAbbreviated={false}
                                     showCoinMinus
                                     fontColor={palette.danger}
-                                    fontSize={18}
+                                    fontSize={17}
                                     coinSize={25}
                                 />
                             </TouchableOpacity>

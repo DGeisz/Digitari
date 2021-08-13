@@ -31,7 +31,7 @@ interface Props {
 }
 
 const Search: React.FC<Props> = (props) => {
-    const { openNew, openCommunity, openUser, searchScrollIndex } = useContext(
+    const { openCommunity, openUser, searchScrollIndex } = useContext(
         TabNavContext
     );
     const [query, setQuery] = useState<string>("");
@@ -270,7 +270,6 @@ const Search: React.FC<Props> = (props) => {
                     )
                 ) : null}
             </TouchableOpacity>
-            <NewButton openNew={openNew} />
         </>
     );
 };

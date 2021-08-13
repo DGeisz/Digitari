@@ -44,6 +44,7 @@ import {
     GetUserQueryVariables,
 } from "./routes/tab_nav/screens/profile/gql/Queries";
 import UpdateIndicator from "./routes/tab_nav/building_blocks/update_indicator/UpdateIndicator";
+import New from "./screens/new/New";
 
 const RootStack = createStackNavigator<MainEntryStack>();
 
@@ -257,8 +258,8 @@ const MainEntry: React.FC = () => {
                 />
                 <RootStack.Screen
                     name="NewPost"
-                    component={NewPost}
-                    options={{ title: "New Post" }}
+                    component={New}
+                    options={{ title: "New" }}
                 />
                 <RootStack.Screen
                     name="Invite"
