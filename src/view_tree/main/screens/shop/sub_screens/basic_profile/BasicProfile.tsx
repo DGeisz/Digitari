@@ -43,6 +43,11 @@ import {
     UpdateProfilePicData,
     UpdateProfilePicVariables,
 } from "./gql/Mutations";
+import {
+    BIO_LEVEL,
+    BIO_LINK_LEVEL,
+    PROFILE_PIC_LEVEL,
+} from "../../../../../../global_types/LevelTypes";
 
 interface Props {
     user: UserType;
@@ -278,37 +283,44 @@ const BasicProfile: React.FC<Props> = (props) => {
                             </Text>
                         </TouchableOpacity>
                     </View>
-                    <LockBuySelect
-                        active={imgChanged}
-                        loading={imgLoading}
-                        userBolts={parseInt(data.user.bolts)}
-                        description={"set your profile picture"}
-                        purchaseTitle={"Set Pic"}
-                        itemTitle={"pic"}
-                        price={CHANGE_PROFILE_PIC_PRICE}
-                        alreadyOwns={false}
-                        onConfirm={async () => {
-                            if (imgChanged && !!imgUrl && !!img) {
-                                setImgLoading(true);
+                    {data.user.level < PROFILE_PIC_LEVEL ? (
+                        <Text style={styles.levelGuardText}>
+                            Reach level {PROFILE_PIC_LEVEL} to set your profile
+                            pic
+                        </Text>
+                    ) : (
+                        <LockBuySelect
+                            active={imgChanged}
+                            loading={imgLoading}
+                            userBolts={parseInt(data.user.bolts)}
+                            description={"set your profile picture"}
+                            purchaseTitle={"Set Pic"}
+                            itemTitle={"pic"}
+                            price={CHANGE_PROFILE_PIC_PRICE}
+                            alreadyOwns={false}
+                            onConfirm={async () => {
+                                if (imgChanged && !!imgUrl && !!img) {
+                                    setImgLoading(true);
 
-                                try {
-                                    await updateProfilePic({
-                                        variables: {
-                                            imgName: imgUrl,
-                                        },
-                                    });
-                                } catch (e) {
-                                    if (__DEV__) {
-                                        console.log("Change img error", e);
+                                    try {
+                                        await updateProfilePic({
+                                            variables: {
+                                                imgName: imgUrl,
+                                            },
+                                        });
+                                    } catch (e) {
+                                        if (__DEV__) {
+                                            console.log("Change img error", e);
+                                        }
                                     }
-                                }
 
-                                setImgLoading(false);
-                                setImgUrlChanged(false);
-                            }
-                        }}
-                        onSelect={() => {}}
-                    />
+                                    setImgLoading(false);
+                                    setImgUrlChanged(false);
+                                }
+                            }}
+                            onSelect={() => {}}
+                        />
+                    )}
                 </View>
                 <View style={shopStyles.basicEntryContainer}>
                     <Text style={shopStyles.entryTitleText}>Bio</Text>
@@ -335,41 +347,47 @@ const BasicProfile: React.FC<Props> = (props) => {
                     <Text style={styles.remainingCharacters}>
                         {MAX_BIO_LENGTH - bio.length}
                     </Text>
-                    <LockBuySelect
-                        userBolts={parseInt(data.user.bolts)}
-                        active={bioChanged}
-                        description={"set your bio"}
-                        purchaseTitle={"Set Bio"}
-                        itemTitle={"bio"}
-                        price={CHANGE_BIO_PRICE}
-                        alreadyOwns={false}
-                        onSelect={() => {}}
-                        onConfirm={async () => {
-                            if (bioChanged) {
-                                setBioLoading(true);
+                    {data.user.level < BIO_LEVEL ? (
+                        <Text style={styles.levelGuardText}>
+                            Reach level {BIO_LEVEL} to set your bio
+                        </Text>
+                    ) : (
+                        <LockBuySelect
+                            userBolts={parseInt(data.user.bolts)}
+                            active={bioChanged}
+                            description={"set your bio"}
+                            purchaseTitle={"Set Bio"}
+                            itemTitle={"bio"}
+                            price={CHANGE_BIO_PRICE}
+                            alreadyOwns={false}
+                            onSelect={() => {}}
+                            onConfirm={async () => {
+                                if (bioChanged) {
+                                    setBioLoading(true);
 
-                                try {
-                                    await updateBio({
-                                        variables: {
-                                            bio,
-                                        },
-                                        optimisticResponse: {
-                                            updateBio: {
+                                    try {
+                                        await updateBio({
+                                            variables: {
                                                 bio,
                                             },
-                                        },
-                                    });
-                                } catch (e) {
-                                    if (__DEV__) {
-                                        console.log("Change bio error", e);
+                                            optimisticResponse: {
+                                                updateBio: {
+                                                    bio,
+                                                },
+                                            },
+                                        });
+                                    } catch (e) {
+                                        if (__DEV__) {
+                                            console.log("Change bio error", e);
+                                        }
                                     }
-                                }
 
-                                setBioLoading(false);
-                                setBioChanged(false);
-                            }
-                        }}
-                    />
+                                    setBioLoading(false);
+                                    setBioChanged(false);
+                                }
+                            }}
+                        />
+                    )}
                 </View>
                 <View style={shopStyles.basicEntryContainer}>
                     <Text style={shopStyles.entryTitleText}>Bio link</Text>
@@ -393,42 +411,48 @@ const BasicProfile: React.FC<Props> = (props) => {
                             )
                         }
                     />
-                    <LockBuySelect
-                        userBolts={parseInt(data.user.bolts)}
-                        active={linkChanged}
-                        loading={linkLoading}
-                        description={"set your bio link"}
-                        purchaseTitle={"Set Link"}
-                        itemTitle="link"
-                        price={CHANGE_LINK_PRICE}
-                        alreadyOwns={false}
-                        onSelect={() => {}}
-                        onConfirm={async () => {
-                            if (linkChanged) {
-                                setLinkLoading(true);
+                    {data.user.level < BIO_LINK_LEVEL ? (
+                        <Text style={styles.levelGuardText}>
+                            Reach level {BIO_LINK_LEVEL} to set your bio link
+                        </Text>
+                    ) : (
+                        <LockBuySelect
+                            userBolts={parseInt(data.user.bolts)}
+                            active={linkChanged}
+                            loading={linkLoading}
+                            description={"set your bio link"}
+                            purchaseTitle={"Set Link"}
+                            itemTitle="link"
+                            price={CHANGE_LINK_PRICE}
+                            alreadyOwns={false}
+                            onSelect={() => {}}
+                            onConfirm={async () => {
+                                if (linkChanged) {
+                                    setLinkLoading(true);
 
-                                try {
-                                    await updateBioLink({
-                                        variables: {
-                                            link: bioLink,
-                                        },
-                                        optimisticResponse: {
-                                            updateBioLink: {
+                                    try {
+                                        await updateBioLink({
+                                            variables: {
                                                 link: bioLink,
                                             },
-                                        },
-                                    });
-                                } catch (e) {
-                                    if (__DEV__) {
-                                        console.log("Change link error", e);
+                                            optimisticResponse: {
+                                                updateBioLink: {
+                                                    link: bioLink,
+                                                },
+                                            },
+                                        });
+                                    } catch (e) {
+                                        if (__DEV__) {
+                                            console.log("Change link error", e);
+                                        }
                                     }
-                                }
 
-                                setLinkLoading(false);
-                                setLinkChanged(false);
-                            }
-                        }}
-                    />
+                                    setLinkLoading(false);
+                                    setLinkChanged(false);
+                                }
+                            }}
+                        />
+                    )}
                 </View>
                 <View style={{ height: !!bufferHeight ? bufferHeight : 40 }} />
             </View>

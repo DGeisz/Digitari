@@ -1,6 +1,10 @@
 import { XXHash32 } from "ts-xxhash";
 import { makePrettyNumber } from "./UserTypes";
 
+export const PROFILE_PIC_LEVEL = 3;
+export const BIO_LEVEL = 5;
+export const BIO_LINK_LEVEL = 8;
+
 export enum LevelTaskType {
     FollowUsers,
     FollowComms,

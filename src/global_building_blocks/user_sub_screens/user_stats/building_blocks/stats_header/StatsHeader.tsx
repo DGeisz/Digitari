@@ -97,8 +97,8 @@ const StatsHeader: React.FC<Props> = (props) => {
                             },
                         }) => {
                             if (!tookWidth) {
-                                setTookWidth(true);
                                 setFillWidth(width);
+                                setTookWidth(true);
                             }
                         }}
                     >

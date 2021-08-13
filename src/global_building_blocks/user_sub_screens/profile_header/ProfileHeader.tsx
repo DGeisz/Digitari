@@ -271,7 +271,7 @@ const ProfileHeader: React.FC<Props> = (props) => {
     );
 
     const tasksCompleted = levelTasksComplete(
-        calculateLevel(props.user.level),
+        calculateLevel(props.user.level + 1),
         props.user
     );
 
