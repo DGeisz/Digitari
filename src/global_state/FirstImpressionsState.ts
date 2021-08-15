@@ -9,7 +9,8 @@ const DELETE_INSTRUCTION_FLAGS = false;
  */
 export const firstTimeOpeningApp = makeVar<boolean>(true);
 
-const FIRST_OPEN_KEY = "FIRST_OPEN_KEY";
+const openVersion = 1;
+const FIRST_OPEN_KEY = `FIRST_OPEN_KEY${openVersion}`;
 
 AsyncStorage.getItem(FIRST_OPEN_KEY).then((raw) => {
     if (__DEV__) {
@@ -36,7 +37,8 @@ export function removeAppFirstTime() {
  */
 export const firstProfile = makeVar<boolean>(true);
 
-const FIRST_PROFILE_KEY = "FIRST_PROFILE_KEY";
+const profileVersion = 1;
+const FIRST_PROFILE_KEY = `FIRST_PROFILE_KEY${profileVersion}`;
 
 AsyncStorage.getItem(FIRST_PROFILE_KEY).then((raw) => {
     if (!!raw && !FORCE_INSTRUCTIONS) {
@@ -151,7 +153,8 @@ export function removeFirstFeed() {
  */
 export const firstBolt = makeVar<boolean>(true);
 
-const FIRST_BOLT = "FIRST_BOLT";
+const boltVersion = 1;
+const FIRST_BOLT = `FIRST_BOLT${boltVersion}`;
 
 AsyncStorage.getItem(FIRST_BOLT).then((raw) => {
     if (!!raw && !FORCE_INSTRUCTIONS) {

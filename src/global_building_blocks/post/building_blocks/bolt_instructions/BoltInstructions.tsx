@@ -7,8 +7,6 @@ import {
     openedFirstFeed,
     tappedFirstBolt,
 } from "../../../../global_state/FirstImpressionsState";
-import BoltBox from "../../../bolt_box/BoltBox";
-import { palette } from "../../../../global_styles/Palette";
 import Modal from "react-native-modal";
 
 enum Screens {
@@ -37,12 +35,14 @@ const BoltInstructions: React.FC<Props> = (props) => {
                     footerText={"Next"}
                 >
                     <Text style={instructionStyles.instructionText}>
-                        You collected your first digibolt! 🎉{DOUBLE_NEWLINE}
-                        You'll use digibolts to upgrade your account in the
-                        Shop.
+                        You collected your first digibolt! 🎉 You'll use
+                        digibolts to level up your account.
                         {DOUBLE_NEWLINE}
                         Each post has a couple digibolts for you to collect, and
                         each bolt costs 10 digicoin.
+                        {DOUBLE_NEWLINE}
+                        You can also earn bolts by creating posts, following
+                        people, and responding to posts!
                     </Text>
                 </TutorialModal>
             );
