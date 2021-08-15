@@ -10,6 +10,7 @@ public class BasePackageList {
         new expo.modules.splashscreen.SplashScreenPackage(),
         new expo.modules.application.ApplicationPackage(),
         new expo.modules.av.AVPackage(),
+        new expo.modules.barcodescanner.BarCodeScannerPackage(),
         new expo.modules.constants.ConstantsPackage(),
         new expo.modules.contacts.ContactsPackage(),
         new expo.modules.errorrecovery.ErrorRecoveryPackage(),
