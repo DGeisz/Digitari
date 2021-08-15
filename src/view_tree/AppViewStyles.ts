@@ -3,7 +3,7 @@ import { basicLayouts } from "../global_styles/BasicLayouts";
 import { palette } from "../global_styles/Palette";
 import { GENERAL_CONTENT_WIDTH } from "../global_constants/screen_constants";
 
-const imgWidth = GENERAL_CONTENT_WIDTH - 40;
+const imgWidth = GENERAL_CONTENT_WIDTH - 100;
 const imgHeight = 0.7 * imgWidth;
 
 export const styles = StyleSheet.create({
