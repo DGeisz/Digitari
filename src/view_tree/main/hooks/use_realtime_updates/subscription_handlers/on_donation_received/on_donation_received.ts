@@ -19,7 +19,6 @@ import {
     USER_TYPENAME,
 } from "../../../../../../global_types/UserTypes";
 import { addNewReceipt } from "../../../../../../global_state/CoinUpdates";
-import { challengeCheck } from "../../../../../../global_gql/challenge_check/challenge_check";
 import { toRep } from "../../../../../../global_utils/ValueRepUtils";
 
 export async function onDonationReceived(
@@ -81,7 +80,7 @@ export async function onDonationReceived(
             coin: coinTotal,
             message,
             transactionType: TransactionTypesEnum.User,
-            transactionIcon: TransactionIcon.Bolt,
+            transactionIcon: TransactionIcon.Like,
             data: uid,
             __typename: TRANSACTION_TYPENAME,
         };
@@ -117,7 +116,5 @@ export async function onDonationReceived(
         });
 
         addTransaction(transaction, cache);
-
-        challengeCheck(cache);
     }
 }

@@ -15,6 +15,12 @@ export const styles = StyleSheet.create({
         paddingTop: 10,
         paddingHorizontal: 20,
     },
+    levelUpMessage: {
+        textAlign: "center",
+        fontWeight: "bold",
+        fontSize: 18,
+        color: palette.semiSoftGray,
+    },
     targetContainer: {
         ...basicLayouts.grid2,
         flexWrap: "wrap",
@@ -191,13 +197,26 @@ export const styles = StyleSheet.create({
     },
     recipientsInput: {
         fontSize: 20,
-        marginBottom: 20,
+        marginBottom: 10,
+    },
+    maxRecipientsText: {
+        fontSize: 12,
+        fontWeight: "bold",
+        color: palette.semiSoftGray,
     },
     postFooter: {
         ...basicLayouts.grid5,
         opacity: 0.2,
         marginBottom: 40,
         marginTop: 20,
+    },
+    flyingBoltContainer: {
+        ...basicLayouts.grid2,
+        transform: [
+            {
+                translateY: 40,
+            },
+        ],
     },
     postErrorMessage: {
         fontSize: 16,
@@ -206,7 +225,9 @@ export const styles = StyleSheet.create({
         marginBottom: 10,
     },
     postButton: {
+        ...basicLayouts.grid5,
         flexDirection: "row",
+        flexWrap: "wrap",
         borderWidth: 2,
         borderColor: palette.deepBlue,
         paddingHorizontal: 20,
@@ -214,13 +235,16 @@ export const styles = StyleSheet.create({
         borderRadius: 50,
     },
     postButtonTextContainer: {
+        ...basicLayouts.grid2,
+        flexDirection: "row",
         borderRightWidth: 1,
         borderRightColor: palette.lightGray,
-        paddingRight: 10,
+        paddingRight: 7,
         marginRight: 3,
     },
     postButtonText: {
-        fontSize: 20,
+        marginRight: 8,
+        fontSize: 18,
         fontWeight: "bold",
     },
 });

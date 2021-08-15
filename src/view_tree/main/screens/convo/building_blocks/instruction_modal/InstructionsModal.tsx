@@ -77,9 +77,8 @@ const InstructionsModal: React.FC<Props> = (props) => {
                     <Text style={instructionStyles.instructionText}>
                         After the other person responds twice to your Convo, you
                         can successfully finish the Convo! 🤝 {DOUBLE_NEWLINE}
-                        You increase your ranking and tier by successfully
-                        finishing Convos, so always be nice and respectful so
-                        that the other person responds! 😊
+                        You increase your tier and earn rewards by successfully
+                        finishing Convos, so always be nice and respectful! 😊
                     </Text>
                 </TutorialModal>
             );

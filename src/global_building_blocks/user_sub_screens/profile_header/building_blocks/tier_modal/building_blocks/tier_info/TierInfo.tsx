@@ -8,6 +8,8 @@ import {
 import { styles } from "./TierInfoStyles";
 import Tier from "../../../../../../tier/Tier";
 import BoltBox from "../../../../../../bolt_box/BoltBox";
+import CoinBox from "../../../../../../coin_box/CoinBox";
+import { convoReward } from "../../../../../../../global_types/ConvoTypes";
 
 interface Props {
     tier: TierEnum;
@@ -22,20 +24,32 @@ const TierInfo: React.FC<Props> = (props) => {
             ? `${minRanking}+`
             : `(${!isNaN(minRanking) ? minRanking : "-∞"})+`;
 
+    const responseCost = tier2responseCost(props.tier);
+    const reward = convoReward(responseCost);
+
     return (
         <View style={styles.infoContainer}>
             <View style={styles.infoHeader}>
                 <Tier size={45} tier={props.tier} />
                 <View style={styles.rankingContainer}>
-                    <Text style={styles.rankingTitle}>Ranking</Text>
+                    <Text style={styles.rankingTitle}>Convo Streak</Text>
                     <Text style={styles.rankingText}>{rankingText}</Text>
                 </View>
             </View>
             <View style={styles.infoBar}>
                 <View style={styles.singleInfo}>
                     <Text style={styles.infoTitle}>Response cost</Text>
+                    <CoinBox
+                        amount={responseCost}
+                        fontSize={infoFontSize}
+                        coinSize={20}
+                        showAbbreviated={false}
+                    />
+                </View>
+                <View style={styles.singleInfo}>
+                    <Text style={styles.infoTitle}>Convo reward</Text>
                     <BoltBox
-                        amount={tier2responseCost(props.tier)}
+                        amount={reward}
                         fontSize={infoFontSize}
                         boltSize={20}
                         showAbbreviated={false}

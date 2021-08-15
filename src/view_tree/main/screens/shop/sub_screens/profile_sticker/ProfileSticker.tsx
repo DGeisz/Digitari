@@ -29,7 +29,6 @@ import {
     SelectStickerVariables,
 } from "./gql/Mutations";
 import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
-import { calculateLevelInfo } from "../../../../../../global_utils/LevelUtils";
 
 const ProfileSticker: React.FC = () => {
     const uid = localUid();
@@ -98,7 +97,7 @@ const ProfileSticker: React.FC = () => {
         return <ErrorMessage refresh={refetch} />;
     }
 
-    const level = calculateLevelInfo(parseInt(data.user.coinSpent))[0];
+    const level = data.user.level;
     const ranking = data.user.ranking;
 
     return (

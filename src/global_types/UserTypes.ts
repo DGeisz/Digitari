@@ -10,6 +10,7 @@ import {
 export const USER_TYPENAME = "User";
 
 export const FOLLOW_USER_PRICE = 200;
+export const FOLLOW_USER_REWARD = 20;
 export const DIGIBOLT_PRICE = 10;
 
 export const MAX_BIO_LENGTH = 200;
@@ -40,11 +41,14 @@ export interface UserType {
     coin: string;
     bolts: string;
     transTotal: string;
+    boltTransTotal: string;
 
     imgUrl?: string;
 
     walletBonusEnd: string;
     maxWallet: string;
+
+    maxBoltWallet: string;
 
     nameFont: NameFontsEnum;
     nameFontsPurchased: NameFontsEnum[];
@@ -65,6 +69,23 @@ export interface UserType {
     challengeReceipts: string[];
 
     coinSpent: string;
+
+    level: number;
+    levelUsersFollowed: number;
+    levelsCommsFollowed: number;
+    levelCoinCollected: number;
+    levelPostsCreated: number;
+    levelPostBoltsBought: number;
+    levelInvitedAndJoined: number;
+    levelNewResponses: number;
+    levelSuccessfulConvos: number;
+    levelCommsCreated: number;
+    levelCoinSpentOnPosts: string;
+    levelCoinEarnedFromPosts: string;
+
+    maxFollowing: number;
+    maxFollowers: number;
+    maxPostRecipients: number;
 
     // Challenge fields
     receivedFromConvos: string;
@@ -94,21 +115,28 @@ const WALLET_BASE_SIZE = 100;
 const WALLET_PRICE_MULTIPLIER = 1.84;
 const WALLET_BASE_PRICE = 20;
 
+const WALLET_PRICE_COEFF = 1;
+
 /*
  * Calculate the price and size of the next wallet upgrade
  */
 export function calculateWalletUpgrade(maxWallet: number): [number, number] {
-    const currentExp = Math.ceil(
-        Math.log(maxWallet / WALLET_BASE_SIZE) / Math.log(1.6)
-    );
+    const nextPrice = makePrettyNumber(maxWallet * WALLET_PRICE_COEFF);
+    const nextSize = makePrettyNumber(maxWallet * WALLET_MULTIPLIER);
 
-    const nextPrice = makePrettyNumber(
-        WALLET_BASE_PRICE * WALLET_PRICE_MULTIPLIER ** currentExp
-    );
+    return [nextPrice, nextSize];
+}
 
-    const nextSize = makePrettyNumber(
-        WALLET_BASE_SIZE * WALLET_MULTIPLIER ** (currentExp + 1)
-    );
+const BOLT_WALLET_PRICE_COEFF = 10;
+
+/*
+ * Calculate the price and size of next bolt wallet upgrade
+ */
+export function calculateBoltWalletUpgrade(
+    maxBoltWallet: number
+): [number, number] {
+    const nextPrice = makePrettyNumber(maxBoltWallet * BOLT_WALLET_PRICE_COEFF);
+    const nextSize = makePrettyNumber(maxBoltWallet * WALLET_MULTIPLIER);
 
     return [nextPrice, nextSize];
 }
@@ -118,7 +146,7 @@ export function calculateWalletUpgrade(maxWallet: number): [number, number] {
  * non-zero leading values, and if it's less than 100,
  * it's a multiple of 5
  */
-function makePrettyNumber(input: number): number {
+export function makePrettyNumber(input: number): number {
     if (input < 100) {
         return Math.floor((input * 2) / 10) * 5;
     } else {

@@ -1,3 +1,5 @@
+import { makePrettyNumber } from "./UserTypes";
+
 export const CONVO_TYPENAME = "Convo";
 
 /*
@@ -7,6 +9,8 @@ export const CONVO_TYPENAME = "Convo";
  */
 export const MESSAGE_COUNT_THRESHOLD = 2;
 export const CONVO_ACTIVATION_COST = 5;
+
+export const CONVO_REWARD_MULTIPLIER = 0.15;
 
 export enum ConvoStatus {
     Deleted = -3,
@@ -56,4 +60,8 @@ export enum ConvoOrder {
 export interface ConvoUpdate {
     convo: ConvoType;
     tid: string;
+}
+
+export function convoReward(responseCost: number): number {
+    return makePrettyNumber(CONVO_REWARD_MULTIPLIER * responseCost);
 }

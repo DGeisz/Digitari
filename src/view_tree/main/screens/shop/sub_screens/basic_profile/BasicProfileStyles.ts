@@ -1,7 +1,6 @@
 import { StyleSheet } from "react-native";
 import { basicLayouts } from "../../../../../../global_styles/BasicLayouts";
 import { palette } from "../../../../../../global_styles/Palette";
-import { GENERAL_CONTENT_WIDTH } from "../../../../../../global_constants/screen_constants";
 
 const imageSize = 100;
 
@@ -39,5 +38,12 @@ export const styles = StyleSheet.create({
         fontWeight: "bold",
         color: palette.lightGray,
         fontSize: 13,
+    },
+    levelGuardText: {
+        textAlign: "center",
+        marginTop: 30,
+        fontWeight: "bold",
+        fontSize: 18,
+        color: palette.semiSoftGray,
     },
 });

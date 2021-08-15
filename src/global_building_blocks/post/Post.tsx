@@ -8,7 +8,6 @@ import {
     View,
 } from "react-native";
 import { styles } from "./PostStyles";
-import Tier from "../tier/Tier";
 import {
     Entypo,
     FontAwesome,
@@ -37,7 +36,6 @@ import { FetchResult } from "@apollo/client/link/core";
 import { MutationFunctionOptions } from "@apollo/client/react/types/types";
 import { DonateToPostData, DonateToPostVariables } from "./gql/Mutations";
 import { DIGIBOLT_PRICE, USER_TYPENAME } from "../../global_types/UserTypes";
-import { challengeCheck } from "../../global_gql/challenge_check/challenge_check";
 import PicModal from "./building_blocks/pic_modal/PicModal";
 import OptionsModal from "./building_blocks/options_modal/OptionsModal";
 import SymbolModal from "./building_blocks/symbol_modal/SymbolModal";
@@ -52,6 +50,14 @@ import BoltBox from "../bolt_box/BoltBox";
 import { userPost2BoltCount } from "./utils/bolt_utils";
 import BoltInstructions from "./building_blocks/bolt_instructions/BoltInstructions";
 import { firstBolt } from "../../global_state/FirstImpressionsState";
+import CoinBox from "../coin_box/CoinBox";
+import { convoReward } from "../../global_types/ConvoTypes";
+import { DOUBLE_NEWLINE } from "../../global_utils/StringUtils";
+import { addBoltTransaction } from "../../view_tree/main/hooks/use_realtime_updates/subscription_handlers/utils/cache_utils";
+import {
+    TransactionIcon,
+    TransactionTypesEnum,
+} from "../../global_types/TransactionTypes";
 
 const COMMUNITY_NAME_MAX_LEN = 30;
 
@@ -328,7 +334,7 @@ const Post: React.FC<Props> = (props) => {
                                                             DIGIBOLT_PRICE
                                                     ).toString();
                                                 },
-                                                bolts(existing) {
+                                                boltTransTotal(existing) {
                                                     existing = parseInt(
                                                         existing
                                                     );
@@ -340,7 +346,25 @@ const Post: React.FC<Props> = (props) => {
                                             },
                                         });
 
-                                        challengeCheck(cache);
+                                        addBoltTransaction(
+                                            {
+                                                tid: uid,
+                                                time: Date.now().toString(),
+                                                bolts: currentBolts,
+                                                message: `You gave ${toCommaRep(
+                                                    currentBolts *
+                                                        DIGIBOLT_PRICE
+                                                )} coin to the post: "${
+                                                    props.post.content
+                                                }"`,
+                                                transactionType:
+                                                    TransactionTypesEnum.Post,
+                                                transactionIcon:
+                                                    TransactionIcon.Like,
+                                                data: pid,
+                                            },
+                                            cache
+                                        );
                                     }
                                 },
                             }));
@@ -393,14 +417,18 @@ const Post: React.FC<Props> = (props) => {
                 loading={postModalLoading}
                 body={`Use ${toCommaRep(
                     props.post.responseCost
-                )} digibolts to respond to ${props.post.user}?`}
+                )} digicoin to respond to ${
+                    props.post.user
+                }?${DOUBLE_NEWLINE}The reward for a successful convo is ${convoReward(
+                    props.post.responseCost
+                )} digibolts.`}
                 title={"New Response"}
                 error={postModalError}
                 onConfirm={async () => {
                     setPostModalLoading(true);
 
-                    if (props.userBolts < props.post.responseCost) {
-                        setPostModalError("You don't have enough digibolts!");
+                    if (props.userCoin < props.post.responseCost) {
+                        setPostModalError("You don't have enough digicoin!");
                     } else {
                         try {
                             const { data } = await client.query<
@@ -760,11 +788,20 @@ const Post: React.FC<Props> = (props) => {
                                                     : palette.beneathTheWaves
                                             }
                                         />
+                                        <BoltBox
+                                            boxColor={palette.lightForestGreen}
+                                            amount={convoReward(
+                                                props.post.responseCost
+                                            )}
+                                            showBoltPlus
+                                            paddingVertical={3}
+                                            moveTextRight={2}
+                                            boltSize={17}
+                                        />
                                     </View>
-                                    <BoltBox
+                                    <CoinBox
                                         amount={props.post.responseCost}
-                                        boltSize={17}
-                                        moveTextRight={2}
+                                        coinSize={17}
                                     />
                                 </TouchableOpacity>
                             </View>

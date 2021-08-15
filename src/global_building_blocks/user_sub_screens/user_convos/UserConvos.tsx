@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Animated, RefreshControl, Text, View } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { Animated, FlatList, RefreshControl, Text, View } from "react-native";
 import { NetworkStatus, useQuery } from "@apollo/client";
 import {
     USER_CONVOS,
@@ -15,28 +15,43 @@ import { globalScreenStyles } from "../../../global_styles/GlobalScreenStyles";
 import { styles } from "./UserConvosStyles";
 import { localUid } from "../../../global_state/UserState";
 import ErrorMessage from "../../error_message/ErrorMessage";
+import { UserContext } from "../user_context/UserContext";
+import { PostType } from "../../../global_types/PostTypes";
+import { TabNavContext } from "../../../view_tree/main/routes/tab_nav/TabNavContext";
 
-interface Props {
-    routeKey: string;
-    uid: string;
-    openConvo: (cvid: string, pid: string) => void;
-    refreshHeader: () => void;
-}
-
-const UserConvos: React.FC<Props> = (props) => {
+const UserConvos: React.FC = () => {
     const myUid = localUid();
+
+    const context = useContext(UserContext);
 
     const { data, error, networkStatus, refetch, fetchMore } = useQuery<
         UserConvosData,
         UserConvosVariables
     >(USER_CONVOS, {
         variables: {
-            uid: props.uid,
+            uid: context.uid,
         },
         notifyOnNetworkStatusChange: true,
     });
 
-    const scrollPropsAndRef = useCollapsibleScene(props.routeKey);
+    const [jankyRef, setJankyRef] = useState<FlatList<PostType> | null>(null);
+
+    const setThisRef = (element: any) => {
+        setJankyRef(element);
+    };
+
+    const { profileScrollIndex } = useContext(TabNavContext);
+    const scrollPropsAndRef = useCollapsibleScene("UserConvos");
+
+    useEffect(() => {
+        if (context.isProfile) {
+            if (!!profileScrollIndex) {
+                !!jankyRef &&
+                    jankyRef.scrollToOffset({ animated: true, offset: 0 });
+            }
+        }
+    }, [profileScrollIndex]);
+
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
     const finalFeed = !!data?.userConvos ? data.userConvos : [];
@@ -48,6 +63,10 @@ const UserConvos: React.FC<Props> = (props) => {
     return (
         <Animated.FlatList
             {...scrollPropsAndRef}
+            ref={(r) => {
+                scrollPropsAndRef.ref(r);
+                context.isProfile && setThisRef(r);
+            }}
             data={finalFeed}
             ListHeaderComponent={() => {
                 if (!!error) {
@@ -58,7 +77,7 @@ const UserConvos: React.FC<Props> = (props) => {
                     return (
                         <View style={styles.noUserConvos}>
                             <Text style={styles.noUserConvosText}>
-                                {myUid === props.uid
+                                {myUid === context.uid
                                     ? "You haven't had any convos"
                                     : "User hasn't had any public convos"}
                             </Text>
@@ -74,7 +93,7 @@ const UserConvos: React.FC<Props> = (props) => {
                     convo={item}
                     showBottomBorder={index !== finalFeed.length - 1}
                     showUnViewedDot={false}
-                    openConvo={props.openConvo}
+                    openConvo={context.openConvo}
                 />
             )}
             refreshControl={
@@ -85,7 +104,7 @@ const UserConvos: React.FC<Props> = (props) => {
                     onRefresh={() => {
                         setStillSpin(true);
                         !!refetch && refetch();
-                        !!props.refreshHeader && props.refreshHeader();
+                        !!context.refreshHeader && context.refreshHeader();
                         setTimeout(() => {
                             setStillSpin(false);
                         }, 1000);

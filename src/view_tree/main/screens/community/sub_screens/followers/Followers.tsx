@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { NetworkStatus, useQuery } from "@apollo/client";
 import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
 import ErrorMessage from "../../../../../../global_building_blocks/error_message/ErrorMessage";
@@ -12,25 +12,21 @@ import {
 } from "./gql/Queries";
 import { styles } from "./FollowersStyles";
 import { palette } from "../../../../../../global_styles/Palette";
+import { CommunityContext } from "../../CommunityContext";
 
-interface Props {
-    routeKey: string;
-    tid: string;
-    onSelectUser: (uid: string) => void;
-    refreshHeader: () => void;
-}
+const Followers: React.FC = () => {
+    const context = useContext(CommunityContext);
 
-const Followers: React.FC<Props> = (props) => {
     const { data, error, refetch, networkStatus, fetchMore } = useQuery<
         GetFollowersData,
         GetFollowersVariables
     >(GET_FOLLOWERS, {
         variables: {
-            tid: props.tid,
+            tid: context.tid,
         },
     });
 
-    const scrollPropsAndRef = useCollapsibleScene(props.routeKey);
+    const scrollPropsAndRef = useCollapsibleScene("CommunityFollowers");
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
     if (networkStatus === NetworkStatus.loading && !data?.followers) {
@@ -51,12 +47,12 @@ const Followers: React.FC<Props> = (props) => {
                     <FollowEntity
                         entity={item}
                         onSelectCommunity={() => {}}
-                        onSelectUser={props.onSelectUser}
+                        onSelectUser={context.onSelectUser}
                         isFollower={true}
                     />
                 )}
                 keyExtractor={(_, index) => {
-                    return [props.tid, "follower", index].join(":");
+                    return [context.tid, "follower", index].join(":");
                 }}
                 refreshControl={
                     <RefreshControl
@@ -66,7 +62,7 @@ const Followers: React.FC<Props> = (props) => {
                         onRefresh={() => {
                             setStillSpin(true);
                             refetch && refetch();
-                            !!props.refreshHeader && props.refreshHeader();
+                            !!context.refreshHeader && context.refreshHeader();
                             setTimeout(() => {
                                 setStillSpin(false);
                             }, 1000);
@@ -86,7 +82,7 @@ const Followers: React.FC<Props> = (props) => {
 
                         fetchMore({
                             variables: {
-                                tid: props.tid,
+                                tid: context.tid,
                                 lastTime,
                             },
                         }).then();

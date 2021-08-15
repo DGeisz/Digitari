@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 import {
     SearchEntityEnum,
     SearchEntityType,
-} from "../../../../../../../global_types/SearchEntity";
+} from "../../../../../../../../../global_types/SearchEntity";
 
 export const SEARCH = gql`
     query Search($text: String!, $offset: Int, $entityType: Int) {

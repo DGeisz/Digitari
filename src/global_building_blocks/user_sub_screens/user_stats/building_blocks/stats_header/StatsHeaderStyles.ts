@@ -51,7 +51,7 @@ export const styles = StyleSheet.create({
         flexDirection: "row",
     },
     split3Left: {
-        // ...basicLayouts.flexGrid1,
+        ...basicLayouts.flexGrid1,
         marginRight: 10,
     },
     statsLevelText: {
@@ -111,10 +111,15 @@ export const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: "700",
         color: palette.hardGray,
-        marginBottom: 5,
+    },
+    followsMaxText: {
+        fontSize: 11,
+        fontWeight: "bold",
+        color: palette.semiSoftGray,
     },
     statsFollowsText: {
         fontWeight: "400",
         color: palette.hardGray,
+        marginBottom: 2,
     },
 });

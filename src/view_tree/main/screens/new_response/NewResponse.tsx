@@ -22,7 +22,6 @@ import {
     CreateConvoVariables,
 } from "./gql/Mutations";
 import LoadingWheel from "../../../../global_building_blocks/loading_wheel/LoadingWheel";
-import { challengeCheck } from "../../../../global_gql/challenge_check/challenge_check";
 import {
     CONVO,
     CONVO_MESSAGES,
@@ -85,7 +84,7 @@ const NewResponse: React.FC<Props> = (props) => {
                         id: uid,
                     }),
                     fields: {
-                        bolts(existing) {
+                        coin(existing) {
                             existing = parseInt(existing);
 
                             return Math.max(
@@ -130,16 +129,12 @@ const NewResponse: React.FC<Props> = (props) => {
                     });
                 }
 
-                /*
-                 * Do a quick challenge check
-                 */
-                challengeCheck(cache);
-
-                props.navigation.replace("Convo", {
-                    cvid: data.createConvo.id,
-                    pid,
-                    noAnimation: data.createConvo.id.length > 5,
-                });
+                if (data.createConvo.id.length < 5) {
+                    props.navigation.replace("Convo", {
+                        cvid: data.createConvo.id,
+                        pid,
+                    });
+                }
             } else {
                 if (__DEV__) {
                     console.log("No new data for new response");

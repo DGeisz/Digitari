@@ -31,6 +31,8 @@ export type MainEntryStack = {
         uid: string;
     };
     Shop: { screen: string } | undefined;
+    LevelUp: undefined;
+    LevelCongrats: { level: number };
     Follows: {
         uid: string;
         name: string;
@@ -97,6 +99,10 @@ export type ReportCommunityNavProp = StackNavigationProp<
 export type SettingsNavProp = StackNavigationProp<MainEntryStack, "Settings">;
 export type PasswordNavProp = StackNavigationProp<MainEntryStack, "Password">;
 export type InvitesNavProp = StackNavigationProp<MainEntryStack, "Invite">;
+export type LevelUpNavProp = StackNavigationProp<
+    MainEntryStack,
+    "LevelCongrats"
+>;
 
 /*
  * Route props
@@ -115,3 +121,4 @@ export type ReportCommunityRouteProp = RouteProp<
     MainEntryStack,
     "ReportCommunity"
 >;
+export type LevelCongratsRouteProp = RouteProp<MainEntryStack, "LevelCongrats">;

@@ -15,11 +15,13 @@ import {
     Ionicons,
     MaterialIcons,
 } from "@expo/vector-icons";
+import BoltBox from "../../../../../../../../global_building_blocks/bolt_box/BoltBox";
 
 interface Props {
     transaction: TransactionType;
     openConvo: (cvid: string, pid: string) => void;
     openUser: (uid: string) => void;
+    openPost: (pid: string) => void;
     openChallenges: () => void;
     showBottomBorder: boolean;
     lastCollectionTime: number;
@@ -72,13 +74,29 @@ const Transaction: React.FC<Props> = (props) => {
                 />
             );
             break;
+        case TransactionIcon.Community:
+            icon = (
+                <FontAwesome
+                    name="users"
+                    size={20}
+                    color={iconBlue}
+                    style={styles.icon}
+                />
+            );
+            break;
+        case TransactionIcon.Post:
+            icon = (
+                <FontAwesome
+                    name="pencil"
+                    size={20}
+                    color={iconBlue}
+                    style={styles.icon}
+                />
+            );
+            break;
         default:
             icon = (
-                <MaterialIcons
-                    name="bolt"
-                    size={30}
-                    color={palette.semiSoftGray}
-                />
+                <Ionicons name="heart" size={23} color={palette.semiSoftGray} />
             );
     }
 
@@ -103,19 +121,34 @@ const Transaction: React.FC<Props> = (props) => {
                         break;
                     case TransactionTypesEnum.Challenge:
                         return props.openChallenges();
+                    case TransactionTypesEnum.Post:
+                        return props.openPost(props.transaction.data);
                 }
             }}
         >
             <View style={styles.coinContainer}>
                 {icon}
-                <CoinBox
-                    coinSize={20}
-                    amount={props.transaction.coin}
-                    active={
-                        parseInt(props.transaction.time) >
-                        props.lastCollectionTime
-                    }
-                />
+                {typeof props.transaction.coin !== "undefined" && (
+                    <CoinBox
+                        coinSize={20}
+                        amount={props.transaction.coin}
+                        active={
+                            parseInt(props.transaction.time) >
+                            props.lastCollectionTime
+                        }
+                    />
+                )}
+                {typeof props.transaction.bolts !== "undefined" && (
+                    <BoltBox
+                        boltSize={20}
+                        amount={props.transaction.bolts}
+                        active={
+                            parseInt(props.transaction.time) >
+                            props.lastCollectionTime
+                        }
+                        moveTextRight={2}
+                    />
+                )}
             </View>
             <View style={styles.messageContainer}>
                 <Text style={styles.messageText} numberOfLines={3}>

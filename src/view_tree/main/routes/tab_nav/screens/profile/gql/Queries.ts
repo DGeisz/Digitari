@@ -15,6 +15,7 @@ export const GET_USER = gql`
             imgUrl
             link
             transTotal
+            boltTransTotal
 
             lastCollectionTime
 
@@ -31,6 +32,7 @@ export const GET_USER = gql`
 
             walletBonusEnd
             maxWallet
+            maxBoltWallet
 
             amFollowing
             bolts
@@ -43,6 +45,25 @@ export const GET_USER = gql`
             coin
             challengeReceipts
             coinSpent
+            remainingInvites
+
+            level
+            levelUsersFollowed
+            levelsCommsFollowed
+            levelCoinCollected
+            levelPostsCreated
+            levelPostBoltsBought
+            levelInvitedAndJoined
+            levelNewResponses
+            levelSuccessfulConvos
+            levelCommsCreated
+
+            # This is coin spent posting
+            levelCoinSpentOnPosts
+            levelCoinEarnedFromPosts
+            maxFollowing
+            maxFollowers
+            maxPostRecipients
 
             receivedFromConvos
             rfcChallengeIndex

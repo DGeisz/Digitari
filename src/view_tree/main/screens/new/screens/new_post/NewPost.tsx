@@ -53,9 +53,15 @@ import {
 import { cache } from "../../../../../../global_state/Cache";
 import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
 import LinkPreview from "../../../../../../global_building_blocks/link_preview/LinkPreview";
-import { challengeCheck } from "../../../../../../global_gql/challenge_check/challenge_check";
 import { firstPost } from "../../../../../../global_state/FirstImpressionsState";
 import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
+import BoltBox from "../../../../../../global_building_blocks/bolt_box/BoltBox";
+import FlyingBolt from "../../../../../../global_building_blocks/flying_bolt/FlyingBolt";
+import { addBoltTransaction } from "../../../../hooks/use_realtime_updates/subscription_handlers/utils/cache_utils";
+import {
+    TransactionIcon,
+    TransactionTypesEnum,
+} from "../../../../../../global_types/TransactionTypes";
 
 interface Props {
     navigation: NewPostNavProp;
@@ -64,6 +70,8 @@ interface Props {
 
 const NewPost: React.FC<Props> = (props) => {
     const scrollRef = useRef<ScrollView>(null);
+
+    const [fuse, setFuse] = useState<number>(0);
 
     /*
      * Instructions
@@ -227,45 +235,65 @@ const NewPost: React.FC<Props> = (props) => {
                         }
                     })();
                 }
+
+                cache.modify({
+                    id: cache.identify({
+                        __typename: USER_TYPENAME,
+                        id: uid,
+                    }),
+                    fields: {
+                        coin(existing) {
+                            existing = parseInt(existing);
+
+                            if (!!recipients) {
+                                return Math.max(
+                                    existing - COST_PER_RECIPIENT * recipients,
+                                    0
+                                ).toString();
+                            }
+
+                            return existing.toString();
+                        },
+                        boltTransTotal(existing) {
+                            existing = parseInt(existing);
+
+                            if (!!recipients) {
+                                return (existing + recipients).toString();
+                            }
+
+                            return existing.toString();
+                        },
+                        coinSpent(existing) {
+                            existing = parseInt(existing);
+
+                            if (!!recipients) {
+                                return (
+                                    existing +
+                                    COST_PER_RECIPIENT * recipients
+                                ).toString();
+                            }
+
+                            return existing.toString();
+                        },
+                        postCount(existing) {
+                            return existing + 1;
+                        },
+                    },
+                });
+
+                addBoltTransaction(
+                    {
+                        tid: uid,
+                        time: Date.now().toString(),
+                        bolts: recipients,
+                        message: `You created a post: "${content}"`,
+                        transactionType: TransactionTypesEnum.Post,
+                        transactionIcon: TransactionIcon.Post,
+                        data: data.createPost.post.id,
+                    },
+                    cache
+                );
             }
-
-            cache.modify({
-                id: cache.identify({
-                    __typename: USER_TYPENAME,
-                    id: uid,
-                }),
-                fields: {
-                    coin(existing) {
-                        existing = parseInt(existing);
-
-                        if (!!recipients) {
-                            return Math.max(
-                                existing - COST_PER_RECIPIENT * recipients,
-                                0
-                            ).toString();
-                        }
-
-                        return existing.toString();
-                    },
-                    coinSpent(existing) {
-                        existing = parseInt(existing);
-
-                        if (!!recipients) {
-                            return (
-                                existing +
-                                COST_PER_RECIPIENT * recipients
-                            ).toString();
-                        }
-
-                        return existing.toString();
-                    },
-                    postCount(existing) {
-                        return existing + 1;
-                    },
-                },
-            });
-
-            challengeCheck(cache);
         },
     });
 
@@ -330,6 +358,20 @@ const NewPost: React.FC<Props> = (props) => {
             return;
         }
 
+        if (recipients > data.user.maxPostRecipients) {
+            if (data.user.maxPostRecipients === 1) {
+                setErrorMessage("Level up to post to more than one person!");
+            } else {
+                setErrorMessage(
+                    `Level up to post to more than ${toCommaRep(
+                        data.user.maxPostRecipients
+                    )} people!`
+                );
+            }
+
+            return;
+        }
+
         if (
             target === PostTarget.MyFollowers &&
             recipients > data.user.followers
@@ -378,6 +420,8 @@ const NewPost: React.FC<Props> = (props) => {
                 break;
         }
 
+        setFuse(1 + Math.random());
+
         await createPost({
             variables: {
                 content,
@@ -422,6 +466,16 @@ const NewPost: React.FC<Props> = (props) => {
     const postReady = !!content && typeof recipients !== "undefined";
 
     if (!!user) {
+        if (user.level === 0) {
+            return (
+                <View style={styles.newPostContainer}>
+                    <Text style={styles.levelUpMessage}>
+                        Reach level 1 to create a post!
+                    </Text>
+                </View>
+            );
+        }
+
         return (
             <>
                 <InstructionsModal
@@ -562,20 +616,6 @@ const NewPost: React.FC<Props> = (props) => {
                                             </>
                                         )}
                                     </TouchableOpacity>
-                                    <TouchableOpacity
-                                        style={styles.createCommunityButton}
-                                        onPress={() =>
-                                            props.navigation.navigate(
-                                                "NewCommunity"
-                                            )
-                                        }
-                                    >
-                                        <Text
-                                            style={styles.createCommunityText}
-                                        >
-                                            + Create Community
-                                        </Text>
-                                    </TouchableOpacity>
                                 </>
                             )}
                         </View>
@@ -588,6 +628,8 @@ const NewPost: React.FC<Props> = (props) => {
                             placeholder="What's on your mind?"
                             multiline
                             onChangeText={(text) => {
+                                setErrorMessage("");
+
                                 setContent(
                                     text
                                         .replace(/\r?\n|\r/g, "")
@@ -848,6 +890,8 @@ const NewPost: React.FC<Props> = (props) => {
                             keyboardType="numeric"
                             multiline
                             onChangeText={(raw) => {
+                                setErrorMessage("");
+
                                 const noCommas = raw.replace(/\D/g, "");
                                 const num = parseInt(noCommas);
 
@@ -863,6 +907,23 @@ const NewPost: React.FC<Props> = (props) => {
                                     : toCommaRep(recipients)
                             }
                         />
+                        {!!data?.user && (
+                            <Text
+                                style={[
+                                    styles.maxRecipientsText,
+                                    {
+                                        color:
+                                            !!recipients &&
+                                            recipients >
+                                                data.user.maxPostRecipients
+                                                ? palette.danger
+                                                : palette.semiSoftGray,
+                                    },
+                                ]}
+                            >
+                                Max: {toCommaRep(data?.user.maxPostRecipients)}
+                            </Text>
+                        )}
                         <SelectCommunityModal
                             visible={selectComVisible}
                             onHide={() => showSelectCom(false)}
@@ -877,6 +938,17 @@ const NewPost: React.FC<Props> = (props) => {
                             { opacity: postReady ? 1 : 0.4 },
                         ]}
                     >
+                        <View style={styles.flyingBoltContainer}>
+                            <FlyingBolt
+                                animationHeight={200}
+                                amount={!!recipients ? recipients : 0}
+                                boltSize={50}
+                                fontSize={35}
+                                fuse={fuse}
+                                paddingRight={5}
+                                moveTextRight={8}
+                            />
+                        </View>
                         {!!errorMessage && (
                             <Text style={styles.postErrorMessage}>
                                 {errorMessage}
@@ -894,6 +966,15 @@ const NewPost: React.FC<Props> = (props) => {
                                     <Text style={styles.postButtonText}>
                                         Post
                                     </Text>
+                                    <BoltBox
+                                        amount={!!recipients ? recipients : 0}
+                                        boltSize={22}
+                                        showBoltPlus
+                                        moveTextRight={2}
+                                        paddingRight={8}
+                                        boxColor={palette.lightForestGreen}
+                                        fontSize={16}
+                                    />
                                 </View>
                                 <CoinBox
                                     amount={
@@ -901,8 +982,9 @@ const NewPost: React.FC<Props> = (props) => {
                                         (!!recipients ? recipients : 0)
                                     }
                                     showAbbreviated={false}
-                                    fontColor={palette.hardGray}
-                                    fontSize={20}
+                                    showCoinMinus
+                                    fontColor={palette.danger}
+                                    fontSize={17}
                                     coinSize={25}
                                 />
                             </TouchableOpacity>

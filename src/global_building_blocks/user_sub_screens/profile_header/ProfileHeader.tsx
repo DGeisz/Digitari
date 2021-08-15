@@ -1,7 +1,8 @@
-import React, { useContext, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     ActivityIndicator,
     Image,
+    LayoutAnimation,
     Linking,
     Text,
     TouchableOpacity,
@@ -10,6 +11,7 @@ import {
 import { styles } from "./ProfileHeaderStyles";
 import {
     FOLLOW_USER_PRICE,
+    FOLLOW_USER_REWARD,
     USER_TYPENAME,
     UserType,
 } from "../../../global_types/UserTypes";
@@ -18,7 +20,7 @@ import { toCommaRep, toRep } from "../../../global_utils/ValueRepUtils";
 import CoinBox from "../../coin_box/CoinBox";
 import { FontAwesome, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { palette } from "../../../global_styles/Palette";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import {
     FOLLOW_USER,
     FollowUserData,
@@ -29,8 +31,6 @@ import {
 } from "./gql/Mutation";
 import { localUid } from "../../../global_state/UserState";
 import TierModal from "./building_blocks/tier_modal/TierModal";
-import { challengeCheck } from "../../../global_gql/challenge_check/challenge_check";
-import { calculateLevelInfo } from "../../../global_utils/LevelUtils";
 import UserOptionsModal from "./building_blocks/user_options_modal/UserOptionsModal";
 import UpdateIndicator from "../../../view_tree/main/routes/tab_nav/building_blocks/update_indicator/UpdateIndicator";
 import { nameFontToProfileStyle } from "./fonts/nameFonts";
@@ -42,11 +42,25 @@ import {
 import { bioFont2Style } from "./fonts/bioFonts";
 import BoltBox from "../../bolt_box/BoltBox";
 import { stripUrlScheme } from "../../../global_utils/StringUtils";
-import LevelInfoModal from "../user_stats/building_blocks/stats_header/building_blocks/level_info_modal/LevelInfoModal";
 import RankingModal from "./building_blocks/ranking_modal/RankingModal";
 import DigicoinModal from "./building_blocks/digicoin_modal/DigicoinModal";
 import BoltsModal from "./building_blocks/bolts_modal/BoltsModal";
 import PicModal from "../../post/building_blocks/pic_modal/PicModal";
+import { levelTasksComplete } from "../../../view_tree/main/screens/level_up/utils/task_progress_utils";
+import { calculateLevel } from "../../../global_types/LevelTypes";
+import FlyingBolt from "../../flying_bolt/FlyingBolt";
+import {
+    GET_USER,
+    GetUserQueryData,
+    GetUserQueryVariables,
+} from "../../../view_tree/main/routes/tab_nav/screens/profile/gql/Queries";
+import DigicodeModal from "../../digicode_modal/DigicodeModal";
+import { DigicodeType } from "../../../global_types/DigicodeTypes";
+import { addBoltTransaction } from "../../../view_tree/main/hooks/use_realtime_updates/subscription_handlers/utils/cache_utils";
+import {
+    TransactionIcon,
+    TransactionTypesEnum,
+} from "../../../global_types/TransactionTypes";
 
 interface Props {
     user: UserType;
@@ -55,14 +69,49 @@ interface Props {
     openReportUser: () => void;
     openSettings: () => void;
     openShop: () => void;
+    openLevelUp: () => void;
 }
 
 const ProfileHeader: React.FC<Props> = (props) => {
     const [error, setError] = useState<string | null>("");
+    const [errorTimeout, setErrorTimeout] = useState<number | null>();
+
+    const setErrorMessage = (msg: string) => {
+        LayoutAnimation.easeInEaseOut();
+        setError(msg);
+
+        if (!!errorTimeout) {
+            clearTimeout(errorTimeout);
+        }
+
+        setErrorTimeout(
+            setTimeout(() => {
+                LayoutAnimation.easeInEaseOut();
+                setError("");
+
+                setErrorTimeout(null);
+            }, 4000)
+        );
+    };
+
+    /*
+     * Clean up the error flow after we dismount
+     */
+    useEffect(() => {
+        return () => {
+            setErrorTimeout((errorTimeout) => {
+                if (!!errorTimeout) {
+                    clearTimeout(errorTimeout);
+                }
+
+                return null;
+            });
+        };
+    }, []);
+
     const [loading, setLoading] = useState<boolean>(false);
 
     const [tierModalVisible, showTierModal] = useState<boolean>(false);
-    const [levelModalVisible, showLevelModal] = useState<boolean>(false);
     const [rankingModalVisible, showRankingModal] = useState<boolean>(false);
 
     const [coinModalVisible, showCoinModal] = useState<boolean>(false);
@@ -70,12 +119,18 @@ const ProfileHeader: React.FC<Props> = (props) => {
 
     const [picModalVisible, showPicModal] = useState<boolean>(false);
 
+    const [codeModalVisible, showCodeModal] = useState<boolean>(false);
+
     const uid = localUid();
 
-    const [level] = useMemo<[number, number, number]>(
-        () => calculateLevelInfo(parseInt(props.user.coinSpent)),
-        [props.user.coinSpent]
-    );
+    /*Fuse for flying bolt*/
+    const [fuse, setFuse] = useState<number>(0);
+
+    /*Get self*/
+    const { data: selfData } = useQuery<
+        GetUserQueryData,
+        GetUserQueryVariables
+    >(GET_USER, { variables: { uid } });
 
     const [follow] = useMutation<FollowUserData, FollowUserVariables>(
         FOLLOW_USER,
@@ -93,7 +148,9 @@ const ProfileHeader: React.FC<Props> = (props) => {
                 },
             },
             update(cache, { data: followData }) {
-                if (followData?.followUser) {
+                if (!!followData?.followUser) {
+                    setLoading(false);
+
                     cache.modify({
                         id: cache.identify({
                             __typename: USER_TYPENAME,
@@ -111,8 +168,28 @@ const ProfileHeader: React.FC<Props> = (props) => {
                                     0
                                 ).toString();
                             },
+                            boltTransTotal(existing) {
+                                existing = parseInt(existing);
+
+                                return (
+                                    existing + FOLLOW_USER_REWARD
+                                ).toString();
+                            },
                         },
                     });
+
+                    addBoltTransaction(
+                        {
+                            tid: uid,
+                            time: Date.now().toString(),
+                            bolts: FOLLOW_USER_REWARD,
+                            message: `You followed ${props.user.firstName}`,
+                            transactionIcon: TransactionIcon.User,
+                            transactionType: TransactionTypesEnum.User,
+                            data: props.user.id,
+                        },
+                        cache
+                    );
 
                     cache.modify({
                         id: cache.identify({
@@ -130,8 +207,6 @@ const ProfileHeader: React.FC<Props> = (props) => {
                     });
 
                     setLoading(false);
-
-                    challengeCheck(cache);
                 }
             },
         }
@@ -163,6 +238,14 @@ const ProfileHeader: React.FC<Props> = (props) => {
                             following(existing) {
                                 return existing - 1;
                             },
+                            bolts(existing) {
+                                existing = parseInt(existing);
+
+                                return Math.max(
+                                    existing - FOLLOW_USER_REWARD,
+                                    0
+                                ).toString();
+                            },
                         },
                     });
 
@@ -187,8 +270,24 @@ const ProfileHeader: React.FC<Props> = (props) => {
         }
     );
 
+    const tasksCompleted = levelTasksComplete(
+        calculateLevel(props.user.level + 1),
+        props.user
+    );
+
+    const pulseLevelUp = tasksCompleted || props.user.level === 0;
+
     return (
         <View pointerEvents="box-none">
+            <DigicodeModal
+                visible={codeModalVisible}
+                hide={() => showCodeModal(false)}
+                code={{
+                    id: props.user.id,
+                    type: DigicodeType.User,
+                }}
+                title={`${props.user.firstName} ${props.user.lastName}`}
+            />
             <View
                 style={styles.profileHeaderContainer}
                 pointerEvents="box-none"
@@ -196,9 +295,41 @@ const ProfileHeader: React.FC<Props> = (props) => {
                 {!!error && <Text style={styles.followErrorText}>{error}</Text>}
                 {uid === props.user.id && (
                     <View
-                        style={styles.shopButtonContainer}
+                        style={styles.topButtonsContainer}
                         pointerEvents="box-none"
                     >
+                        <TouchableOpacity
+                            style={styles.levelUpButton}
+                            onPress={props.openLevelUp}
+                        >
+                            <View style={styles.levelUpBoltContainer}>
+                                {pulseLevelUp && (
+                                    <View style={styles.boltUpdate}>
+                                        <UpdateIndicator dotSize={2} />
+                                    </View>
+                                )}
+                                <MaterialIcons
+                                    name="bolt"
+                                    size={18}
+                                    color={palette.deepBlue}
+                                />
+                            </View>
+                            <Text style={styles.levelUpButtonText}>
+                                Level Up
+                            </Text>
+                            <View style={styles.levelUpBoltContainer}>
+                                {pulseLevelUp && (
+                                    <View style={styles.boltUpdate}>
+                                        <UpdateIndicator dotSize={2} />
+                                    </View>
+                                )}
+                                <MaterialIcons
+                                    name="bolt"
+                                    size={18}
+                                    color={palette.deepBlue}
+                                />
+                            </View>
+                        </TouchableOpacity>
                         {/*
                             IMPORTANT!!!
 
@@ -267,59 +398,216 @@ const ProfileHeader: React.FC<Props> = (props) => {
                                     color={palette.mediumGray}
                                 />
                             </TouchableOpacity>
-                        ) : loading ? (
-                            <ActivityIndicator
-                                color={palette.deepBlue}
-                                size="small"
-                            />
-                        ) : props.user.amFollowing ? (
-                            <TouchableOpacity
-                                style={styles.followButton}
-                                onPress={async () => {
-                                    setError(null);
-                                    setLoading(true);
-                                    try {
-                                        await unFollow();
-                                    } catch (e) {
-                                        setError(
-                                            "An error occurred.  Check your connection and try again"
-                                        );
-                                    } finally {
-                                        setLoading(false);
-                                    }
-                                }}
-                            >
-                                <Text style={styles.followButtonText}>
-                                    Unfollow
-                                </Text>
-                            </TouchableOpacity>
                         ) : (
-                            <TouchableOpacity
-                                style={styles.followButton}
-                                onPress={async () => {
-                                    setLoading(true);
-                                    try {
-                                        await follow();
-                                    } catch (e) {
-                                        setError(
-                                            `An error occurred.  Make sure your have ${FOLLOW_USER_PRICE} digicoin and try again`
-                                        );
-                                    } finally {
-                                        setLoading(false);
-                                    }
-                                }}
-                            >
-                                <View style={styles.followButtonTextContainer}>
-                                    <Text style={styles.followButtonText}>
-                                        Follow
-                                    </Text>
+                            <View style={styles.followContainer}>
+                                {loading ? (
+                                    <ActivityIndicator
+                                        color={palette.deepBlue}
+                                        size="small"
+                                    />
+                                ) : props.user.amFollowing ? (
+                                    <TouchableOpacity
+                                        style={styles.followButton}
+                                        onPress={async () => {
+                                            if (!!selfData?.user) {
+                                                const self = selfData.user;
+
+                                                if (
+                                                    parseInt(self.bolts) <
+                                                    FOLLOW_USER_REWARD
+                                                ) {
+                                                    setErrorMessage(
+                                                        `You need ${FOLLOW_USER_REWARD} bolts to unfollow ${props.user.firstName}`
+                                                    );
+                                                } else {
+                                                    setLoading(true);
+
+                                                    try {
+                                                        await unFollow();
+                                                    } catch (e) {
+                                                        if (__DEV__) {
+                                                            console.log(
+                                                                "This is unfollow error: ",
+                                                                e
+                                                            );
+                                                        }
+                                                        setErrorMessage(
+                                                            "Hmm... Something went wrong. Try again in a bit."
+                                                        );
+                                                    }
+                                                }
+                                            } else {
+                                                setLoading(true);
+
+                                                try {
+                                                    await unFollow();
+                                                } catch (e) {
+                                                    if (__DEV__) {
+                                                        console.log(
+                                                            "This is unfollow error: ",
+                                                            e
+                                                        );
+                                                    }
+                                                    setErrorMessage(
+                                                        "Hmm... Something went wrong. Try again in a bit."
+                                                    );
+                                                }
+                                            }
+                                        }}
+                                    >
+                                        <View
+                                            style={
+                                                styles.unFollowButtonTextContainer
+                                            }
+                                        >
+                                            <Text
+                                                style={styles.followButtonText}
+                                            >
+                                                Unfollow
+                                            </Text>
+                                        </View>
+                                        <BoltBox
+                                            amount={FOLLOW_USER_REWARD}
+                                            fontSize={15}
+                                            boltSize={20}
+                                            moveTextRight={2}
+                                        />
+                                    </TouchableOpacity>
+                                ) : (
+                                    <TouchableOpacity
+                                        style={styles.followButton}
+                                        onPress={async () => {
+                                            /*
+                                             * If we successfully fetched the user, we can do
+                                             * all our fancy checks (this should always work)
+                                             */
+                                            if (!!selfData?.user) {
+                                                const self = selfData.user;
+
+                                                if (
+                                                    parseInt(self.coin) <
+                                                    FOLLOW_USER_PRICE
+                                                ) {
+                                                    setErrorMessage(
+                                                        `You need ${FOLLOW_USER_PRICE} coin to follow ${props.user.firstName}!`
+                                                    );
+                                                } else if (
+                                                    self.following >=
+                                                    self.maxFollowing
+                                                ) {
+                                                    setErrorMessage(
+                                                        `You need to level-up to follow ${props.user.firstName}!`
+                                                    );
+                                                } else if (
+                                                    props.user.followers >=
+                                                    props.user.maxFollowers
+                                                ) {
+                                                    setErrorMessage(
+                                                        "This user needs to level-up before you can follow them!"
+                                                    );
+
+                                                    try {
+                                                        await follow({
+                                                            optimisticResponse: {
+                                                                followUser: undefined,
+                                                            },
+                                                        });
+                                                    } catch (e) {
+                                                        if (__DEV__) {
+                                                            console.log(
+                                                                "The follow didn't go through: ",
+                                                                e
+                                                            );
+                                                        }
+                                                    }
+                                                } else {
+                                                    /*
+                                                     * We've exhausted all the edge cases,
+                                                     * give this a go
+                                                     */
+                                                    setLoading(true);
+                                                    setFuse(1 + Math.random());
+
+                                                    try {
+                                                        await follow({
+                                                            optimisticResponse: {
+                                                                followUser: undefined,
+                                                            },
+                                                        });
+                                                    } catch (e) {
+                                                        if (__DEV__) {
+                                                            console.log(
+                                                                "This is follow error: ",
+                                                                e
+                                                            );
+                                                        }
+
+                                                        setErrorMessage(
+                                                            "Hmm... Something went wrong. Try again in a bit"
+                                                        );
+                                                    }
+
+                                                    setLoading(false);
+                                                }
+                                            } else {
+                                                /*
+                                                 * Otherwise, we just do a basic follow
+                                                 */
+                                                setLoading(true);
+
+                                                try {
+                                                    await follow();
+                                                } catch (e) {
+                                                    setErrorMessage(
+                                                        `An error occurred.  Make sure your have ${FOLLOW_USER_PRICE} digicoin and try again`
+                                                    );
+                                                }
+
+                                                setLoading(false);
+                                            }
+                                        }}
+                                    >
+                                        <View
+                                            style={
+                                                styles.followButtonTextContainer
+                                            }
+                                        >
+                                            <Text
+                                                style={styles.followButtonText}
+                                            >
+                                                Follow
+                                            </Text>
+                                            <BoltBox
+                                                amount={FOLLOW_USER_REWARD}
+                                                boxColor={
+                                                    palette.lightForestGreen
+                                                }
+                                                boltSize={16}
+                                                fontSize={12}
+                                                paddingVertical={4}
+                                                showBoltPlus
+                                                moveTextRight={2}
+                                            />
+                                        </View>
+                                        <CoinBox
+                                            amount={FOLLOW_USER_PRICE}
+                                            fontSize={14}
+                                            coinSize={23}
+                                            showCoinMinus
+                                            fontColor={palette.danger}
+                                        />
+                                    </TouchableOpacity>
+                                )}
+                                <View style={styles.flyingBoltContainer}>
+                                    <FlyingBolt
+                                        animationHeight={100}
+                                        amount={20}
+                                        boltSize={20}
+                                        fontSize={20}
+                                        fuse={fuse}
+                                    />
                                 </View>
-                                <CoinBox
-                                    amount={FOLLOW_USER_PRICE}
-                                    fontSize={15}
-                                    coinSize={23}
-                                />
-                            </TouchableOpacity>
+                            </View>
                         )}
                     </View>
                 </View>
@@ -337,18 +625,22 @@ const ProfileHeader: React.FC<Props> = (props) => {
                         </TouchableOpacity>
                         <View style={styles.userLevelContainer}>
                             <View style={styles.profileUserBar}>
-                                <Text
-                                    style={[
-                                        nameFontToProfileStyle(
-                                            props.user.nameFont
-                                        ),
-                                        profileColor2Style(
-                                            props.user.nameColor
-                                        ),
-                                    ]}
+                                <TouchableOpacity
+                                    onPress={() => showCodeModal(true)}
                                 >
-                                    {`${props.user.firstName} ${props.user.lastName}`}
-                                </Text>
+                                    <Text
+                                        style={[
+                                            nameFontToProfileStyle(
+                                                props.user.nameFont
+                                            ),
+                                            profileColor2Style(
+                                                props.user.nameColor
+                                            ),
+                                        ]}
+                                    >
+                                        {`${props.user.firstName} ${props.user.lastName}`}
+                                    </Text>
+                                </TouchableOpacity>
                                 <UserOptionsModal
                                     openReportUser={props.openReportUser}
                                     uid={props.user.id}
@@ -359,27 +651,9 @@ const ProfileHeader: React.FC<Props> = (props) => {
                                     visible={rankingModalVisible}
                                     hide={() => showRankingModal(false)}
                                 />
-                                <TouchableOpacity
-                                    onPress={() => showRankingModal(true)}
-                                >
-                                    <Text style={styles.profileRankingText}>
-                                        {`Ranking: ${toCommaRep(
-                                            props.user.ranking
-                                        )}`}
-                                    </Text>
-                                </TouchableOpacity>
-                                <LevelInfoModal
-                                    user={props.user}
-                                    visible={levelModalVisible}
-                                    hide={() => showLevelModal(false)}
-                                />
-                                <TouchableOpacity
-                                    onPress={() => showLevelModal(true)}
-                                >
-                                    <Text style={styles.profileLevelText}>
-                                        {`Level: ${toCommaRep(level)}`}
-                                    </Text>
-                                </TouchableOpacity>
+                                <Text style={styles.profileLevelText}>
+                                    {`Level: ${toCommaRep(props.user.level)}`}
+                                </Text>
                             </View>
                         </View>
                     </View>
@@ -429,12 +703,24 @@ const ProfileHeader: React.FC<Props> = (props) => {
                         >
                             <Text style={styles.followNumeralText}>
                                 {toRep(props.user.followers)}
+                                {uid === props.user.id && (
+                                    <Text style={styles.followMaxText}>
+                                        {" "}
+                                        / {toRep(props.user.maxFollowers)}{" "}
+                                    </Text>
+                                )}
                                 <Text style={styles.followsText}>
                                     {" Followers"}
                                 </Text>
                             </Text>
                             <Text style={styles.followNumeralText}>
                                 {toRep(props.user.following)}
+                                {uid === props.user.id && (
+                                    <Text style={styles.followMaxText}>
+                                        {" "}
+                                        / {toRep(props.user.maxFollowing)}{" "}
+                                    </Text>
+                                )}
                                 <Text style={styles.followingText}>
                                     {" Following"}
                                 </Text>

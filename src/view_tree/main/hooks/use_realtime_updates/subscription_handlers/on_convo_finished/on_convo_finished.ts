@@ -2,9 +2,10 @@ import { OnSubscriptionDataOptions } from "@apollo/client";
 import { ConvoFinishedData } from "../../gql/Subscriptions";
 import {
     CONVO_TYPENAME,
+    convoReward,
     ConvoStatus,
 } from "../../../../../../global_types/ConvoTypes";
-import { addTransaction, sort_active_convos } from "../utils/cache_utils";
+import { addBoltTransaction, sort_active_convos } from "../utils/cache_utils";
 import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
 import { localUid } from "../../../../../../global_state/UserState";
 import {
@@ -12,7 +13,6 @@ import {
     TransactionType,
     TransactionTypesEnum,
 } from "../../../../../../global_types/TransactionTypes";
-import { challengeCheck } from "../../../../../../global_gql/challenge_check/challenge_check";
 
 export function onConvoFinished(
     options: OnSubscriptionDataOptions<ConvoFinishedData>
@@ -61,25 +61,6 @@ export function onConvoFinished(
          */
         sort_active_convos(cache);
 
-        /*
-         * Increase user's successful convos,
-         * and increase ranking as well
-         */
-        cache.modify({
-            id: cache.identify({
-                __typename: USER_TYPENAME,
-                id: localUid(),
-            }),
-            fields: {
-                successfulConvos(existing) {
-                    return existing + 1;
-                },
-                ranking(existing) {
-                    return existing + 1;
-                },
-            },
-        });
-
         const uid = localUid();
 
         let transactionMessage: string;
@@ -95,21 +76,8 @@ export function onConvoFinished(
         }
 
         /*
-         * Now that we've established we're the source
-         * we add a transaction accordingly
-         */
-        const transaction: TransactionType = {
-            tid: uid,
-            time: Date.now().toString(),
-            coin: 0,
-            message: transactionMessage,
-            transactionType: TransactionTypesEnum.Convo,
-            transactionIcon: TransactionIcon.Convo,
-            data: `${cvid}:${convo.pid}`,
-        };
-
-        /*
-         * Notify user of new transaction update
+         * Increase user's successful convos,
+         * and increase ranking as well
          */
         cache.modify({
             id: cache.identify({
@@ -117,17 +85,39 @@ export function onConvoFinished(
                 id: uid,
             }),
             fields: {
+                successfulConvos(existing) {
+                    return existing + 1;
+                },
+                ranking(existing) {
+                    return existing + 1;
+                },
                 newTransactionUpdate() {
                     return true;
+                },
+                boltTransTotal(existing) {
+                    existing = parseInt(existing);
+
+                    return (
+                        existing + convoReward(convo.responseCost)
+                    ).toString();
                 },
             },
         });
 
-        addTransaction(transaction, cache);
-
         /*
-         * Quick challenge check
+         * Now that we've established we're the source
+         * we add a transaction accordingly
          */
-        challengeCheck(cache);
+        const transaction: TransactionType = {
+            tid: uid,
+            time: Date.now().toString(),
+            bolts: convoReward(convo.responseCost),
+            message: transactionMessage,
+            transactionType: TransactionTypesEnum.Convo,
+            transactionIcon: TransactionIcon.Convo,
+            data: `${cvid}:${convo.pid}`,
+        };
+
+        addBoltTransaction(transaction, cache);
     }
 }

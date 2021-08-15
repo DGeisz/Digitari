@@ -54,10 +54,13 @@ const InstructionsModal: React.FC<Props> = (props) => {
                     }}
                 >
                     <Text style={instructionStyles.instructionText}>
-                        Poke around to get a feel for the platform!{" "}
+                        You start out at level 0. In order to become more
+                        powerful and unlock more features, you need to level up!
                         {DOUBLE_NEWLINE}
-                        The Shop is a good place to start so you can learn what
-                        to unlock.
+                        Lucky for you, making it past the first few levels is
+                        pretty easy 😉 {DOUBLE_NEWLINE}
+                        Just hit "Level Up" at the top of the page to learn what
+                        you have to do.
                     </Text>
                 </TutorialModal>
             );

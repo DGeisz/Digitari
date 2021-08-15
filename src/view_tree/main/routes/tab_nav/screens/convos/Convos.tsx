@@ -19,12 +19,13 @@ import { ConvosNavProp } from "../../TabNavTypes";
 import { firstConvos } from "../../../../../../global_state/FirstImpressionsState";
 import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
 import { ConvosContext } from "./ConvosContext";
+import { ConvosNavType } from "./ConvosNavTypes";
 
 interface Props {
     navigation: ConvosNavProp;
 }
 
-const Tab = createMaterialTopTabNavigator();
+const Tab = createMaterialTopTabNavigator<ConvosNavType>();
 
 const Convos: React.FC<Props> = (props) => {
     const uid = localUid();

@@ -19,6 +19,9 @@ import Transaction from "./building_blocks/transaction/Transaction";
 import { localUid } from "../../../../../../global_state/UserState";
 import { NetworkStatus, useMutation, useQuery } from "@apollo/client";
 import {
+    BOLT_TRANSACTIONS,
+    BoltTransData,
+    BoltTransVariables,
     LAST_COLLECTION_TIME,
     LastCollectionTimeData,
     LastCollectionTimeVariables,
@@ -36,7 +39,6 @@ import {
     ViewedTransactionData,
 } from "./gql/Mutations";
 import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
-import { QUERY_TYPENAME } from "../../../../../../global_gql/Schema";
 import {
     GET_UPDATE_FLAGS,
     GetUpdateFlagsData,
@@ -46,8 +48,15 @@ import { useIsFocused } from "@react-navigation/native";
 import InstructionsModal from "./building_blocks/instructions_modal/InstructionsModal";
 import { millisToCountdown } from "../../../../../../global_utils/TimeRepUtils";
 import { firstWallet } from "../../../../../../global_state/FirstImpressionsState";
+import BoltBox from "../../../../../../global_building_blocks/bolt_box/BoltBox";
+import { useScrollToTopOnPress } from "../../hooks/ScrollToTop";
 
 const MIN_FILLER_WIDTH = 5;
+
+enum TransType {
+    Coin,
+    Bolts,
+}
 
 interface Props {
     navigation: WalletNavProp;
@@ -55,12 +64,24 @@ interface Props {
 
 const Wallet: React.FC<Props> = (props) => {
     const uid = localUid();
-    const { openNew, openConvo, openUser, openShop } = useContext(
-        TabNavContext
-    );
+    const {
+        transScrollIndex,
+        openNew,
+        openConvo,
+        openUser,
+        openShop,
+        openPost,
+    } = useContext(TabNavContext);
+
+    const listRef = useRef<FlatList>(null);
+    useScrollToTopOnPress(transScrollIndex, props.navigation, listRef);
+
+    const [transType, setTransType] = useState<TransType>(TransType.Coin);
 
     const [barWidth, setBarWidth] = useState<number>(0);
     const [currentTime, setCurrentTime] = useState<number>(Date.now());
+
+    const [boltBarWidth, setBoltBarWidth] = useState<number>(0);
 
     const [instructionsVisible, showInstructions] = useState<boolean>(
         firstWallet()
@@ -102,6 +123,16 @@ const Wallet: React.FC<Props> = (props) => {
         notifyOnNetworkStatusChange: true,
     });
 
+    const {
+        data: boltTransData,
+        error: boltTransError,
+        networkStatus: boltTransNetStatus,
+        refetch: boltTransRefetch,
+        fetchMore: boltTransFetchMore,
+    } = useQuery<BoltTransData, BoltTransVariables>(BOLT_TRANSACTIONS, {
+        notifyOnNetworkStatusChange: true,
+    });
+
     /*
      * Mutations
      */
@@ -123,10 +154,20 @@ const Wallet: React.FC<Props> = (props) => {
                                     existing + data.collectEarnings.coin
                                 ).toString();
                             },
+                            bolts(existing) {
+                                existing = parseInt(existing);
+
+                                return (
+                                    existing + data.collectEarnings.bolts
+                                ).toString();
+                            },
                             lastCollectionTime() {
                                 return data.collectEarnings.time;
                             },
                             transTotal() {
+                                return "0";
+                            },
+                            boltTransTotal() {
                                 return "0";
                             },
                         },
@@ -192,14 +233,13 @@ const Wallet: React.FC<Props> = (props) => {
 
     const [stillSpin, setStillSpin] = useState<boolean>(false);
 
-    const listRef = useRef<FlatList>(null);
-
     /*
      * Animation playground
      */
     const animatedHeight = useRef(new Animated.Value(0)).current;
     const animatedOpacity = useRef(new Animated.Value(0)).current;
     const [animationCoinAmount, setAnimationCoinAmount] = useState<number>(0);
+    const [aniBoltAmount, setAniBoltAmount] = useState<number>(0);
 
     /*
      * Function to send the animation up that signifies
@@ -232,9 +272,15 @@ const Wallet: React.FC<Props> = (props) => {
     if (
         (!collectionData?.user && collectionStatus === NetworkStatus.loading) ||
         (!transData?.transactions &&
-            transNetworkStatus === NetworkStatus.loading)
+            transNetworkStatus === NetworkStatus.loading) ||
+        (!boltTransData?.boltTransactions &&
+            boltTransNetStatus === NetworkStatus.loading)
     ) {
         return <LoadingWheel />;
+    }
+
+    if (!!boltTransError) {
+        return <ErrorMessage refresh={boltTransRefetch} />;
     }
 
     if (!!transError) {
@@ -249,6 +295,9 @@ const Wallet: React.FC<Props> = (props) => {
     let maxWallet = 100;
     let walletBonusEnd = 0;
 
+    let boltTotal = 0;
+    let maxBoltWallet = 100;
+
     let finalFeed: TransactionType[] = [];
     let lastCollectionTime: number = 0;
 
@@ -257,6 +306,10 @@ const Wallet: React.FC<Props> = (props) => {
         walletBonusEnd = parseInt(collectionData.user.walletBonusEnd);
 
         const transTotal = parseInt(collectionData.user.transTotal);
+
+        maxBoltWallet = parseInt(collectionData.user.maxBoltWallet);
+
+        const boltTransTotal = parseInt(collectionData.user.boltTransTotal);
 
         if (walletBonusEnd > currentTime) {
             total = transTotal;
@@ -267,13 +320,32 @@ const Wallet: React.FC<Props> = (props) => {
                 total = transTotal;
             }
         }
+
+        if (boltTransTotal > maxBoltWallet) {
+            boltTotal = maxBoltWallet;
+        } else {
+            boltTotal = boltTransTotal;
+        }
     }
 
-    finalFeed = !!transData?.transactions ? transData.transactions : [];
+    const finalCoinTrans = !!transData?.transactions
+        ? transData.transactions
+        : [];
+    const finalBoltTrans = !!boltTransData?.boltTransactions
+        ? boltTransData.boltTransactions
+        : [];
+
+    if (transType === TransType.Coin) {
+        finalFeed = finalCoinTrans;
+    } else {
+        finalFeed = finalBoltTrans;
+    }
 
     lastCollectionTime = !!collectionData?.user
         ? parseInt(collectionData.user.lastCollectionTime)
         : 0;
+
+    const collectActive = total > 0 || boltTotal > 0;
 
     return (
         <>
@@ -396,8 +468,74 @@ const Wallet: React.FC<Props> = (props) => {
                                         </Text>
                                         <CoinBox
                                             amount={total}
-                                            coinSize={30}
-                                            fontSize={20}
+                                            coinSize={25}
+                                            fontSize={18}
+                                            showAbbreviated={false}
+                                        />
+                                    </View>
+                                </View>
+                                <View style={styles.bottomEntryContainer}>
+                                    <View style={styles.barHeader}>
+                                        <View style={styles.barHeaderLeft}>
+                                            <Text
+                                                style={styles.maxCapacityText}
+                                            >
+                                                Max:
+                                            </Text>
+                                            <BoltBox
+                                                boltSize={17}
+                                                moveTextRight={2}
+                                                amount={maxBoltWallet}
+                                                showAbbreviated={false}
+                                                fontColor={palette.mediumGray}
+                                            />
+                                        </View>
+                                        <View style={styles.barHeaderRight}>
+                                            <TouchableOpacity
+                                                style={styles.upgradeButton}
+                                                onPress={() =>
+                                                    openShop("Wallet")
+                                                }
+                                            >
+                                                <Text
+                                                    style={styles.upgradeText}
+                                                >
+                                                    Upgrade
+                                                </Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                    <View
+                                        style={styles.totalBar}
+                                        onLayout={(e) =>
+                                            setBoltBarWidth(
+                                                e.nativeEvent.layout.width
+                                            )
+                                        }
+                                    >
+                                        <View
+                                            style={[
+                                                styles.barFiller,
+                                                {
+                                                    width:
+                                                        (boltTotal /
+                                                            maxBoltWallet) *
+                                                            (boltBarWidth -
+                                                                MIN_FILLER_WIDTH) +
+                                                        MIN_FILLER_WIDTH,
+                                                },
+                                            ]}
+                                        />
+                                    </View>
+                                    <View style={styles.totalContainer}>
+                                        <Text style={styles.totalTitle}>
+                                            Total:
+                                        </Text>
+                                        <BoltBox
+                                            amount={boltTotal}
+                                            boltSize={25}
+                                            fontSize={18}
+                                            moveTextRight={3}
                                             showAbbreviated={false}
                                         />
                                     </View>
@@ -406,13 +544,13 @@ const Wallet: React.FC<Props> = (props) => {
                                     <Animated.View
                                         pointerEvents="none"
                                         style={{
+                                            ...styles.shockBox,
                                             transform: [
                                                 {
                                                     translateY: animatedHeight,
                                                 },
                                             ],
                                             opacity: animatedOpacity,
-                                            position: "absolute",
                                         }}
                                     >
                                         <CoinBox
@@ -420,26 +558,35 @@ const Wallet: React.FC<Props> = (props) => {
                                             amount={animationCoinAmount}
                                             coinSize={40}
                                             fontSize={30}
+                                            paddingRight={10}
+                                        />
+                                        <BoltBox
+                                            showBoltPlus
+                                            amount={aniBoltAmount}
+                                            boltSize={40}
+                                            fontSize={30}
+                                            moveTextRight={5}
                                         />
                                     </Animated.View>
                                     <TouchableOpacity
                                         style={[
                                             styles.collectButton,
-                                            total === 0
+                                            !collectActive
                                                 ? {
                                                       backgroundColor:
                                                           palette.notDeepBlue,
                                                   }
                                                 : {},
                                         ]}
-                                        activeOpacity={total === 0 ? 1 : 0.5}
+                                        activeOpacity={collectActive ? 0.5 : 1}
                                         onPress={async () => {
-                                            if (total > 0) {
+                                            if (collectActive) {
                                                 /*
                                                  * Handle the tutorial scenario
                                                  */
                                                 shockTheNation();
                                                 setAnimationCoinAmount(total);
+                                                setAniBoltAmount(boltTotal);
 
                                                 /*
                                                  * Otherwise, handle typical collection mutation
@@ -449,6 +596,7 @@ const Wallet: React.FC<Props> = (props) => {
                                                         optimisticResponse: {
                                                             collectEarnings: {
                                                                 coin: total,
+                                                                bolts: boltTotal,
                                                                 time: Date.now().toString(),
                                                             },
                                                         },
@@ -471,6 +619,63 @@ const Wallet: React.FC<Props> = (props) => {
                                     Transactions
                                 </Text>
                             </View>
+                            <View style={styles.transChoiceContainer}>
+                                <TouchableOpacity
+                                    style={[
+                                        styles.choiceButton,
+                                        {
+                                            backgroundColor:
+                                                transType === TransType.Coin
+                                                    ? palette.deepBlue
+                                                    : palette.white,
+                                        },
+                                    ]}
+                                    onPress={() => setTransType(TransType.Coin)}
+                                >
+                                    <Text
+                                        style={[
+                                            styles.choiceButtonText,
+                                            {
+                                                color:
+                                                    transType === TransType.Coin
+                                                        ? palette.white
+                                                        : palette.hardGray,
+                                            },
+                                        ]}
+                                    >
+                                        Coin
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={[
+                                        styles.choiceButton,
+                                        {
+                                            backgroundColor:
+                                                transType === TransType.Bolts
+                                                    ? palette.deepBlue
+                                                    : palette.white,
+                                        },
+                                    ]}
+                                    onPress={() =>
+                                        setTransType(TransType.Bolts)
+                                    }
+                                >
+                                    <Text
+                                        style={[
+                                            styles.choiceButtonText,
+                                            {
+                                                color:
+                                                    transType ===
+                                                    TransType.Bolts
+                                                        ? palette.white
+                                                        : palette.hardGray,
+                                            },
+                                        ]}
+                                    >
+                                        Bolts
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
                             {finalFeed.length === 0 && (
                                 <View style={styles.noTransactionsContainer}>
                                     <Text style={styles.noTransactionText}>
@@ -487,6 +692,7 @@ const Wallet: React.FC<Props> = (props) => {
                             transaction={item}
                             openConvo={openConvo}
                             openUser={openUser}
+                            openPost={openPost}
                             openChallenges={() => {
                                 props.navigation.navigate("Profile", {
                                     screen: "UserChallenges",
@@ -505,6 +711,7 @@ const Wallet: React.FC<Props> = (props) => {
                             onRefresh={() => {
                                 setStillSpin(true);
                                 !!transRefetch && transRefetch();
+                                !!boltTransRefetch && boltTransRefetch();
                                 !!collectionRefetch && collectionRefetch();
 
                                 setTimeout(() => {
@@ -525,12 +732,21 @@ const Wallet: React.FC<Props> = (props) => {
                             const lastTime =
                                 finalFeed[finalFeed.length - 1].time;
 
-                            !!fetchMore &&
-                                (await fetchMore({
-                                    variables: {
-                                        lastTime,
-                                    },
-                                }));
+                            if (transType === TransType.Coin) {
+                                !!fetchMore &&
+                                    (await fetchMore({
+                                        variables: {
+                                            lastTime,
+                                        },
+                                    }));
+                            } else {
+                                !!boltTransFetchMore &&
+                                    (await boltTransFetchMore({
+                                        variables: {
+                                            lastTime,
+                                        },
+                                    }));
+                            }
                         }
                     }}
                 />

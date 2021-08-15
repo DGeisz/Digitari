@@ -29,7 +29,7 @@ const DigicoinModal: React.FC<Props> = (props) => {
                         power of the coin.
                         {DOUBLE_NEWLINE}
                         If you're new, the easiest way to make a bunch of coin
-                        is to invite your friends and complete challenges.
+                        is to level up and/or invite your friends.
                         {DOUBLE_NEWLINE}
                         Otherwise, you earn digicoin rewards for every 10 posts
                         you view in your feed.

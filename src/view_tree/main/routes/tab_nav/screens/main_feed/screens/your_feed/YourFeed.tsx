@@ -48,6 +48,7 @@ import { addTransaction } from "../../../../../../hooks/use_realtime_updates/sub
 import { YourFeedNavProp } from "../../MainFeedNavTypes";
 import { FeedContext, FeedType } from "../../MainFeedContext";
 import { GET_FEED, GetFeedData, GetFeedVariables } from "./gql/Queries";
+import { useScrollToTopOnPress } from "../../../../hooks/ScrollToTop";
 
 const nextPostsReward = 80;
 
@@ -58,7 +59,11 @@ interface Props {
 const YourFeed: React.FC<Props> = (props) => {
     const uid = localUid();
 
+    const { feedScrollIndex } = useContext(TabNavContext);
     const { feedType, setType } = useContext(FeedContext);
+    const listRef = useRef<FlatList>(null);
+
+    useScrollToTopOnPress(feedScrollIndex, props.navigation, listRef);
 
     useEffect(() => {
         if (feedType === FeedType.YourFeed) {
@@ -125,8 +130,6 @@ const YourFeed: React.FC<Props> = (props) => {
 
     const [fetchMoreLen, setFetchMoreLen] = useState<number>(0);
     const [stillSpin, setStillSpin] = useState<boolean>(false);
-
-    const listRef = useRef<FlatList>(null);
 
     const [lastFetchTime, setLastFetch] = useState<number>(Date.now());
 

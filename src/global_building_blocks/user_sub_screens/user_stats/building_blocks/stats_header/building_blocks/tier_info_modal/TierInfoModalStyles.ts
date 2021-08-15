@@ -43,7 +43,6 @@ export const styles = StyleSheet.create({
         marginTop: 10,
         paddingBottom: 20,
         marginHorizontal: 20,
-        marginBottom: 20,
         borderBottomWidth: 1,
         borderBottomColor: palette.softGray,
     },
@@ -93,6 +92,37 @@ export const styles = StyleSheet.create({
         fontSize: 16,
         color: palette.hardGray,
         textAlign: "center",
+    },
+    convoStreakContainer: {
+        paddingBottom: 20,
+        marginHorizontal: 20,
+        marginBottom: 20,
+        marginTop: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: palette.softGray,
+    },
+    streakHeader: {
+        textAlign: "center",
+        fontWeight: "bold",
+        color: palette.hardGray,
+        marginBottom: 10,
+    },
+    ruleContainer: {
+        flexDirection: "row",
+        marginBottom: 10,
+    },
+    ruleLeft: {
+        paddingHorizontal: 4,
+    },
+    ruleRight: {},
+    ruleBullet: {
+        fontWeight: "bold",
+        fontSize: 20,
+        lineHeight: 20,
+    },
+    ruleText: {
+        fontSize: 16,
+        color: palette.hardGray,
     },
     rankingText: {
         fontSize: 20,

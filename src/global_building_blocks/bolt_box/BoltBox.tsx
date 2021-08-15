@@ -21,6 +21,7 @@ interface Props {
     outOfBolt?: number;
     moveTextRight?: number;
     fontWeight?: "bold";
+    maxHeight?: number;
 }
 
 const BoltBox: React.FC<Props> = (props) => {
@@ -28,7 +29,7 @@ const BoltBox: React.FC<Props> = (props) => {
         <View
             style={[
                 styles.boltBoxContainer,
-                { backgroundColor: props.boxColor },
+                { backgroundColor: props.boxColor, maxHeight: props.maxHeight },
                 !!props.paddingVertical
                     ? { paddingVertical: props.paddingVertical }
                     : {},
@@ -47,6 +48,7 @@ const BoltBox: React.FC<Props> = (props) => {
                         ? palette.deepBlue
                         : palette.semiSoftGray
                 }
+                style={styles.boltIcon}
             />
             {!!props.showAmount ? (
                 <Text

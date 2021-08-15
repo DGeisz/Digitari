@@ -61,6 +61,25 @@ export const cache = new InMemoryCache({
                         }
                     },
                 },
+                boltTransactions: {
+                    keyArgs: [],
+                    //@ts-ignore
+                    merge(existing, incoming, { args: { lastTime } }) {
+                        if (existing && incoming) {
+                            if (!!lastTime) {
+                                return [...existing, ...incoming];
+                            } else {
+                                return incoming;
+                            }
+                        } else if (existing) {
+                            return existing;
+                        } else if (incoming) {
+                            return incoming;
+                        } else {
+                            return [];
+                        }
+                    },
+                },
                 allPosts: {
                     keyArgs: [],
                     //@ts-ignore
@@ -124,6 +143,44 @@ export const cache = new InMemoryCache({
                     merge(existing, incoming, { args: { lastTime } }) {
                         if (existing && incoming) {
                             if (!!lastTime) {
+                                return [...existing, ...incoming];
+                            } else {
+                                return incoming;
+                            }
+                        } else if (existing) {
+                            return existing;
+                        } else if (incoming) {
+                            return incoming;
+                        } else {
+                            return [];
+                        }
+                    },
+                },
+                topResults: {
+                    keyArgs: ["entityType"],
+                    //@ts-ignore
+                    merge(existing, incoming, { args: { offset } }) {
+                        if (existing && incoming) {
+                            if (!!offset) {
+                                return [...existing, ...incoming];
+                            } else {
+                                return incoming;
+                            }
+                        } else if (existing) {
+                            return existing;
+                        } else if (incoming) {
+                            return incoming;
+                        } else {
+                            return [];
+                        }
+                    },
+                },
+                search: {
+                    keyArgs: ["text", "entityType"],
+                    //@ts-ignore
+                    merge(existing, incoming, { args: { offset } }) {
+                        if (existing && incoming) {
+                            if (!!offset) {
                                 return [...existing, ...incoming];
                             } else {
                                 return incoming;
@@ -246,18 +303,6 @@ export const cache = new InMemoryCache({
                             return incoming;
                         } else {
                             return [];
-                        }
-                    },
-                },
-                search: {
-                    keyArgs: ["text", "entityType"],
-                    merge(existing, incoming) {
-                        if (existing && !!incoming) {
-                            return [...existing, ...incoming];
-                        } else if (existing) {
-                            return existing;
-                        } else {
-                            return incoming;
                         }
                     },
                 },

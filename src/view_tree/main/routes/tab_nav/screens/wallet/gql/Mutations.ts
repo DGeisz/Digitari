@@ -4,6 +4,7 @@ export const COLLECT_EARNINGS = gql`
     mutation CollectEarnings {
         collectEarnings {
             coin
+            bolts
             time
         }
     }
@@ -12,6 +13,7 @@ export const COLLECT_EARNINGS = gql`
 export interface CollectEarningsData {
     collectEarnings: {
         coin: number;
+        bolts: number;
         time: string;
     };
 }

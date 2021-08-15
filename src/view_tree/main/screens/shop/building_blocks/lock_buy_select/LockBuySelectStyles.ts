@@ -68,7 +68,7 @@ export const styles = StyleSheet.create({
     },
     confirmText: {
         color: palette.hardGray,
-        maxWidth: 200,
+        maxWidth: 230,
         textAlign: "center",
         marginBottom: 10,
     },

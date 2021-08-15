@@ -2,20 +2,7 @@ import React from "react";
 import { Text, View } from "react-native";
 import { styles } from "./ShopItemStyles";
 import LockBuySelect from "../lock_buy_select/LockBuySelect";
-import { calculateLevelInfo } from "../../../../../../global_utils/LevelUtils";
-import {
-    bioColorPrice,
-    BioColors,
-    bioFontPrice,
-    BioFontsEnum,
-    ItemRequirement,
-    nameColorPrice,
-    nameFontPrice,
-    NameFontsEnum,
-    ProfileColors,
-    ProfileStickers,
-    stickerPrice,
-} from "../../../../../../global_types/ShopTypes";
+import { ItemRequirement } from "../../../../../../global_types/ShopTypes";
 import { toCommaRep } from "../../../../../../global_utils/ValueRepUtils";
 
 interface Props {
@@ -44,7 +31,7 @@ const ShopItem: React.FC<Props> = (props) => {
         props.ranking < props.requirement.ranking
     ) {
         visible = false;
-        requirementText = `Reach Ranking ${toCommaRep(
+        requirementText = `Have a Convo Streak of ${toCommaRep(
             props.requirement.ranking
         )}`;
     } else if (

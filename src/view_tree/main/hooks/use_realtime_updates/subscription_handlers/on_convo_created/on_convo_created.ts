@@ -6,15 +6,14 @@ import {
     NewConvosVariables,
 } from "../../../../routes/tab_nav/screens/convos/sub_screens/new_convos/gql/Queries";
 import { ConvoOrder } from "../../../../../../global_types/ConvoTypes";
+import { localUid } from "../../../../../../global_state/UserState";
+import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
+import { addTransaction } from "../utils/cache_utils";
 import {
-    TransactionType,
+    TransactionIcon,
     TransactionTypesEnum,
 } from "../../../../../../global_types/TransactionTypes";
-import { localUid } from "../../../../../../global_state/UserState";
-import { addTransaction } from "../utils/cache_utils";
-import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
 import { addNewReceipt } from "../../../../../../global_state/CoinUpdates";
-import { challengeCheck } from "../../../../../../global_gql/challenge_check/challenge_check";
 
 export function onConvoCreated(
     options: OnSubscriptionDataOptions<ConvoCreatedData>
@@ -87,15 +86,24 @@ export function onConvoCreated(
             });
         }
 
+        const uid = localUid();
+
         /*
          * Notify user of new convo and transaction updates
          */
         cache.modify({
             id: cache.identify({
                 __typename: USER_TYPENAME,
-                id: localUid(),
+                id: uid,
             }),
             fields: {
+                transTotal(existing) {
+                    existing = parseInt(existing);
+
+                    return (
+                        existing + data.convoCreated.responseCost
+                    ).toString();
+                },
                 newConvoUpdate() {
                     return true;
                 },
@@ -107,9 +115,22 @@ export function onConvoCreated(
             },
         });
 
+        addNewReceipt(data.convoCreated.responseCost);
+
         /*
-         * Quick challenge check
+         * Add a coin transaction for the reward
          */
-        challengeCheck(cache);
+        addTransaction(
+            {
+                tid: uid,
+                time: Date.now().toString(),
+                coin: data.convoCreated.responseCost,
+                message: `Your post received a new response: "${data.convoCreated.initialMsg}"`,
+                transactionIcon: TransactionIcon.Convo,
+                transactionType: TransactionTypesEnum.Convo,
+                data: `${data.convoCreated.id}:${data.convoCreated.pid}`,
+            },
+            cache
+        );
     }
 }

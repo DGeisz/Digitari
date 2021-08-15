@@ -14,6 +14,7 @@ export const schema = gql`
         imgUrl: String
         remainingInvites: Int
         transTotal: String
+        boltTransTotal: String
 
         lastCollectionTime: String
 
@@ -35,6 +36,8 @@ export const schema = gql`
         maxWallet: String
         walletBonusEnd: String
 
+        maxBoltWallet: String
+
         # Profile customizations
         nameFont: Int
         nameFontsPurchased: [Int]
@@ -48,8 +51,26 @@ export const schema = gql`
         profileStickersPurchased: [Int]
 
         challengeReceipts: [String]
-
         coinSpent: String
+
+        # Fields for levels
+        level: Int
+        levelUsersFollowed: Int
+        levelsCommsFollowed: Int
+        levelCoinCollected: Int
+        levelPostsCreated: Int
+        levelPostBoltsBought: Int
+        levelInvitedAndJoined: Int
+        levelNewResponses: Int
+        levelSuccessfulConvos: Int
+        levelCommsCreated: Int
+
+        # This is coin spent posting
+        levelCoinSpentOnPosts: String # String for proper serialization purposes
+        levelCoinEarnedFromPosts: String # String for serialization purposes
+        maxFollowing: Int
+        maxFollowers: Int
+        maxPostRecipients: Int
 
         # Fields for challenges
         receivedFromConvos: String
@@ -179,8 +200,19 @@ export const schema = gql`
         data: String
     }
 
+    type BoltTransaction {
+        tid: ID
+        time: String
+        bolts: Int
+        message: String
+        transactionType: Int
+        transactionIcon: Int
+        data: String
+    }
+
     type EarningsReceipt {
         coin: Int
+        bolts: Int
         time: String
     }
 
@@ -268,6 +300,7 @@ export const schema = gql`
         following(sid: ID!, lastTime: String, entityType: Int): [FollowEntity]
         postResponseCheck(pid: ID): Boolean
         transactions(lastTime: String): [Transaction]
+        boltTransactions(lastTime: String): [BoltTransaction]
         allPosts(lastTime: String, skipReward: Boolean): [Post]
 
         validInviteCode(code: String): Boolean
@@ -286,6 +319,8 @@ export const schema = gql`
             lastName: String!
             email: String!
         ): User
+
+        levelUp: User
 
         checkInUser: User
 
@@ -333,6 +368,7 @@ export const schema = gql`
 
         boostWallet: Boolean
         upgradeWallet: User
+        upgradeBoltWallet: User
 
         buySticker(sticker: Int!): Int
         selectSticker(sticker: Int!): Int

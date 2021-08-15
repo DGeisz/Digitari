@@ -1,5 +1,11 @@
-import React, { useContext, useState } from "react";
-import { Animated, RefreshControl, View } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import {
+    Animated,
+    FlatList,
+    RefreshControl,
+    ScrollView,
+    View,
+} from "react-native";
 import StatsHeader from "./building_blocks/stats_header/StatsHeader";
 import { useCollapsibleScene } from "react-native-collapsible-tab-view";
 import { UserType } from "../../../global_types/UserTypes";
@@ -8,21 +14,42 @@ import Divider from "../../divider/Divider";
 import { styles } from "./UserStatsStyles";
 import UserStat from "./building_blocks/user_stat/UserStat";
 import { GENERAL_CONTENT_WIDTH } from "../../../global_constants/screen_constants";
+import { UserContext } from "../user_context/UserContext";
+import { TabNavContext } from "../../../view_tree/main/routes/tab_nav/TabNavContext";
 
-interface Props {
-    user: UserType;
-    routeKey: string;
-    refreshHeader: () => void;
-    openFollows: () => void;
-}
+const UserStats: React.FC = () => {
+    const context = useContext(UserContext);
 
-const UserStats: React.FC<Props> = (props) => {
-    const scrollPropsAndRef = useCollapsibleScene(props.routeKey);
+    const [jankyRef, setJankyRef] = useState<ScrollView | null>(null);
+
+    const setThisRef = (element: any) => {
+        setJankyRef(element);
+    };
+
+    const { profileScrollIndex } = useContext(TabNavContext);
+    const scrollPropsAndRef = useCollapsibleScene("UserStats");
+
+    useEffect(() => {
+        if (context.isProfile) {
+            if (!!profileScrollIndex) {
+                !!jankyRef && jankyRef.scrollTo({ animated: true, y: 0 });
+            }
+        }
+    }, [profileScrollIndex]);
+
     const [stillSpin, setStillSpin] = useState<boolean>(false);
+
+    if (!context.user) {
+        return null;
+    }
 
     return (
         <Animated.ScrollView
             {...scrollPropsAndRef}
+            ref={(r: any) => {
+                scrollPropsAndRef.ref(r);
+                context.isProfile && setThisRef(r);
+            }}
             contentContainerStyle={{
                 ...scrollPropsAndRef.contentContainerStyle,
                 alignSelf: "center",
@@ -34,7 +61,7 @@ const UserStats: React.FC<Props> = (props) => {
                     refreshing={stillSpin}
                     onRefresh={() => {
                         setStillSpin(true);
-                        !!props.refreshHeader && props.refreshHeader();
+                        !!context.refreshHeader && context.refreshHeader();
                         setTimeout(() => {
                             setStillSpin(false);
                         }, 1000);
@@ -48,27 +75,30 @@ const UserStats: React.FC<Props> = (props) => {
                 />
             }
         >
-            <StatsHeader user={props.user} openFollows={props.openFollows} />
+            <StatsHeader
+                user={context.user}
+                openFollows={context.openFollows}
+            />
             <Divider />
             <View style={styles.statsContainer}>
                 <UserStat
                     title={"Total digicoin spent"}
-                    quantity={parseInt(props.user.coinSpent)}
+                    quantity={parseInt(context.user.coinSpent)}
                     showCoin
                 />
                 <UserStat
                     title={"Digicoin earned from posts"}
-                    quantity={parseInt(props.user.receivedFromConvos)}
+                    quantity={parseInt(context.user.receivedFromConvos)}
                     showCoin
                 />
                 <UserStat
                     title={"Digicoin spent on digibolts"}
-                    quantity={parseInt(props.user.spentOnConvos)}
+                    quantity={parseInt(context.user.spentOnConvos)}
                     showCoin
                 />
                 <UserStat
                     title={"Posts created"}
-                    quantity={props.user.postCount}
+                    quantity={context.user.postCount}
                 />
             </View>
         </Animated.ScrollView>

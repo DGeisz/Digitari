@@ -14,7 +14,7 @@ export const FOLLOW_USER = gql`
 `;
 
 export interface FollowUserData {
-    followUser: FollowEntityType;
+    followUser?: FollowEntityType;
 }
 
 export interface FollowUserVariables {

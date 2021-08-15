@@ -13,7 +13,6 @@ export const styles = StyleSheet.create({
     headerContainer: {
         ...basicLayouts.grid5,
         paddingTop: 10,
-        paddingBottom: 20,
     },
     headerTitle: {
         fontSize: 20,
@@ -25,7 +24,23 @@ export const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderBottomColor: palette.softGray,
         borderBottomWidth: 1,
-        paddingVertical: 10,
+        paddingTop: 20,
+        paddingBottom: 10,
+        marginHorizontal: 20,
+        marginTop: 20,
+    },
+    entryTitleContainer: {
+        ...basicLayouts.grid2,
+    },
+    entryTitle: {
+        fontWeight: "bold",
+        color: palette.hardGray,
+    },
+    bottomEntryContainer: {
+        borderBottomColor: palette.softGray,
+        borderBottomWidth: 1,
+        paddingTop: 20,
+        paddingBottom: 10,
         marginBottom: 10,
         marginHorizontal: 20,
     },
@@ -48,11 +63,6 @@ export const styles = StyleSheet.create({
         color: palette.darkGold,
         fontWeight: "bold",
         fontSize: 20,
-    },
-    entryTitle: {
-        fontWeight: "bold",
-        color: palette.hardGray,
-        marginBottom: 5,
     },
     barHeader: {
         flexDirection: "row",
@@ -93,17 +103,21 @@ export const styles = StyleSheet.create({
     },
     totalContainer: {
         ...basicLayouts.grid5,
-        marginTop: 10,
+        marginTop: 4,
         flexDirection: "row",
     },
     totalTitle: {
         fontWeight: "bold",
         color: palette.hardGray,
-        fontSize: 20,
+        fontSize: 18,
     },
     earningsFooter: {
         ...basicLayouts.grid5,
         paddingVertical: 10,
+    },
+    shockBox: {
+        flexDirection: "row",
+        position: "absolute",
     },
     collectButton: {
         ...basicLayouts.grid5,
@@ -134,5 +148,19 @@ export const styles = StyleSheet.create({
         color: palette.semiSoftGray,
         textAlign: "center",
         marginHorizontal: 20,
+    },
+    transChoiceContainer: {
+        flexDirection: "row",
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 10,
+    },
+    choiceButton: {
+        paddingVertical: 3,
+        paddingHorizontal: 8,
+        borderRadius: 10,
+    },
+    choiceButtonText: {
+        fontWeight: "bold",
     },
 });

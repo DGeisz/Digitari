@@ -69,6 +69,9 @@ export const styles = StyleSheet.create({
         ...basicLayouts.grid5,
         marginTop: 40,
     },
+    buffer: {
+        height: 10,
+    },
     noResponseText: {
         fontWeight: "bold",
         fontSize: 18,

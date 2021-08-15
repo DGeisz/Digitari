@@ -36,8 +36,11 @@ const BoltsModal: React.FC<Props> = (props) => {
                         Each post has a couple digibolts that you can collect,
                         so head over to your feed and go crazy, kid.
                         {DOUBLE_NEWLINE}
-                        You'll need digibolts to unlock items in the shop, but
-                        you can also use them to respond to posts.
+                        You can also earn bolts by creating posts or following
+                        users and communities.
+                        {DOUBLE_NEWLINE}
+                        You'll need digibolts to level up, unlock items in the
+                        shop, and respond to posts.
                     </Text>
                     <View style={modalStyles.modalFooter}>
                         <TouchableOpacity

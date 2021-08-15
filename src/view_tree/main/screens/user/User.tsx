@@ -21,6 +21,7 @@ import { localUid } from "../../../../global_state/UserState";
 import NewButton from "../../../../global_building_blocks/new_button/NewButton";
 import { styles } from "./UserStyles";
 import { SCREEN_LARGER_THAN_CONTENT } from "../../../../global_constants/screen_constants";
+import { UserContext } from "../../../../global_building_blocks/user_sub_screens/user_context/UserContext";
 
 const Tab = createMaterialCollapsibleTopTabNavigator();
 
@@ -60,151 +61,115 @@ const User: React.FC<Props> = (props) => {
     if (!!data?.user) {
         return (
             <View style={basicLayouts.flexGrid1}>
-                <Tab.Navigator
-                    collapsibleOptions={{
-                        renderHeader: () => (
-                            <ProfileHeader
-                                openFollows={() => {
-                                    props.navigation.push("Follows", {
-                                        name: `${data.user.firstName} ${data.user.lastName}`,
-                                        uid: data?.user.id,
-                                    });
-                                }}
-                                openShop={() => props.navigation.push("Shop")}
-                                user={data.user}
-                                isMe={data?.user.id === uid}
-                                openSettings={() =>
-                                    props.navigation.navigate("Settings")
-                                }
-                                openReportUser={() =>
-                                    props.navigation.push("ReportUser", {
-                                        uid: data?.user.id,
-                                    })
-                                }
-                            />
-                        ),
-                        headerHeight: 250,
-                        disableSnap: true,
+                <UserContext.Provider
+                    value={{
+                        uid: data.user.id,
+                        user: data.user,
+                        openPost: (pid: string) =>
+                            props.navigation.navigate("PostScreen", {
+                                pid,
+                            }),
+                        openCommunity: (cmid: string) =>
+                            props.navigation.navigate("Community", {
+                                cmid,
+                            }),
+                        openNewMessage: (
+                            tname: string,
+                            pid: string,
+                            responseCost: number
+                        ) =>
+                            props.navigation.navigate("NewResponse", {
+                                tname,
+                                pid,
+                                responseCost,
+                            }),
+                        openUser: (uid: string) => {
+                            props.navigation.navigate("User", {
+                                uid,
+                            });
+                        },
+                        openReport: (pid: string) => {
+                            props.navigation.navigate("ReportPost", {
+                                pid,
+                            });
+                        },
+                        refreshHeader: refetch,
+                        openConvo: (cvid: string, pid: string) => {
+                            props.navigation.navigate("Convo", {
+                                cvid,
+                                pid,
+                            });
+                        },
+                        openFollows: () => {
+                            props.navigation.push("Follows", {
+                                name: `${data.user.firstName} ${data.user.lastName}`,
+                                uid: data?.user.id,
+                            });
+                        },
+                        isProfile: false,
                     }}
-                    tabBarOptions={
-                        SCREEN_LARGER_THAN_CONTENT
-                            ? {}
-                            : {
-                                  scrollEnabled: true,
-                                  tabStyle: {
-                                      flex: 0,
-                                      width: 100,
-                                      padding: 0,
-                                  },
-                              }
-                    }
                 >
-                    <Tab.Screen
-                        name="UserPosts"
-                        options={{
-                            tabBarLabel: ({ color }) => (
-                                <TabLabel title={"Posts"} color={color} />
+                    <Tab.Navigator
+                        collapsibleOptions={{
+                            renderHeader: () => (
+                                <ProfileHeader
+                                    openFollows={() => {
+                                        props.navigation.push("Follows", {
+                                            name: `${data.user.firstName} ${data.user.lastName}`,
+                                            uid: data?.user.id,
+                                        });
+                                    }}
+                                    openShop={() =>
+                                        props.navigation.push("Shop")
+                                    }
+                                    openLevelUp={() =>
+                                        props.navigation.push("LevelUp")
+                                    }
+                                    user={data.user}
+                                    isMe={data?.user.id === uid}
+                                    openSettings={() =>
+                                        props.navigation.navigate("Settings")
+                                    }
+                                    openReportUser={() =>
+                                        props.navigation.push("ReportUser", {
+                                            uid: data?.user.id,
+                                        })
+                                    }
+                                />
                             ),
+                            headerHeight: 250,
+                            disableSnap: true,
                         }}
                     >
-                        {() => (
-                            <UserPosts
-                                routeKey={"UserPosts"}
-                                uid={data?.user.id}
-                                openPost={(pid: string) =>
-                                    props.navigation.navigate("PostScreen", {
-                                        pid,
-                                    })
-                                }
-                                openCommunity={(cmid: string) =>
-                                    props.navigation.navigate("Community", {
-                                        cmid,
-                                    })
-                                }
-                                openNewMessage={(
-                                    tname: string,
-                                    pid: string,
-                                    responseCost: number
-                                ) =>
-                                    props.navigation.navigate("NewResponse", {
-                                        tname,
-                                        pid,
-                                        responseCost,
-                                    })
-                                }
-                                openUser={(uid: string) => {
-                                    props.navigation.navigate("User", { uid });
-                                }}
-                                openReport={(pid: string) => {
-                                    props.navigation.navigate("ReportPost", {
-                                        pid,
-                                    });
-                                }}
-                                refreshHeader={refetch}
-                            />
-                        )}
-                    </Tab.Screen>
-                    <Tab.Screen
-                        name="UserConvos"
-                        options={{
-                            tabBarLabel: ({ color }) => (
-                                <TabLabel title={"Convos"} color={color} />
-                            ),
-                        }}
-                    >
-                        {() => (
-                            <UserConvos
-                                routeKey={"UserConvos"}
-                                uid={data?.user.id}
-                                openConvo={(cvid: string, pid: string) => {
-                                    props.navigation.navigate("Convo", {
-                                        cvid,
-                                        pid,
-                                    });
-                                }}
-                                refreshHeader={refetch}
-                            />
-                        )}
-                    </Tab.Screen>
-                    <Tab.Screen
-                        name="UserChallenges"
-                        options={{
-                            tabBarLabel: ({ color }) => (
-                                <TabLabel title={"Challenges"} color={color} />
-                            ),
-                        }}
-                    >
-                        {() => (
-                            <UserChallenges
-                                user={data.user}
-                                routeKey={"UserChallenges"}
-                                refreshHeader={refetch}
-                            />
-                        )}
-                    </Tab.Screen>
-                    <Tab.Screen
-                        name="UserStats"
-                        options={{
-                            tabBarLabel: ({ color }) => (
-                                <TabLabel title={"Stats"} color={color} />
-                            ),
-                        }}
-                    >
-                        {() => (
-                            <UserStats
-                                routeKey="UserStats"
-                                user={data.user}
-                                refreshHeader={refetch}
-                                openFollows={() => {
-                                    props.navigation.push("Follows", {
-                                        name: `${data.user.firstName} ${data.user.lastName}`,
-                                        uid: data?.user.id,
-                                    });
-                                }}
-                            />
-                        )}
-                    </Tab.Screen>
-                </Tab.Navigator>
+                        <Tab.Screen
+                            name="UserPosts"
+                            options={{
+                                tabBarLabel: ({ color }) => (
+                                    <TabLabel title={"Posts"} color={color} />
+                                ),
+                            }}
+                            component={UserPosts}
+                        />
+                        <Tab.Screen
+                            name="UserConvos"
+                            options={{
+                                tabBarLabel: ({ color }) => (
+                                    <TabLabel title={"Convos"} color={color} />
+                                ),
+                            }}
+                            component={UserConvos}
+                        />
+                        <Tab.Screen
+                            name="UserStats"
+                            options={{
+                                tabBarLabel: ({ color }) => (
+                                    <TabLabel title={"Stats"} color={color} />
+                                ),
+                            }}
+                            component={UserStats}
+                        />
+                    </Tab.Navigator>
+                </UserContext.Provider>
                 <NewButton
                     openNew={() => props.navigation.navigate("NewPost", {})}
                 />

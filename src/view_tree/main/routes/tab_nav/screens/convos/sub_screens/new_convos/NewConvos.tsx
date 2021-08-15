@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { styles } from "./NewConvosStyles";
 import {
     FlatList,
@@ -22,13 +22,20 @@ import {
 } from "./gql/Queries";
 import { ConvoOrder } from "../../../../../../../../global_types/ConvoTypes";
 import { globalScreenStyles } from "../../../../../../../../global_styles/GlobalScreenStyles";
+import { useScrollToTopOnPress } from "../../../../hooks/ScrollToTop";
+import { NewConvosNavProp } from "../../ConvosNavTypes";
 
-interface Props {}
+interface Props {
+    navigation: NewConvosNavProp;
+}
 
-const NewConvos: React.FC<Props> = () => {
+const NewConvos: React.FC<Props> = (props) => {
     const [orderType, setOrder] = useState<ConvoOrder>(ConvoOrder.ranking);
 
-    const { openConvo } = useContext(TabNavContext);
+    const { openConvo, convosScrollIndex } = useContext(TabNavContext);
+    const listRef = useRef<FlatList>(null);
+
+    useScrollToTopOnPress(convosScrollIndex, props.navigation, listRef);
 
     const { data, error, networkStatus, refetch, fetchMore } = useQuery<
         NewConvosData,
@@ -122,6 +129,7 @@ const NewConvos: React.FC<Props> = () => {
                 </View>
             ) : (
                 <FlatList
+                    ref={listRef}
                     data={finalFeed}
                     renderItem={({ item, index }) => (
                         <ConvoCover

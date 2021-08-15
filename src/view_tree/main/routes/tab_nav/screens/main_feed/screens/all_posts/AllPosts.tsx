@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Animated, RefreshControl, Text, View } from "react-native";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { FlatList, RefreshControl, Text, View } from "react-native";
 import { AllPostsNavProp } from "../../MainFeedNavTypes";
 import { FeedContext, FeedType } from "../../MainFeedContext";
 import {
@@ -39,6 +39,7 @@ import { addNewReceipt } from "../../../../../../../../global_state/CoinUpdates"
 import { USER_TYPENAME } from "../../../../../../../../global_types/UserTypes";
 import { addTransaction } from "../../../../../../hooks/use_realtime_updates/subscription_handlers/utils/cache_utils";
 import { TabNavContext } from "../../../../TabNavContext";
+import { useScrollToTopOnPress } from "../../../../hooks/ScrollToTop";
 
 const nextPostsReward = 40;
 
@@ -48,6 +49,11 @@ interface Props {
 
 const AllPosts: React.FC<Props> = (props) => {
     const { setType } = useContext(FeedContext);
+
+    const { feedScrollIndex } = useContext(TabNavContext);
+    const listRef = useRef<FlatList>(null);
+
+    useScrollToTopOnPress(feedScrollIndex, props.navigation, listRef);
 
     useEffect(() => {
         return props.navigation.addListener("focus", () => {
@@ -110,7 +116,8 @@ const AllPosts: React.FC<Props> = (props) => {
     const { cache } = useApolloClient();
 
     return (
-        <Animated.FlatList
+        <FlatList
+            ref={listRef}
             ListHeaderComponent={() => {
                 if (
                     !data?.allPosts &&

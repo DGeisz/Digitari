@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
     FlatList,
     RefreshControl,
@@ -22,10 +22,21 @@ import { globalScreenStyles } from "../../../../../../../../global_styles/Global
 import { styles } from "./ActiveConvosStyles";
 import { localUid } from "../../../../../../../../global_state/UserState";
 import { ConvosContext } from "../../ConvosContext";
+import { ActiveConvosNavProp } from "../../ConvosNavTypes";
+import { useScrollToTopOnPress } from "../../../../hooks/ScrollToTop";
 
-const ActiveConvos: React.FC = () => {
+interface Props {
+    navigation: ActiveConvosNavProp;
+}
+
+const ActiveConvos: React.FC<Props> = (props) => {
     const uid = localUid();
     const { openConvo } = useContext(TabNavContext);
+
+    const { convosScrollIndex } = useContext(TabNavContext);
+    const listRef = useRef<FlatList>(null);
+
+    useScrollToTopOnPress(convosScrollIndex, props.navigation, listRef);
 
     const { data, error, networkStatus, refetch, fetchMore } = useQuery<
         ActiveConvosData,
@@ -85,6 +96,7 @@ const ActiveConvos: React.FC = () => {
 
     return (
         <FlatList
+            ref={listRef}
             data={finalFeed}
             renderItem={({ item, index }) => (
                 <ConvoCover

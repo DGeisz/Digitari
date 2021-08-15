@@ -24,9 +24,9 @@ const TierModal: React.FC<Props> = (props) => {
                             <Text style={styles.explanationText}>
                                 Your tier basically shows the world whether
                                 you're nice or a total troll.{DOUBLE_NEWLINE}
-                                Your ranking qualifies you for different tiers,
-                                so to increase your tier, you gotta boost your
-                                ranking.
+                                Your convo streak qualifies you for different
+                                tiers, so to increase your tier, you gotta have
+                                good convos.
                                 {DOUBLE_NEWLINE}
                                 Here are the 10 tiers:
                             </Text>

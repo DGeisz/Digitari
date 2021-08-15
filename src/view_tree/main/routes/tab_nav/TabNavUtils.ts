@@ -13,6 +13,8 @@ export function getTabNavHeaderTitle(route: any): string {
     switch (routeName) {
         case "MainFeed":
             return "Home";
+        case "Search":
+            return "Search & Scan";
         default:
             return routeName;
     }

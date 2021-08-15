@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { styles } from "./SearchStyles";
 import { FlatList, Keyboard, Text, TouchableOpacity, View } from "react-native";
-import { TabNavContext } from "../../TabNavContext";
-import { basicLayouts } from "../../../../../../global_styles/BasicLayouts";
-import NewButton from "../../../../../../global_building_blocks/new_button/NewButton";
+import { TabNavContext } from "../../../../TabNavContext";
+import { basicLayouts } from "../../../../../../../../global_styles/BasicLayouts";
+import NewButton from "../../../../../../../../global_building_blocks/new_button/NewButton";
 import { SearchBar } from "react-native-elements";
-import { SearchEntityEnum } from "../../../../../../global_types/SearchEntity";
+import { SearchEntityEnum } from "../../../../../../../../global_types/SearchEntity";
 import SearchResult from "./building_blocks/search_result/SearchResult";
 import { useLazyQuery, useQuery } from "@apollo/client";
 import {
@@ -17,16 +17,30 @@ import {
     TopResultsVariables,
 } from "./gql/Queries";
 import { FontAwesome } from "@expo/vector-icons";
-import { palette } from "../../../../../../global_styles/Palette";
-import ErrorMessage from "../../../../../../global_building_blocks/error_message/ErrorMessage";
-import LoadingWheel from "../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
+import { palette } from "../../../../../../../../global_styles/Palette";
+import ErrorMessage from "../../../../../../../../global_building_blocks/error_message/ErrorMessage";
+import LoadingWheel from "../../../../../../../../global_building_blocks/loading_wheel/LoadingWheel";
+import { useScrollToTopOnPress } from "../../../../hooks/ScrollToTop";
+import { SearchNavProp } from "../../SearchAndScanNavTypes";
 
 const activeColor = palette.white;
 const inactiveColor = palette.mediumGray;
 
-const Search: React.FC = () => {
-    const { openNew, openCommunity, openUser } = useContext(TabNavContext);
+interface Props {
+    navigation: SearchNavProp;
+}
+
+const Search: React.FC<Props> = (props) => {
+    const { openCommunity, openUser, searchScrollIndex } = useContext(
+        TabNavContext
+    );
     const [query, setQuery] = useState<string>("");
+
+    const searchListRef = useRef<FlatList>(null);
+    const topListRef = useRef<FlatList>(null);
+
+    useScrollToTopOnPress(searchScrollIndex, props.navigation, searchListRef);
+    useScrollToTopOnPress(searchScrollIndex, props.navigation, topListRef);
 
     const [searchOption, setSearchOption] = useState<SearchEntityEnum | null>(
         null
@@ -48,6 +62,10 @@ const Search: React.FC = () => {
             entityType: searchOption,
         },
     });
+
+    useEffect(() => {
+        console.log(error, topError);
+    }, [error, topError]);
 
     useEffect(() => {
         if (!!query) {
@@ -185,6 +203,7 @@ const Search: React.FC = () => {
                             </View>
                         ) : (
                             <FlatList
+                                ref={searchListRef}
                                 style={basicLayouts.flexGrid1}
                                 data={data.search}
                                 renderItem={({ item }) => (
@@ -224,6 +243,7 @@ const Search: React.FC = () => {
                 ) : topData?.topResults ? (
                     topData.topResults.length !== 0 && (
                         <FlatList
+                            ref={topListRef}
                             style={basicLayouts.flexGrid1}
                             data={topData.topResults}
                             renderItem={({ item }) => (
@@ -254,7 +274,6 @@ const Search: React.FC = () => {
                     )
                 ) : null}
             </TouchableOpacity>
-            <NewButton openNew={openNew} />
         </>
     );
 };

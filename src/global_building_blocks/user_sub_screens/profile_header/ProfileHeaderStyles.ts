@@ -11,9 +11,34 @@ export const styles = StyleSheet.create({
         paddingTop: 5,
         paddingBottom: 20,
     },
-    shopButtonContainer: {
+    topButtonsContainer: {
         ...basicLayouts.grid5,
+        flexDirection: "row",
         paddingVertical: 10,
+    },
+    levelUpButton: {
+        ...basicLayouts.grid5,
+        flexDirection: "row",
+        paddingVertical: 6,
+        paddingHorizontal: 2,
+        borderRadius: 10,
+        borderWidth: 2,
+        borderColor: palette.deepBlue,
+        marginRight: 4,
+    },
+    levelUpBoltContainer: {
+        position: "relative",
+    },
+    boltUpdate: {
+        position: "absolute",
+        left: -4,
+        top: -5,
+    },
+    levelUpButtonText: {
+        fontWeight: "bold",
+        color: palette.deepBlue,
+        fontSize: 18,
+        marginHorizontal: 3,
     },
     shopButton: {
         ...basicLayouts.grid5,
@@ -98,6 +123,13 @@ export const styles = StyleSheet.create({
     split1Right: {
         ...basicLayouts.grid5,
     },
+    followContainer: {
+        minWidth: 100,
+    },
+    flyingBoltContainer: {
+        position: "absolute",
+        left: -27,
+    },
     followButton: {
         ...basicLayouts.grid5,
         flexDirection: "row",
@@ -107,16 +139,27 @@ export const styles = StyleSheet.create({
         borderColor: palette.deepBlue,
         borderRadius: 20,
     },
-    followButtonTextContainer: {
+    unFollowButtonTextContainer: {
+        ...basicLayouts.grid2,
+        flexDirection: "row",
         borderRightWidth: 1,
         borderRightColor: palette.softGray,
-        paddingRight: 10,
+        paddingRight: 2,
+    },
+    followButtonTextContainer: {
+        ...basicLayouts.grid2,
+        flexDirection: "row",
+        borderRightWidth: 1,
+        borderRightColor: palette.softGray,
+        paddingRight: 6,
     },
     followButtonText: {
         color: palette.hardGray,
         fontSize: 15,
         fontWeight: "bold",
         paddingVertical: 5,
+        marginRight: 5,
+        marginLeft: 5,
     },
     statsContainer: {
         flexDirection: "row",
@@ -128,6 +171,7 @@ export const styles = StyleSheet.create({
     },
     profileLevelText: {
         fontWeight: "bold",
+        fontSize: 17,
         color: palette.lightGray,
     },
     profileSplit3: {
@@ -169,6 +213,10 @@ export const styles = StyleSheet.create({
         color: palette.hardGray,
         marginRight: 8,
         marginTop: 3,
+    },
+    followMaxText: {
+        color: palette.semiSoftGray,
+        fontWeight: "600",
     },
     followsText: {
         fontWeight: "400",

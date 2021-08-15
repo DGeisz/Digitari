@@ -16,7 +16,6 @@ import {
     bioFontPrice,
     bioFontRequirement,
     BioFontsEnum,
-    stickerPrice,
 } from "../../../../../../global_types/ShopTypes";
 import ShopItem from "../../building_blocks/shop_item/ShopItem";
 import { bioFont2Style } from "./fonts/fonts";
@@ -31,7 +30,6 @@ import {
     SelectBioFontVariables,
 } from "./gql/Mutations";
 import { USER_TYPENAME } from "../../../../../../global_types/UserTypes";
-import { calculateLevelInfo } from "../../../../../../global_utils/LevelUtils";
 
 const BioFont: React.FC = () => {
     const uid = localUid();
@@ -98,7 +96,7 @@ const BioFont: React.FC = () => {
         return <ErrorMessage refresh={refetch} />;
     }
 
-    const level = calculateLevelInfo(parseInt(data.user.coinSpent))[0];
+    const level = data.user.level;
     const ranking = data.user.ranking;
 
     return (

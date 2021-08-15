@@ -41,16 +41,21 @@ export const styles = StyleSheet.create({
         borderColor: palette.deepBlue,
     },
     createButtonTextContainer: {
-        ...basicLayouts.grid4,
+        ...basicLayouts.grid2,
+        flexDirection: "row",
         borderRightWidth: 1,
         borderRightColor: palette.lightGray,
-        paddingRight: 20,
+        paddingRight: 7,
         marginRight: 3,
     },
     createButtonText: {
         fontWeight: "600",
         fontSize: 18,
         color: palette.hardGray,
+        marginRight: 6,
+    },
+    flyingBoltContainer: {
+        transform: [{ translateY: -50 }],
     },
     cantCreateContainer: {
         ...basicLayouts.flexGrid5,

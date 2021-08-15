@@ -28,3 +28,19 @@ export interface UpgradeWalletData {
 }
 
 export interface UpgradeWalletVariables {}
+
+export const UPGRADE_BOLT_WALLET = gql`
+    mutation UpgradeBoltWallet {
+        upgradeBoltWallet {
+            id
+            bolts
+            maxBoltWallet
+        }
+    }
+`;
+
+export interface UpgradeBoltWalletData {
+    upgradeBoltWallet: UserType;
+}
+
+export interface UpgradeBoltWalletVariables {}

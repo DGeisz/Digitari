@@ -5,6 +5,7 @@ export const USER_COIN = gql`
         user(uid: $uid) {
             id
             coin
+            ranking
         }
     }
 `;
@@ -13,6 +14,7 @@ export interface UserCoinData {
     user: {
         id: string;
         coin: string;
+        ranking: number;
     };
 }
 

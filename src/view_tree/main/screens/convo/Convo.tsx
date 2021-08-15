@@ -32,8 +32,8 @@ import ConvoMsg from "../../../../global_building_blocks/convo_msg/ConvoMsg";
 import ResponseResponse from "./building_blocks/response_response/ResponseResponse";
 import { localHid, localUid } from "../../../../global_state/UserState";
 import {
-    CONVO_ACTIVATION_COST,
     CONVO_TYPENAME,
+    convoReward,
     ConvoStatus,
     ConvoType,
     MESSAGE_COUNT_THRESHOLD,
@@ -84,8 +84,7 @@ import {
     TransactionType,
     TransactionTypesEnum,
 } from "../../../../global_types/TransactionTypes";
-import { addTransaction } from "../../hooks/use_realtime_updates/subscription_handlers/utils/cache_utils";
-import { challengeCheck } from "../../../../global_gql/challenge_check/challenge_check";
+import { addBoltTransaction } from "../../hooks/use_realtime_updates/subscription_handlers/utils/cache_utils";
 import ConvoOptionsModal from "./building_blocks/convo_options_modal/ConvoOptionsModal";
 import { PostType } from "../../../../global_types/PostTypes";
 import { MessageType } from "../../../../global_types/MessageTypes";
@@ -96,6 +95,7 @@ import {
 } from "../../routes/tab_nav/screens/profile/gql/Queries";
 import { firstConvoPage } from "../../../../global_state/FirstImpressionsState";
 import InstructionsModal from "./building_blocks/instruction_modal/InstructionsModal";
+import BoltBox from "../../../../global_building_blocks/bolt_box/BoltBox";
 
 function getCheckLeft(uid: string, tid: string): (id: string) => boolean {
     if (uid === tid) {
@@ -367,25 +367,6 @@ const Convo: React.FC<Props> = (props) => {
                     },
                 });
 
-                /*
-                 * Update user's bolts
-                 */
-                cache.modify({
-                    id: cache.identify({
-                        __typename: USER_TYPENAME,
-                        id: uid,
-                    }),
-                    fields: {
-                        bolts(existing) {
-                            existing = parseInt(existing);
-
-                            return (
-                                existing - CONVO_ACTIVATION_COST
-                            ).toString();
-                        },
-                    },
-                });
-
                 const activeConvos = cache.readQuery<
                     ActiveConvosData,
                     ActiveConvosVariables
@@ -458,29 +439,34 @@ const Convo: React.FC<Props> = (props) => {
                     },
                 });
 
-                /*
-                 * Increase the user's ranking, successfulConvos, and
-                 * increase their trans total by the convo reward
-                 */
-                cache.modify({
-                    id: cache.identify({
-                        __typename: USER_TYPENAME,
-                        id: uid,
-                    }),
-                    fields: {
-                        ranking(existing) {
-                            return existing + 1;
-                        },
-                        successfulConvos(existing) {
-                            return existing + 1;
-                        },
-                    },
-                });
-
-                /*
-                 * Add a transaction
-                 */
                 if (!!convoData?.convo) {
+                    /*
+                     * Increase the user's ranking, successfulConvos, and
+                     * increase their bolt trans total by the convo reward
+                     */
+                    cache.modify({
+                        id: cache.identify({
+                            __typename: USER_TYPENAME,
+                            id: uid,
+                        }),
+                        fields: {
+                            boltTransTotal(existing) {
+                                existing = parseInt(existing);
+
+                                return (
+                                    existing +
+                                    convoReward(convoData.convo.responseCost)
+                                ).toString();
+                            },
+                            ranking(existing) {
+                                return existing + 1;
+                            },
+                            successfulConvos(existing) {
+                                return existing + 1;
+                            },
+                        },
+                    });
+
                     let transactionMessage: string;
 
                     if (uid === convoData.convo.tid) {
@@ -496,20 +482,15 @@ const Convo: React.FC<Props> = (props) => {
                     const transaction: TransactionType = {
                         tid: uid,
                         time: Date.now().toString(),
-                        coin: 0,
+                        bolts: convoReward(convoData.convo.responseCost),
                         message: transactionMessage,
                         transactionType: TransactionTypesEnum.Convo,
                         transactionIcon: TransactionIcon.Convo,
                         data: `${cvid}:${convoData.convo.pid}`,
                     };
 
-                    addTransaction(transaction, cache);
+                    addBoltTransaction(transaction, cache);
                 }
-
-                /*
-                 * Do a quick challenge check
-                 */
-                challengeCheck(cache);
             },
         }
     );
@@ -847,6 +828,23 @@ const Convo: React.FC<Props> = (props) => {
                                         />
                                     </View>
                                 </View>
+                                <View style={styles.rewardContainer}>
+                                    <Text style={styles.rewardText}>
+                                        Convo reward
+                                    </Text>
+                                    <View style={styles.coinBoxContainer}>
+                                        <BoltBox
+                                            amount={convoReward(
+                                                postData?.post.responseCost
+                                            )}
+                                            boltSize={18}
+                                            fontSize={13}
+                                            boxColor={palette.lightForestGreen}
+                                            showBoltPlus
+                                            moveTextRight={2}
+                                        />
+                                    </View>
+                                </View>
                                 {!!error && (
                                     <View style={styles.errorContainer}>
                                         <Text style={styles.errorText}>
@@ -924,7 +922,7 @@ const Convo: React.FC<Props> = (props) => {
                                 }
                             }
 
-                            return <View />;
+                            return <View style={styles.buffer} />;
                         case ConvoStatus.New:
                             if (sid === uid || sid === hid) {
                                 return (
@@ -936,9 +934,9 @@ const Convo: React.FC<Props> = (props) => {
                                 );
                             }
 
-                            return <View />;
+                            return <View style={styles.buffer} />;
                         default:
-                            return <View />;
+                            return <View style={styles.buffer} />;
                     }
                 }}
                 onEndReached={async () => {
