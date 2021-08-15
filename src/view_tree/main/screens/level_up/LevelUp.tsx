@@ -1,5 +1,5 @@
-import React from "react";
-import { Animated, ScrollView, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { ScrollView, Text, View } from "react-native";
 import { styles } from "./LevelUpStyles";
 import LevelTaskComp from "./building_blocks/level_task/LevelTask";
 import { useMutation, useQuery } from "@apollo/client";
@@ -18,8 +18,21 @@ import { globalScreenStyles } from "../../../../global_styles/GlobalScreenStyles
 import { applyRewards, levelTasksComplete } from "./utils/task_progress_utils";
 import { LEVEL_UP, LevelUpData, LevelUpVariables } from "./gql/Mutations";
 import { USER_TYPENAME } from "../../../../global_types/UserTypes";
+import { MaterialIcons } from "@expo/vector-icons";
+import { palette } from "../../../../global_styles/Palette";
+import { LevelUpNavProp } from "../../MainEntryNavTypes";
+import { addTransaction } from "../../hooks/use_realtime_updates/subscription_handlers/utils/cache_utils";
+import { toCommaRep } from "../../../../global_utils/ValueRepUtils";
+import {
+    TransactionIcon,
+    TransactionTypesEnum,
+} from "../../../../global_types/TransactionTypes";
 
-const LevelUp: React.FC = () => {
+interface Props {
+    navigation: LevelUpNavProp;
+}
+
+const LevelUp: React.FC<Props> = (props) => {
     const uid = localUid();
 
     const { data, loading, error, refetch } = useQuery<
@@ -31,6 +44,8 @@ const LevelUp: React.FC = () => {
         },
     });
 
+    const [_, setNav2Congrats] = useState<boolean>(false);
+
     const [levelUp] = useMutation<LevelUpData, LevelUpVariables>(LEVEL_UP, {
         update(cache, { data }) {
             if (!!data?.levelUp) {
@@ -38,6 +53,34 @@ const LevelUp: React.FC = () => {
                  * Update the user
                  */
                 const newUser = data.levelUp;
+
+                setNav2Congrats((last) => {
+                    if (!last) {
+                        props.navigation.replace("LevelCongrats", {
+                            level: newUser.level,
+                        });
+
+                        const { rewards } = calculateLevel(newUser.level);
+                        const coin = rewards[rewards.length - 1].quantity;
+
+                        addTransaction(
+                            {
+                                tid: uid,
+                                time: Date.now().toString(),
+                                coin,
+                                message: `You reached level ${toCommaRep(
+                                    newUser.level
+                                )}`,
+                                transactionType: TransactionTypesEnum.Challenge,
+                                transactionIcon: TransactionIcon.Challenge,
+                                data: "",
+                            },
+                            cache
+                        );
+                    }
+
+                    return true;
+                });
 
                 /*
                  * This is probably unnecessary, but I just
@@ -56,7 +99,7 @@ const LevelUp: React.FC = () => {
                             return newUser.bolts;
                         },
                         newTransactionUpdate() {
-                            return newUser.newTransactionUpdate;
+                            return true;
                         },
                         transTotal() {
                             return newUser.transTotal;
@@ -129,7 +172,19 @@ const LevelUp: React.FC = () => {
         return (
             <ScrollView style={styles.outerContainer}>
                 <View style={styles.titleContainer}>
-                    <Text style={styles.levelTitle}>Level {level.level}</Text>
+                    <MaterialIcons
+                        name={"bolt"}
+                        color={palette.deepBlue}
+                        size={27}
+                    />
+                    <Text style={styles.levelTitle}>
+                        Reach Level {level.level}
+                    </Text>
+                    <MaterialIcons
+                        name={"bolt"}
+                        color={palette.deepBlue}
+                        size={27}
+                    />
                 </View>
                 <View style={styles.bubbleContainer}>
                     <View style={styles.titleContainer}>
@@ -147,15 +202,16 @@ const LevelUp: React.FC = () => {
                     <View style={styles.titleContainer}>
                         <Text style={styles.bubbleTitle}>Rewards</Text>
                     </View>
-                    <Animated.View style={styles.rewardsContainer}>
+                    <View style={styles.rewardsContainer}>
                         {level.rewards.map((reward, index) => (
                             <LevelRewardComp
                                 reward={reward}
                                 index={index}
                                 key={`level${index}`}
+                                scale={1.1}
                             />
                         ))}
-                    </Animated.View>
+                    </View>
                 </View>
                 <LockBuySelect
                     alreadyOwns={false}

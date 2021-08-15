@@ -24,6 +24,8 @@ const LevelTaskComp: React.FC<Props> = (props) => {
             ? palette.quasiLightForestGreen
             : palette.deepBlue;
 
+    const finalProgress = Math.min(progress, props.task.quantity);
+
     return (
         <View style={styles.container}>
             <Text style={styles.taskDescription}>
@@ -46,7 +48,8 @@ const LevelTaskComp: React.FC<Props> = (props) => {
                             styles.progressFill,
                             {
                                 width:
-                                    (progress / props.task.quantity) * barWidth,
+                                    (finalProgress / props.task.quantity) *
+                                    barWidth,
                                 backgroundColor: barColor,
                             },
                         ]}
@@ -54,7 +57,7 @@ const LevelTaskComp: React.FC<Props> = (props) => {
                 </View>
                 <View style={styles.numericContainer}>
                     <Text style={styles.numericText}>
-                        {toRep(progress)} / {toRep(props.task.quantity)}
+                        {toRep(finalProgress)} / {toRep(props.task.quantity)}
                     </Text>
                 </View>
             </View>

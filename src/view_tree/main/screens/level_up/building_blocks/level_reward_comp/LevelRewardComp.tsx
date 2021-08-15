@@ -17,6 +17,7 @@ const REWARDS_QUANTA = 600;
 interface Props {
     reward: LevelReward;
     index: number;
+    scale: number;
 }
 
 const LevelRewardComp: React.FC<Props> = (props) => {
@@ -28,7 +29,7 @@ const LevelRewardComp: React.FC<Props> = (props) => {
         const animation = Animated.loop(
             Animated.sequence([
                 Animated.timing(rewardsScale, {
-                    toValue: 1.08,
+                    toValue: props.scale,
                     useNativeDriver: true,
                     duration: REWARDS_QUANTA,
                 }),

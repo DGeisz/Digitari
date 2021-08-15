@@ -24,12 +24,20 @@ import {
 import { HID, HidData } from "./gql/Queries";
 import { inviteCode, userAuthenticated } from "../global_state/AuthState";
 import { styles } from "./AppViewStyles";
-import { ActivityIndicator, Platform, Text, LogBox, View } from "react-native";
+import {
+    ActivityIndicator,
+    Platform,
+    Text,
+    LogBox,
+    View,
+    Image,
+} from "react-native";
 import { palette } from "../global_styles/Palette";
 import Constants from "expo-constants";
 import type { IAPQueryResponse, InAppPurchase } from "expo-in-app-purchases";
 import { USER_TYPENAME } from "../global_types/UserTypes";
 import { ProductId, products } from "../global_types/IapTypes";
+import { GENERAL_CONTENT_WIDTH } from "../global_constants/screen_constants";
 
 LogBox.ignoreAllLogs();
 
@@ -296,6 +304,13 @@ const AppView: React.FC = () => {
     if (!splashHidden || (!fetchedUser && authenticated)) {
         return (
             <View style={styles.setupContainer}>
+                <View style={styles.danceContainer}>
+                    <Image
+                        source={require("../../assets/digidance.gif")}
+                        resizeMode={"contain"}
+                        style={styles.dance}
+                    />
+                </View>
                 <Text style={styles.setupText}>Warming the engines...</Text>
                 <ActivityIndicator color={palette.deepBlue} size="large" />
             </View>

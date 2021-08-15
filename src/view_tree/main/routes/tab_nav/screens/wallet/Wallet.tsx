@@ -553,19 +553,19 @@ const Wallet: React.FC<Props> = (props) => {
                                             opacity: animatedOpacity,
                                         }}
                                     >
+                                        <CoinBox
+                                            showCoinPlus
+                                            amount={animationCoinAmount}
+                                            coinSize={40}
+                                            fontSize={30}
+                                            paddingRight={10}
+                                        />
                                         <BoltBox
                                             showBoltPlus
                                             amount={aniBoltAmount}
                                             boltSize={40}
                                             fontSize={30}
                                             moveTextRight={5}
-                                            paddingRight={10}
-                                        />
-                                        <CoinBox
-                                            showCoinPlus
-                                            amount={animationCoinAmount}
-                                            coinSize={40}
-                                            fontSize={30}
                                         />
                                     </Animated.View>
                                     <TouchableOpacity

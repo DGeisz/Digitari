@@ -10,7 +10,6 @@ export const styles = StyleSheet.create({
         padding: 10,
     },
     levelTitle: {
-        marginBottom: 10,
         fontSize: 25,
         fontWeight: "bold",
         color: palette.deepBlue,
@@ -23,7 +22,9 @@ export const styles = StyleSheet.create({
         marginBottom: 10,
     },
     titleContainer: {
-        ...basicLayouts.grid2,
+        ...basicLayouts.grid5,
+        flexDirection: "row",
+        marginBottom: 10,
     },
     bubbleTitle: {
         fontWeight: "bold",

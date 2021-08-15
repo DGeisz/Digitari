@@ -45,6 +45,7 @@ import {
 } from "./routes/tab_nav/screens/profile/gql/Queries";
 import UpdateIndicator from "./routes/tab_nav/building_blocks/update_indicator/UpdateIndicator";
 import New from "./screens/new/New";
+import LevelCongrats from "./screens/level_congrats/LevelCongrats";
 
 const RootStack = createStackNavigator<MainEntryStack>();
 
@@ -255,6 +256,11 @@ const MainEntry: React.FC = () => {
                     name={"LevelUp"}
                     options={{ title: "Level Up" }}
                     component={LevelUp}
+                />
+                <RootStack.Screen
+                    name={"LevelCongrats"}
+                    options={{ title: "Congrats!" }}
+                    component={LevelCongrats}
                 />
                 <RootStack.Screen
                     name="NewPost"

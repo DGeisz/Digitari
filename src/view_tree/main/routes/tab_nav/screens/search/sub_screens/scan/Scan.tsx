@@ -23,6 +23,23 @@ const Scan: React.FC<Props> = (props) => {
 
     const [lastData, setLastData] = useState<string>("");
 
+    const [inFocus, setFocus] = useState<boolean>(false);
+
+    useEffect(() => {
+        const unSubFocus = props.navigation.addListener("focus", () => {
+            setFocus(true);
+        });
+
+        const unSubBlur = props.navigation.addListener("blur", () => {
+            setFocus(false);
+        });
+
+        return () => {
+            unSubFocus();
+            unSubBlur();
+        };
+    }, []);
+
     const requestPermission = async () => {
         const { status } = await BarCodeScanner.requestPermissionsAsync();
         setLastData("");
@@ -57,53 +74,59 @@ const Scan: React.FC<Props> = (props) => {
     }
 
     if (hasPermission) {
-        return (
-            <View style={styles.scannerContainer}>
-                <View style={styles.scannerFrame}>
-                    <BarCodeScanner
-                        style={styles.scanner}
-                        barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
-                        onBarCodeScanned={({ data }) => {
-                            if (data !== lastData) {
-                                console.log(data);
-                                try {
-                                    const raw = JSON.parse(data);
+        if (!inFocus) {
+            return <View />;
+        } else {
+            return (
+                <View style={styles.scannerContainer}>
+                    <View style={styles.scannerFrame}>
+                        <BarCodeScanner
+                            style={styles.scanner}
+                            barCodeTypes={[
+                                BarCodeScanner.Constants.BarCodeType.qr,
+                            ]}
+                            onBarCodeScanned={({ data }) => {
+                                if (data !== lastData) {
+                                    console.log(data);
+                                    try {
+                                        const raw = JSON.parse(data);
 
-                                    if (
-                                        typeof raw === "object" &&
-                                        typeof raw.type !== "undefined" &&
-                                        typeof raw.id === "string"
-                                    ) {
-                                        const digicode = raw as Digicode;
+                                        if (
+                                            typeof raw === "object" &&
+                                            typeof raw.type !== "undefined" &&
+                                            typeof raw.id === "string"
+                                        ) {
+                                            const digicode = raw as Digicode;
 
-                                        switch (digicode.type) {
-                                            case DigicodeType.User:
-                                                openUser(digicode.id);
-                                                break;
-                                            case DigicodeType.Community:
-                                                openCommunity(digicode.id);
-                                                break;
+                                            switch (digicode.type) {
+                                                case DigicodeType.User:
+                                                    openUser(digicode.id);
+                                                    break;
+                                                case DigicodeType.Community:
+                                                    openCommunity(digicode.id);
+                                                    break;
+                                            }
+                                        }
+                                    } catch (e) {
+                                        if (__DEV__) {
+                                            console.log("Scan error:", e);
                                         }
                                     }
-                                } catch (e) {
-                                    if (__DEV__) {
-                                        console.log("Scan error:", e);
-                                    }
-                                }
 
-                                setLastData(data);
-                            }
-                        }}
-                    />
+                                    setLastData(data);
+                                }
+                            }}
+                        />
+                    </View>
+                    <Text style={styles.scannerText}>
+                        Wanna skip a search? Scan your friend's digicode to open
+                        their profile. {DOUBLE_NEWLINE}
+                        Just tap a user or community's name on their profile to
+                        access their digicode.
+                    </Text>
                 </View>
-                <Text style={styles.scannerText}>
-                    Wanna skip a search? Scan your friend's digicode to open
-                    their profile. {DOUBLE_NEWLINE}
-                    Just tap a user or community's name on their profile to
-                    access their digicode.
-                </Text>
-            </View>
-        );
+            );
+        }
     } else {
         return (
             <View style={styles.promptContainer}>
